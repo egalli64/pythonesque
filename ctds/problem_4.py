@@ -2,7 +2,7 @@
 Based on Week 2 > Lecture 4 - Stochastic Programming and Statistical Thinking - L4 Problem 4, point 4
 From edx.org - MITx: 6.00.2x Introduction to Computational Thinking and Data Science
 
-More info: http://pythonesque.blogspot.com
+More info: http://pythonesque.blogspot.com/2016/03/coefficient-of-variation.html
 """
 
 import math
