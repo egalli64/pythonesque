@@ -9,7 +9,6 @@ from hr.ctci_queue_using_two_stacks import MyQueue
 
 
 class TestSolution(unittest.TestCase):
-
     def test_enqueue(self):
         queue = MyQueue()
         queue.put(42)

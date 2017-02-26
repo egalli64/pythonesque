@@ -30,8 +30,8 @@ class MyQueue(object):
 
 if __name__ == '__main__':
     queue = MyQueue()
-    t = int(input())
-    for line in range(t):
+    n = int(input())
+    for line in range(n):
         values = map(int, input().split())
         values = list(values)
         if values[0] == 1:
