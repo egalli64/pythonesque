@@ -9,7 +9,7 @@ import unittest
 from hr.ctci_array_left_rotation import solution
 
 
-class TestCodeEval(unittest.TestCase):
+class TestSolution(unittest.TestCase):
 
     def test_provided_1(self):
         self.assertEqual([5, 1, 2, 3, 4], solution([1, 2, 3, 4, 5], 5, 4))
