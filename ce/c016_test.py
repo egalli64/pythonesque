@@ -1,8 +1,8 @@
 """
-Template for Python 3 CodeEval problems
+CodeEval Number of Ones
 author: Manny egalli64@gmail.com
 info: http://thisthread.blogspot.com/
-      https://www.codeeval.com/
+      https://www.codeeval.com/open_challenges/16/
 """
 import unittest
 from ce.c016 import solution
