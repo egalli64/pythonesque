@@ -20,8 +20,5 @@ class TestCodeEval(unittest.TestCase):
         self.assertEqual(1, solution('1210'))
 
 
-
-
-
 if __name__ == '__main__':
     unittest.main()
