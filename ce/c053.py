@@ -11,8 +11,7 @@ def solution(line):
     for size in range(len(line) // 2, 0, -1):
         for i in range(0, len(line) - 2 * size + 1):
             candidate = line[i: i + size]
-            leftover = line[i + size:]
-            if candidate in leftover and candidate.strip():
+            if line[i + size:].find(candidate) > -1 and candidate.strip():
                 return candidate
     return 'NONE'
 
