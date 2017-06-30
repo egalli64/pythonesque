@@ -5,7 +5,8 @@ info: http://thisthread.blogspot.com/
       https://www.codeeval.com/
 """
 import unittest
-from ce.cxxx import solution
+
+from ce.templates.cxxx import solution
 
 
 class TestCodeEval(unittest.TestCase):
