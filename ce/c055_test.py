@@ -1,7 +1,7 @@
 """
 CodeEval Type Ahead
 author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/
+info: http://thisthread.blogspot.com/2017/07/codeeval-type-ahead.html
       https://www.codeeval.com/open_challenges/55/
 """
 import unittest
