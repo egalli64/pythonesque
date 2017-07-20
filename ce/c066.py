@@ -2,7 +2,7 @@
 CodeEval Pascals Triangle
 author: Manny egalli64@gmail.com
 info: https://www.codeeval.com/open_challenges/66/
-      https://www.codeeval.com/
+      http://thisthread.blogspot.com/
 """
 import sys
 
