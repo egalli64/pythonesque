@@ -2,7 +2,7 @@
 CodeEval Hex To Decimal
 author: Manny egalli64@gmail.com
 info: https://www.codeeval.com/open_challenges/67/
-      https://www.codeeval.com/
+      http://thisthread.blogspot.com/
 """
 import sys
 
