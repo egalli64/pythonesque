@@ -1,7 +1,7 @@
 """
 CodeEval Minimum Path Sum
 author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/
+info: http://thisthread.blogspot.com/2017/07/codeeval-minimum-path-sum.html
       https://www.codeeval.com/open_challenges/72/
 """
 import sys
