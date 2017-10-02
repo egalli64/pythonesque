@@ -1,7 +1,7 @@
 """
 CodeEval Pass Triangle
 author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/
+info: http://thisthread.blogspot.com/2017/09/codeeval-pass-triangle.html
       https://www.codeeval.com/open_challenges/89/
 """
 import sys
