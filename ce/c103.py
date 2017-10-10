@@ -5,15 +5,20 @@ info: http://thisthread.blogspot.com/2017/10/lowest-unique-number.html
       https://www.codeeval.com/open_challenges/103/
 """
 import sys
-from collections import Counter
+
+NOT_FOUND = 0
+FOUND_MANY = -1
 
 
 def solution(line):
     data = [int(x) for x in line.split()]
-    counter = Counter(data)
-    for key, value in sorted(counter.items()):
-        if  value == 1:
-            return data.index(key) + 1
+    result = [NOT_FOUND] * 9
+    for i, number in enumerate(data):
+        result[number-1] = i+1 if result[number-1] == NOT_FOUND else FOUND_MANY
+
+    for index in result:
+        if index > NOT_FOUND:
+            return index
     return 0
 
 
