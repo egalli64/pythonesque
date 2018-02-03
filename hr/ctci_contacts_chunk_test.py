@@ -25,5 +25,6 @@ class TestSolution(unittest.TestCase):
         add(trie, 'suqbyzjlqnfmfvgkcoxfh')
         self.assertEqual(1, find(trie, 'suqbyz'))
 
+
 if __name__ == '__main__':
     unittest.main()

@@ -11,6 +11,7 @@ class Node:
         self.count = 1
         self.children = {}
 
+
 trie = Node()
 
 
@@ -31,6 +32,7 @@ def find(node, data):
             return 0
         node = sub
     return node.count
+
 
 if __name__ == '__main__':
     n = int(input().strip())

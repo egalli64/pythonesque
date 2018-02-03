@@ -21,5 +21,6 @@ class TestCodeEval(unittest.TestCase):
         add(trie, 'hackerrank')
         self.assertEqual(0, find(trie, 'hak'))
 
+
 if __name__ == '__main__':
     unittest.main()

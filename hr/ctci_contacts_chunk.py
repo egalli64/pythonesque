@@ -12,6 +12,7 @@ class Node:
         self.data = data
         self.children = {}
 
+
 trie = Node()
 
 
