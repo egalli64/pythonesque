@@ -20,6 +20,7 @@ class Player:
             return 1 if self.name > rhs.name else -1
         return 1 if self.score < rhs.score else -1
 
+
 if __name__ == '__main__':
     n = int(input())
     data = []

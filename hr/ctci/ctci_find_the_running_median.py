@@ -46,6 +46,7 @@ def solution(values):
 
     return '\n'.join(result)
 
+
 if __name__ == '__main__':
     n = int(input())
     data = []

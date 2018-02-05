@@ -7,7 +7,8 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-sorting-comparator.html
 import unittest
 from functools import cmp_to_key
 from operator import attrgetter
-from hr.ctci_comparator_sorting import Player
+
+from hr.ctci.ctci_comparator_sorting import Player
 
 
 class TestSolution(unittest.TestCase):

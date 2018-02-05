@@ -6,7 +6,8 @@ info: http://thisthread.blogspot.com/2017/03/hackerrank-binary-search-ice-cream.
 """
 
 import unittest
-from hr.ctci_ice_cream_parlor import solution
+
+from hr.ctci.ctci_ice_cream_parlor import solution
 
 
 class TestSolution(unittest.TestCase):
@@ -22,6 +23,7 @@ class TestSolution(unittest.TestCase):
 
     def test_neighbor(self):
         self.assertEqual('3 4', solution(8, [1, 2, 4, 4, 8]))
+
 
 if __name__ == '__main__':
     unittest.main()

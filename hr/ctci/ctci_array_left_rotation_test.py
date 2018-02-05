@@ -5,12 +5,17 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-arrays-left-rotation.htm
       https://www.hackerrank.com/challenges/ctci-array-left-rotation
 """
 
+import unittest
 
-def solution(values, size, shift):
-    return values[shift:] + values[:shift]
+from hr.ctci.ctci_array_left_rotation import solution
+
+
+class TestSolution(unittest.TestCase):
+
+    def test_provided_1(self):
+        self.assertEqual([5, 1, 2, 3, 4], solution([1, 2, 3, 4, 5], 5, 4))
+
 
 if __name__ == '__main__':
-    n, d = map(int, (input().split()))
-    data = [int(x) for x in input().split()]
+    unittest.main()
 
-    print(solution(data, n, d))

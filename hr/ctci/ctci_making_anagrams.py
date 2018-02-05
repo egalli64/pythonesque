@@ -19,6 +19,7 @@ def solution(a, b):
 
     return sum(counter.values()) + extra
 
+
 if __name__ == '__main__':
     a = input().strip()
     b = input().strip()

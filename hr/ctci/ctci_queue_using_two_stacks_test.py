@@ -5,7 +5,8 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-queues-tale-of-two-stack
       https://www.hackerrank.com/challenges/ctci-queue-using-two-stacks
 """
 import unittest
-from hr.ctci_queue_using_two_stacks import MyQueue
+
+from hr.ctci.ctci_queue_using_two_stacks import MyQueue
 
 
 class TestSolution(unittest.TestCase):
@@ -26,6 +27,7 @@ class TestSolution(unittest.TestCase):
         queue.put(2)
         queue.pop()
         self.assertEqual(2, queue.peek())
+
 
 if __name__ == '__main__':
     unittest.main()

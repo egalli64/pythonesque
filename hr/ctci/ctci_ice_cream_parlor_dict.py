@@ -24,6 +24,7 @@ def solution(money, prices):
                 result = sorted([others[0], flavors[0]])
                 return '{} {}'.format(*result)
 
+
 if __name__ == '__main__':
     t = int(input().strip())
     for _ in range(t):

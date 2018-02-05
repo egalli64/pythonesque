@@ -6,7 +6,8 @@ info: http://thisthread.blogspot.com/2017/03/hackerrank-merge-sort-counting.html
 """
 
 import unittest
-from hr.ctci_merge_sort import count_inversions
+
+from hr.ctci.ctci_merge_sort import count_inversions
 
 
 class TestSolution(unittest.TestCase):
@@ -16,6 +17,7 @@ class TestSolution(unittest.TestCase):
 
     def test_provided_2(self):
         self.assertEqual(4, count_inversions([2, 1, 3, 1, 2]))
+
 
 if __name__ == '__main__':
     unittest.main()

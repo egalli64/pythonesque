@@ -17,6 +17,7 @@ def solution(data):
             return False
     return True if not stack else False
 
+
 if __name__ == '__main__':
     line = input()
 

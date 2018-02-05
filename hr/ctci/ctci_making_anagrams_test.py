@@ -6,7 +6,8 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-strings-making-anagrams.
 """
 
 import unittest
-from hr.ctci_making_anagrams import solution
+
+from hr.ctci.ctci_making_anagrams import solution
 
 
 class TestSolution(unittest.TestCase):
@@ -16,6 +17,7 @@ class TestSolution(unittest.TestCase):
 
     def test_many_a(self):
         self.assertEqual(3, solution('aaaa', 'a'))
+
 
 if __name__ == '__main__':
     unittest.main()

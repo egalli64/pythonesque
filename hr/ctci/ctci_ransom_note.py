@@ -16,6 +16,7 @@ def solution(magazine, ransom):
             return False
     return True
 
+
 if __name__ == '__main__':
     input()
     magazine = input().strip().split(' ')
