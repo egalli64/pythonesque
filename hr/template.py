@@ -9,6 +9,7 @@ info: http://thisthread.blogspot.com/
 def solution(data):
     return data
 
+
 if __name__ == '__main__':
     line = input()
 

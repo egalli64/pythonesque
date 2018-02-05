@@ -14,5 +14,6 @@ class TestSolution(unittest.TestCase):
     def test_provided_1(self):
         self.assertEqual('something', solution('something'))
 
+
 if __name__ == '__main__':
     unittest.main()
