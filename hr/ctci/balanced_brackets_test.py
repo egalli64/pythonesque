@@ -7,7 +7,7 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-stacks-balanced-brackets
 
 import unittest
 
-from hr.ctci.ctci_balanced_brackets import solution
+from hr.ctci.balanced_brackets import solution
 
 
 class TestSolution(unittest.TestCase):

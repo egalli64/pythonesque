@@ -7,7 +7,7 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-heaps-find-running-media
 
 import unittest
 
-from hr.ctci.ctci_find_the_running_median import solution
+from hr.ctci.find_the_running_median import solution
 
 
 class TestSolution(unittest.TestCase):

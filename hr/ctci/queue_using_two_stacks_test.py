@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-queues-tale-of-two-stack
 """
 import unittest
 
-from hr.ctci.ctci_queue_using_two_stacks import MyQueue
+from hr.ctci.queue_using_two_stacks import MyQueue
 
 
 class TestSolution(unittest.TestCase):

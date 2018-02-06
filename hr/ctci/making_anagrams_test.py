@@ -7,7 +7,7 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-strings-making-anagrams.
 
 import unittest
 
-from hr.ctci.ctci_making_anagrams import solution
+from hr.ctci.making_anagrams import solution
 
 
 class TestSolution(unittest.TestCase):

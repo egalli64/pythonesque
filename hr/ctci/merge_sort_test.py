@@ -7,7 +7,7 @@ info: http://thisthread.blogspot.com/2017/03/hackerrank-merge-sort-counting.html
 
 import unittest
 
-from hr.ctci.ctci_merge_sort import count_inversions
+from hr.ctci.merge_sort import count_inversions
 
 
 class TestSolution(unittest.TestCase):

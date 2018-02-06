@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-hash-tables-ransom-note.
 """
 import unittest
 
-from hr.ctci.ctci_ransom_note import solution
+from hr.ctci.ransom_note import solution
 
 
 class TestSolution(unittest.TestCase):

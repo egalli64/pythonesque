@@ -7,7 +7,7 @@ info: http://thisthread.blogspot.com/2017/03/hackerrank-binary-search-ice-cream.
 
 import unittest
 
-from hr.ctci.ctci_ice_cream_parlor import solution
+from hr.ctci.ice_cream_parlor import solution
 
 
 class TestSolution(unittest.TestCase):

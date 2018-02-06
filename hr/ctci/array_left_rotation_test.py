@@ -7,7 +7,7 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-arrays-left-rotation.htm
 
 import unittest
 
-from hr.ctci.ctci_array_left_rotation import solution
+from hr.ctci.array_left_rotation import solution
 
 
 class TestSolution(unittest.TestCase):

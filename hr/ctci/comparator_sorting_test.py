@@ -8,7 +8,7 @@ import unittest
 from functools import cmp_to_key
 from operator import attrgetter
 
-from hr.ctci.ctci_comparator_sorting import Player
+from hr.ctci.comparator_sorting import Player
 
 
 class TestSolution(unittest.TestCase):

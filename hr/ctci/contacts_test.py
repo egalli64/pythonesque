@@ -7,7 +7,7 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-tries-contacts.html
 
 import unittest
 
-from hr.ctci.ctci_contacts import trie, add, find
+from hr.ctci.contacts import trie, add, find
 
 
 class TestCodeEval(unittest.TestCase):

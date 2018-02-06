@@ -7,7 +7,7 @@ info: http://thisthread.blogspot.com/2017/02/hackerrank-tries-contacts.html
 
 import unittest
 
-from hr.ctci.ctci_contacts_chunk import add, find, trie
+from hr.ctci.contacts_chunk import add, find, trie
 
 
 class TestSolution(unittest.TestCase):
