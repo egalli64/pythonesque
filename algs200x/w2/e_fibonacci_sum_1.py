@@ -2,7 +2,7 @@
 Last Digit of the Sum of Fibonacci Numbers
 
 author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com
+info: http://thisthread.blogspot.com/2018/02/last-digit-of-sum-of-fibonacci-numbers.html
       https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
 
 Naive solution
