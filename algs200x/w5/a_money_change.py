@@ -2,7 +2,7 @@
 Money Change Again
 
 author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/
+info: http://thisthread.blogspot.com/2018/02/money-change-again.html
       https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
       week 5 - Dynamic Programming 1
 """
