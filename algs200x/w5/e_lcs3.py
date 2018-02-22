@@ -9,12 +9,7 @@ info: http://thisthread.blogspot.com/2018/02/longest-common-subsequence-of-three
 
 
 def solution_dp(a, b, c):
-    cube = []
-    for m in range(len(c) + 1):
-        sheet = [[0] * (len(b) + 1)]
-        for n in range(1, len(a) + 1):
-            sheet.append([0] * (len(b) + 1))
-        cube.append(sheet)
+    cube = [[[0] * (len(b) + 1) for _ in range(len(a) + 1)] for _ in range(len(c) + 1)]
 
     for i in range(1, len(cube)):
         for j in range(1, len(cube[0])):
