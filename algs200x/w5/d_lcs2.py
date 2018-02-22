@@ -9,9 +9,7 @@ info: http://thisthread.blogspot.com/2018/02/longest-common-subsequence-of-two.h
 
 
 def solution_dp(lhs, rhs):
-    table = [[0] * (len(rhs) + 1)]
-    for _ in range(1, len(lhs) + 1):
-        table.append([0] * (len(rhs) + 1))
+    table = [[0] * (len(rhs) + 1) for _ in range(len(lhs) + 1)]
 
     for i in range(1, len(table)):
         for j in range(1, len(table[0])):
