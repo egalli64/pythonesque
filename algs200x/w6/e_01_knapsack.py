@@ -2,7 +2,7 @@
 0/1 knapsack
 
 author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/
+info: http://thisthread.blogspot.com/2018/02/other-dynamic-programming-problems.html
 """
 
 
