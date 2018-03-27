@@ -7,7 +7,7 @@ info: http://thisthread.blogspot.com/
 """
 
 import unittest
-from hr.algorithms.implementation.breaking_records import solution
+from breaking_records import solution
 
 
 class TestSolution(unittest.TestCase):

@@ -7,7 +7,7 @@ info: http://thisthread.blogspot.com/
 """
 
 import unittest
-from hr.algorithms.implementation.between_two_sets import solution
+from between_two_sets import solution
 
 
 class TestSolution(unittest.TestCase):
