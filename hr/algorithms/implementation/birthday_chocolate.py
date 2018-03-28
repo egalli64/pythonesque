@@ -32,6 +32,6 @@ def solution(data, day, month):
 if __name__ == '__main__':
     input()  # discard header
     items = list(map(int, input().split()))
-    d, m = tuple(map(int, input().split()))
+    d, m = map(int, input().split())
 
     print(solution(items, d, m))
