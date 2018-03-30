@@ -1,5 +1,5 @@
 """
-HackerRank Python Implementation Birthday Chocolate
+HackerRank Algorithms Implementation Birthday Chocolate
 
 author: Manny egalli64@gmail.com
 info: http://thisthread.blogspot.com/

@@ -1,5 +1,5 @@
 """
-HackerRank Python Implementation Between Two Sets
+HackerRank Algorithms Implementation Between Two Sets
 
 author: Manny egalli64@gmail.com
 info: http://thisthread.blogspot.com/

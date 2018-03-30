@@ -1,5 +1,5 @@
 """
-HackerRank Python Implementation Breaking the Records
+HackerRank Algorithms Implementation Breaking the Records
 
 author: Manny egalli64@gmail.com
 info: http://thisthread.blogspot.com/
