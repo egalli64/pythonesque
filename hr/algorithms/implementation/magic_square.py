@@ -10,7 +10,7 @@ Given a 3x3 integer matrix
 
 Return its minimal distance from a magic square
 """
-from itertools import chain 
+from itertools import chain
 
 MAGIC_SQUARES = [
     [8, 1, 6, 3, 5, 7, 4, 9, 2],
