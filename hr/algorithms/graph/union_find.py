@@ -6,7 +6,7 @@ From Algorithms, 4th Edition by Robert Sedgewick and Kevin Wayne
 https://algs4.cs.princeton.edu/home/
 
 author: Manny egalli64@gmail.com
-info:   http://thisthread.blogspot.com/
+info:   http://thisthread.blogspot.com/2018/04/union-find.html
 """
 
 class UnionFind:
