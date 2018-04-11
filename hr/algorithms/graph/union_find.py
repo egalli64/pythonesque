@@ -7,6 +7,7 @@ https://algs4.cs.princeton.edu/home/
 
 author: Manny egalli64@gmail.com
 info:   http://thisthread.blogspot.com/2018/04/union-find.html
+        http://thisthread.blogspot.com/2018/04/hackerrank-roads-and-libraries.html
 """
 
 class UnionFind:
@@ -18,14 +19,18 @@ class UnionFind:
     def union(self, p, q):
         i = self.find(p)
         j = self.find(q)
-        if i != j:
-            self.count -= 1
-            if self.sz[i] < self.sz[j]:
-                self.id[i] = j
-                self.sz[j] += self.sz[i]
-            else:
-                self.id[j] = i
-                self.sz[i] += self.sz[j]
+        if i == j:
+            return False
+
+        self.count -= 1
+        if self.sz[i] < self.sz[j]:
+            self.id[i] = j
+            self.sz[j] += self.sz[i]
+        else:
+            self.id[j] = i
+            self.sz[i] += self.sz[j]
+        return True
+        
 
     def find(self, p):
         while p != self.id[p]:
