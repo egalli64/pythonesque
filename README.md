@@ -8,6 +8,7 @@ Interview problems from:
 
 Exercises from MOOC:
    * edX UCSanDiegoX [ALGS200x](https://github.com/egalli64/pythonesque/tree/master/algs200x) Algorithmic Design and Techniques
+   * edX BerkeleyX [Data81x](https://github.com/egalli64/pythonesque/tree/master/data81x) Foundations of Data Science: Computational Thinking with Python
 
 Exercises from books:
    * [Dive Into](https://github.com/egalli64/pythonesque/tree/master/dive) Python 3
