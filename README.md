@@ -11,4 +11,5 @@ Exercises from MOOC:
    * edX BerkeleyX [Data81x](https://github.com/egalli64/pythonesque/tree/master/data81x) Foundations of Data Science: Computational Thinking with Python
 
 Exercises from books:
-   * [Dive Into](https://github.com/egalli64/pythonesque/tree/master/dive) Python 3
+   * [Dive Into Python 3](https://github.com/egalli64/pythonesque/tree/master/dive)
+   * [Python for Data Analysis](https://github.com/egalli64/pythonesque/tree/master/pydata)
