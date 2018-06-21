@@ -2,13 +2,13 @@
 Partitioning Souvenirs
 
 author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/partitioning-souvenirs.html
+info: http://thisthread.blogspot.com/2018/06/partitioning-souvenirs-patched.html
       https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
       week 6 - Dynamic Programming 2 - 3-Partition problem
 """
 import unittest
 
-from algs200x.w6.b_souvenirs import solution
+from b_souvenirs import solution
 
 
 class TestSolution(unittest.TestCase):
@@ -62,6 +62,15 @@ class TestSolution(unittest.TestCase):
 
     def test_test_11(self):
         self.assertTrue(solution([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]))
+
+    def test_shuai(self):
+        self.assertFalse(solution([7, 2, 2, 2, 2, 2, 2, 2, 3]))
+
+    def test_confounding_choice(self):
+        self.assertFalse(solution([3, 2, 2, 2, 3]))
+
+    def test_duplicates(self):
+        self.assertTrue(solution([2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]))
 
 
 if __name__ == '__main__':
