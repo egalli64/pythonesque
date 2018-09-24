@@ -35,21 +35,12 @@ class ArrayManipulator:
         return max(itertools.accumulate(self.data))
 
 
-def set_delta(data, first, last, value):
-    data[first] += value
-    data[last+1] -= value
-
-
-def solution(data):
-    return max(itertools.accumulate(data))
-
-
 if __name__ == '__main__':
     n, m = map(int, input().split())
-    data = [0] * (n + 2)
+    manipulator = ArrayManipulator(n)
 
     for _ in range(m):
         a, b, k = map(int, input().split())
-        set_delta(data, a, b, k)
+        manipulator.set(a, b, k)
 
-    print(solution(data))
+    print(manipulator.solution())
