@@ -1,8 +1,8 @@
 """
-HackerRank  Data Structures  Linked Lists   Insert a Node at the Tail of a Linked List
+HackerRank  Data Structures  Linked Lists   Insert a node at the head of a linked list
 author: Manny egalli64@gmail.com
 info: http://thisthread.blogspot.com/
-      https://www.hackerrank.com/challenges/insert-a-node-at-the-tail-of-a-linked-list/problem
+      https://www.hackerrank.com/challenges/insert-a-node-at-the-head-of-a-linked-list/problem
 """
 class SinglyLinkedListNode:
     def __init__(self, node_data):
@@ -21,17 +21,10 @@ def print_singly_linked_list(node, sep):
         node = node.next
 
 
-def insertNodeAtTail(head, data):
+def insertNodeAtHead(head, data):
     node = SinglyLinkedListNode(data)
-    if not head:
-        return node
-
-    tail = head
-    while tail.next:
-        tail = tail.next
-
-    tail.next = SinglyLinkedListNode(data)
-    return head
+    node.next = head
+    return node
 
 
 if __name__ == '__main__':
@@ -41,7 +34,7 @@ if __name__ == '__main__':
 
     for i in range(llist_count):
         llist_item = int(input())
-        llist_head = insertNodeAtTail(llist.head, llist_item)
+        llist_head = insertNodeAtHead(llist.head, llist_item)
         llist.head = llist_head
 
     print_singly_linked_list(llist.head, ' ')
