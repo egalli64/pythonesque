@@ -7,8 +7,8 @@ info: http://thisthread.blogspot.com/2018/02/last-digit-of-sum-of-fibonacci-numb
 """
 import unittest
 
-from algs200x.w2.f_fibonacci_sum_1 import solution as naive
-from algs200x.w2.f_fibonacci_sum_2 import solution as smarter
+from f_fibonacci_sum_1 import solution as naive
+from f_fibonacci_sum_2 import solution as smarter
 
 
 class TestSolution(unittest.TestCase):
@@ -30,6 +30,9 @@ class TestSolution(unittest.TestCase):
 
     def test_smarter_3(self):
         self.assertEqual(2, smarter(10, 200))
+
+    def test_smarter_check_order(self):
+        self.assertEqual(6, smarter(57, 123))
 
     def test_smarter_big(self):
         self.assertEqual(5, smarter(1, 100000000))
