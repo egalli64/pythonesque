@@ -5,7 +5,7 @@ info: http://thisthread.blogspot.com/2017/03/codeeval-self-describing-numbers.ht
       https://www.codeeval.com/open_challenges/40/
 """
 import unittest
-from ce.c040 import solution
+from c040 import solution
 
 
 class TestCodeEval(unittest.TestCase):

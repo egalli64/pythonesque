@@ -5,7 +5,7 @@ info: http://thisthread.blogspot.com/
       https://www.codeeval.com/open_challenges/48/
 """
 import unittest
-from ce.c048 import solution
+from c048 import solution
 
 
 class TestCodeEval(unittest.TestCase):

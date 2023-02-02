@@ -4,7 +4,7 @@
 #       https://www.codeeval.com/open_challenges/203/
 
 import unittest
-from ce.c203 import solution
+from c203 import solution
 
 
 class TestStepwiseWord(unittest.TestCase):

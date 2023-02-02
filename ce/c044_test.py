@@ -5,7 +5,7 @@ info: http://thisthread.blogspot.com/2017/03/codeeval-following-integer.html
       https://www.codeeval.com/open_challenges/44/
 """
 import unittest
-from ce.c044 import solution
+from c044 import solution
 
 
 class TestCodeEval(unittest.TestCase):

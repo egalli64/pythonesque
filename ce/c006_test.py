@@ -5,7 +5,7 @@ info: http://thisthread.blogspot.com/2017/02/codeeval-longest-common-subsequence
       https://www.codeeval.com/open_challenges/6/
 """
 import unittest
-from ce.c006 import solution
+from c006 import solution
 
 
 class TestCodeEval(unittest.TestCase):

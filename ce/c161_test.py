@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-game-of-life.html
 """
 
 import unittest
-from ce.c161 import solution
+from c161 import solution
 
 
 class TestCodeEval(unittest.TestCase):

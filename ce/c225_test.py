@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-testing.html
 """
 
 import unittest
-from ce.c225 import solution
+from c225 import solution
 
 
 class TestCodeEval(unittest.TestCase):

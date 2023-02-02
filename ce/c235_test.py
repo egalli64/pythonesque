@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-simple-or-trump.html
 """
 
 import unittest
-from ce.c235 import solution
+from c235 import solution
 
 
 class TestCodeEval(unittest.TestCase):

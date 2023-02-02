@@ -4,7 +4,7 @@
 #       https://www.codeeval.com/open_challenges/1/
 
 import unittest
-from ce.c001 import solution
+from c001 import solution
 
 
 class TestFizzBuzz(unittest.TestCase):

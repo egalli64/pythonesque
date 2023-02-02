@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-suggest-groups.html
 """
 
 import unittest
-from ce.c165 import solution
+from c165 import solution
 
 
 class TestCodeEval(unittest.TestCase):

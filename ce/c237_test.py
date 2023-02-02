@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-panacea-truth-or-lie.html
 """
 
 import unittest
-from ce.c237 import solution
+from c237 import solution
 
 
 class TestCodeEval(unittest.TestCase):

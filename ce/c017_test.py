@@ -5,7 +5,7 @@ info: http://thisthread.blogspot.com/2017/03/codeeval-sum-of-integers.html
       https://www.codeeval.com/open_challenges/17/
 """
 import unittest
-from ce.c017 import solution
+from c017 import solution
 
 
 class TestCodeEval(unittest.TestCase):

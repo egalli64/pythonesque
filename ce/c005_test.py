@@ -5,7 +5,7 @@ info: http://thisthread.blogspot.com/2017/02/codeeval-detecting-cycles.html
       https://www.codeeval.com/open_challenges/5/
 """
 import unittest
-from ce.c005 import solution
+from c005 import solution
 
 
 class TestCodeEval(unittest.TestCase):

@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-football.html
 """
 
 import unittest
-from ce.c230 import solution
+from c230 import solution
 
 
 class TestCodeEval(unittest.TestCase):

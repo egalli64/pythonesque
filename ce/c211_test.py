@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-chardonnay-or-cabernet.htm
 """
 
 import unittest
-from ce.c211 import solution
+from c211 import solution
 
 
 class TestChardonnay(unittest.TestCase):

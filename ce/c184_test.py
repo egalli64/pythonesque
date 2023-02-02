@@ -6,7 +6,7 @@ info: https://www.codeeval.com/open_challenges/184/
 """
 
 import unittest
-from ce.c184 import solution
+from c184 import solution
 
 
 class TestCodeEval(unittest.TestCase):

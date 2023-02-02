@@ -5,7 +5,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-clean-up-words.html
       https://www.codeeval.com/open_challenges/205/
 """
 import unittest
-from ce.c205 import solution
+from c205 import solution
 
 
 class TestStepwiseWord(unittest.TestCase):

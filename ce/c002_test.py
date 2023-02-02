@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-longest-lines.html
 """
 
 import unittest
-from ce.c002 import solution
+from c002 import solution
 
 
 class TestCodeEval(unittest.TestCase):

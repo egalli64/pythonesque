@@ -5,7 +5,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-find-highest-score.html
       https://www.codeeval.com/open_challenges/208/
 """
 import unittest
-from ce.c208 import solution
+from c208 import solution
 
 
 class TestStepwiseWord(unittest.TestCase):

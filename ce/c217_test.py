@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-one-zero-two-zeros.html
 """
 
 import unittest
-from ce.c217 import solution
+from c217 import solution
 
 
 class TestCodeEval(unittest.TestCase):

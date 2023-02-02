@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/
 """
 import unittest
 
-from ce.c078 import solution
+from c078 import solution
 
 
 class TestCodeEval(unittest.TestCase):

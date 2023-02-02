@@ -5,7 +5,7 @@ info: http://thisthread.blogspot.com/2017/03/codeeval-string-list.html
       https://www.codeeval.com/open_challenges/38/
 """
 import unittest
-from ce.c038 import solution
+from c038 import solution
 
 
 class TestCodeEval(unittest.TestCase):

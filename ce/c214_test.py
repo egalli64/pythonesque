@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/2017/01/codeeval-time-to-eat.html
 """
 
 import unittest
-from ce.c214 import solution
+from c214 import solution
 
 
 class TestCodeEval(unittest.TestCase):

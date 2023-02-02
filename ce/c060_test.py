@@ -6,7 +6,7 @@ info: http://thisthread.blogspot.com/
 """
 import unittest
 
-from ce.c060 import is_valid, around
+from c060 import is_valid, around
 
 
 class TestCodeEval(unittest.TestCase):
