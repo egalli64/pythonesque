@@ -1,7 +1,7 @@
 """
 Exercism Python track
 
-Source: https://exercism.org/tracks/scala
+Source: https://exercism.org/tracks/python
 My solutions: https://github.com/egalli64/pythonesque/exercism
 
 Ghost Gobble Arcade Game
