@@ -57,7 +57,7 @@ class TestExchange(unittest.TestCase):
                     input_data[0], input_data[1]), output_data)
 
     def test_given_exchangeable_value(self):
-        self.assertEquals(exchangeable_value(127.25, 1.20, 10, 20), 80)
+        self.assertEqual(exchangeable_value(127.25, 1.20, 10, 20), 80)
 
     def test_exchangeable_value(self):
         inputs = [(100000, 10.61, 10, 1),
