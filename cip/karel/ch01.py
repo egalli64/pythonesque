@@ -10,8 +10,10 @@ https://compedu.stanford.edu/karel-reader/docs/python/en/chapter1.html
 # see https://pypi.org/project/stanfordkarel/
 from stanfordkarel import *
 
-# the user startup function
+
 def main():
+    """The user startup function"""
+
     # move forward one block, when possible
     move()
     # take a beeper from the bag and put it down on the current corner
