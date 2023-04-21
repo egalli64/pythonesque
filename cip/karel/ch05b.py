@@ -4,7 +4,7 @@ Karel the Robot - Learns Python
 Source: https://compedu.stanford.edu/karel-reader/docs/python/en/intro.html
 My notes: https://github.com/egalli64/pythonesque/cip/karel
 
-Chapter 5: For Loops (b) more complicated
+Chapter 5: For Loops (b) Matching Postconditions with Preconditions
 https://compedu.stanford.edu/karel-reader/docs/python/en/chapter5.html
 """
 from stanfordkarel import *
