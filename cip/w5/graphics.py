@@ -17,6 +17,9 @@ class Canvas(object):
     def create_oval(self, x0, y0, x1, y1, color):
         print(f'Mocking a {color} oval in {x0, y0}, {x1, y1}')
 
+    def create_rectangle(self, x0, y0, x1, y1, color):
+        print(f'Mocking a {color} rectangle in {x0, y0}, {x1, y1}')
+
     def mainloop(self):
         print("Mocking main loop")
 
