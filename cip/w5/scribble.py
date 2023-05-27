@@ -21,11 +21,15 @@ def main():
         x = canvas.get_mouse_x()
         y = canvas.get_mouse_y()
 
-        if 0 <= x <= CANVAS_WIDTH and 0 <= y <= CANVAS_HEIGHT:
-            canvas.create_oval(x, y, x + CIRCLE_SIZE, y + CIRCLE_SIZE, 'cyan')
+        write_circle(canvas, x, y, 'cyan')
 
         canvas.mainloop()
         time.sleep(DELAY)
+
+
+def write_circle(canvas, x, y, color):
+    if 0 <= x <= CANVAS_WIDTH and 0 <= y <= CANVAS_HEIGHT:
+        canvas.create_oval(x, y, x + CIRCLE_SIZE, y + CIRCLE_SIZE, color)
 
 
 if __name__ == "__main__":
