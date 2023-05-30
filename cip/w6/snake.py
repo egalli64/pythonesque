@@ -13,6 +13,9 @@ Milestone #2: Animate
 Each time through the animation loop you should move your player 20 pixels (this size of the player) in the direction it is traveling.
 The directions are either left, right, up or down.
 At the start the player should be traveling to the right
+
+Milestone #3: Handle Key Press
+The direction that the player is traveling can either be Left, Right, Up or Down and should be controlled by the keyboard.
 """
 from graphics import Canvas
 import time
@@ -21,8 +24,6 @@ import random
 CANVAS_WIDTH = 400
 CANVAS_HEIGHT = 400
 SIZE = 20
-LAST_X = CANVAS_WIDTH - SIZE
-LAST_Y = CANVAS_HEIGHT - SIZE
 
 DELAY = 0.1
 
@@ -32,19 +33,34 @@ def main():
 
     player = [0, 0, 'blue']
     target = [360, 360, 'red']
+    direction = 'ArrowRight'
 
     player_id = place(canvas, player)
     target_id = place(canvas, target)
 
-    while player[0] < LAST_X and player[1] < LAST_Y:
+    while 0 <= player[0] < CANVAS_WIDTH and 0 <= player[1] < CANVAS_HEIGHT:
+        key = canvas.get_last_key_press()
+        if key != None:
+            direction = key
+        delta = move(canvas, player_id, direction)
+        player[0] += delta[0]
+        player[1] += delta[1]
+
         time.sleep(DELAY)
-        canvas.move(player_id, SIZE, 0)
-        player[0] += SIZE
 
 
-def place(canvas, top):
-    bot = (top[0] + SIZE, top[1] + SIZE)
-    return canvas.create_rectangle(top[0], top[1], bot[0], bot[1], top[2])
+def move(canvas, id, direction):
+    deltas = {'ArrowLeft': (-SIZE, 0), 'ArrowRight': (SIZE, 0),
+              'ArrowUp': (0, -SIZE), 'ArrowDown': (0, SIZE)}
+
+    delta = deltas[direction]
+    canvas.move(id, *delta)
+    return delta
+
+
+def place(canvas, item):
+    bot = (item[0] + SIZE, item[1] + SIZE)
+    return canvas.create_rectangle(item[0], item[1], bot[0], bot[1], item[2])
 
 
 if __name__ == '__main__':
