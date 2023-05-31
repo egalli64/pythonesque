@@ -16,6 +16,9 @@ At the start the player should be traveling to the right
 
 Milestone #3: Handle Key Press
 The direction that the player is traveling can either be Left, Right, Up or Down and should be controlled by the keyboard.
+
+Milestone #4: Detecting collisions
+If the player goes out of bounds, the game is over. Write code that checks for, and handles, out of bounds cases.
 """
 from graphics import Canvas
 import time
@@ -29,22 +32,24 @@ DELAY = 0.1
 
 
 def main():
+    player_info = [0, 0, 'blue']
+    target_info = [360, 360, 'red']
+
     canvas = Canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
 
-    player = [0, 0, 'blue']
-    target = [360, 360, 'red']
     direction = 'ArrowRight'
 
-    player_id = place(canvas, player)
-    target_id = place(canvas, target)
+    player = place(canvas, player_info)
+    target = place(canvas, target_info)
 
-    while 0 <= player[0] < CANVAS_WIDTH and 0 <= player[1] < CANVAS_HEIGHT:
+    while 0 <= player_info[0] < CANVAS_WIDTH and 0 <= player_info[1] < CANVAS_HEIGHT:
         key = canvas.get_last_key_press()
         if key != None:
             direction = key
-        delta = move(canvas, player_id, direction)
-        player[0] += delta[0]
-        player[1] += delta[1]
+        move(canvas, player, direction)
+
+        player_info[0] = canvas.get_left_x(player)
+        player_info[1] = canvas.get_top_y(player)
 
         time.sleep(DELAY)
 
@@ -52,10 +57,7 @@ def main():
 def move(canvas, id, direction):
     deltas = {'ArrowLeft': (-SIZE, 0), 'ArrowRight': (SIZE, 0),
               'ArrowUp': (0, -SIZE), 'ArrowDown': (0, SIZE)}
-
-    delta = deltas[direction]
-    canvas.move(id, *delta)
-    return delta
+    canvas.move(id, *deltas[direction])
 
 
 def place(canvas, item):
