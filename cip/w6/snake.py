@@ -19,6 +19,9 @@ The direction that the player is traveling can either be Left, Right, Up or Down
 
 Milestone #4: Detecting collisions
 If the player goes out of bounds, the game is over. Write code that checks for, and handles, out of bounds cases.
+
+Milestone #5: Moving the goal
+When the player hits the goal, you should randomly move the goal to a new location, anywhere on the board.
 """
 from graphics import Canvas
 import time
@@ -43,21 +46,35 @@ def main():
     target = place(canvas, target_info)
 
     while 0 <= player_info[0] < CANVAS_WIDTH and 0 <= player_info[1] < CANVAS_HEIGHT:
-        key = canvas.get_last_key_press()
-        if key != None:
-            direction = key
-        move(canvas, player, direction)
+        direction = move(canvas, player, direction)
 
         player_info[0] = canvas.get_left_x(player)
         player_info[1] = canvas.get_top_y(player)
 
+        check_overlap(canvas, player_info, target)
         time.sleep(DELAY)
+
+    print('Game Over')
+
+
+def check_overlap(canvas, p, target):
+    objs = canvas.find_overlapping(p[0], p[1], p[0] + SIZE, p[1] + SIZE)
+    if len(objs) == 2:
+        x = random.randrange(CANVAS_WIDTH / SIZE - 1) * 20
+        y = random.randrange(CANVAS_HEIGHT / SIZE - 1) * 20
+        canvas.moveto(target, x, y)
 
 
 def move(canvas, id, direction):
     deltas = {'ArrowLeft': (-SIZE, 0), 'ArrowRight': (SIZE, 0),
               'ArrowUp': (0, -SIZE), 'ArrowDown': (0, SIZE)}
+
+    key = canvas.get_last_key_press()
+    if key != None:
+        direction = key
+
     canvas.move(id, *deltas[direction])
+    return direction
 
 
 def place(canvas, item):
