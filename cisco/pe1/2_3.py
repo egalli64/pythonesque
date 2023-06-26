@@ -1,7 +1,7 @@
 """
 Cisco Network Academy
 Python Essentials 1: https://skillsforall.com/course/python-essentials-1
-My notes: https://github.com/egalli64/pythonesque/cisco/pe1/
+My notes: https://github.com/egalli64/pythonesque - cisco/pe1 folder
 
 PE1: Module 2 Section 3 Operators - data manipulation tools
 """
