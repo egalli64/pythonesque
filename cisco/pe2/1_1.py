@@ -1,11 +1,14 @@
 """
 Cisco Network Academy
-Python Essentials 1: https://skillsforall.com/course/python-essentials-2
-My notes: https://github.com/egalli64/pythonesque - cisco/pe1 folder
+Python Essentials 2: https://skillsforall.com/course/python-essentials-2
+My notes: https://github.com/egalli64/pythonesque - cisco/pe2 folder
 
-PE1: Module 1 Section 1 – Introduction to modules in Python
+PE2: Module 1 Section 1 – Introduction to modules in Python
 """
 # say to python I want to use the math module (it should be available)
+import math as m
+from math import cos as std_cos
+from math import sin
 import math
 # more module could be imported in a single statement (comma separated list)
 # but it is more readable, as so preferred, to have each import standing alone
@@ -19,23 +22,21 @@ print('Sin of pi/2 is', math.sin(math.pi/2))
 
 
 def sin(x):
-    """this sin() definition won't clash with math.sin(), they are in different namespaces"""
+    """won't clash with math.sin(), since they are in different namespaces"""
     if 2 * x == pi:
         return 0.99999999
     else:
         return None
 
-print('My (fake) sin of pi/2 gives', sin(pi/2))
 
-from math import sin
+print('My sin() of pi/2 gives', sin(pi/2))
 
-print('My (fake) sin now is shadowed by the math one:', sin(pi/2))
+
+print('My sin() now is shadowed by the math one:', sin(pi/2))
 
 # alias, usually to avoid shadowing
-from math import cos as std_cos
 
 print('The standard cos of pi is', std_cos(pi))
 
-# alias on module
-import math as m
+# alias on module, usually for shorter names in code
 print('The standard cos of pi is', m.cos(pi))
