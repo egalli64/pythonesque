@@ -6,6 +6,8 @@ My notes: https://github.com/egalli64/pythonesque - cisco/pe2 folder
 PE2: Module 1 Section 3 – Modules and Packages
 - A module contains functions, ready for distribution - name should be descriptive
 - A package is a module container, to keep them together organically
+
+1.3.2 Your first module
 """
 # being in the same folder, python knows how to import module.py
 # see __pycache__ folder, where the python compiled (to python bytecode) module has been placed
