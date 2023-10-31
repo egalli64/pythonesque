@@ -24,4 +24,10 @@ s1 = 'Ten animals I slam in a net'
 print(f"'{s1}'.", palindrome(s1))  # yes
 
 s2 = 'Eleven animals I slam in a net'
-print(f"'{s2}'.", palindrome(s2))  # yes
+print(f"'{s2}'.", palindrome(s2))  # no
+
+s3 = ''
+print(f"'{s3}'.", palindrome(s3))  # no
+
+s4 = 'x'
+print(f"'{s4}'.", palindrome(s4))  # yes
