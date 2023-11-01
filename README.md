@@ -19,3 +19,7 @@ Exercises from books:
 
 Exercises from Kaggle:
    * [Learn Python Challenge](https://github.com/egalli64/pythonesque/tree/master/kaggle/LearnPythonChallenge/)
+
+Code from Cisco Network Academy:
+   * [Python Essentials 1](https://github.com/egalli64/pythonesque/tree/master/cisco/pe1/)
+   * [Python Essentials 2](https://github.com/egalli64/pythonesque/tree/master/cisco/pe1/)
