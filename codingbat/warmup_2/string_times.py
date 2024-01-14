@@ -4,7 +4,7 @@ CodingBat Python track
 Source: https://codingbat.com/python
 My solutions: https://github.com/egalli64/pythonesque/codingbat
 
-Warmup 1 https://codingbat.com/python/Warmup-1
+Warmup 2 https://codingbat.com/python/Warmup-2
 string_times https://codingbat.com/prob/p193507
 """
 
