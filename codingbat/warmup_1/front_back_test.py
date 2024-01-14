@@ -11,7 +11,7 @@ import unittest
 from front_back import front_back
 
 
-class TestMissingChar(unittest.TestCase):
+class TestFrontBack(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(front_back('code'), 'eodc')
 

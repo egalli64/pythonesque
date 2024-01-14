@@ -11,7 +11,7 @@ import unittest
 from front3 import front3
 
 
-class TestMissingChar(unittest.TestCase):
+class TestFront3(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(front3("Java"), "JavJavJav")
 

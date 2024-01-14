@@ -11,7 +11,7 @@ import unittest
 from parrot_trouble import parrot_trouble
 
 
-class TestSleepIn(unittest.TestCase):
+class TestParrotTrouble(unittest.TestCase):
     def test_given_1(self):
         self.assertTrue(parrot_trouble(True, 6))
 
