@@ -11,14 +11,14 @@ Week 6: #3 Heads Up
 import random
 
 # Name of the file to read in!
-FILE_NAME = 'cip\w6\cswords.txt'
+FILE_NAME = "cip/w6/cswords.txt"
 
 
 def get_words_from_file():
     """
-    This function has been implemented for you. It opens a file, 
-    and stores all of the lines into a list of strings. 
-    It returns a list of all lines in the file. 
+    This function has been implemented for you. It opens a file,
+    and stores all of the lines into a list of strings.
+    It returns a list of all lines in the file.
     """
     with open(FILE_NAME) as f:
         lines = f.readlines()
@@ -37,5 +37,5 @@ def main():
     play(words)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
