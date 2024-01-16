@@ -11,7 +11,7 @@ import unittest
 from array_count9 import array_count9, array_count9_loop
 
 
-class TestStringBits(unittest.TestCase):
+class TestArrayCount9(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(array_count9([1, 2, 9]), 1)
 
