@@ -11,7 +11,7 @@ import unittest
 from front_times import front_times
 
 
-class TestStringTimes(unittest.TestCase):
+class TestFrontTimes(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(front_times("Chocolate", 2), "ChoCho")
 

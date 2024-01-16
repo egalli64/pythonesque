@@ -11,7 +11,7 @@ import unittest
 from string_splosion import string_splosion
 
 
-class TestStringBits(unittest.TestCase):
+class TestStringSplosion(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(string_splosion("Code"), "CCoCodCode")
 

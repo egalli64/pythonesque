@@ -11,7 +11,7 @@ import unittest
 from last2 import last2, last2_walrus
 
 
-class TestStringBits(unittest.TestCase):
+class TestLast2(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(last2("hixxhi"), 1)
 

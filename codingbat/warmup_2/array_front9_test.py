@@ -11,7 +11,7 @@ import unittest
 from array_front9 import array_front9, array_front9_no_slice
 
 
-class TestStringBits(unittest.TestCase):
+class TestArrayFront9(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(array_front9([1, 2, 9, 3, 4]), True)
 
