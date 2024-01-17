@@ -11,7 +11,7 @@ import unittest
 from hello_name import hello_name, hello_name_f_str
 
 
-class TestDiff21(unittest.TestCase):
+class TestHelloName(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(hello_name("Bob"), "Hello Bob!")
 
