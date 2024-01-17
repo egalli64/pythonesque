@@ -11,7 +11,7 @@ import unittest
 from left2 import left2
 
 
-class TestNonStart(unittest.TestCase):
+class TestLeft2(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(left2("Hello"), "lloHe")
 

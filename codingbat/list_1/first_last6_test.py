@@ -11,7 +11,7 @@ import unittest
 from first_last6 import first_last6
 
 
-class TestNonStart(unittest.TestCase):
+class TestFirstLast6(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(first_last6([1, 2, 6]), True)
 
