@@ -11,7 +11,7 @@ import unittest
 from same_first_last import same_first_last
 
 
-class TestFirstLast6(unittest.TestCase):
+class TestSameFirstLast(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(same_first_last([1, 2, 3]), False)
 
