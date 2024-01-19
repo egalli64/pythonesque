@@ -11,7 +11,7 @@ import unittest
 from squirrel_play import squirrel_play
 
 
-class TestDateFashion(unittest.TestCase):
+class TestSquirrelPlay(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(squirrel_play(70, False), True)
 
