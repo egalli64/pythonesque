@@ -11,7 +11,7 @@ import unittest
 from make_bricks import make_bricks
 
 
-class TestNearTen(unittest.TestCase):
+class TestMakeBricks(unittest.TestCase):
     def test_given_1(self):
         self.assertEqual(make_bricks(3, 1, 8), True)
 
