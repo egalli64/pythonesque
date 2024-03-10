@@ -11,21 +11,19 @@ def main():
     """
     Karel should fill the whole world with beepers
 
-    Loop to fill the current row
-    Move back, if next row is available move to it
-    Otherwise, move back to the final position on the current row
+    Loop to fill the current row.
+    Before filling the row, check if there is another row,
+    if so, after the row is filled move back to square one and then move to the next row
     """
     while front_is_clear():
-        fill_row()
-        move_back()
-        turn_right()
-        if front_is_clear():
+        if left_is_clear():
+            fill_row()
+            move_back()
+            turn_right()
             move()
             turn_right()
         else:
-            turn_right()
-            while front_is_clear():
-                move()
+            fill_row()
 
 
 def fill_row():
