@@ -9,7 +9,7 @@ import unittest
 from two_sum import twoSum
 
 
-class TestSum3(unittest.TestCase):
+class TestTwoSum(unittest.TestCase):
     def test_given_1(self):
         self.assertCountEqual(twoSum([2, 7, 11, 15], 9), [0, 1])
 
