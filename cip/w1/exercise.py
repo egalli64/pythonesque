@@ -6,7 +6,6 @@ Section Week 1: Hospital Karel
 - See the standard world hospital_karel.w for the initial setup
 - Karel's job is to walk along the row and build a new hospital in the places marked by each beeper.
 - Each hospital should be two columns of three beepers
-
 """
 
 from stanfordkarel import *
@@ -56,5 +55,8 @@ def turn_right():
         turn_left()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    """
+    Karel bootstrap
+    """
     run_karel_program("hospital_karel")
