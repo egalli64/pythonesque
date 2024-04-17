@@ -2,32 +2,42 @@
 Code in Place 2024 https://codeinplace.stanford.edu/cip4
 My notes: https://github.com/egalli64/pythonesque/cip
 
-Use of move() and pick_beeper() to pick up all the beepers on the first row of this world
+Piles: pick up all the beepers on the first row of this world
 """
 
 from stanfordkarel import *
 
 
 def main():
-    # Karel is initially placed in (1, 1) and directed east, and should end up in (7, 1)
+    """
+    Precondition: Karel is in (1, 1), facing East, three piles of ten beepers are in the assigned places
+    Postcondition: Karel is in (7, 1), facing East, no more beepers
+    """
     move()
-    # Now Karel is in (2, 1), pick the ten beeper
-    for i in range(10):
-        pick_beeper()
+    # In (2, 1)
+    pick_10_beepers()
 
     move()
     move()
-    # Karel is on (4, 1)
-    for i in range(10):
-        pick_beeper()
+    # In (4, 1)
+    pick_10_beepers()
 
     move()
     move()
-    # Karel is on (6, 1)
+    # In (6, 1)
+    pick_10_beepers()
+
+    move()
+
+
+def pick_10_beepers():
+    """
+    Precondition: 10 beepers are in the current place
+    Postcondition: no more beepers
+    """
     for i in range(10):
         pick_beeper()
 
-    move()
 
 if __name__ == "__main__":
     """
