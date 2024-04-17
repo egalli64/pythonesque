@@ -2,7 +2,7 @@
 Code in Place 2024 https://codeinplace.stanford.edu/cip4
 My notes: https://github.com/egalli64/pythonesque/cip
 
-Use of move(), turn_left(), and pick_beeper()
+Karel's home: Pick the beeper, get back home, beware of walls!
 """
 
 from stanfordkarel import *
@@ -10,39 +10,41 @@ from stanfordkarel import *
 
 def main():
     """
-    Karel is initially placed in (2, 4) and directed east, a beeper is place in (5, 3)
-    Go, pick the beeper up, and get back home - beware of walls!
+    Precondition: Karel is in (2, 4), facing East, a beeper is in (5, 3)
+    Postcondition: Karel is in (2, 4), facing East, no beeper around
     """
-
-    # move east twice
+    turn_right()
     move()
-    move()
-    # turn right
     turn_left()
-    turn_left()
-    turn_left()
-    # move south
-    move()
     # reach the beeper and pick it up
-    turn_left()
+    move()
+    move()
     move()
     pick_beeper()
-    # turn round
-    turn_left()
-    turn_left()
-    # move west
+    # back home
+    turn_around()
     move()
     move()
     move()
-    # turn right
-    turn_left()
-    turn_left()
-    turn_left()
-    # reach the original position
+    turn_right()
     move()
-    turn_left()
-    turn_left()
-    turn_left()
+    turn_right()
+
+
+def turn_right():
+    """
+    Karel does not know how to turn right!
+    """
+    for i in range(3):
+        turn_left()
+
+
+def turn_around():
+    """
+    Karel can only turn left!
+    """
+    for i in range(2):
+        turn_left()
 
 
 if __name__ == "__main__":
