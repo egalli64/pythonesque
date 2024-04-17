@@ -2,22 +2,25 @@
 Code in Place 2024 https://codeinplace.stanford.edu/cip4
 My notes: https://github.com/egalli64/pythonesque/cip
 
-Use of move() and pick_beeper()
+Warmup: Pick the beeper up, then move
 """
+
 from stanfordkarel import *
 
 
 def main():
-    # Karel is initially placed in [1, 1] and directed east
+    """
+    Precondition: Karel is in (1, 1), facing East
+    Postcondition: Karel is in (3, 1), facing East
+    """
     move()
-    # Karel is on [2, 1], where a single beeper is placed
+    # now Karel is on (2, 1)
     pick_beeper()
     # The beeper has been picked up
     move()
-    # Karel is on [3, 1]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     """
     Run python from the current directory, see the worlds/warmup.w
     """
