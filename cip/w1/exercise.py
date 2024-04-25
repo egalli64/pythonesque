@@ -12,7 +12,10 @@ from stanfordkarel import *
 
 
 def main():
-    # Karel starts its trip from bottom-left, with right direction
+    """
+    Precondition: Karel is on the bottom-left cell, facing East
+    Postcondition: Karel is on the bottom-right cell, facing West
+    """
     while front_is_clear():
         if beepers_present():
             build_hospital()
@@ -24,8 +27,8 @@ def build_hospital():
     """
     Karel builds a hospital
 
-    Pre-condition: Karel is on a beeper, representing a pile of supplies. Karel is facing east
-    Post-condition: Karel is standing at the bottom of the last column of the hospital, facing east
+    Precondition: Karel is on a beeper, representing a pile of supplies, facing East
+    Postcondition: Karel is standing at the bottom of the last column of the hospital, facing East
     """
     pick_beeper()
     build_column()
@@ -37,8 +40,8 @@ def build_column():
     """
     A hospital is done by two columns sized three
 
-    Precondition: Karel is on a beeper, directed to east
-    Postcondition: Karel is in the original position, the first column is placed
+    Precondition: Karel is on a cell with a beeper, facing East
+    Postcondition: Karel is in the same position, the column is placed
     """
     turn_left()
     for i in range(3):
@@ -51,8 +54,8 @@ def back_to_base():
     """
     Move Karel to the base row
 
-    Precondition: Karel is directed north
-    Postcondition: Karel is on the first row, directed east
+    Precondition: Karel is facing North
+    Postcondition: Karel is on the first row, facing East
     """
     turn_around()
     while front_is_clear():
@@ -64,8 +67,8 @@ def turn_around():
     """
     Make Karel turn around
     """
-    turn_left()
-    turn_left()
+    for i in range(2):
+        turn_left()
 
 
 if __name__ == "__main__":
