@@ -53,8 +53,8 @@ def step_backwards():
 
 
 def turn_around():
-    turn_left()
-    turn_left()
+    for i in range(2):
+        turn_left()
 
 
 if __name__ == "__main__":
