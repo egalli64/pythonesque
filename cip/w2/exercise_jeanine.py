@@ -106,4 +106,4 @@ def turn_around():
 
 
 if __name__ == '__main__':
-    run_karel_program("cip_w2_7")
+    run_karel_program("exercise")
