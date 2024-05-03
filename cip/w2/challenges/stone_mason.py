@@ -42,8 +42,8 @@ def move_next():
 
 
 def turn_back():
-    turn_left()
-    turn_left()
+    for i in range(2):
+        turn_left()
 
 
 if __name__ == "__main__":
