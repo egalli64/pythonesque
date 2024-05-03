@@ -67,8 +67,8 @@ def back_to_pile():
 
 
 def turn_around():
-    turn_left()
-    turn_left()
+    for i in range(2):
+        turn_left()
 
 
 def back_home():
