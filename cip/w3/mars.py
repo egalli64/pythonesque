@@ -19,7 +19,10 @@ def main():
     mars_weight = earth_weight * MARS_FACTOR
     # 4. output the result
     print('The equivalent weight on Mars: ' + str(mars_weight))
-
+    # 5. extra: rounding to 2 decimal digits
+    mars_weight = round(mars_weight, 2)
+    print('The equivalent weight on Mars (rounded): ' + str(mars_weight))
+ 
 
 if __name__ == "__main__":
     main()
