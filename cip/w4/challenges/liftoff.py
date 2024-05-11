@@ -1,5 +1,5 @@
 """
-Code in Place 2023 https://codeinplace.stanford.edu/cip3
+Code in Place 2024 https://codeinplace.stanford.edu/cip4
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Program: Liftoff
@@ -16,5 +16,5 @@ def main():
 
 # This provided line is required at the end of
 # Python file to call the main() function.
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
