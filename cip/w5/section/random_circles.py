@@ -16,7 +16,7 @@ CANVAS_WIDTH = 300
 CANVAS_HEIGHT = 300
 
 # circle constants
-SIZE = 20
+CIRCLE_SIZE = 20
 N_CIRCLES = 20
 
 
@@ -42,8 +42,8 @@ def draw_random_circle(canvas):
     y = random.randint(0, CANVAS_HEIGHT)
 
     color = random_color()
-    canvas.create_oval(x, y, x + SIZE, y + SIZE, color)
-    print(f"A {color} circle in {x, y}, {x + SIZE, y + SIZE}")
+    canvas.create_oval(x, y, x + CIRCLE_SIZE, y + CIRCLE_SIZE, color)
+    print(f"A {color} circle in {x, y}, {x + CIRCLE_SIZE, y + CIRCLE_SIZE}")
 
 
 def random_color():
