@@ -23,39 +23,27 @@ N_CIRCLES = 20
 def main():
     print("Random Circles")
 
-    # 1. create a canvas
     canvas = Canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
-    # 2. do the actual job on it
+    # 1. do the actual job
     draw_random_circles(canvas)
 
 
 def draw_random_circles(canvas):
-    # EXTENSION 1: Draw a random number of circles in [1, N_CIRCLES] on the canvas
-    # n_circles = random.randrange(N_CIRCLES) + 1
-    # print(f"{n_circles} circles")
-    # for i in range(n_circles):
-
+    """
+    2. draw circles on the canvas
+    """
     for i in range(N_CIRCLES):
         draw_random_circle(canvas)
 
 
 def draw_random_circle(canvas):
-    """Draw a circle at random positions with random colors on the canvas"""
+    """3. Draw a circle at random positions with random colors on the canvas"""
     x = random.randint(0, CANVAS_WIDTH)
     y = random.randint(0, CANVAS_HEIGHT)
-
-    # EXTENSION 2: random size (at least 2 point, max is SIZE)
-    # size = random.randrange(1, SIZE) + 1
-    # x = random.randint(0, CANVAS_WIDTH - size)
-    # y = random.randint(0, CANVAS_HEIGHT - size)
 
     color = random_color()
     canvas.create_oval(x, y, x + SIZE, y + SIZE, color)
     print(f"A {color} circle in {x, y}, {x + SIZE, y + SIZE}")
-
-    # EXTENSION 2: put the circle on the canvas
-    # canvas.create_oval(x, y, x + size, y + size, color)
-    # print(f"A {color} circle in {x, y}, {x + size, y + size}")
 
 
 def random_color():
