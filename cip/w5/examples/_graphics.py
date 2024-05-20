@@ -19,3 +19,6 @@ class Canvas(object):
 
     def create_line(self, x0, y0, x1, y1):
         print(f"Mocking a line from {x0, y0} to {x1, y1}")
+
+    def create_text(self, x, y, text, color, font, font_size):
+        print(f"Mocking a line from {x, y} for '{text}', in color {color}, font {font} {font_size}")
