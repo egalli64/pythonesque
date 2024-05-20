@@ -1,5 +1,5 @@
 """
-Code in Place 2023 https://codeinplace.stanford.edu/cip3
+Code in Place 2024 https://codeinplace.stanford.edu/cip4
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Section Week 4: Random Circles
