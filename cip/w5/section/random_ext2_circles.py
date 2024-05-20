@@ -24,7 +24,6 @@ def main():
     print("Random Circles")
 
     canvas = Canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
-    # 1. do the actual job
     draw_random_circles(canvas)
 
 
