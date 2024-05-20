@@ -15,8 +15,8 @@ SQUARE_SIZE = 100
 def main():
     canvas = Canvas(CANVAS_WIDTH, CANVAS_HEIGHT)
 
-    middle = CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2
-    top = middle[0] - SQUARE_SIZE / 2, middle[1] - SQUARE_SIZE / 2
+    middle = CANVAS_WIDTH // 2, CANVAS_HEIGHT // 2
+    top = middle[0] - SQUARE_SIZE // 2, middle[1] - SQUARE_SIZE // 2
     bottom = top[0] + SQUARE_SIZE, top[1] + SQUARE_SIZE
 
     canvas.create_rectangle(top[0], top[1], bottom[0], bottom[1], "blue")
