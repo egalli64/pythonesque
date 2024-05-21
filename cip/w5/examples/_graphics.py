@@ -25,3 +25,11 @@ class Canvas(object):
 
     def create_image(self, x, y, filename):
         print(f"Mock image from {x, y} for {filename}")
+
+    def get_mouse_x(self):
+        print("Mock x mouse position")
+        return 42
+
+    def get_mouse_y(self):
+        print("Mock y mouse position")
+        return 24
