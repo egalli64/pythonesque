@@ -14,8 +14,8 @@ class Canvas(object):
     def create_oval(self, x0, y0, x1, y1, color):
         print(f"Mock {color} oval in {x0, y0}, {x1, y1}")
 
-    def create_rectangle(self, x0, y0, x1, y1, color="black"):
-        print(f"Mock {color} rectangle in {x0, y0}, {x1, y1}")
+    def create_rectangle(self, x0, y0, x1, y1, color="black", outline="black"):
+        print(f"Mock {color}-{outline} rectangle in {x0, y0}, {x1, y1}")
 
     def create_line(self, x0, y0, x1, y1):
         print(f"Mock line from {x0, y0} to {x1, y1}")
