@@ -7,7 +7,7 @@ Week 5: Quilt
 Draw circles and squares that fill the patches at the provided location
 """
 
-from graphics import Canvas
+from _graphics import Canvas
 
 # each patch is a square with this width and height:
 PATCH_SIZE = 100
