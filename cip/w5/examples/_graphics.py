@@ -6,6 +6,8 @@ Section Week 4: Random Circles
 - Mock for the graphic module internally used by Stanford
 """
 
+def create_canvas(x, y):
+    return Canvas(x, y)
 
 class Canvas(object):
     def __init__(self, x, y):
