@@ -23,4 +23,4 @@ Exercises from Kaggle:
 
 Code from Cisco Network Academy:
    * [Python Essentials 1](https://github.com/egalli64/pythonesque/tree/master/cisco/pe1/)
-   * [Python Essentials 2](https://github.com/egalli64/pythonesque/tree/master/cisco/pe1/)
+   * [Python Essentials 2](https://github.com/egalli64/pythonesque/tree/master/cisco/pe2/)
