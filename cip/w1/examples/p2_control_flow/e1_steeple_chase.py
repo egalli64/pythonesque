@@ -1,8 +1,8 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
-Steeple Chase: walk on the bottom row for 9 columns. When a wall is met, follow it
+Steeple Chase: walk on the bottom row, but if a wall is met, follow it
 """
 
 from stanfordkarel import *
