@@ -1,5 +1,5 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Invert: swap beeper/no beeper for each cell in the current row
@@ -28,4 +28,4 @@ if __name__ == "__main__":
     """
     Run python from the current directory
     """
-    run_karel_program("8x1")
+    run_karel_program("invert")

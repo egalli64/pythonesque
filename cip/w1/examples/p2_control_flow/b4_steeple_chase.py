@@ -2,7 +2,7 @@
 Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
-Steeple Chase: walk on the bottom row, but if a wall is met, follow it
+Steeple Chase: walk on the bottom row, for eigth columns, but if a wall is met, follow it
 """
 
 from stanfordkarel import *
