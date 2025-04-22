@@ -1,5 +1,5 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Karel's home: Pick the beeper, get back home, beware of walls!
@@ -13,11 +13,11 @@ def main():
     Precondition: Karel is in (2, 4), facing East, a beeper is in (5, 3)
     Postcondition: Karel is in (2, 4), facing East, no beeper around
     """
+    move()
     turn_right()
     move()
     turn_left()
     # reach the beeper and pick it up
-    move()
     move()
     move()
     pick_beeper()

@@ -1,5 +1,5 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Piles: pick up all the beepers on the first row of this world

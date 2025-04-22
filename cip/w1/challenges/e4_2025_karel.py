@@ -1,8 +1,8 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
-2024 Karel: place 20 and 24 beepers in first and second cell of the first row, then Karel
+2025 Karel: place 20 and 25 beepers in first and second cell of the first row, then Karel
 """
 
 from stanfordkarel import *
@@ -17,7 +17,7 @@ def main():
         put_beeper()
     move()
 
-    for i in range(24):
+    for i in range(25):
         put_beeper()
     move()
 
@@ -26,4 +26,4 @@ if __name__ == "__main__":
     """
     Run python from the current directory
     """
-    run_karel_program("8x1")
+    run_karel_program("5x3")

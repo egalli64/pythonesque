@@ -18,4 +18,4 @@ if __name__ == "__main__":
     """
     Run python from the current directory
     """
-    run_karel_program("8x1")
+    run_karel_program("8x2")
