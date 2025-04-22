@@ -1,5 +1,6 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip4
+Adapted for https://pypi.org/project/stanfordkarel/
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Step up: remove a beeper from (2, 1), and put one in (4, 2), beware of walls
