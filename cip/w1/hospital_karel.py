@@ -1,5 +1,5 @@
 """
-Code in Place 2023-2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Section Week 1: Hospital Karel
@@ -40,8 +40,8 @@ def build_column():
     """
     A hospital is done by two columns sized three
 
-    Precondition: Karel is on a cell with a beeper, facing East
-    Postcondition: Karel is in the same position, the column is placed
+    Precondition: Karel is on row 1 facing East
+    Postcondition: Karel is back on row 1 facing East, the column is placed
     """
     turn_left()
     for i in range(3):
@@ -55,7 +55,7 @@ def back_to_base():
     Move Karel to the base row
 
     Precondition: Karel is facing North
-    Postcondition: Karel is on the first row, facing East
+    Postcondition: Karel is on the row 1, facing East
     """
     turn_around()
     while front_is_clear():
