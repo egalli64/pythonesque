@@ -1,22 +1,20 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
-Square: place 4 beepers in a 2x2 square
+Place 10 beepers (in the current place)
 """
 
 from stanfordkarel import *
 
 
 def main():
-    for i in range(4):
+    for i in range(10):
         put_beeper()
-        move()
-        turn_left()
 
 
 if __name__ == "__main__":
     """
     Run python from the current directory
     """
-    run_karel_program("5x5")
+    run_karel_program("5x3")
