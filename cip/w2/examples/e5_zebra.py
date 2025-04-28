@@ -1,5 +1,5 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Zebra Crossing Karel: two columns of beepers, three empty columns, ...
@@ -11,7 +11,7 @@ from stanfordkarel import *
 def main():
     zebra()
     while front_is_clear():
-        for i in range(4):
+        for _ in range(4):
             move()
         zebra()
 
@@ -40,7 +40,7 @@ def next_zebra_column():
 
 
 def turn_right():
-    for i in range(3):
+    for _ in range(3):
         turn_left()
 
 

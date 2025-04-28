@@ -1,5 +1,5 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Mountain Karel: climb a mountain a put a beeper on top of it
@@ -55,7 +55,7 @@ def step_down():
 
 
 def turn_right():
-    for i in range(3):
+    for _ in range(3):
         turn_left()
 
 

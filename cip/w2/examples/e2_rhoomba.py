@@ -1,5 +1,5 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Rhoomba: pick up every beeper in the world
@@ -50,12 +50,12 @@ def move_to_wall():
 
 
 def turn_right():
-    for i in range(3):
+    for _ in range(3):
         turn_left()
 
 
 def turn_around():
-    for i in range(2):
+    for _ in range(2):
         turn_left()
 
 
