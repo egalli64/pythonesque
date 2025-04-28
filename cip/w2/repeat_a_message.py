@@ -1,8 +1,8 @@
 """
-Code in Place 2023 https://codeinplace.stanford.edu/cip3
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
-Section Week 2: Welcome to Console
+Section Week 2: Repeat a message
 """
 
 
@@ -13,5 +13,5 @@ def main():
         print(s)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
