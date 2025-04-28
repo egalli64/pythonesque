@@ -1,4 +1,4 @@
-Dimension: (8, 1)
+Dimension: (8, 3)
 Beeper: (1, 1); 1
 Beeper: (2, 1); 1
 Beeper: (3, 1); 1

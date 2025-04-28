@@ -21,4 +21,4 @@ if __name__ == "__main__":
     """
     Run python from the current directory
     """
-    run_karel_program("8x2")
+    run_karel_program("beeper_path")
