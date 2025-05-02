@@ -1,5 +1,5 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Dice simulator: Simulate rolling two dice, three times
@@ -21,9 +21,8 @@ def roll_dice():
 def main():
     # random.seed(1)
 
-    roll_dice()
-    roll_dice()
-    roll_dice()
+    for _ in range(3):
+        roll_dice()
 
 
 if __name__ == "__main__":
