@@ -1,5 +1,5 @@
 """
-Code in Place 2023 https://codeinplace.stanford.edu/cip3
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Section Week 3: Planetary Weights
@@ -8,6 +8,7 @@ Section Week 3: Planetary Weights
     Prompts an Earthling to enter their weight on Earth, and the name of a planet
     Prints the calculated weight
 """
+
 # sort of handmade dictionary - stay tuned for a more pythonic solution
 MERCURY_FACTOR = 0.376
 VENUS_FACTOR = 0.89
@@ -44,8 +45,11 @@ def main():
     else:
         # unknown planet - let the user know something strange is going on
         factor = EARTH_FACTOR
-        print("I don't know anything of planet " +
-              planet + ". I assume it is just like Earth.")
+        print(
+            "I don't know anything of planet "
+            + planet
+            + ". I assume it is just like Earth."
+        )
 
     # 4. get the weight on the selected planet
     planetary_weight = earth_weight * factor
