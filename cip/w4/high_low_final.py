@@ -10,7 +10,7 @@ Program: High-Low Game
 
 The game is in a given number of rounds
 
-Milestone #5: Points system
+Ready for submission
 """
 
 import random
@@ -22,33 +22,23 @@ def main():
     print("Welcome to the High-Low Game!")
     print("--------------------------------")
 
-    # M5 (a)
     score = 0
-
-    # M4
     for i in range(NUM_ROUNDS):
         print("Round", i + 1)
-
-        # M1
-        user = random.randint(1, 100)
         computer = random.randint(1, 100)
+        player = random.randint(1, 100)
+        print("Your number is", player)
 
-        print("The computer's number is", computer)
-        print("Your number is", user)
-
-        # M2
         s = input("Do you think your number is higher or lower than the computer's?: ")
-
-        # M3
-        if s == "higher" and user > computer or s == "lower" and user < computer:
+        if s == "higher" and player > computer or s == "lower" and player < computer:
             print("You were right! The computer's number was", computer)
-            # M5 (b)
             score += 1
         else:
             print("Aww, that's incorrect. The computer's number was", computer)
 
-        # M5 (c)
         print(f"Your score is now {score}\n")
+
+    print("Thanks for playing!")
 
 
 if __name__ == "__main__":

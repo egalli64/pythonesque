@@ -1,5 +1,5 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Program: High-Low Game
@@ -22,14 +22,14 @@ def main():
     print("Welcome to the High-Low Game!")
     print("--------------------------------")
 
-    # 1
+    # M1
     user = random.randint(1, 100)
     computer = random.randint(1, 100)
 
     print("The computer's number is", computer)
     print("Your number is", user)
 
-    # 2
+    # M2
     s = input("Do you think your number is higher or lower than the computer's?: ")
 
 if __name__ == "__main__":
