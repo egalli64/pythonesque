@@ -56,7 +56,7 @@ def main():
     # X2: Conditional ending messages based on performance
     if score == NUM_ROUNDS:
         print("Wow! You played perfectly!")
-    elif score > NUM_ROUNDS // 2:
+    elif score >= NUM_ROUNDS // 2:
         print("Good job, you played really well!")
     else:
         print("Better luck next time!")
