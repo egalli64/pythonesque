@@ -36,9 +36,19 @@ def main():
         # M2: player choice
         s = input("Do you think your number is higher or lower than the computer's?: ")
 
+
         # X1: check for valid choice
-        while s != "higher" and s != "lower":
+        # using temp boolean variables to make it more clear
+        is_not_higher = s != "higher"
+        is_not_lower = s != "lower"
+        while is_not_higher and is_not_lower:
             s = input("Please enter either higher or lower: ")
+            is_not_higher = s != "higher"
+            is_not_lower = s != "lower"
+
+        # X1: check for valid choice
+        # while s != "higher" and s != "lower":
+        #     s = input("Please enter either higher or lower: ")
 
         # M3: check the guess
         if s == "higher" and player > computer or s == "lower" and player < computer:
