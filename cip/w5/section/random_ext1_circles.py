@@ -1,9 +1,9 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
-Section Week 4: Random Circles
-- Draw up to 20 circles at random positions with random colors and sizes on a canvas
+Section Week 5: Random Circles
+- Draw 20 circles at random positions with random colors and sizes on a canvas
 
 Extension 1: Random number of circles in [1 .. 20]
 """
