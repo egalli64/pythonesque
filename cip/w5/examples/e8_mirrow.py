@@ -1,5 +1,5 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Program: Mirror, mirror on the ... canvas
@@ -31,9 +31,9 @@ def main():
     )
 
     # mirror
-    m_x1 = CANVAS_WIDTH - rect_left_x - rect_width
-    m_x2 = CANVAS_WIDTH - rect_left_x
-    canvas.create_rectangle(m_x1, rect_top_y, m_x2, rect_top_y + rect_height, "blue")
+    m_x_1 = CANVAS_WIDTH - rect_left_x - rect_width
+    m_x_2 = CANVAS_WIDTH - rect_left_x
+    canvas.create_rectangle(m_x_1, rect_top_y, m_x_2, rect_top_y + rect_height, "blue")
 
 
 if __name__ == "__main__":
