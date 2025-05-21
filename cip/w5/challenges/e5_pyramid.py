@@ -1,5 +1,5 @@
 """
-Code in Place 2024 https://codeinplace.stanford.edu/cip4
+Code in Place 2025 https://codeinplace.stanford.edu/cip5
 My notes: https://github.com/egalli64/pythonesque/cip
 
 Week 5: Pyramid
@@ -25,12 +25,12 @@ def main():
         nr_bricks = BRICKS_IN_BASE - i
         delta = (CANVAS_WIDTH - nr_bricks * BRICK_WIDTH) // 2
 
-        y1 = CANVAS_HEIGHT - BRICK_HEIGHT * i
-        y0 = y1 - BRICK_HEIGHT
+        y_1 = CANVAS_HEIGHT - BRICK_HEIGHT * i
+        y_0 = y_1 - BRICK_HEIGHT
         for j in range(nr_bricks):
-            x0 = delta + BRICK_WIDTH * j
-            x1 = x0 + BRICK_WIDTH
-            canvas.create_rectangle(x0, y0, x1, y1, "yellow", "black")
+            x_0 = delta + BRICK_WIDTH * j
+            x_1 = x_0 + BRICK_WIDTH
+            canvas.create_rectangle(x_0, y_0, x_1, y_1, "yellow", "black")
 
 
 if __name__ == "__main__":
