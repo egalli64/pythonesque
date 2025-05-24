@@ -13,27 +13,30 @@ TIME_FOR_LAYER = 2
 
 
 def bake_time_remaining(elapsed: int):
-    """Calculate the bake time remaining.
+    """
+    Calculate the bake time remaining
 
-        :param elapsed: int - baking time already elapsed.
-        :return: int - remaining bake time (in minutes) derived from 'EXPECTED_BAKE_TIME'.
+    :param elapsed: int - baking time already elapsed.
+    :return: int - remaining bake time (in minutes) derived from 'EXPECTED_BAKE_TIME'.
     """
     return EXPECTED_BAKE_TIME - elapsed
 
 
 def preparation_time_in_minutes(layers: int):
-    """Extra time required for extra layers
+    """
+    Extra time required for extra layers
 
-        :param layers: int - number of layers
-        :return: int - extra time required
+    :param layers: int - number of layers
+    :return: int - extra time required
     """
     return layers * TIME_FOR_LAYER
 
 
-def elapsed_time_in_minutes(layers:int, elapsed: int):
-    """Total cooking time since the beginning
+def elapsed_time_in_minutes(layers: int, elapsed: int):
+    """
+    Total cooking time since the beginning
 
-        :param layers: int - number of layers
-        :param elapsed: int - baking time already elapsed.
+    :param layers: int - number of layers
+    :param elapsed: int - baking time already elapsed.
     """
     return preparation_time_in_minutes(layers) + elapsed
