@@ -1,0 +1,11 @@
+mom
+dad
+juice
+apple
+hi
+bye
+no
+mom
+dad
+hi
+no
