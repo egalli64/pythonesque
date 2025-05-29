@@ -5,6 +5,7 @@ My notes: https://github.com/egalli64/pythonesque/cip
 Section Week 5: Scribble
 - Mock for the graphic module internally used by Stanford
 """
+
 import random
 
 
@@ -12,13 +13,13 @@ class Canvas(object):
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        print(f'Mocking a {x, y} canvas')
+        print(f"Mocking a {x, y} canvas")
 
     def create_oval(self, x0, y0, x1, y1, color):
-        print(f'Mocking a {color} oval in {x0, y0}, {x1, y1}')
+        print(f"Mocking a {color} oval in {x0, y0}, {x1, y1}")
 
     def create_rectangle(self, x0, y0, x1, y1, color):
-        print(f'Mocking a {color} rectangle in {x0, y0}, {x1, y1}')
+        print(f"Mocking a {color} rectangle in {x0, y0}, {x1, y1}")
 
     def mainloop(self):
         print("Mocking main loop")
@@ -28,3 +29,9 @@ class Canvas(object):
 
     def get_mouse_y(self):
         return random.randint(0, self.y)
+
+    def get_left_x(self, player):
+        return player[0]
+
+    def get_top_y(self, player):
+        return player[1]

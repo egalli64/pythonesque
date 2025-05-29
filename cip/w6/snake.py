@@ -60,8 +60,8 @@ def main():
 def check_overlap(canvas, p, target):
     objs = canvas.find_overlapping(p[0], p[1], p[0] + SIZE, p[1] + SIZE)
     if len(objs) == 2:
-        x = random.randrange(CANVAS_WIDTH / SIZE - 1) * 20
-        y = random.randrange(CANVAS_HEIGHT / SIZE - 1) * 20
+        x = random.randrange(CANVAS_WIDTH // SIZE - 1) * 20
+        y = random.randrange(CANVAS_HEIGHT // SIZE - 1) * 20
         canvas.moveto(target, x, y)
 
 
