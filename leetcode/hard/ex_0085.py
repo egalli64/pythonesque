@@ -1,5 +1,5 @@
 """
-LeetCode Easy Problems: https://leetcode.com/problemset/?difficulty=EASY
+LeetCode Problems: https://leetcode.com/problemset/
 My solutions: https://github.com/egalli64/pythonesque/leetcode
 
 85. Maximal Rectangle
@@ -9,7 +9,7 @@ Find the largest rectangle containing only 1's and return its area.
 
 from typing import List
 
-def _area_largest_rectangle(heights):
+def _area_largest_rectangle(heights: List[int]) -> int:
     stack = []
     result = 0
     for i, height in enumerate(heights + [0]):
