@@ -7,15 +7,16 @@ Example file showing a circle moving on screen
 
 import pygame
 
-# screen and circle colors
+# display constants
 BACKGROUND = "purple"
 FOREGROUND = "red"
+DISPLAY_SIZE = (1280, 720)
 
 # pygame setup
 pygame.init()
 
 # set the program window
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode(DISPLAY_SIZE)
 pygame.display.set_caption("Move the circle (wasd)")
 
 # used to keep an eye on the FPS
@@ -43,7 +44,7 @@ while running:
     pygame.draw.circle(screen, FOREGROUND, position, 40)
 
     # we get in keys a frozen snapshot of the current keyboard state
-    # change the circle position if any key in "w s a d" is pressed 
+    # change the circle position if any key in "w s a d" is pressed
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         position.y -= 300 * delta_time
