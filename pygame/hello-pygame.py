@@ -12,6 +12,9 @@ BACKGROUND = "purple"
 FOREGROUND = "red"
 DISPLAY_SIZE = (1280, 720)
 
+# frame per second setting
+FPS = 30
+
 # pygame setup
 pygame.init()
 
@@ -58,9 +61,9 @@ while running:
     # put the changes on screen (in one shot)
     pygame.display.flip()
 
-    # try to keep FPS = 60 (smooth animation)
-    # dt is delta time in seconds since last frame: (framerate-independent movement)
-    delta_time = clock.tick(60) / 1000
+    # try to keep a smooth animation
+    # delta time in seconds since last frame - aiming to framerate-independent movement
+    delta_time = clock.tick(FPS) / 1000
 
 print("Terminating.")
 pygame.quit()
