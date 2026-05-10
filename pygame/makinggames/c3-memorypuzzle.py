@@ -21,8 +21,8 @@ REVEAL_SPEED = 8
 # the board is structured in a even number of squared boxes with gaps between boxes
 BOX_SIZE = 40
 GAP_SIZE = 10
-N_COLS = 5
-N_ROWS = 4
+N_COLS = 6
+N_ROWS = 3
 assert (N_COLS * N_ROWS) % 2 == 0, "Even number of boxes expected"
 
 X_MARGIN = int((SCREEN_WIDTH - (N_COLS * (BOX_SIZE + GAP_SIZE))) / 2)
@@ -153,26 +153,23 @@ def generateRevealedBoxesData(val):
 
 
 def get_board():
-    # Get a list of every possible shape in every possible color.
-    icons = []
+    """A row-col list that could contain any possible shape in any possible color"""
+
+    # list of tuples with any possible color/shape combination
+    items = []
     for color in COLORS:
         for shape in SHAPES:
-            icons.append((shape, color))
+            items.append((shape, color))
 
-    random.shuffle(icons)  # randomize the order of the icons list
-    numIconsUsed = int(N_COLS * N_ROWS / 2)  # calculate how many icons are needed
-    icons = icons[:numIconsUsed] * 2  # make two of each
-    random.shuffle(icons)
+    # shuffled
+    random.shuffle(items)
 
-    # Create the board data structure, with randomly placed icons.
-    board = []
-    for x in range(N_COLS):
-        column = []
-        for y in range(N_ROWS):
-            column.append(icons[0])
-            del icons[0]  # remove the icons as we assign them
-        board.append(column)
-    return board
+    # take just the required ones
+    count = N_COLS * N_ROWS // 2
+    items = items[:count] * 2
+    random.shuffle(items)
+
+    return [items[i : i + N_ROWS] for i in range(0, len(items), N_ROWS)]
 
 
 def splitIntoGroupsOf(groupSize, theList):
