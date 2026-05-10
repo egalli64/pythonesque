@@ -1,7 +1,8 @@
 """
-Memory Puzzle - A simple memory matching game (53)
+Memory Puzzle - A simple memory matching game
 
 From: Making Games with Python & Pygame by Al Sweigart - https://inventwithpython.com/pygame/
+My reviewed version: https://github.com/egalli64/pythonesque/pygame/makinggames
 """
 
 import random
@@ -70,7 +71,7 @@ def main():
     mouse_y = 0
     pygame.display.set_caption("Memory Game")
 
-    board = get_board()
+    board = build_board()
     revealedBoxes = generateRevealedBoxesData(False)
 
     # stores the (x, y) of the first box clicked
@@ -128,7 +129,7 @@ def main():
                         pygame.time.wait(2000)
 
                         # Reset the board
-                        board = get_board()
+                        board = build_board()
                         revealedBoxes = generateRevealedBoxesData(False)
 
                         # Show the fully unrevealed board for a second.
@@ -152,8 +153,13 @@ def generateRevealedBoxesData(val):
     return revealedBoxes
 
 
-def get_board():
-    """A row-col list that could contain any possible shape in any possible color"""
+def build_board():
+    """
+    A col-row list that could contain any possible shape in any possible color
+
+    Notice that, following the original code, the board is inverted:
+    given N_COLS = 2 and N_ROWS = 4, a list with 2 lines of 4 items is returned
+    """
 
     # list of tuples with any possible color/shape combination
     items = []

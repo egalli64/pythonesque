@@ -2,6 +2,7 @@
 Memory Puzzle - A simple memory matching game
 
 From: Making Games with Python & Pygame by Al Sweigart - https://inventwithpython.com/pygame/
+My reviewed version: https://github.com/egalli64/pythonesque/pygame/makinggames
 
 Step 1: generate the board, with couples of cards with random shape/color
 """
@@ -36,11 +37,12 @@ OVAL = "oval"
 SHAPES = (DONUT, SQUARE, DIAMOND, LINES, OVAL)
 
 
-def get_board():
+def build_board():
     """
     A col-row list that could contain any possible shape in any possible color
 
-    Notice that, following the original code, the board is inverted: column-rows
+    Notice that, following the original code, the board is inverted:
+    given N_COLS = 2 and N_ROWS = 4, a list with 2 lines of 4 items is returned
     """
 
     # list of tuples with any possible color/shape combination
@@ -61,4 +63,4 @@ def get_board():
 
 
 if __name__ == "__main__":
-    print(get_board())
+    print(build_board())
