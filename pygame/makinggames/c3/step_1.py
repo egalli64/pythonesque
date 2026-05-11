@@ -39,19 +39,12 @@ SHAPES = (DONUT, SQUARE, DIAMOND, LINES, OVAL)
 
 def build_board():
     """
-    A col-row list that could contain any possible shape in any possible color
+    A shuffled col-row list that could contain any possible shape in any possible color
 
     Notice that, following the original code, the board is inverted:
     given N_COLS = 2 and N_ROWS = 4, a list with 2 lines of 4 items is returned
     """
-
-    # list of tuples with any possible color/shape combination
-    items = []
-    for color in COLORS:
-        for shape in SHAPES:
-            items.append((shape, color))
-
-    # shuffled
+    items = [(shape, color) for color in COLORS for shape in SHAPES]
     random.shuffle(items)
 
     # take just the required ones
