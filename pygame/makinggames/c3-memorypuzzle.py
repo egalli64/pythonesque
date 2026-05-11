@@ -72,7 +72,7 @@ def main():
     pygame.display.set_caption("Memory Game")
 
     board = build_board()
-    revealedBoxes = generateRevealedBoxesData(False)
+    visible_cards = build_cards_visibility(False)
 
     # stores the (x, y) of the first box clicked
     firstSelection = None
@@ -84,7 +84,7 @@ def main():
         mouseClicked = False
 
         screen.fill(BG_COLOR)  # drawing the window
-        drawBoard(board, revealedBoxes)
+        drawBoard(board, visible_cards)
 
         for event in pygame.event.get():  # event handling loop
             if event.type == pygame.QUIT or (
@@ -101,11 +101,11 @@ def main():
         boxx, boxy = getBoxAtPixel(mouse_x, mouse_y)
         if boxx != None and boxy != None:
             # The mouse is currently over a box.
-            if not revealedBoxes[boxx][boxy]:
+            if not visible_cards[boxx][boxy]:
                 drawHighlightBox(boxx, boxy)
-            if not revealedBoxes[boxx][boxy] and mouseClicked:
+            if not visible_cards[boxx][boxy] and mouseClicked:
                 revealBoxesAnimation(board, [(boxx, boxy)])
-                revealedBoxes[boxx][boxy] = True  # set the box as "revealed"
+                visible_cards[boxx][boxy] = True  # set the box as "revealed"
                 if firstSelection == None:  # the current box was the first box clicked
                     firstSelection = (boxx, boxy)
                 else:  # the current box was the second box clicked
@@ -122,18 +122,18 @@ def main():
                             board,
                             [(firstSelection[0], firstSelection[1]), (boxx, boxy)],
                         )
-                        revealedBoxes[firstSelection[0]][firstSelection[1]] = False
-                        revealedBoxes[boxx][boxy] = False
-                    elif hasWon(revealedBoxes):  # check if all pairs found
+                        visible_cards[firstSelection[0]][firstSelection[1]] = False
+                        visible_cards[boxx][boxy] = False
+                    elif hasWon(visible_cards):  # check if all pairs found
                         gameWonAnimation(board)
                         pygame.time.wait(2000)
 
                         # Reset the board
                         board = build_board()
-                        revealedBoxes = generateRevealedBoxesData(False)
+                        visible_cards = build_cards_visibility(False)
 
                         # Show the fully unrevealed board for a second.
-                        drawBoard(board, revealedBoxes)
+                        drawBoard(board, visible_cards)
                         pygame.display.update()
                         pygame.time.wait(1000)
 
@@ -146,28 +146,24 @@ def main():
         clock.tick(FPS)
 
 
-def generateRevealedBoxesData(val):
-    revealedBoxes = []
-    for i in range(N_COLS):
-        revealedBoxes.append([val] * N_ROWS)
-    return revealedBoxes
+def build_cards_visibility(x: bool):
+    """
+    Build a col-row list for the cards visibility
+
+    Notice that, following the original code, the resulting order is inverted:
+    given N_COLS = 2 and N_ROWS = 4, a list with 2 lines of 4 items is returned
+    """
+    return [[x] * N_ROWS for _ in range(N_COLS)]
 
 
 def build_board():
     """
-    A col-row list that could contain any possible shape in any possible color
+    Build a shuffled col-row list that could contain any possible shape in any possible color
 
     Notice that, following the original code, the board is inverted:
     given N_COLS = 2 and N_ROWS = 4, a list with 2 lines of 4 items is returned
     """
-
-    # list of tuples with any possible color/shape combination
-    items = []
-    for color in COLORS:
-        for shape in SHAPES:
-            items.append((shape, color))
-
-    # shuffled
+    items = [(shape, color) for color in COLORS for shape in SHAPES]
     random.shuffle(items)
 
     # take just the required ones
@@ -301,7 +297,7 @@ def drawHighlightBox(boxx, boxy):
 
 def startGameAnimation(board):
     # Randomly reveal the boxes 8 at a time.
-    coveredBoxes = generateRevealedBoxesData(False)
+    coveredBoxes = build_cards_visibility(False)
     boxes = []
     for x in range(N_COLS):
         for y in range(N_ROWS):
@@ -317,7 +313,7 @@ def startGameAnimation(board):
 
 def gameWonAnimation(board):
     # flash the background color when the player has won
-    coveredBoxes = generateRevealedBoxesData(True)
+    coveredBoxes = build_cards_visibility(True)
     color1 = LIGHT_BG_COLOR
     color2 = BG_COLOR
 
