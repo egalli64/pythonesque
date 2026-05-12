@@ -36,17 +36,8 @@ class Image(Enum):
     OVAL = auto()
 
 
-# shapes - what the player sees
-DONUT = "donut"
-SQUARE = "square"
-DIAMOND = "diamond"
-LINES = "lines"
-OVAL = "oval"
-SHAPES = (DONUT, SQUARE, DIAMOND, LINES, OVAL)
-
-
 def build_board():
-    """A shuffled matrix that could contain any possible image in any possible color"""
+    """A shuffled matrix with the game cards"""
 
     # shuffle all the image/color combinations
     items = [(image, color) for color in Color for image in Image]
@@ -57,6 +48,7 @@ def build_board():
     items = items[:count] * 2
     random.shuffle(items)
 
+    # put the chosen cards in matrix format
     return [items[i : i + N_COLS] for i in range(0, len(items), N_COLS)]
 
 
