@@ -77,6 +77,11 @@ def draw_card(_: Image, color: Color, x: int, y: int):
     pygame.draw.ellipse(screen, color.value, (x, y + QUARTER, BOX_SIZE, HALF))
 
 
+def draw_back_card(x, y):
+    """Draw the card back in the given position"""
+    pygame.draw.rect(screen, BOX_COLOR, (x, y, BOX_SIZE, BOX_SIZE))
+
+
 def get_info(board, i, j):
     """Get image and color for the (i, j) card"""
     return board[i][j][0], board[i][j][1]
@@ -88,7 +93,7 @@ def draw_board(board, revealed):
         for j in range(N_COLS):
             x, y = get_xy(i, j)
             if not revealed[i][j]:
-                pygame.draw.rect(screen, BOX_COLOR, (x, y, BOX_SIZE, BOX_SIZE))
+                draw_back_card(x, y)
             else:
                 draw_card(*get_info(board, i, j), x, y)
 
