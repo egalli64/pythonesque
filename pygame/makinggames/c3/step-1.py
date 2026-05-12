@@ -79,7 +79,6 @@ class Game:
 
         pygame.display.update()
         pygame.time.wait(CHEAT_TIME)
-        self.show_cards()
 
     def show_cards(self):
         """Show the visible cards, or their back"""
@@ -96,10 +95,12 @@ class Game:
 
         running = True
         while running:
-            self.clock.tick(FPS)
+            self.show_cards()
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT or (
+                    event.type == pygame.KEYUP and event.key == pygame.K_ESCAPE
+                ):
                     running = False
 
             pygame.display.update()
