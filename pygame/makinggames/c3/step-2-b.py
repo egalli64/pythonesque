@@ -4,7 +4,7 @@ Memory Puzzle - A simple memory matching game
 From: Making Games with Python & Pygame by Al Sweigart - https://inventwithpython.com/pygame/
 My reviewed version: https://github.com/egalli64/pythonesque/pygame/makinggames
 
-Step 2b: highlight a card, given its top-left position on the board
+Step 2b: highlight a card, given its position
 """
 
 import pygame
@@ -39,10 +39,12 @@ def get_card_pos(xy):
         return None
 
 
-def highlight_card(pos):
-    """Place a border around the card with the given top-left corner"""
-    area = (pos[0][0] - 5, pos[0][1] - 5, CARD_SIZE + 10, CARD_SIZE + 10)
-    pygame.draw.rect(screen, GameColor.HIGHLIGHT, area, 4)
+def highlight_card(pos, on=True):
+    """Place a border around the card with the given position, or do nothing"""
+    if pos:
+        color = GameColor.HIGHLIGHT if on else GameColor.BACKGROUND
+        area = (pos[0][0] - 5, pos[0][1] - 5, CARD_SIZE + 10, CARD_SIZE + 10)
+        pygame.draw.rect(screen, color, area, 4)
 
 
 def main():
@@ -50,12 +52,9 @@ def main():
 
     screen.fill(GameColor.BACKGROUND)
 
-    if pos := get_card_pos((400, 0)):
-        highlight_card(pos)
-    if pos := get_card_pos((200, 0)):
-        highlight_card(pos)
-    if pos := get_card_pos((100, 0)):
-        highlight_card(pos)
+    highlight_card(get_card_pos((400, 0)))
+    highlight_card(get_card_pos((200, 0)))
+    highlight_card(get_card_pos((100, 0)))
 
     pygame.display.update()
 
@@ -66,6 +65,11 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            highlight_card(get_card_pos((400, 0)), False)
+            highlight_card(get_card_pos((200, 0)), False)
+            highlight_card(get_card_pos((100, 0)), False)
+            pygame.display.update()
 
     print("Done!")
     pygame.quit()
