@@ -82,12 +82,11 @@ def get_card_info(i: int, j: int):
 def reveal_cards(pos_cards):
     """gradually reveal the cards"""
 
-    pos = pos_cards[0]
-
     for back in range(CARD_SIZE, -1, -REVEAL_STEP):
         for pos in pos_cards:
             clock.tick(FPS)
-            pygame.draw.rect(screen, GameColor.BACKGROUND, (*pos[0], CARD_SIZE, CARD_SIZE))
+            area = (*pos[0], CARD_SIZE, CARD_SIZE)
+            pygame.draw.rect(screen, GameColor.BACKGROUND, area)
             draw_card(*get_card_info(*pos[1]), *pos[0])
             pygame.draw.rect(screen, GameColor.CARD_BACK, (*pos[0], back, CARD_SIZE))
             pygame.display.update()
