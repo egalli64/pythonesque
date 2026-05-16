@@ -12,6 +12,9 @@ from enum import Enum, auto
 
 FPS = 30
 
+N_ROWS = 3
+N_COLS = 5
+
 CARD_SIZE = 40
 REVEAL_STEP = CARD_SIZE // 5
 
@@ -44,9 +47,19 @@ class GameColor:
     HIGHLIGHT = (173, 216, 230)  # light blue
 
 
+def build_board():
+    """mock"""
+    items = [(image, color) for color in Color for image in Image]
+    count = N_COLS * N_ROWS // 2
+    items = items[:count] * 2
+    return [items[i : i + N_COLS] for i in range(0, len(items), N_COLS)]
+
+
 pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+board = build_board()
+print(board)
 
 
 def get_card_pos(xy):
@@ -75,8 +88,8 @@ def cover_cards(xy_cards):
 
 
 def get_card_info(i: int, j: int):
-    """Get image and color for the (i, j) card - mock"""
-    return Image.OVAL, Color.YELLOW
+    """Get image and color for the (i, j) card"""
+    return board[i][j]
 
 
 def reveal_cards(pos_cards):
