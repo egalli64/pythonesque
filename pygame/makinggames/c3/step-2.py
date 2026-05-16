@@ -155,10 +155,6 @@ class Game:
         """
         return j * BLOCK_SIZE + X_MARGIN, i * BLOCK_SIZE + Y_MARGIN
 
-    def get_card_info(self, i: int, j: int):
-        """Get image and color for the (i, j) card"""
-        return self.board[i][j][0], self.board[i][j][1]
-
     def build_cards_visibility(self, x: bool):
         """Build a card visibility matrix (True for visible)"""
         return [[x] * N_COLS for _ in range(N_ROWS)]
@@ -222,7 +218,7 @@ class Game:
             for j in range(N_COLS):
                 x, y = self.get_xy(i, j)
                 if cheat or self.status[i][j]:
-                    self.draw_card(*self.get_card_info(i, j), x, y)
+                    self.draw_card(*self.board[i][j], x, y)
                 else:
                     self.draw_back_card(x, y)
 

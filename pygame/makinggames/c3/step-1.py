@@ -67,6 +67,7 @@ class Game:
         pygame.display.set_caption(SCREEN_TITLE)
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        # image and color for each card
         self.board = self.build_board()
         self.status = self.build_cards_visibility(False)
 
@@ -116,10 +117,6 @@ class Game:
         x = j * (BOX_SIZE + GAP_SIZE) + X_MARGIN
         y = i * (BOX_SIZE + GAP_SIZE) + Y_MARGIN
         return x, y
-
-    def get_card_info(self, i: int, j: int):
-        """Get image and color for the (i, j) card"""
-        return self.board[i][j][0], self.board[i][j][1]
 
     def build_cards_visibility(self, x: bool):
         """Build a card visibility matrix (True for visible)"""
@@ -184,7 +181,7 @@ class Game:
             for j in range(N_COLS):
                 x, y = self.get_xy(i, j)
                 if cheat or self.status[i][j]:
-                    self.draw_card(*self.get_card_info(i, j), x, y)
+                    self.draw_card(*self.board[i][j], x, y)
                 else:
                     self.draw_back_card(x, y)
 
