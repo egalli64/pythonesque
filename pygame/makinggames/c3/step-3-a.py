@@ -113,6 +113,8 @@ def main():
     draw_back_card(195, 240)
     pygame.display.update()
 
+    first_card = None
+
     running = True
     while running:
         for event in pygame.event.get():
@@ -120,7 +122,9 @@ def main():
                 running = False
             elif event.type == pygame.MOUSEBUTTONUP:
                 ij = select_card(get_card_pos(event.pos))
-                print("Revealed card:", ij)
+                if ij and not first_card:
+                    first_card = ij
+                print(f"Revealed card: {ij}, first_card: {first_card}")
 
     print("Done!")
     pygame.quit()
