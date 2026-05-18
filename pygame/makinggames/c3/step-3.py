@@ -145,13 +145,15 @@ class Game:
         If it is the second card in a pair:
         compare two cards
         if they don't match turn them back
-        in any case make invalid first_ij
+        in any case make invalid first_ij.
+        Return True if a match is found.
         """
+        match = False
         if card_ij := self.select_card(self.get_card_pos(mouse_xy)):
             if self.first_ij:
-                c_1 = self.get_card_info(*self.first_ij)
-                c_2 = self.get_card_info(*card_ij)
-                if c_1 != c_2:
+                if self.get_card_info(*self.first_ij) == self.get_card_info(*card_ij):
+                    match = True
+                else:
                     cards = [self.get_xy(*self.first_ij), self.get_xy(*card_ij)]
                     self.cover_cards(cards)
                     self.visibility[self.first_ij[0]][self.first_ij[1]] = False
@@ -159,7 +161,7 @@ class Game:
                 self.first_ij = None
             else:
                 self.first_ij = card_ij
-                return
+        return match
 
     def run(self):
         """Run the main game loop"""
@@ -175,7 +177,8 @@ class Game:
                 elif event.type == pygame.MOUSEMOTION:
                     self.set_highlight()
                 elif event.type == pygame.MOUSEBUTTONUP:
-                    self.play(event.pos)
+                    if self.play(event.pos):
+                        print("Match found!")
 
         pygame.quit()
 
