@@ -72,6 +72,8 @@ class Game:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.board = self.build_board()
         self.visibility = self.build_cards_visibility(False)
+        self.current_card = None
+        self.first_ij = None
 
     def cover_cards(self, xy_cards):
         """gradually cover the cards"""
@@ -115,20 +117,18 @@ class Game:
             area = (pos[0][0] - 5, pos[0][1] - 5, CARD_SIZE + 10, CARD_SIZE + 10)
             pygame.draw.rect(self.screen, color, area, 4)
 
-    def set_highlight(self, current):
+    def set_highlight(self):
         """Set the card in the mouse position to highlighted"""
         candidate = self.get_card_pos(pygame.mouse.get_pos())
 
-        if candidate != current:
+        if candidate != self.current_card:
             self.clock.tick(FPS)
 
-            self.highlight_card(current, False)
+            self.highlight_card(self.current_card, False)
             self.highlight_card(candidate)
             pygame.display.update()
 
-            return candidate
-        else:
-            return current
+            self.current_card = candidate
 
     def select_card(self, pos):
         """Reveal the card in the passed position, when required"""
@@ -139,21 +139,32 @@ class Game:
         else:
             return None
 
-    def check_match(self, first, second):
-        """Compare two cards, turn them back if they don't match"""
-        card_1 = self.get_card_info(*first)
-        card_2 = self.get_card_info(*second)
-        if card_1 != card_2:
-            self.cover_cards([self.get_xy(*first), self.get_xy(*second)])
-            self.visibility[first[0]][first[1]] = False
-            self.visibility[second[0]][second[1]] = False
+    def play(self, mouse_xy):
+        """
+        Turn the card in the passed position.
+        If it is the second card in a pair:
+        compare two cards
+        if they don't match turn them back
+        in any case make invalid first_ij
+        """
+        if card_ij := self.select_card(self.get_card_pos(mouse_xy)):
+            if self.first_ij:
+                c_1 = self.get_card_info(*self.first_ij)
+                c_2 = self.get_card_info(*card_ij)
+                if c_1 != c_2:
+                    cards = [self.get_xy(*self.first_ij), self.get_xy(*card_ij)]
+                    self.cover_cards(cards)
+                    self.visibility[self.first_ij[0]][self.first_ij[1]] = False
+                    self.visibility[card_ij[0]][card_ij[1]] = False
+                self.first_ij = None
+            else:
+                self.first_ij = card_ij
+                return
 
     def run(self):
         """Run the main game loop"""
         self.flash_cards()
 
-        first_card = None
-        current_card = None
         running = True
         while running:
             for event in pygame.event.get():
@@ -162,13 +173,9 @@ class Game:
                 ):
                     running = False
                 elif event.type == pygame.MOUSEMOTION:
-                    current_card = self.set_highlight(current_card)
+                    self.set_highlight()
                 elif event.type == pygame.MOUSEBUTTONUP:
-                    if ij := self.select_card(self.get_card_pos(event.pos)):
-                        if first_card:
-                            self.check_match(first_card, ij)
-                        else:
-                            first_card = ij
+                    self.play(event.pos)
 
         pygame.quit()
 
