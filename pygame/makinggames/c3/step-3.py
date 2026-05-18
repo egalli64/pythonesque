@@ -139,6 +139,15 @@ class Game:
         else:
             return None
 
+    def check_match(self, first, second):
+        """Compare two cards, turn them back if they don't match"""
+        card_1 = self.get_card_info(*first)
+        card_2 = self.get_card_info(*second)
+        if card_1 != card_2:
+            self.cover_cards([self.get_xy(*first), self.get_xy(*second)])
+            self.visibility[first[0]][first[1]] = False
+            self.visibility[second[0]][second[1]] = False
+
     def run(self):
         """Run the main game loop"""
         self.flash_cards()
@@ -155,9 +164,11 @@ class Game:
                 elif event.type == pygame.MOUSEMOTION:
                     current_card = self.set_highlight(current_card)
                 elif event.type == pygame.MOUSEBUTTONUP:
-                    ij = self.select_card(self.get_card_pos(event.pos))
-                    if ij and not first_card:
-                        first_card = ij
+                    if ij := self.select_card(self.get_card_pos(event.pos)):
+                        if first_card:
+                            self.check_match(first_card, ij)
+                        else:
+                            first_card = ij
 
         pygame.quit()
 
