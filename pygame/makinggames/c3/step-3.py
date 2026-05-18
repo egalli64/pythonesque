@@ -13,7 +13,7 @@ from enum import Enum, auto
 
 # timing
 FPS = 30
-CHEAT_TIME = 2000
+VIEW_TIME = 750
 
 # screen constants: size (in pixel), title
 SCREEN_WIDTH = 640
@@ -39,6 +39,7 @@ class GameColor:
     CARD_BACK = (255, 255, 255)  # white
     BACKGROUND = (60, 60, 100)  # navy blue
     HIGHLIGHT = (173, 216, 230)  # light blue
+    ALT_BACKGROUND = (180, 120, 60)  # amber-orange
 
 
 class Color(Enum):
@@ -92,7 +93,7 @@ class Game:
         self.draw_board(True)
 
         pygame.display.update()
-        pygame.time.wait(CHEAT_TIME)
+        pygame.time.wait(VIEW_TIME)
 
         for i in range(N_ROWS):
             card_group = []
@@ -163,6 +164,28 @@ class Game:
                 self.first_ij = card_ij
         return match
 
+    def flash_win(self):
+        c1 = GameColor.BACKGROUND
+        c2 = GameColor.ALT_BACKGROUND
+
+        for _ in range(10):
+            c1, c2 = c2, c1
+            self.screen.fill(c1)
+            self.draw_board()
+            pygame.display.update()
+            pygame.time.wait(300)
+
+    def check_win(self):
+        if all(all(row) for row in self.visibility):
+            self.flash_win()
+
+            # reset
+            self.visibility = self.build_cards_visibility(False)
+            self.board = self.build_board()
+            self.draw_board()
+
+            pygame.display.update()
+
     def run(self):
         """Run the main game loop"""
         self.flash_cards()
@@ -178,7 +201,7 @@ class Game:
                     self.set_highlight()
                 elif event.type == pygame.MOUSEBUTTONUP:
                     if self.play(event.pos):
-                        print("Match found!")
+                        self.check_win()
 
         pygame.quit()
 
@@ -243,6 +266,7 @@ class Game:
                 area = (*pos[0], back, CARD_SIZE)
                 pygame.draw.rect(self.screen, GameColor.CARD_BACK, area)
                 pygame.display.update()
+            pygame.time.wait(VIEW_TIME)
 
     def build_board(self):
         """A shuffled matrix with the game cards"""
