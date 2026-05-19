@@ -9,3 +9,7 @@
 ## Making Games with Python & Pygame
 - https://inventwithpython.com/pygame/
 - https://github.com/asweigart/making-games-with-python-and-pygame/
+
+## Beginnning Python Games Development with PyGame
+- https://link.springer.com/book/10.1007/978-1-4842-0970-7
+- https://github.com/Apress/beg-python-games-dev-2ed
