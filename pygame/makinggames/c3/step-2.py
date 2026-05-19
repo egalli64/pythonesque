@@ -80,7 +80,7 @@ class Game:
             for xy in xy_cards:
                 area = (*xy, coverage, CARD_SIZE)
                 pygame.draw.rect(self.screen, GameColor.CARD_BACK, area)
-            pygame.display.update()
+            pygame.display.flip()
 
     def flash_cards(self):
         """Show all the cards for a couple of seconds"""
@@ -89,7 +89,7 @@ class Game:
 
         self.draw_board(True)
 
-        pygame.display.update()
+        pygame.display.flip()
         pygame.time.wait(CHEAT_TIME)
 
         for i in range(N_ROWS):
@@ -124,7 +124,7 @@ class Game:
 
             self.highlight_card(current, False)
             self.highlight_card(candidate)
-            pygame.display.update()
+            pygame.display.flip()
 
             return candidate
         else:

@@ -56,7 +56,7 @@ def main():
     highlight_card(get_card_pos((200, 0)))
     highlight_card(get_card_pos((100, 0)))
 
-    pygame.display.update()
+    pygame.display.flip()
 
     running = True
     while running:
@@ -69,7 +69,7 @@ def main():
             highlight_card(get_card_pos((400, 0)), False)
             highlight_card(get_card_pos((200, 0)), False)
             highlight_card(get_card_pos((100, 0)), False)
-            pygame.display.update()
+            pygame.display.flip()
 
     print("Done!")
     pygame.quit()

@@ -84,7 +84,7 @@ def cover_cards(xy_cards):
         clock.tick(FPS)
         for xy in xy_cards:
             pygame.draw.rect(screen, GameColor.CARD_BACK, (*xy, coverage, CARD_SIZE))
-        pygame.display.update()
+        pygame.display.flip()
 
 
 def get_card_info(i: int, j: int):
@@ -102,7 +102,7 @@ def reveal_cards(pos_cards):
             pygame.draw.rect(screen, GameColor.BACKGROUND, area)
             draw_card(*get_card_info(*pos[1]), *pos[0])
             pygame.draw.rect(screen, GameColor.CARD_BACK, (*pos[0], back, CARD_SIZE))
-            pygame.display.update()
+            pygame.display.flip()
 
 
 def main():
@@ -115,7 +115,7 @@ def main():
     xy_cards = (pos_cards[0][0], pos_cards[1][0])
     for xy in xy_cards:
         draw_card(Image.OVAL, Color.YELLOW, *xy)
-    pygame.display.update()
+    pygame.display.flip()
 
     cover_cards(xy_cards)
     reveal_cards(pos_cards)

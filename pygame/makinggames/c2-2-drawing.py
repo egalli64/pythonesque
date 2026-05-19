@@ -63,4 +63,4 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    pygame.display.update()
+    pygame.display.flip()

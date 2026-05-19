@@ -85,7 +85,7 @@ def flash_win():
         c1, c2 = c2, c1
         screen.fill(c1)
         draw_board()
-        pygame.display.update()
+        pygame.display.flip()
         pygame.time.wait(300)
 
 
@@ -98,7 +98,7 @@ def winner():
     # board reset
     board = build_board()
     draw_board()
-    pygame.display.update()
+    pygame.display.flip()
 
 
 def mock_game():
@@ -143,7 +143,7 @@ def draw_board():
 def flash_cards():
     """mock"""
     draw_board()
-    pygame.display.update()
+    pygame.display.flip()
 
 
 def main():

@@ -78,7 +78,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        pygame.display.update()
+        pygame.display.flip()
         clock.tick(FPS)
 
     print("Done!")

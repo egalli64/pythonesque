@@ -97,7 +97,7 @@ def set_highlight(current):
 
         highlight_card(current, False)
         highlight_card(candidate)
-        pygame.display.update()
+        pygame.display.flip()
 
         return candidate
     else:
@@ -108,7 +108,7 @@ def main():
     pygame.display.set_caption(SCREEN_TITLE)
     clock.tick(FPS)
     screen.fill(GameColor.BACKGROUND)
-    pygame.display.update()
+    pygame.display.flip()
 
     running = True
     current_card = None

@@ -91,7 +91,7 @@ def reveal_card(pos):
             pygame.draw.rect(screen, GameColor.BACKGROUND, area)
             draw_card(*get_card_info(*pos[1]), *pos[0])
             pygame.draw.rect(screen, GameColor.CARD_BACK, (*pos[0], back, CARD_SIZE))
-            pygame.display.update()
+            pygame.display.flip()
 
 
 def get_card_pos(xy):
@@ -143,7 +143,7 @@ def check_match(first, second):
 def main():
     # for mocking
     draw_back_card(195, 240)  # the target for the second card
-    pygame.display.update()
+    pygame.display.flip()
     # mocking a previous click on this card
     first_card = (0, 0)
     visibility[0][0] = True

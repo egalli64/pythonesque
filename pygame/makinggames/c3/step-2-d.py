@@ -95,7 +95,7 @@ def cover_cards(xy_cards):
         clock.tick(FPS)
         for xy in xy_cards:
             pygame.draw.rect(screen, GameColor.CARD_BACK, (*xy, coverage, CARD_SIZE))
-        pygame.display.update()
+        pygame.display.flip()
 
 
 def flash_cards():
@@ -105,7 +105,7 @@ def flash_cards():
 
     draw_board(True)
 
-    pygame.display.update()
+    pygame.display.flip()
     pygame.time.wait(CHEAT_TIME)
 
     for i in range(N_ROWS):

@@ -83,7 +83,7 @@ class Game:
             for xy in xy_cards:
                 area = (*xy, coverage, CARD_SIZE)
                 pygame.draw.rect(self.screen, GameColor.CARD_BACK, area)
-            pygame.display.update()
+            pygame.display.flip()
 
     def flash_cards(self):
         """Show all the cards for a couple of seconds"""
@@ -92,7 +92,7 @@ class Game:
 
         self.draw_board(True)
 
-        pygame.display.update()
+        pygame.display.flip()
         pygame.time.wait(VIEW_TIME)
 
         for i in range(N_ROWS):
@@ -127,7 +127,7 @@ class Game:
 
             self.highlight_card(self.current_card, False)
             self.highlight_card(candidate)
-            pygame.display.update()
+            pygame.display.flip()
 
             self.current_card = candidate
 
@@ -172,7 +172,7 @@ class Game:
             c1, c2 = c2, c1
             self.screen.fill(c1)
             self.draw_board()
-            pygame.display.update()
+            pygame.display.flip()
             pygame.time.wait(300)
 
     def check_win(self):
@@ -184,7 +184,7 @@ class Game:
             self.board = self.build_board()
             self.draw_board()
 
-            pygame.display.update()
+            pygame.display.flip()
 
     def run(self):
         """Run the main game loop"""
@@ -265,7 +265,7 @@ class Game:
                 self.draw_card(*self.get_card_info(*pos[1]), *pos[0])
                 area = (*pos[0], back, CARD_SIZE)
                 pygame.draw.rect(self.screen, GameColor.CARD_BACK, area)
-                pygame.display.update()
+                pygame.display.flip()
             pygame.time.wait(VIEW_TIME)
 
     def build_board(self):

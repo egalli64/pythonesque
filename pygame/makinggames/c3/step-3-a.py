@@ -81,7 +81,7 @@ def reveal_card(pos):
             pygame.draw.rect(screen, GameColor.BACKGROUND, area)
             draw_card(*get_card_info(*pos[1]), *pos[0])
             pygame.draw.rect(screen, GameColor.CARD_BACK, (*pos[0], back, CARD_SIZE))
-            pygame.display.update()
+            pygame.display.flip()
 
 
 def get_card_pos(xy):
@@ -111,7 +111,7 @@ def select_card(pos):
 def main():
     # for mocking
     draw_back_card(195, 240)
-    pygame.display.update()
+    pygame.display.flip()
 
     first_card = None
 

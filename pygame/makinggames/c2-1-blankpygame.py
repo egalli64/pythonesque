@@ -28,4 +28,4 @@ while True:
             # terminate the python script
             sys.exit()
     # finalize the current frame, publishing (when required) the buffered changes
-    pygame.display.update()
+    pygame.display.flip()

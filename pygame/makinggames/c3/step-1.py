@@ -78,7 +78,7 @@ class Game:
 
         self.draw_board(True)
 
-        pygame.display.update()
+        pygame.display.flip()
         pygame.time.wait(CHEAT_TIME)
 
     def show_cards(self):
@@ -88,7 +88,7 @@ class Game:
 
         self.draw_board()
 
-        pygame.display.update()
+        pygame.display.flip()
 
     def run(self):
         """Run he main game loop"""
@@ -104,7 +104,7 @@ class Game:
                 ):
                     running = False
 
-            pygame.display.update()
+            pygame.display.flip()
 
         pygame.quit()
 

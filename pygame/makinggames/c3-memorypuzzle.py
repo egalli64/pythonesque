@@ -134,7 +134,7 @@ def main():
 
                         # Show the fully unrevealed board for a second.
                         drawBoard(board, visible_cards)
-                        pygame.display.update()
+                        pygame.display.flip()
                         pygame.time.wait(1000)
 
                         # Replay the start game animation.
@@ -142,7 +142,7 @@ def main():
                     firstSelection = None  # reset firstSelection variable
 
         # Redraw the screen and wait a clock tick.
-        pygame.display.update()
+        pygame.display.flip()
         clock.tick(FPS)
 
 
@@ -255,7 +255,7 @@ def drawBoxCovers(board, boxes, coverage):
         drawIcon(shape, color, box[0], box[1])
         if coverage > 0:  # only draw the cover if there is an coverage
             pygame.draw.rect(screen, BOX_COLOR, (left, top, coverage, BOX_SIZE))
-    pygame.display.update()
+    pygame.display.flip()
     clock.tick(FPS)
 
 
@@ -321,7 +321,7 @@ def gameWonAnimation(board):
         color1, color2 = color2, color1  # swap colors
         screen.fill(color1)
         drawBoard(board, coveredBoxes)
-        pygame.display.update()
+        pygame.display.flip()
         pygame.time.wait(300)
 
 

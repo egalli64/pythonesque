@@ -62,7 +62,7 @@ while running:
 
     # end of the game loop:
     # (1) push the changes from the back buffer to the screen
-    pygame.display.update()
+    pygame.display.flip()
     # (2) delay the loop to keep the required FPS (when possible)
     clock.tick(FPS)
 
