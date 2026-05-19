@@ -1,6 +1,6 @@
 # pythonesque pygame
 
-- Install pygame: pip install pygame
+- Install pygame: pip install pygame-ce
 - Run a sample game: python -m pygame.examples.aliens
 
 ## Tutorials
