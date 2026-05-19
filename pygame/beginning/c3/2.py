@@ -16,10 +16,12 @@ while running:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
             running = False
 
         # in any case print the current event
         print(event)
 
         # notice: there is no need here of flipping the buffer
+
+pygame.quit()
+print("Done!")
