@@ -19,9 +19,9 @@ pygame.display.set_caption("Hello, World!")
 pygame.mouse.set_visible(False)
 
 # plain image load
-background = pygame.image.load(BACKGROUND_IMG).convert()
+image = pygame.image.load(BACKGROUND_IMG).convert()
 # image load preserving alpha information
-mouse_cursor = pygame.image.load(MOUSE_IMG).convert_alpha()
+mouse_img = pygame.image.load(MOUSE_IMG).convert_alpha()
 
 running = True
 while running:
@@ -30,13 +30,13 @@ while running:
             running = False
         else:
             # implicitly copy background to screen at (0, 0) position
-            screen.blit(background)
+            screen.blit(image)
 
             # get the mouse position, center the mouse cursor image, copy it to screen
             x, y = pygame.mouse.get_pos()
-            x -= mouse_cursor.get_width() / 2
-            y -= mouse_cursor.get_height() / 2
-            screen.blit(mouse_cursor, (x, y))
+            x -= mouse_img.get_width() / 2
+            y -= mouse_img.get_height() / 2
+            screen.blit(mouse_img, (x, y))
 
             # full screen update
             pygame.display.flip()
