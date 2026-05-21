@@ -12,3 +12,4 @@
 - 4 [Full screen](c3/4.py) - display.set_mode FULLSCREEN flag
 - 5 [Resizable screen](c3/5.py) - display.set_mode RESIZABLE flag; event type VIDEORESIZE
 - 6 [Text to image](c3/6.py) - font.SysFont; Font.render; image.save
+- 7 [Scrolling text](c3/7.py) - event.wait() w/ timeout
