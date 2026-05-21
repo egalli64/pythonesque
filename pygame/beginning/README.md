@@ -18,3 +18,4 @@
 
 - 1 [Generate colors](c4/1.py) - Surface.set_at
 - 2 [Choose a color](c4/2.py) - Rect, draw.rect, mouse.get_pos, mouse.get_pressed, draw.circle
+- 3 [Make a color darker](c4/3.py)
