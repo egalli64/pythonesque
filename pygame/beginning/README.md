@@ -20,3 +20,4 @@
 - 2 [Choose a color](c4/2.py) - Rect, draw.rect, mouse.get_pos, mouse.get_pressed, draw.circle
 - 3 [Make a color darker](c4/3.py)
 - 4 [Saturating channels](c4/4.py)
+- 5 [Linear interpolation](c4/5.py) - Aka lerp
