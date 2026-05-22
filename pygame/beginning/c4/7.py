@@ -12,14 +12,12 @@ SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
-
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
 
 running = True
 while running:
     for event in pygame.event.get():
-        print(event)
         if event.type == pygame.QUIT:
             running = False
             break
@@ -30,9 +28,7 @@ while running:
             pos = (randrange(0, SCREEN_WIDTH), randrange(0, SCREEN_HEIGHT))
             # that's a slow way to interact with the screen - use it only when required
             screen.set_at(pos, color)
-
         pygame.display.flip()
-
 
 print("Done.")
 pygame.quit()
