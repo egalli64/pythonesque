@@ -21,3 +21,4 @@
 - 3 [Make a color darker](c4/3.py)
 - 4 [Saturating channels](c4/4.py)
 - 5 [Linear interpolation](c4/5.py) - Aka lerp
+- 6 [Blending colors by lerping](c4/6.py)
