@@ -23,3 +23,4 @@
 - 5 [Linear interpolation](c4/5.py) - Aka lerp
 - 6 [Blending colors by lerping](c4/6.py) - draw.polygon
 - 7 [Setting pixels](c4/7.py) - Surface.set_at
+- 8 [Setting pixels w/locking](c4/8.py) - Surface.lock, Surface.set_at and get_at
