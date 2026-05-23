@@ -27,3 +27,4 @@
 - 9 [Rectangles](c4/9.py) - draw.rect
 - 10 [Polygons](c4/a.py) - draw.polygon, draw.circle
 - 11 [Circles](c4/b.py) - draw.circle
+- 12 [Ellipses](c4/c.py) - draw.ellipse
