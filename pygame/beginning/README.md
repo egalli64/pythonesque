@@ -10,9 +10,9 @@
 - 2 [Event logger](c3/2.py)
 - 3 [Key events](c3/3.py) - KEYDOWN / KEYUP, K_LEFT, K_RIGHT, K_UP, K_DOWN, Surface.fill
 - 4 [Full screen](c3/4.py) - display.set_mode FULLSCREEN flag
-- 5 [Resizable screen](c3/5.py) - display.set_mode RESIZABLE flag, event type VIDEORESIZE
+- 5 [Resizable screen](c3/5.py) - display.set_mode RESIZABLE flag, event type VIDEORESIZE, event.wait
 - 6 [Text to image](c3/6.py) - font.SysFont, Font.render, image.save
-- 7 [Scrolling text](c3/7.py) - event.wait() w/ timeout
+- 7 [Scrolling text](c3/7.py) - event.wait w/timeout
 
 ## Chapter 4 - Creating Visuals
 
@@ -24,3 +24,4 @@
 - 6 [Blending colors by lerping](c4/6.py) - draw.polygon
 - 7 [Setting pixels](c4/7.py) - Surface.set_at
 - 8 [Setting pixels w/locking](c4/8.py) - Surface.lock, Surface.set_at and get_at
+- 9 [Rectangles](c4/9.py) - draw.rect
