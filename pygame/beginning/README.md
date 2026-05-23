@@ -29,3 +29,4 @@
 - 11 [Circles](c4/b.py) - draw.circle
 - 12 [Ellipses](c4/c.py) - draw.ellipse
 - 13 [Arcs](c4/d.py) - draw.arc
+- 14 [Lines](c4/e.py) - draw.line
