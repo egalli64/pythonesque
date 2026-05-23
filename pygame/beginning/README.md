@@ -30,3 +30,4 @@
 - 12 [Ellipse](c4/c.py) - draw.ellipse
 - 13 [Arc](c4/d.py) - draw.arc
 - 14 [Line](c4/e.py) - draw.line
+- 15 [Lines](c4/f.py) - draw.lines
