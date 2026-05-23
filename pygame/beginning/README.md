@@ -28,3 +28,4 @@
 - 10 [Polygons](c4/a.py) - draw.polygon, draw.circle
 - 11 [Circles](c4/b.py) - draw.circle
 - 12 [Ellipses](c4/c.py) - draw.ellipse
+- 13 [Arcs](c4/d.py) - draw.arc
