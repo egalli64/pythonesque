@@ -24,9 +24,9 @@
 - 6 [Blending colors by lerping](c4/6.py) - draw.polygon
 - 7 [Setting pixels](c4/7.py) - Surface.set_at
 - 8 [Setting pixels w/locking](c4/8.py) - Surface.lock, Surface.set_at and get_at
-- 9 [Rectangles](c4/9.py) - draw.rect
-- 10 [Polygons](c4/a.py) - draw.polygon, draw.circle
-- 11 [Circles](c4/b.py) - draw.circle
-- 12 [Ellipses](c4/c.py) - draw.ellipse
-- 13 [Arcs](c4/d.py) - draw.arc
-- 14 [Lines](c4/e.py) - draw.line
+- 9 [Rectangle](c4/9.py) - draw.rect
+- 10 [Polygon](c4/a.py) - draw.polygon, draw.circle
+- 11 [Circle](c4/b.py) - draw.circle
+- 12 [Ellipse](c4/c.py) - draw.ellipse
+- 13 [Arc](c4/d.py) - draw.arc
+- 14 [Line](c4/e.py) - draw.line
