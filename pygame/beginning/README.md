@@ -26,3 +26,4 @@
 - 8 [Setting pixels w/locking](c4/8.py) - Surface.lock, Surface.set_at and get_at
 - 9 [Rectangles](c4/9.py) - draw.rect
 - 10 [Polygons](c4/a.py) - draw.polygon, draw.circle
+- 11 [Circles](c4/b.py) - draw.circle
