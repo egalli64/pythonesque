@@ -40,6 +40,7 @@
 - 3 [Speed comparision](c5/3.py) - mock to show the simple approach problem (introducing FPS too)
 - 4 [Simple Diagonal Movement](c5/4.py) - common pygame approach
 - 5 [Vector2](c5/5.py) - pygame.Vector2 (a 2D "thing" with vector operations)
-- 6 [Algebraic vector with Vector2](c5/6.py) - overloaded - (minus) for Vector2 objects
+- 6 [Algebraic vector with Vector2](c5/6.py) - overloaded - (\_\_sub\_\_) for Vector2 objects
 - 8 [Vector2 magnitude](c5/8.py) - Vector2.magnitude
 - 9 [Normalized vector](c5/9.py) - Vector2.normalize
+- 10 [Vector2 addition](c5/a.py) - overloaded + (\_\_add\_\_) for Vector2 objects
