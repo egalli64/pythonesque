@@ -38,3 +38,4 @@
 - 1 [Simple movement](c5/1.py) - don't do that
 - 2 [Time-Based Movement](c5/2.py) - better, still not good
 - 3 [Speed comparision](c5/3.py) - mock to show the simple approach problem (introducing FPS too)
+- 4 [Simple Diagonal Movement](c5/4.py) - common pygame approach
