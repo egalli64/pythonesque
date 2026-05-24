@@ -42,3 +42,4 @@
 - 5 [Vector2](c5/5.py) - pygame.Vector2 (a 2D "thing" with vector operations)
 - 6 [Algebraic vector with Vector2](c5/6.py) - overloaded - (minus) for Vector2 objects
 - 8 [Vector2 magnitude](c5/8.py) - Vector2.magnitude
+- 9 [Normalized vector](c5/9.py) - Vector2.normalize
