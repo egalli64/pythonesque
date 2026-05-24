@@ -44,3 +44,4 @@
 - 8 [Vector2 magnitude](c5/8.py) - Vector2.magnitude
 - 9 [Normalized vector](c5/9.py) - Vector2.normalize
 - 10 [Vector2 addition](c5/a.py) - overloaded + (\_\_add\_\_) for Vector2 objects
+- 12 [Vector2 negation](c5/c.py) - overloaded unary - (\_\_neg\_\_) for Vector2 objects
