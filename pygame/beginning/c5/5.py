@@ -21,3 +21,9 @@ print(pygame.Vector2(3, 5))
 a_tuple = (6, 2)
 v2 = pygame.Vector2(a_tuple)
 print(a_tuple, v2)
+
+# Seeing v2 as a point
+print(f"The point coordinates are x = {v2.x}, y = {v2.y}")
+
+# Seeing v2 as a vector
+print(f"The vector components are {v2[0]} and {v2[1]}")
