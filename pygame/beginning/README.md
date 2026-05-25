@@ -48,3 +48,7 @@
 - 13 [Vector2 multiplication and division](c5/d.py) - overloaded \* and \\ - (\_\_mult\_\_ and \_\_truediv\_\_) for Vector2 objects
 - 14 [Calculating positions](c5/e.py) - using Vector2 features
 - 16 [Time-based movement](c5/g.py) - using Vector2 features
+
+## Chapter 6 - Accepting User Input
+
+- 1 [Testing pressed keys](c6/1.py) - KEYDOWN event.type, key.get_pressed
