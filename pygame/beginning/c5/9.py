@@ -16,3 +16,7 @@ print("Vector AB is", ab)
 
 print("Magnitude of AB is", ab.magnitude())
 print("AB normalized is", ab.normalize())
+print("AB is still", ab)
+
+ab.normalize_ip()
+print("AB normalized (in place) is", ab)

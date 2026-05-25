@@ -42,7 +42,7 @@
 - 5 [Vector2](c5/5.py) - pygame.Vector2 (a 2D "thing" with vector operations)
 - 6 [Algebraic vector with Vector2](c5/6.py) - overloaded - (\_\_sub\_\_) for Vector2 objects
 - 8 [Vector2 magnitude](c5/8.py) - Vector2.magnitude
-- 9 [Normalized vector](c5/9.py) - Vector2.normalize
+- 9 [Normalized vector](c5/9.py) - Vector2.normalize and normalize_ip
 - 10 [Vector2 addition](c5/a.py) - overloaded + (\_\_add\_\_) for Vector2 objects
 - 12 [Vector2 negation](c5/c.py) - overloaded unary - (\_\_neg\_\_) for Vector2 objects
 - 13 [Vector2 multiplication and division](c5/d.py) - overloaded \* and \\ - (\_\_mult\_\_ and \_\_truediv\_\_) for Vector2 objects
