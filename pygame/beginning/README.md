@@ -52,3 +52,4 @@
 ## Chapter 6 - Accepting User Input
 
 - 1 [Testing pressed keys](c6/1.py) - KEYDOWN event.type, key.get_pressed
+- 2 [Arrow keys for movement](c6/2.py) - key.get_pressed, K_LEFT ..., Vector2.normalize_ip
