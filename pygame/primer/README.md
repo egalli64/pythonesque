@@ -4,3 +4,4 @@
 ## Splitting up the code
 - [Basic Pygame Program](1.py) - Intro
 - [Game structure](2.py) - Up to Processing Events
+- [Drawing on the Screen](3.py)
