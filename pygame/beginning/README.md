@@ -58,4 +58,5 @@
 
 ## Chapter 8 - Moving into the Third Dimension
 
-- 1 [Illusion of Depth](c8/1.py)
+- 1 [Illusion of depth](c8/1.py)
+- 4 [A 3D target](c8/4.py) - Vector3
