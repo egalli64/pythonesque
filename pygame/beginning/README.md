@@ -54,3 +54,4 @@
 - 1 [Testing pressed keys](c6/1.py) - KEYDOWN event.type, key.get_pressed
 - 2 [Arrow keys for movement](c6/2.py) - key.get_pressed, K_LEFT ..., Vector2.normalize_ip
 - 3 [Free rotation control](c6/3.py) - transform.rotate, Vector2.rotate
+- 4 [Rotation with mouse](c6/4.py) - mouse.get_pressed, mouse.get_rel
