@@ -60,3 +60,4 @@
 
 - 1 [Illusion of depth](c8/1.py)
 - 4 [A 3D target](c8/4.py) - Vector3
+- 8 [A Simple 3D Engine](c8/8.py)
