@@ -13,3 +13,6 @@
 ## [Beginnning Python Games Development with PyGame](beginning/README.md)
 - https://link.springer.com/book/10.1007/978-1-4842-0970-7
 - https://github.com/Apress/beg-python-games-dev-2ed
+
+## [Pygame: A Primer on Game Programming](primer/README.md)
+- https://realpython.com/pygame-a-primer/
