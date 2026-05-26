@@ -1,5 +1,6 @@
 # Pygame: A Primer on Game Programming
 - https://realpython.com/pygame-a-primer/
 
-## Examples
-- [Basic Pygame Program](1.py)
+## Splitting up the code
+- [Basic Pygame Program](1.py) - Intro
+- [Game structure](2.py) - Up to Processing Events
