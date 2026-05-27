@@ -8,7 +8,9 @@ My reviewed version: https://github.com/egalli64/pythonesque/pygame/primer
 # (a) Importing and Initializing Pygame
 import pygame
 
-SCREEN_SIZE = pygame.Vector2(800, 600)
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+SCREEN_SIZE = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 pygame.init()
 
