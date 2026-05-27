@@ -8,3 +8,4 @@
 - [Sprite](3.py) - Sprite as game entity
 - [User input](3a.py) - key.get_pressed, Rect.move_ip and clamp_ip
 - [Enemy](3b.py) - A randomly generated Sprite
+- [Sprite Group](3c.py) - sprite.Group, Sprite.kill
