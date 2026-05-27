@@ -7,13 +7,14 @@ My reviewed version: https://github.com/egalli64/pythonesque/pygame/primer
 
 import pygame
 
-SCREEN_SIZE = pygame.Vector2(800, 600)
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+SCREEN_SIZE = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
 SCREEN_CENTER = SCREEN_SIZE / 2
 
 BACKGROUND_COLOR = (0, 0, 0)  # black
-SURF_COLOR = (255, 255, 255)  # white
-SURF_SIZE = pygame.Vector2(75, 25)
-SURF_POS = SCREEN_CENTER - SURF_SIZE / 2
+PLAYER_COLOR = (255, 255, 255)  # white
+PLAYER_SIZE = pygame.Vector2(75, 25)
 
 
 class Player(pygame.sprite.Sprite):
@@ -23,11 +24,15 @@ class Player(pygame.sprite.Sprite):
     So, a Surface and a Rect is provided
     """
 
+    image: pygame.Surface
+    rect: pygame.Rect
+
     def __init__(self):
         super().__init__()
-        self.surf = pygame.Surface(SURF_SIZE)
-        self.surf.fill(SURF_COLOR)
-        self.rect = self.surf.get_rect()
+        self.image = pygame.Surface(PLAYER_SIZE)  # type: ignore
+        self.image.fill(PLAYER_COLOR)
+        # let's pygame adjust the rect for us
+        self.rect = self.image.get_rect(center=SCREEN_CENTER)  # type: ignore
 
 
 pygame.init()
@@ -45,7 +50,7 @@ while running:
 
     screen.fill(BACKGROUND_COLOR)
 
-    screen.blit(player.surf, SCREEN_CENTER)
+    screen.blit(player.image, player.rect)
     pygame.display.flip()
 
 print("Done.")
