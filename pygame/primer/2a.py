@@ -7,14 +7,16 @@ My reviewed version: https://github.com/egalli64/pythonesque/pygame/primer
 
 import pygame
 
-SCREEN_SIZE = pygame.Vector2(800, 600)
-SCREEN_CENTER = SCREEN_SIZE / 2
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+SCREEN_SIZE = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 # begin new stuff
 BACKGROUND_COLOR = (255, 255, 255)  # white
-SURF_COLOR = (0, 0, 0)  # black
-SURF_SIZE = pygame.Vector2(50, 50)
-SURF_POS = SCREEN_CENTER - SURF_SIZE / 2
+IMAGE_COLOR = (0, 0, 0)  # black
+IMAGE_SIZE = pygame.Vector2(50, 50)
+SCREEN_CENTER = SCREEN_SIZE / 2
+IMAGE_POS = SCREEN_CENTER - IMAGE_SIZE / 2
 # end new stuff
 
 pygame.init()
@@ -32,10 +34,10 @@ while running:
     # begin new stuff
     screen.fill(BACKGROUND_COLOR)
 
-    surf = pygame.Surface(SURF_SIZE)
-    surf.fill(SURF_COLOR)
+    image = pygame.Surface(IMAGE_SIZE)
+    image.fill(IMAGE_COLOR)
 
-    screen.blit(surf, SURF_POS)
+    screen.blit(image, IMAGE_POS)
     pygame.display.flip()
     # end new stuff
 
