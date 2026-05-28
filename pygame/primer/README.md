@@ -10,3 +10,4 @@
 - [Enemy](3b.py) - A randomly generated Sprite
 - [Sprite Group](3c.py) - sprite.Group, Sprite.kill
 - [Custom Events](3d.py) - based on USEREVENT
+- [Collision Detection](3e.py) - sprite.spritecollideany
