@@ -12,3 +12,4 @@
 - [Custom Events](3d.py) - based on USEREVENT
 - [Collision Detection](3e.py) - sprite.spritecollideany, RLEACCEL
 - [Background Images](4.py)
+- [Sound Effects](5.py)
