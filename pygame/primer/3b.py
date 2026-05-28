@@ -5,18 +5,24 @@ From: A Primer on Pygame Game Programming - https://realpython.com/pygame-a-prim
 My reviewed version: https://github.com/egalli64/pythonesque/pygame/primer
 """
 
+from typing import override
 import pygame
 import random  # enemies behave in a random way
+
+FPS = 30
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_SIZE = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
 SCREEN_CENTER = SCREEN_SIZE / 2
+SCREEN_RECT = (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 BACKGROUND_COLOR = (0, 0, 0)  # black
-SURF_COLOR = (255, 255, 255)  # white
-SURF_SIZE = pygame.Vector2(75, 25)
-SURF_POS = SCREEN_CENTER - SURF_SIZE / 2
+
+PLAYER_COLOR = (255, 255, 255)  # white
+PLAYER_SIZE = pygame.Vector2(75, 25)
+PLAYER_SPEED = 200  # pixel per second
+
 ENEMY_COLOR = (255, 0, 0)  # red
 ENEMY_SIZE = pygame.Vector2(20, 10)
 ENEMY_MIN_SPEED = 5
@@ -24,35 +30,37 @@ ENEMY_MAX_SPEED = 20
 
 
 class Player(pygame.sprite.Sprite):
-    """
-    Player is-a drawable Sprite
-
-    So, a Surface and a Rect is provided
-    """
-
+    image: pygame.Surface
     rect: pygame.Rect
 
     def __init__(self):
         super().__init__()
-        self.surf = pygame.Surface(SURF_SIZE)
-        self.surf.fill(SURF_COLOR)
-        self.rect = self.surf.get_rect()  # type: ignore
+        self.image = pygame.Surface(PLAYER_SIZE)  # type: ignore
+        self.image.fill(PLAYER_COLOR)
+        self.rect = self.image.get_rect(center=SCREEN_CENTER)  # type: ignore
 
-    def update(self, pressed_keys):
+    # change: parameter delta time since last update
+    @override
+    def update(self, pressed_keys, dt):
         """
         Move in place the sprite based on the keys pressed
 
         Keep it inside the screen area
         """
-        if pressed_keys[pygame.K_UP]:
-            self.rect.move_ip(0, -5)
-        if pressed_keys[pygame.K_DOWN]:
-            self.rect.move_ip(0, 5)
-        if pressed_keys[pygame.K_LEFT]:
-            self.rect.move_ip(-5, 0)
-        if pressed_keys[pygame.K_RIGHT]:
-            self.rect.move_ip(5, 0)
+        # change: movement based on delta time
+        delta_pixel = PLAYER_SPEED * dt
+        dpos = pygame.Vector2()
 
+        if pressed_keys[pygame.K_RIGHT]:
+            dpos.x += delta_pixel
+        if pressed_keys[pygame.K_DOWN]:
+            dpos.y += delta_pixel
+        if pressed_keys[pygame.K_LEFT]:
+            dpos.x -= delta_pixel
+        if pressed_keys[pygame.K_UP]:
+            dpos.y -= delta_pixel
+
+        self.rect.move_ip(dpos)
         self.rect.clamp_ip(SCREEN_RECT)
 
 
@@ -60,13 +68,14 @@ class Player(pygame.sprite.Sprite):
 class Enemy(pygame.sprite.Sprite):
     """Enemy is-a drawable Sprite"""
 
+    image: pygame.Surface
     rect: pygame.Rect
 
     def __init__(self):
-        super(Enemy, self).__init__()
-        self.surf = pygame.Surface(ENEMY_SIZE)
-        self.surf.fill(ENEMY_COLOR)
-        self.rect = self.surf.get_rect(  # type: ignore
+        super().__init__()
+        self.image = pygame.Surface(ENEMY_SIZE)  # type: ignore
+        self.image.fill(ENEMY_COLOR)
+        self.rect = self.image.get_rect(  # type: ignore
             center=(
                 # temporary place the enemy somewhere in the central screen area
                 random.randint(SCREEN_WIDTH // 2 + 20, SCREEN_WIDTH // 2 + 100),
@@ -75,18 +84,19 @@ class Enemy(pygame.sprite.Sprite):
         )
 
         self.speed = random.randint(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED)
-        print(self.rect, self.speed)
 
 
 pygame.init()
 
 screen = pygame.display.set_mode(SCREEN_SIZE)
-SCREEN_RECT = screen.get_rect()
 player = Player()
 an_enemy = Enemy()  # temporary generate a single enemy
+clock = pygame.time.Clock()
 
 running = True
 while running:
+    dt = clock.tick(30) / 1000  # time delta
+
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             running = False
@@ -94,15 +104,14 @@ while running:
             running = False
 
     pressed_keys = pygame.key.get_pressed()
-    player.update(pressed_keys)
+    player.update(pressed_keys, dt)
 
     screen.fill(BACKGROUND_COLOR)
 
     # temporary place an enemy on screen
-    print(an_enemy.surf, an_enemy.rect)
-    screen.blit(an_enemy.surf, an_enemy.rect)
+    screen.blit(an_enemy.image, an_enemy.rect)
 
-    screen.blit(player.surf, player.rect)
+    screen.blit(player.image, player.rect)
     pygame.display.flip()
 
 print("Done.")
