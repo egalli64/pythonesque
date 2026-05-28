@@ -5,15 +5,21 @@ From: A Primer on Pygame Game Programming - https://realpython.com/pygame-a-prim
 My reviewed version: https://github.com/egalli64/pythonesque/pygame/primer
 """
 
+from typing import override
 import pygame
 
-SCREEN_SIZE = pygame.Vector2(800, 600)
+FPS = 30  # frame per seconds
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+SCREEN_SIZE = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
 SCREEN_CENTER = SCREEN_SIZE / 2
+SCREEN_RECT = (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)  # for player clamping
 
 BACKGROUND_COLOR = (0, 0, 0)  # black
-SURF_COLOR = (255, 255, 255)  # white
-SURF_SIZE = pygame.Vector2(75, 25)
-SURF_POS = SCREEN_CENTER - SURF_SIZE / 2
+PLAYER_COLOR = (255, 255, 255)  # white
+PLAYER_SIZE = pygame.Vector2(75, 25)
+PLAYER_MOVE = 5  # pixel units
 
 
 class Player(pygame.sprite.Sprite):
@@ -23,41 +29,48 @@ class Player(pygame.sprite.Sprite):
     So, a Surface and a Rect is provided
     """
 
-    rect: pygame.Rect  # in here rect is always a Rect
+    image: pygame.Surface
+    rect: pygame.Rect
 
     def __init__(self):
         super().__init__()
-        self.surf = pygame.Surface(SURF_SIZE)
-        self.surf.fill(SURF_COLOR)
-        self.rect = self.surf.get_rect()  # type: ignore - hide Pylance complaint
+        self.image = pygame.Surface(PLAYER_SIZE)  # type: ignore
+        self.image.fill(PLAYER_COLOR)
+        self.rect = self.image.get_rect(center=SCREEN_CENTER)  # type: ignore
 
     # new method
+    @override
     def update(self, pressed_keys):
         """
         Move in place the sprite based on the keys pressed
 
         Keep it inside the screen area
         """
-        if pressed_keys[pygame.K_UP]:
-            self.rect.move_ip(0, -5)
-        if pressed_keys[pygame.K_DOWN]:
-            self.rect.move_ip(0, 5)
-        if pressed_keys[pygame.K_LEFT]:
-            self.rect.move_ip(-5, 0)
-        if pressed_keys[pygame.K_RIGHT]:
-            self.rect.move_ip(5, 0)
+        dpos = pygame.Vector2()
 
+        if pressed_keys[pygame.K_RIGHT]:
+            dpos.x += PLAYER_MOVE
+        if pressed_keys[pygame.K_DOWN]:
+            dpos.y += PLAYER_MOVE
+        if pressed_keys[pygame.K_LEFT]:
+            dpos.x -= PLAYER_MOVE
+        if pressed_keys[pygame.K_UP]:
+            dpos.y -= PLAYER_MOVE
+
+        self.rect.move_ip(dpos)
         self.rect.clamp_ip(SCREEN_RECT)
 
 
 pygame.init()
 
 screen = pygame.display.set_mode(SCREEN_SIZE)
-SCREEN_RECT = screen.get_rect()
 player = Player()
+clock = pygame.time.Clock()  # manage the game frame rate
 
 running = True
 while running:
+    clock.tick(30)  # give a human tempo to the game
+
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             running = False
@@ -72,7 +85,7 @@ while running:
     screen.fill(BACKGROUND_COLOR)
 
     # player position now is dynamic
-    screen.blit(player.surf, player.rect)
+    screen.blit(player.image, player.rect)
     pygame.display.flip()
 
 print("Done.")
