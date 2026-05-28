@@ -9,3 +9,4 @@
 - [User input](3a.py) - key.get_pressed, Rect.move_ip and clamp_ip, clock
 - [Enemy](3b.py) - A randomly generated Sprite
 - [Sprite Group](3c.py) - sprite.Group, Sprite.kill
+- [Custom Events](3d.py) - based on USEREVENT
