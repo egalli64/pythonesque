@@ -1,6 +1,6 @@
 """
 Python Crash Course, Third Edition, Part II https://nostarch.com/python-crash-course-3rd-edition
-My notes: https://github.com/egalli64/pythonesque/pygame/pcc3
+My notes: https://github.com/egalli64/pythonesque/ pygame/pcc3 folder
 
 Chapter 12 - A Ship that fires bullets
 Piloting the Ship
