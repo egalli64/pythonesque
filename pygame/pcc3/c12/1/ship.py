@@ -8,6 +8,8 @@ Starting the Game Project
 
 import pygame
 
+SHIP_IMAGE = "../../images/ship.bmp"
+
 
 class Ship:
     """A class to manage the ship."""
@@ -17,7 +19,7 @@ class Ship:
         self.screen = screen
 
         # Load the ship image and get its rect.
-        self.image = pygame.image.load("../images/ship.bmp")
+        self.image = pygame.image.load(SHIP_IMAGE)
         self.rect = self.image.get_rect()
 
         # Start each new ship at the bottom center of the screen.

@@ -9,6 +9,7 @@ Piloting the Ship
 import pygame
 
 DEFAULT_SHIP_SPEED = 10
+SHIP_IMAGE = "../../images/ship.bmp"
 
 
 class Ship:
@@ -19,7 +20,7 @@ class Ship:
         self.screen = screen
 
         # Load the ship image and get its rect.
-        self.image = pygame.image.load("../images/ship.bmp")
+        self.image = pygame.image.load(SHIP_IMAGE)
         self.rect = self.image.get_rect()
         # sheep rightmost x position
         self.max_x = screen.get_rect()[2] - self.rect[2]
