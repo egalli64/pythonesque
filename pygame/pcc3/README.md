@@ -8,3 +8,6 @@
 - 1 [Game setup](c12/1)
     - [The Game class](c12/1/game.py)
     - [The Ship class](c12/1/ship.py)
+- 2 [Piloting the Ship](c12/2)
+    - [The Game class](c12/2/game.py)
+    - [The Ship class](c12/2/ship.py)
