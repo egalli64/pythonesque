@@ -16,3 +16,7 @@
 
 ## [Pygame: A Primer on Game Programming](primer/README.md)
 - https://realpython.com/pygame-a-primer/
+
+## [Python Crash Course - Third Edition - Chapters 12, 13, 14](pcc3/README.md)
+- https://nostarch.com/python-crash-course-3rd-edition
+- https://ehmatthes.github.io/pcc_3e
