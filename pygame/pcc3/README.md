@@ -23,3 +23,6 @@
     - [The Bullet class](c13/1/bullet.py)
     - [The Ship class](c13/1/ship.py)
     - [The Game class](c13/1/game.py)
+- 2 [Making the Fleet Move](c13/2)
+    - [The Alien class](c13/2/alien.py)
+    - [The Game class](c13/2/game.py)
