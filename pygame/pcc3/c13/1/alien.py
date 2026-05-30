@@ -15,6 +15,7 @@ ALIEN_IMAGE = "../../images/alien.bmp"
 
 class Alien(Sprite):
     """A class to represent a single alien in the fleet."""
+    rect: pygame.Rect
 
     def __init__(self, screen):
         """Initialize the alien and set its starting position."""
@@ -23,9 +24,9 @@ class Alien(Sprite):
 
         # Load the alien image and set its rect attribute.
         self.image = pygame.image.load(ALIEN_IMAGE)
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect() # type: ignore
 
-        # Start each new alien near the top left of the screen.
+        # leave one alien size free on top and on left
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height
 

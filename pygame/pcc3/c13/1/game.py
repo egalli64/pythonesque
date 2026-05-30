@@ -38,11 +38,34 @@ class Game:
 
         self._create_fleet()
 
-    def _create_fleet(self):
-        """Create the fleet of aliens."""
-        # Make an alien.
+    def _create_alien(self, x, y):
+        """Create an alien and place it in the row."""
         alien = Alien(self.screen)
+        alien.x = x
+        alien.rect.x = x
+        alien.rect.y = y
         self.aliens.add(alien)
+
+    def _create_fleet(self):
+        """
+        Create the fleet of aliens
+
+        Spacing between aliens is one alien width and one alien height
+        """
+        first_alien = Alien(self.screen)
+        self.aliens.add(first_alien)
+
+        alien_size = pygame.Vector2(first_alien.rect.size)
+
+        pos = alien_size.copy()
+        while pos.y < (SCREEN_HEIGHT - 3 * alien_size.y):
+            while pos.x < (SCREEN_WIDTH - 2 * alien_size.x):
+                self._create_alien(*pos)
+                pos.x += 2 * alien_size.x
+
+            # Finished a row; reset x value, and increment y value.
+            pos.x = alien_size.x
+            pos.y += 2 * alien_size.y
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group."""
