@@ -133,6 +133,11 @@ class Game:
         self._check_fleet_edges()
         self.aliens.update()
 
+    def _update_bullets(self):
+        """Update position of bullets and check for alien collision"""
+        self.bullets.update()
+        pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+
     def _update_screen(self):
         """Redraw the screen during each pass through the loop"""
         self.screen.fill(BACKGROUND_COLOR)
@@ -149,8 +154,8 @@ class Game:
         """The game main loop"""
         while self._check_events():
             self.ship.update()
-            self.bullets.update()
             self._update_aliens()
+            self._update_bullets()
 
             self._update_screen()
             self.clock.tick(FPS)
