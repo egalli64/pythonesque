@@ -19,3 +19,7 @@
 
 ## Chapter 13 - Aliens!
 - 1 [Building the alien fleet](c13/1)
+    - [The Alien class](c13/1/alien.py)
+    - [The Bullet class](c13/1/bullet.py)
+    - [The Ship class](c13/1/ship.py)
+    - [The Game class](c13/1/game.py)
