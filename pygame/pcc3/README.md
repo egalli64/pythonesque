@@ -7,9 +7,12 @@
 
 ## Chapter 12 - A Ship that fires bullets
 - 1 [Game setup](c12/1)
-    - [The Game class](c12/1/game.py)
     - [The Ship class](c12/1/ship.py)
+    - [The Game class](c12/1/game.py)
 - 2 [Piloting the ship](c12/2)
-    - [The Game class](c12/2/game.py)
     - [The Ship class](c12/2/ship.py)
+    - [The Game class](c12/2/game.py)
 - 3 [Shooting bullets](c12/3)
+    - [The Bullet class](c12/3/bullet.py)
+    - [The Ship class](c12/3/ship.py)
+    - [The Game class](c12/3/game.py)
