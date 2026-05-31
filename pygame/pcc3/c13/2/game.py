@@ -137,6 +137,9 @@ class Game:
         """Update position of bullets and check for alien collision"""
         self.bullets.update()
         pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+        if not self.aliens:
+            self.bullets.empty()
+            self._create_fleet()
 
     def _update_screen(self):
         """Redraw the screen during each pass through the loop"""
