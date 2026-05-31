@@ -26,3 +26,6 @@
 - 2 [Making the fleet move](c13/2)
     - [The Alien class](c13/2/alien.py)
     - [The Game class](c13/2/game.py)
+- 3 [Ending the Game](c13/2)
+    - [The Game class](c13/3/game.py)
+    - [The Ship class](c13/3/ship.py)
