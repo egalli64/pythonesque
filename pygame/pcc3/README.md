@@ -29,3 +29,8 @@
 - 3 [Ending the Game](c13/2)
     - [The Game class](c13/3/game.py)
     - [The Ship class](c13/3/ship.py)
+
+## Chapter 14 - Scoring
+- 1 [Adding the play button](c14/1)
+    - [The Game class](c14/1/game.py)
+    - [The Button class](c14/1/button.py)
