@@ -34,3 +34,8 @@
 - 1 [Adding the play button](c14/1)
     - [The Game class](c14/1/game.py)
     - [The Button class](c14/1/button.py)
+- 2 [Leveling up](c14/2)
+    - [The Game class](c14/2/game.py)
+    - [The Alien class](c14/2/alien.py)
+    - [The Bullet class](c14/2/bullet.py)
+    - [The Ship class](c14/2/ship.py)
