@@ -30,13 +30,17 @@ class Scoreboard:
         self.font = pygame.font.SysFont(None, Scoreboard.FONT_SIZE)
 
         self.high_score = 0
-        self.init_score()
+        self.set_current_info()
 
+        self.prep_level()
         self.prep_score()
         self.prep_high_score()
+        self.prep_level()
 
-    def increase_alien_points(self):
+    def increase_level(self):
         self.alien_points = int(self.alien_points * Scoreboard.SCORE_SCALE)
+        self.level += 1
+        self.prep_level()
 
     def alien_hit(self, n):
         """Adjust the score for n alien hits"""
@@ -44,7 +48,8 @@ class Scoreboard:
         self.prep_score()
         self.check_high_score()
 
-    def init_score(self):
+    def set_current_info(self):
+        self.level = 1
         self.score = 0
         self.alien_points = Scoreboard.BASE_ALIEN_POINTS
         self.prep_score()
@@ -54,6 +59,16 @@ class Scoreboard:
         if self.score > self.high_score:
             self.high_score = self.score
             self.prep_high_score()
+
+    def prep_level(self):
+        """Turn the level into a rendered image."""
+        self.level_image = self.font.render(
+            str(self.level), True, Scoreboard.TEXT_COLOR, Scoreboard.BACKGROUND_COLOR
+        )
+        # Position the level below the score.
+        self.level_rect = self.level_image.get_rect()
+        self.level_rect.right = self.score_rect.right
+        self.level_rect.top = self.score_rect.bottom + 10
 
     def prep_score(self):
         """Turn the score into a rendered image."""
@@ -79,5 +94,6 @@ class Scoreboard:
 
     def draw(self):
         """Draw info from the scoreboard"""
+        self.screen.blit(self.level_image, self.level_rect)
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)

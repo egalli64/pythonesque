@@ -29,7 +29,7 @@ class Game:
     BACKGROUND_COLOR = (230, 230, 230)  # light gray
 
     SHIP_COUNT = 3
-    MAX_BURST_SIZE = 3
+    MAX_BURST_SIZE = 30
 
     FLEET_DROP_SPEED = 10
 
@@ -63,12 +63,12 @@ class Game:
         Alien.speed = Alien.DEFAULT_SPEED
         Alien.fleet_direction = 1
 
-    def increase_speed(self):
+    def next_level(self):
         """Increase speed settings."""
         self.ship.speed *= Game.SPEEDUP_SCALE
         self.bullet_speed *= Game.SPEEDUP_SCALE
         Alien.speed *= Game.SPEEDUP_SCALE
-        self.scoreboard.increase_alien_points()
+        self.scoreboard.increase_level()
 
     def _create_alien(self, x, y):
         """Create an alien and place it in the row."""
@@ -147,7 +147,7 @@ class Game:
         if not self.active and self.play_button.rect.collidepoint(mouse_pos):
             self.setup()
             self.ships_left = Game.SHIP_COUNT
-            self.scoreboard.init_score()
+            self.scoreboard.set_current_info()
             self.active = True
 
             # Get rid of any remaining bullets and aliens.
@@ -190,7 +190,6 @@ class Game:
             self.aliens.empty()
             # Create a new fleet and center the ship.
             self._create_fleet()
-            self.increase_speed()
             self.ship.setup()
 
             sleep(0.5)
@@ -224,6 +223,7 @@ class Game:
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
+            self.next_level()
 
     def _update_screen(self):
         """Redraw the screen during each pass through the loop"""
