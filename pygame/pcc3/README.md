@@ -39,3 +39,6 @@
     - [The Alien class](c14/2/alien.py)
     - [The Bullet class](c14/2/bullet.py)
     - [The Ship class](c14/2/ship.py)
+- 3 [Scoring](c14/3)
+    - [The Scoreboard class](c14/3/scoreboard.py)
+    - [The Game class](c14/3/game.py)
