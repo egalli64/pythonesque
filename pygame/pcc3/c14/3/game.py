@@ -29,7 +29,7 @@ class Game:
     BACKGROUND_COLOR = (230, 230, 230)  # light gray
 
     SHIP_COUNT = 3
-    MAX_BURST_SIZE = 10
+    MAX_BURST_SIZE = 3
 
     FLEET_DROP_SPEED = 10
 
@@ -147,7 +147,7 @@ class Game:
         if not self.active and self.play_button.rect.collidepoint(mouse_pos):
             self.setup()
             self.ships_left = Game.SHIP_COUNT
-            self.scoreboard.reset_score()
+            self.scoreboard.init_score()
             self.active = True
 
             # Get rid of any remaining bullets and aliens.
