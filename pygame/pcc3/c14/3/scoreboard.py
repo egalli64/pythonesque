@@ -19,7 +19,8 @@ class Scoreboard:
     BACKGROUND_COLOR = (230, 230, 230)  # light gray
     FONT_SIZE = 48
 
-    ALIEN_POINTS = 50
+    BASE_ALIEN_POINTS = 50
+    SCORE_SCALE = 1.5
 
     def __init__(self, screen):
         """Initialize scorekeeping attributes."""
@@ -28,14 +29,28 @@ class Scoreboard:
 
         self.font = pygame.font.SysFont(None, Scoreboard.FONT_SIZE)
 
+        self.alien_points = 50
         self.score = 0
 
         self.prep_score()
 
+    def increase_alien_points(self):
+        self.alien_points = int(self.alien_points * Scoreboard.SCORE_SCALE)
+
+    def alien_hit(self, n):
+        """Adjust the score for n alien hits"""
+        self.score += self.alien_points * n
+        self.prep_score()
+
+    def reset_score(self):
+        self.score = 10000
+        self.prep_score()
+
     def prep_score(self):
         """Turn the score into a rendered image."""
+        rounded = f"{(round(self.score, -1)):,}"
         self.score_image = self.font.render(
-            str(self.score), True, Scoreboard.TEXT_COLOR, Scoreboard.BACKGROUND_COLOR
+            rounded, True, Scoreboard.TEXT_COLOR, Scoreboard.BACKGROUND_COLOR
         )
         # Display the score at the top right of the screen.
         self.score_rect = self.score_image.get_rect()

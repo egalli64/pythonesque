@@ -29,7 +29,7 @@ class Game:
     BACKGROUND_COLOR = (230, 230, 230)  # light gray
 
     SHIP_COUNT = 3
-    MAX_BURST_SIZE = 3
+    MAX_BURST_SIZE = 10
 
     FLEET_DROP_SPEED = 10
 
@@ -68,6 +68,7 @@ class Game:
         self.ship.speed *= Game.SPEEDUP_SCALE
         self.bullet_speed *= Game.SPEEDUP_SCALE
         Alien.speed *= Game.SPEEDUP_SCALE
+        self.scoreboard.increase_alien_points()
 
     def _create_alien(self, x, y):
         """Create an alien and place it in the row."""
@@ -146,7 +147,7 @@ class Game:
         if not self.active and self.play_button.rect.collidepoint(mouse_pos):
             self.setup()
             self.ships_left = Game.SHIP_COUNT
-            self.scoreboard.score = 0
+            self.scoreboard.reset_score()
             self.active = True
 
             # Get rid of any remaining bullets and aliens.
@@ -217,9 +218,8 @@ class Game:
     def _update_bullets(self):
         """Update position of bullets and check for alien collision"""
         self.bullets.update()
-        if pygame.sprite.groupcollide(self.bullets, self.aliens, True, True):
-            self.scoreboard.score += Scoreboard.ALIEN_POINTS
-            self.scoreboard.prep_score()
+        if coll := pygame.sprite.groupcollide(self.bullets, self.aliens, True, True):
+            self.scoreboard.alien_hit(len(coll))
 
         if not self.aliens:
             self.bullets.empty()
