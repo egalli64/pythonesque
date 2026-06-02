@@ -126,10 +126,9 @@ class Game:
         elif event.key == pygame.K_q:
             return False
         elif event.key == pygame.K_SPACE:
-            if self.active:
-                self._fire_bullet()
-            else:
-                self._new_game()
+            self._fire_bullet()
+        elif event.key in (pygame.K_RETURN, pygame.K_KP_ENTER) and not self.active:
+            self._new_game()
 
         return True
 
@@ -154,7 +153,7 @@ class Game:
         self.aliens.empty()
 
         self._create_fleet()
-        self.ship.setup()
+        self.ship.setup(True)
 
         pygame.mouse.set_visible(False)
 
