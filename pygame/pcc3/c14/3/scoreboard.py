@@ -22,6 +22,8 @@ class Scoreboard:
     BASE_ALIEN_POINTS = 50
     SCORE_SCALE = 1.5
 
+    SHIP_COUNT = 3
+
     def __init__(self, screen):
         """Initialize scorekeeping attributes."""
         self.screen = screen
@@ -36,6 +38,7 @@ class Scoreboard:
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
+        self.prep_ships()
 
     def increase_level(self):
         self.alien_points = int(self.alien_points * Scoreboard.SCORE_SCALE)
@@ -48,10 +51,18 @@ class Scoreboard:
         self.prep_score()
         self.check_high_score()
 
+    def ship_hit(self):
+        self.ships_left -= 1
+        self.prep_ships()
+
+        return self.ships_left > 0
+
     def set_current_info(self):
         self.level = 1
         self.score = 0
         self.alien_points = Scoreboard.BASE_ALIEN_POINTS
+        self.ships_left = Scoreboard.SHIP_COUNT
+
         self.prep_score()
 
     def check_high_score(self):
@@ -59,6 +70,15 @@ class Scoreboard:
         if self.score > self.high_score:
             self.high_score = self.score
             self.prep_high_score()
+
+    def prep_ships(self):
+        """Show how many ships are left."""
+        self.ships = Group()
+        for ship_number in range(self.ships_left):
+            ship = Ship(self.screen)
+            ship.rect.x = 10 + ship_number * ship.rect.width
+            ship.rect.y = 10
+            self.ships.add(ship)
 
     def prep_level(self):
         """Turn the level into a rendered image."""
@@ -97,3 +117,4 @@ class Scoreboard:
         self.screen.blit(self.level_image, self.level_rect)
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
+        self.ships.draw(self.screen)

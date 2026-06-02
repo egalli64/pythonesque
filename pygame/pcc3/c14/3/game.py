@@ -28,8 +28,7 @@ class Game:
 
     BACKGROUND_COLOR = (230, 230, 230)  # light gray
 
-    SHIP_COUNT = 3
-    MAX_BURST_SIZE = 30
+    MAX_BURST_SIZE = 3
 
     FLEET_DROP_SPEED = 10
 
@@ -46,7 +45,6 @@ class Game:
         pygame.display.set_caption(Game.NAME)
 
         self.ship = Ship(self.screen)
-        self.ships_left = Game.SHIP_COUNT
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
 
@@ -146,7 +144,6 @@ class Game:
         """Start a new game when the player clicks Play."""
         if not self.active and self.play_button.rect.collidepoint(mouse_pos):
             self.setup()
-            self.ships_left = Game.SHIP_COUNT
             self.scoreboard.set_current_info()
             self.active = True
 
@@ -182,9 +179,7 @@ class Game:
 
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
-        self.ships_left -= 1
-
-        if self.ships_left > 0:
+        if self.scoreboard.ship_hit():
             # Get rid of any remaining bullets and aliens.
             self.bullets.empty()
             self.aliens.empty()
