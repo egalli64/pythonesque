@@ -7,21 +7,26 @@ Scoring
 """
 
 import pygame
+from pygame.sprite import Sprite
 
 
-class Ship:
+class Ship(Sprite):
     """A class to manage the ship."""
+
+    rect: pygame.Rect
 
     DEFAULT_SPEED = 10.0
     IMAGE = "../../images/ship.bmp"
 
     def __init__(self, screen):
         """Initialize the ship and set its starting position."""
+        super().__init__()
+
         self.screen = screen
 
         # Load the ship image and get its rect.
         self.image = pygame.image.load(Ship.IMAGE)
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect()  # type: ignore
         # sheep rightmost position
         self.MAX_X = screen.get_rect()[2] - self.rect[2]
         # each new ship at the bottom center of the screen
