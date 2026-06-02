@@ -4,7 +4,7 @@
 - Run a sample game: python -m pygame.examples.aliens
 
 ## Tutorials
-- https://www.pygame.org/wiki/tutorials
+- https://pyga.me/docs/#tutorials
 
 ## Making Games with Python & Pygame
 - https://inventwithpython.com/pygame/
@@ -20,3 +20,6 @@
 ## [Python Crash Course - Third Edition - Chapters 12, 13, 14](pcc3/README.md)
 - https://nostarch.com/python-crash-course-3rd-edition
 - https://ehmatthes.github.io/pcc_3e
+
+## [Introduction to Pygame-ce by Ralf Adams](adams/README.md)
+- https://github.com/adamsralf/pygame_book
