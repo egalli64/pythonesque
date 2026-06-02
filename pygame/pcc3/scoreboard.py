@@ -28,13 +28,8 @@ class Scoreboard:
 
         self.font = pygame.font.SysFont(None, Scoreboard.FONT_SIZE)
 
-        self.high_score = 0
         self.set_current_info()
-
-        self.prep_level()
-        self.prep_score()
-        self.prep_high_score()
-        self.prep_level()
+        self.set_high_score(0)
         self.prep_ships()
 
     def increase_level(self):
@@ -46,7 +41,8 @@ class Scoreboard:
         """Adjust the score for n alien hits"""
         self.score += self.alien_points * n
         self.prep_score()
-        self.check_high_score()
+        if self.score > self.high_score:
+            self.set_high_score(self.score)
 
     def ship_hit(self):
         self.ships_left -= 1
@@ -61,19 +57,14 @@ class Scoreboard:
         self.ships_left = Scoreboard.SHIP_COUNT
 
         self.prep_score()
-
-    def check_high_score(self):
-        """Check to see if there's a new high score."""
-        if self.score > self.high_score:
-            self.high_score = self.score
-            self.prep_high_score()
+        self.prep_level()
 
     def prep_ships(self):
         """Show how many ships are left."""
         self.ships = Group()
-        for ship_number in range(self.ships_left):
+        for i in range(self.ships_left):
             ship = Ship(self.screen)
-            ship.rect.x = 10 + ship_number * ship.rect.width
+            ship.rect.x = 10 + i * ship.rect.width
             ship.rect.y = 10
             self.ships.add(ship)
 
@@ -98,9 +89,10 @@ class Scoreboard:
         self.score_rect.right = self.screen_rect.right - 20
         self.score_rect.top = 20
 
-    def prep_high_score(self):
-        """Turn the high score into a rendered image."""
-        rounded = f"{round(self.high_score, -1):,}"
+    def set_high_score(self, x):
+        """Set high score as int and image (rounded to 10)"""
+        self.high_score = x
+        rounded = f"{round(x, -1):,}"
         self.high_score_image = self.font.render(
             rounded, True, Scoreboard.TEXT_COLOR, Scoreboard.BACKGROUND_COLOR
         )
