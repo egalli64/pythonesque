@@ -3,7 +3,7 @@ Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_bo
 
 My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
-Another minimal pygame app - modern way, explicit Window
+Using clock, control frame rate and avoid CPU hogging
 """
 
 import pygame
