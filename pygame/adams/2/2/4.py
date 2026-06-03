@@ -51,9 +51,12 @@ def main():
         if pygame.mouse.get_pressed()[0]:
             circles.append(Circle(pygame.mouse.get_pos()))
 
-        screen.fill("white")
         for circle in circles:
             circle.update()
+
+        screen.fill(BACKGROUND_COLOR)
+
+        for circle in circles:
             circle.draw(screen)
 
         window.flip()
