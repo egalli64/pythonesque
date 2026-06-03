@@ -10,3 +10,6 @@
 - 2: [Hello again, pygame](2/1/2.py) - Window
 - 3: [It's me again, pygame](2/1/3.py) - Clock
 - 4: [Multiple windows](2/1/4.py) - WINDOWCLOSE event
+
+## Section 2 - Graphic primitives
+- 1: [Introduction](2/2/1.py) - functions in module draw 
