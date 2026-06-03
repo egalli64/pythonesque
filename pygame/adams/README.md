@@ -17,3 +17,4 @@
 - 3: [Particle swarm /2](2/2/3.py) - some randomness
 - 4: [Particle swarm /3](2/2/4.py) - mutable particles, fountain effect
 - 5: [Particle swarm /4](2/2/5.py) - add x-scattering
+- 6: [Particle swarm /6](2/2/6.py) - more features added
