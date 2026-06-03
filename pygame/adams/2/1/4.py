@@ -8,20 +8,22 @@ Multiple windows
 
 import pygame
 
-SCREEN_SIZE = pygame.Vector2(300, 100)
+FPS = 30
+
 TITLE_1 = "Main Window"
 TITLE_2 = "Side Window"
-SCREEN_POS_1 = pygame.Vector2(500, 50)
-SCREEN_POS_2 = pygame.Vector2(820, 50)
+
+WIN_SIZE = pygame.Vector2(300, 100)
+WIN_POS_1 = pygame.Vector2(500, 50)
+WIN_POS_2 = pygame.Vector2(820, 50)
 BACKGROUND_COLORS = ((0, 255, 0), (255, 0, 0))
-FPS = 30
 
 
 def main():
     pygame.init()
     windows = {
-        pygame.Window(size=SCREEN_SIZE, title=TITLE_1, position=SCREEN_POS_1),
-        pygame.Window(size=SCREEN_SIZE, title=TITLE_2, position=SCREEN_POS_2),
+        pygame.Window(size=WIN_SIZE, title=TITLE_1, position=WIN_POS_1),
+        pygame.Window(size=WIN_SIZE, title=TITLE_2, position=WIN_POS_2),
     }
     print(windows)
 

@@ -12,8 +12,8 @@ import pygame.gfxdraw
 FPS = 30
 
 TITLE = "Grafic Primitives"
-SCREEN_SIZE = pygame.Vector2(530, 530)
-SCREEN_POS = pygame.Vector2(10, 50)
+WIN_SIZE = pygame.Vector2(530, 530)
+WIN_POS = pygame.Vector2(10, 50)
 
 BACKGROUND_COLOR = pygame.Color(200, 200, 200)
 
@@ -21,7 +21,7 @@ BACKGROUND_COLOR = pygame.Color(200, 200, 200)
 def main():
     pygame.init()
 
-    window = pygame.Window(TITLE, SCREEN_SIZE, SCREEN_POS)
+    window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
 

@@ -8,16 +8,15 @@ Another minimal pygame app - modern way, explicit Window
 
 import pygame
 
-SCREEN_SIZE = pygame.Vector2(400, 100)
 TITLE = "Hello, pygame-ce!"
-SCREEN_POS = pygame.Vector2(10, 50)
+WIN_SIZE = pygame.Vector2(400, 100)
+WIN_POS = pygame.Vector2(10, 50)
 BACKGROUND_COLOR = (0, 255, 0)
-FPS = 30
 
 
 def main():
     pygame.init()
-    window = pygame.Window(size=SCREEN_SIZE, title=TITLE, position=SCREEN_POS)
+    window = pygame.Window(size=WIN_SIZE, title=TITLE, position=WIN_POS)
     screen = window.get_surface()
 
     running = True

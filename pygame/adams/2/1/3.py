@@ -8,16 +8,17 @@ Using clock, control frame rate and avoid CPU hogging
 
 import pygame
 
-SCREEN_SIZE = pygame.Vector2(400, 100)
-TITLE = "Hello, pygame-ce!"
-SCREEN_POS = pygame.Vector2(10, 50)
-BACKGROUND_COLOR = (0, 255, 0)
 FPS = 30
+
+TITLE = "Hello, pygame-ce!"
+WIN_SIZE = pygame.Vector2(400, 100)
+WIN_POS = pygame.Vector2(10, 50)
+BACKGROUND_COLOR = (0, 255, 0)
 
 
 def main():
     pygame.init()
-    window = pygame.Window(size=SCREEN_SIZE, title=TITLE, position=SCREEN_POS)
+    window = pygame.Window(size=WIN_SIZE, title=TITLE, position=WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
 
