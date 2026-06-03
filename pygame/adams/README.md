@@ -14,3 +14,4 @@
 ## Section 2 - Graphic primitives
 - 1: [Introduction](2/2/1.py) - functions in module draw 
 - 2: [Particle swarm /1](2/2/2.py) - draw.circle, pygame mouse support
+- 2: [Particle swarm /2](2/2/3.py) - some randomness

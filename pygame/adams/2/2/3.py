@@ -3,16 +3,17 @@ Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_bo
 
 My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
-Particle swarm /1
+Particle swarm /2
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from random import randint
 
 import pygame
 
 FPS = 30
 
-TITLE = "Particle swarm /1"
+TITLE = "Particle swarm /2"
 WIN_SIZE = pygame.Vector2(300, 600)
 WIN_POS = pygame.Vector2(10, 50)
 BACKGROUND_COLOR = "white"
@@ -22,12 +23,18 @@ BACKGROUND_COLOR = "white"
 class Circle:
     screen: pygame.Surface
     pos: tuple[int, int]
+    color: tuple[int, int, int] = field(
+        default_factory=lambda: (randint(100, 255), randint(50, 255), 0)
+    )
 
-    RADIUS = 20
-    COLOR = "blue"
+    RADIUS = 2
+
+    def __post_init__(self):
+        randomized = self.pos[0] + randint(-5, 5), self.pos[1] + randint(-5, 5)
+        object.__setattr__(self, "pos", randomized)
 
     def draw(self) -> None:
-        pygame.draw.circle(self.screen, Circle.COLOR, self.pos, Circle.RADIUS)
+        pygame.draw.circle(self.screen, self.color, self.pos, Circle.RADIUS)
 
 
 def main():
