@@ -27,13 +27,19 @@ class Meadow:
 
 
 class Sky:
-    """Helper class for the stage upper side"""
+    """Helper class for the stage upper side - with dynamic color"""
 
     COLOR = (100, 150, 255)
     RECT = (0, 0, WIN_SIZE.x, HORIZON)
 
+    def __init__(self) -> None:
+        self.color: list[int] = list(Sky.COLOR)
+
+    def update(self, brightness: float) -> None:
+        self.color[1] = int(80 + brightness * 120)
+
     def draw(self, screen) -> None:
-        pygame.draw.rect(screen, Sky.COLOR, Sky.RECT)
+        pygame.draw.rect(screen, self.color, Sky.RECT)
 
 
 class Tree:
@@ -71,6 +77,8 @@ class House:
 
 
 class Sun:
+    """Helper class for the dynamic element"""
+
     SPEED = 1
     RADIUS = 40
     COLOR = (255, 220, 0)
@@ -78,12 +86,19 @@ class Sun:
     def __init__(self) -> None:
         self.pos = pygame.Vector2(0, 0)
 
-    def update(self) -> None:
+    def update(self) -> float:
+        """
+        Adjust the Sun position in the sky.
+
+        Return sine-adjusted y position variation in [0, 1].
+        """
         if 0 <= self.pos.x < WIN_SIZE.x:
             self.pos.x += Sun.SPEED
-            angle = (self.pos[0] / WIN_SIZE.x) * math.pi
-            self.pos.y = HORIZON * (1 - math.sin(angle)) + Sun.RADIUS
-            print(self.pos)
+            delta = math.sin((self.pos[0] / WIN_SIZE.x) * math.pi)
+            self.pos.y = HORIZON * (1 - delta) + Sun.RADIUS
+            return delta
+        else:
+            return 0
 
     def draw(self, screen) -> None:
         if 0 < self.pos.x < WIN_SIZE.x:
@@ -108,7 +123,8 @@ def main():
                 running = False
 
         # Updates
-        sun.update()
+        delta = sun.update()
+        sky.update(delta)
 
         # Draw
         sky.draw(screen)
