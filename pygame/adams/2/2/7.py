@@ -35,6 +35,22 @@ class Sky:
         pygame.draw.rect(screen, Sky.COLOR, Sky.RECT)
 
 
+class Tree:
+    """Helper class for a fixed element"""
+
+    TRUNK_RECT = (100, HORIZON - 50, 20, 60)
+    TRUNK_COLOR = (120, 80, 40)
+    CROWN_CENTER = (TRUNK_RECT[0] + 10, TRUNK_RECT[1] - 20)
+    CROWN_RADIUS = 35
+    CROWN_COLOR = (20, 140, 20)
+
+    def draw(self, screen) -> None:
+        pygame.draw.rect(screen, Tree.TRUNK_COLOR, Tree.TRUNK_RECT)
+        pygame.draw.circle(
+            screen, Tree.CROWN_COLOR, Tree.CROWN_CENTER, Tree.CROWN_RADIUS
+        )
+
+
 def main():
     pygame.init()
     window = pygame.Window(TITLE, WIN_SIZE)
@@ -42,10 +58,10 @@ def main():
     clock = pygame.time.Clock()
     meadow = Meadow()
     sky = Sky()
+    tree = Tree()
 
     running = True
     while running:
-        # Watch for events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -55,6 +71,8 @@ def main():
         # Draw
         meadow.draw(screen)
         sky.draw(screen)
+        tree.draw(screen)
+
         window.flip()
         clock.tick(FPS)
 
