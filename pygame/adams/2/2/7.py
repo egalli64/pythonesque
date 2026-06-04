@@ -51,6 +51,24 @@ class Tree:
         )
 
 
+class House:
+    """Helper class for another fixed element"""
+
+    XY = (200, HORIZON - 70)
+    BULK_COLOR = (200, 100, 100)
+    BULK_RECT = (XY, (150, 100))
+    ROOF_COLOR = (150, 50, 50)
+    ROOF_POINTS = (XY, (XY[0] + 75, XY[1] - 60), (XY[0] + 150, XY[1]))
+    DOOR_COLOR = (100, 60, 30)
+    DOOR_XY = (XY[0] + 60, XY[1] + 40)
+    DOOR_RECT = ((XY[0] + 60, XY[1] + 40), (30, 60))
+
+    def draw(self, screen) -> None:
+        pygame.draw.rect(screen, House.BULK_COLOR, House.BULK_RECT)
+        pygame.draw.polygon(screen, House.ROOF_COLOR, self.ROOF_POINTS)
+        pygame.draw.rect(screen, House.DOOR_COLOR, House.DOOR_RECT)
+
+
 def main():
     pygame.init()
     window = pygame.Window(TITLE, WIN_SIZE)
@@ -59,6 +77,7 @@ def main():
     meadow = Meadow()
     sky = Sky()
     tree = Tree()
+    house = House()
 
     running = True
     while running:
@@ -72,6 +91,7 @@ def main():
         meadow.draw(screen)
         sky.draw(screen)
         tree.draw(screen)
+        house.draw(screen)
 
         window.flip()
         clock.tick(FPS)
