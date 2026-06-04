@@ -6,6 +6,7 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Landscape example
 """
 
+import math
 import pygame
 
 FPS = 30
@@ -69,6 +70,26 @@ class House:
         pygame.draw.rect(screen, House.DOOR_COLOR, House.DOOR_RECT)
 
 
+class Sun:
+    SPEED = 1
+    RADIUS = 40
+    COLOR = (255, 220, 0)
+
+    def __init__(self) -> None:
+        self.pos = pygame.Vector2(0, 0)
+
+    def update(self) -> None:
+        if 0 <= self.pos.x < WIN_SIZE.x:
+            self.pos.x += Sun.SPEED
+            angle = (self.pos[0] / WIN_SIZE.x) * math.pi
+            self.pos.y = HORIZON * (1 - math.sin(angle)) + Sun.RADIUS
+            print(self.pos)
+
+    def draw(self, screen) -> None:
+        if 0 < self.pos.x < WIN_SIZE.x:
+            pygame.draw.circle(screen, Sun.COLOR, self.pos, Sun.RADIUS)
+
+
 def main():
     pygame.init()
     window = pygame.Window(TITLE, WIN_SIZE)
@@ -78,6 +99,7 @@ def main():
     sky = Sky()
     tree = Tree()
     house = House()
+    sun = Sun()
 
     running = True
     while running:
@@ -86,10 +108,12 @@ def main():
                 running = False
 
         # Updates
+        sun.update()
 
         # Draw
-        meadow.draw(screen)
         sky.draw(screen)
+        sun.draw(screen)
+        meadow.draw(screen)
         tree.draw(screen)
         house.draw(screen)
 
