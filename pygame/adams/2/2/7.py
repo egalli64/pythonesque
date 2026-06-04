@@ -16,15 +16,23 @@ HORIZON = 250  # y-level between sky and meadow
 
 
 class Meadow:
-    """Helper class to manage the stage"""
+    """Helper class for the stage lower side"""
 
     COLOR = (50, 180, 50)
-
-    def __init__(self) -> None:
-        self.rect = (0, HORIZON, WIN_SIZE.x, WIN_SIZE.y - HORIZON)
+    RECT = (0, HORIZON, WIN_SIZE.x, WIN_SIZE.y - HORIZON)
 
     def draw(self, screen) -> None:
-        pygame.draw.rect(screen, Meadow.COLOR, self.rect)
+        pygame.draw.rect(screen, Meadow.COLOR, Meadow.RECT)
+
+
+class Sky:
+    """Helper class for the stage upper side"""
+
+    COLOR = (100, 150, 255)
+    RECT = (0, 0, WIN_SIZE.x, HORIZON)
+
+    def draw(self, screen) -> None:
+        pygame.draw.rect(screen, Sky.COLOR, Sky.RECT)
 
 
 def main():
@@ -33,6 +41,7 @@ def main():
     screen = window.get_surface()
     clock = pygame.time.Clock()
     meadow = Meadow()
+    sky = Sky()
 
     running = True
     while running:
@@ -45,6 +54,7 @@ def main():
 
         # Draw
         meadow.draw(screen)
+        sky.draw(screen)
         window.flip()
         clock.tick(FPS)
 
