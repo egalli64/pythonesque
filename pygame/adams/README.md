@@ -19,3 +19,6 @@
 - 5: [Particle swarm /4](2/2/5.py) - add x-scattering
 - 6: [Particle swarm /6](2/2/6.py) - more features added
 - 7: [Landscape example](2/2/7.py)
+
+## Section 3 - Load and Blit Bitmaps
+- 1: [Load and blit](2/3/1.py)
