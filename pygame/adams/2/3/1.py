@@ -16,8 +16,15 @@ def main():
     screen = window.get_surface()
     clock = pygame.time.Clock()
 
-    defender_image = pygame.image.load(cfg.DEFENDER_IMAGE)
-    alien_image = pygame.image.load(cfg.ALIEN_IMAGE)
+    # make use of the alpha channel for transparency
+    defender_image = pygame.image.load(cfg.DEFENDER_IMAGE).convert_alpha()
+    defender_image = pygame.transform.scale(defender_image, cfg.DEFENDER_SIZE)
+
+    # don't preserve transparency
+    alien_image = pygame.image.load(cfg.ALIEN_IMAGE).convert()
+    # make a color in the image transparent
+    alien_image.set_colorkey(cfg.ALIEN_TRANSPARENT_COLOR)
+    alien_image = pygame.transform.scale(alien_image, cfg.ALIEN_SIZE)
 
     running = True
     while running:
