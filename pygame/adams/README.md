@@ -22,3 +22,4 @@
 
 ## Section 3 - Load and Blit Bitmaps
 - 1: [Load and blit](2/3/1.py)
+- 2: [Partial blitting](2/3/2.py)
