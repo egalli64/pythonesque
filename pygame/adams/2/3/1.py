@@ -33,7 +33,11 @@ def main():
                 running = False
 
         screen.fill(cfg.BACKGROUND_COLOR)
-        screen.blit(alien_image, cfg.ALIEN_POS)
+
+        for i in range(cfg.ALIEN_COUNT):
+            pos = (i + 1) * cfg.ALIEN_GAP + i * cfg.ALIEN_SIZE[0], cfg.SPRITE_DELTA_Y
+            screen.blit(alien_image, pos)
+
         screen.blit(defender_image, cfg.DEFENDER_POS)
 
         window.flip()
