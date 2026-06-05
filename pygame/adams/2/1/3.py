@@ -11,8 +11,8 @@ import pygame
 FPS = 30
 
 TITLE = "Hello, pygame-ce!"
-WIN_SIZE = pygame.Vector2(400, 100)
-WIN_POS = pygame.Vector2(10, 50)
+WIN_SIZE = (400, 100)
+WIN_POS = (10, 50)
 BACKGROUND_COLOR = (0, 255, 0)
 
 

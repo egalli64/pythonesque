@@ -8,7 +8,7 @@ Minimal pygame app - classical way
 
 import pygame
 
-SCREEN_SIZE = pygame.Vector2(400, 100)
+SCREEN_SIZE = (400, 100)
 TITLE = "Hello, pygame-ce!"
 BACKGROUND_COLOR = "white"
 
