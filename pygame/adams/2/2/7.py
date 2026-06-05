@@ -12,7 +12,7 @@ import pygame
 FPS = 30
 
 TITLE = "A Peaceful Day"
-WIN_SIZE = pygame.Vector2(600, 400)
+WIN_SIZE = (600, 400)
 HORIZON = 250  # y-level between sky and meadow
 
 
@@ -20,7 +20,7 @@ class Meadow:
     """Helper class for the stage lower side"""
 
     COLOR = (50, 180, 50)
-    RECT = (0, HORIZON, WIN_SIZE.x, WIN_SIZE.y - HORIZON)
+    RECT = (0, HORIZON, WIN_SIZE[0], WIN_SIZE[1] - HORIZON)
 
     def draw(self, screen) -> None:
         pygame.draw.rect(screen, Meadow.COLOR, Meadow.RECT)
@@ -30,7 +30,7 @@ class Sky:
     """Helper class for the stage upper side - with dynamic color"""
 
     COLOR = (100, 150, 255)
-    RECT = (0, 0, WIN_SIZE.x, HORIZON)
+    RECT = (0, 0, WIN_SIZE[0], HORIZON)
 
     def __init__(self) -> None:
         self.color: list[int] = list(Sky.COLOR)
@@ -92,16 +92,16 @@ class Sun:
 
         Return sine-adjusted y position variation in [0, 1].
         """
-        if 0 <= self.pos.x < WIN_SIZE.x:
+        if 0 <= self.pos.x < WIN_SIZE[0]:
             self.pos.x += Sun.SPEED
-            delta = math.sin((self.pos[0] / WIN_SIZE.x) * math.pi)
+            delta = math.sin((self.pos[0] / WIN_SIZE[0]) * math.pi)
             self.pos.y = HORIZON * (1 - delta) + Sun.RADIUS
             return delta
         else:
             return 0
 
     def draw(self, screen) -> None:
-        if 0 < self.pos.x < WIN_SIZE.x:
+        if 0 < self.pos.x < WIN_SIZE[0]:
             pygame.draw.circle(screen, Sun.COLOR, self.pos, Sun.RADIUS)
 
 

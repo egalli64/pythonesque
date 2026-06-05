@@ -14,8 +14,8 @@ import pygame
 FPS = 30
 
 TITLE = "Particle swarm /2"
-WIN_SIZE = pygame.Vector2(300, 600)
-WIN_POS = pygame.Vector2(10, 50)
+WIN_SIZE = (300, 600)
+WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
 

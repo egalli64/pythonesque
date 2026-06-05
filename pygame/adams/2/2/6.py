@@ -13,8 +13,8 @@ import pygame
 FPS = 30
 
 TITLE = "Particle swarm /6"
-WIN_SIZE = pygame.Vector2(300, 600)
-WIN_POS = pygame.Vector2(10, 50)
+WIN_SIZE = (300, 600)
+WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
 
@@ -43,14 +43,14 @@ class Circle:
         or it is too small to be seen
         """
         if self.pos.x + self.radius < 0:
-            return False
-        elif self.pos.x - self.radius > WIN_SIZE.x:
-            return False
-        elif self.pos.y - self.radius > WIN_SIZE.y:
-            return False
+            return True
+        elif self.pos.x - self.radius > WIN_SIZE[0]:
+            return True
+        elif self.pos.y - self.radius > WIN_SIZE[1]:
+            return True
         elif self.radius < 1:
-            return False
-        return True
+            return True
+        return False
 
     def draw(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, self.color, self.pos, self.radius)
@@ -74,8 +74,8 @@ def main():
                 circles.append(Circle(pygame.mouse.get_pos()))
 
         for circle in circles:
-            circle.update(window)
-        circles = [c for c in circles if c.is_visible()]
+            circle.update()
+        circles = [c for c in circles if not c.is_lost()]
 
         screen.fill(BACKGROUND_COLOR)
         for circle in circles:

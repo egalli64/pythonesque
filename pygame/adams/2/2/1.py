@@ -12,8 +12,8 @@ import pygame.gfxdraw
 FPS = 30
 
 TITLE = "Grafic Primitives"
-WIN_SIZE = pygame.Vector2(530, 530)
-WIN_POS = pygame.Vector2(10, 50)
+WIN_SIZE = (530, 530)
+WIN_POS = (10, 50)
 
 BACKGROUND_COLOR = pygame.Color(200, 200, 200)
 
