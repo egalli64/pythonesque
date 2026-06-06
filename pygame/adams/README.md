@@ -29,3 +29,4 @@
 ## Section 4 - Moving Bitmaps
 - 1: [Using Rect and its attributes](2/4/1.py)
 - 2: [Speed in pixel for frame](2/4/2.py) - simple but unreliable
+- 3: [Normalizing speed](2/4/3.py) - pixel for second, based on delta time, using FRect
