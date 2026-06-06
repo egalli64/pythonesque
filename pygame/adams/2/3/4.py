@@ -122,7 +122,6 @@ class Sun:
             self.pos[0] += Sun.SPEED
             delta = math.sin((self.pos[0] / WIN_SIZE[0]) * math.pi)
             self.pos.y = round(HORIZON * (1 - delta))
-            print(self.pos, delta)
             return delta
         else:
             return 0
