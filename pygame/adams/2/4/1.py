@@ -10,7 +10,7 @@ import pygame
 
 FPS = 30
 
-TITLE = "A Peaceful Day"
+TITLE = "Defender Movement"
 WIN_RECT = pygame.Rect(0, 0, 600, 100)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
@@ -45,11 +45,27 @@ def main():
                 running = False
 
         # Update
-        defender_rect.left += defender_x_direction * DEFENDER_SPEED
-        if defender_rect.right >= WIN_RECT.right:
+
+        # check the newly generated x value before changing the defender position
+        # new_x = defender_rect.x + defender_x_direction * DEFENDER_SPEED
+        # if new_x + DEFENDER_SIZE[0] >= WIN_RECT.right:  # clamp right
+        #     defender_x_direction = DIRECTION_LEFT
+        #     defender_rect.right = WIN_RECT.right
+        # elif new_x <= WIN_RECT.left:  # clamp left
+        #     defender_x_direction = DIRECTION_RIGHT
+        #     defender_rect.left = WIN_RECT.left
+        # else:
+        #     defender_rect.x = new_x
+
+        # working on a new Rect shifted by an x, y offset is usually handier
+        new_rect = defender_rect.move(defender_x_direction * DEFENDER_SPEED, 0)
+        if new_rect.right >= WIN_RECT.right:  # clamp right
             defender_x_direction = DIRECTION_LEFT
-        elif defender_rect.left <= WIN_RECT.left:
+            new_rect.right = WIN_RECT.right
+        elif new_rect.left <= WIN_RECT.left:  # clamp left
             defender_x_direction = DIRECTION_RIGHT
+            new_rect.left = WIN_RECT.left
+        defender_rect = new_rect
 
         # Draw
         screen.fill(BACKGROUND_COLOR)
