@@ -25,3 +25,6 @@
 - 2: [Partial blitting](2/3/2.py)
 - 3: [Message boxes](2/3/3.py)
 - 4: [Landscape blit](2/3/4.py) - !!! Caching surfaces is not useful in such simple cases !!!
+
+## Section 4 - Moving Bitmaps
+- 1: [Using Rect and its attributes](2/4/1.py)
