@@ -30,3 +30,6 @@
 - 1: [Using Rect and its attributes](2/4/1.py)
 - 2: [Speed in pixel for frame](2/4/2.py) - simple but unreliable
 - 3: [Normalizing speed](2/4/3.py) - pixel for second, based on delta time, using FRect
+
+## Section 5 - Class Sprite
+- 1: [Defender as a Sprite](2/5/1.py)
