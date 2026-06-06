@@ -18,6 +18,11 @@ BACKGROUND_COLOR = "white"
 DEFENDER_IMAGE = "../3/images/defender.png"
 DEFENDER_SIZE = (30, 30)
 
+DEFENDER_SPEED = 2
+
+DIRECTION_RIGHT = 1
+DIRECTION_LEFT = -1
+
 
 def main():
     pygame.init()
@@ -30,6 +35,7 @@ def main():
     defender_rect = defender_image.get_rect()
     defender_rect.centerx = WIN_RECT.centerx
     defender_rect.bottom = WIN_RECT.height - 5
+    defender_x_direction = DIRECTION_RIGHT
 
     running = True
     while running:
@@ -39,6 +45,11 @@ def main():
                 running = False
 
         # Update
+        defender_rect.left += defender_x_direction * DEFENDER_SPEED
+        if defender_rect.right >= WIN_RECT.right:
+            defender_x_direction = DIRECTION_LEFT
+        elif defender_rect.left <= WIN_RECT.left:
+            defender_x_direction = DIRECTION_RIGHT
 
         # Draw
         screen.fill(BACKGROUND_COLOR)
