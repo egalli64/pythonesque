@@ -15,7 +15,7 @@ WIN_RECT = pygame.Rect(0, 0, 600, 100)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
-DEFENDER_IMAGE = "../3/images/defender.png"
+DEFENDER_IMAGE = "../images/defender.png"
 DEFENDER_SIZE = (30, 30)
 
 DEFENDER_SPEED = 2

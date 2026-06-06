@@ -18,7 +18,7 @@ TILE_COLOR = "red"
 TILE_SELECTED_WIDTH = 2
 LAST_TILE_POS = (WIN_SIZE[0] - TILE_SIZE[0], WIN_SIZE[1] - TILE_SIZE[1])
 
-IMAGE = "images/forest_tiles.png"
+IMAGE = "../images/forest_tiles.png"
 BACKGROUND_COLOR = "white"
 
 

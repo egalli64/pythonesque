@@ -16,7 +16,7 @@ WIN_RECT = pygame.Rect(0, 0, 120, 650)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
-DEFENDER_IMAGE = "../3/images/defender.png"
+DEFENDER_IMAGE = "../images/defender.png"
 DIRECTION_DOWN = 1
 DIRECTION_UP = -1
 
