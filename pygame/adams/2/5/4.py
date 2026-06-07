@@ -30,11 +30,10 @@ class Defender(pygame.sprite.Sprite):
         self.rect.bottom = WIN_RECT.bottom - Defender.BOTTOM_GAP
         self.speed = Defender.DEFAULT_SPEED
 
-    def update(self, dt) -> None:
+    def update(self, dt, reverse=False) -> None:
+        if reverse:
+            self.speed *= -1
         self.rect.move_ip(self.speed * dt, 0)
-
-    def change_direction(self) -> None:
-        self.speed *= -1
 
 
 class Border(pygame.sprite.Sprite):
@@ -91,8 +90,9 @@ class Game:
 
     def update(self, dt) -> None:
         if pygame.sprite.spritecollide(self.defender.sprite, self.borders, False):  # type: ignore
-            self.defender.sprite.change_direction()  # type: ignore
-        self.defender.update(dt)
+            self.defender.update(dt, reverse=True)
+        else:
+            self.defender.update(dt)
 
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
