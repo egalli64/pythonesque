@@ -35,3 +35,4 @@
 - 1: [Defender as a Sprite](2/5/1.py)
 - 2: [Sprite collision](2/5/2.py)
 - 3: [Sprite Group](2/5/3.py)
+- 4: [A Game class](2/5/4.py) - encapsulating the game framework in a class
