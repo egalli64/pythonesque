@@ -18,11 +18,6 @@ WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
 
-class Position(Enum):
-    LEFT = auto()
-    RIGHT = auto()
-
-
 class Defender(pygame.sprite.Sprite):
     IMAGE = "../images/defender.png"
     SIZE = (30, 30)
@@ -52,6 +47,10 @@ class Defender(pygame.sprite.Sprite):
 
 
 class Border(pygame.sprite.Sprite):
+    class Position(Enum):
+        LEFT = auto()
+        RIGHT = auto()
+
     IMAGE = "../images/brick.png"
     SIZE = (35, WIN_RECT.height)
 
@@ -63,7 +62,7 @@ class Border(pygame.sprite.Sprite):
         self.image = pygame.image.load(Border.IMAGE).convert_alpha()
         self.image = pygame.transform.scale(self.image, Border.SIZE)  # type: ignore
         self.rect = self.image.get_rect()  # type: ignore
-        if position == Position.RIGHT:
+        if position == Border.Position.RIGHT:
             self.rect.right = WIN_RECT.right
 
     def draw(self, screen: pygame.Surface) -> None:
@@ -78,8 +77,8 @@ def main():
     clock = pygame.time.Clock()
 
     defender = Defender()
-    border_left = Border(Position.LEFT)
-    border_right = Border(Position.RIGHT)
+    border_left = Border(Border.Position.LEFT)
+    border_right = Border(Border.Position.RIGHT)
 
     running = True
     while running:
