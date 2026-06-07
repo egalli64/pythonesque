@@ -7,9 +7,6 @@ Sprite Group
 """
 
 from enum import Enum, auto
-from time import time
-from typing import cast
-
 import pygame
 
 FPS = 30
