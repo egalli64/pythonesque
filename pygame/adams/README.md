@@ -34,3 +34,4 @@
 ## Section 5 - Class Sprite
 - 1: [Defender as a Sprite](2/5/1.py)
 - 2: [Sprite collision](2/5/2.py)
+- 3: [Sprite Group](2/5/3.py)
