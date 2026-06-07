@@ -64,7 +64,7 @@ class Border(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, Border.SIZE)  # type: ignore
         self.rect = self.image.get_rect()  # type: ignore
         if position == Position.RIGHT:
-            self.rect.left = WIN_RECT.width - self.rect.width
+            self.rect.right = WIN_RECT.right
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self.image, self.rect)
@@ -98,7 +98,7 @@ def main():
         defender.update(dt)
 
         # Draw
-        screen.fill((255, 255, 255))
+        screen.fill(BACKGROUND_COLOR)
         defender.draw(screen)
         border_left.draw(screen)
         border_right.draw(screen)
