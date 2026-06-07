@@ -3,10 +3,11 @@ Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_bo
 
 My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
-Self add a Sprite to a Group
+Self add a Sprite to a Group + remove it from any group
 """
 
 from random import randint
+from typing import override
 
 import pygame
 
@@ -30,10 +31,16 @@ class Ship(pygame.sprite.Sprite):
         self.rect.bottom = pos[1]
         self.speed = Ship.DEFAULT_SPEED
 
+    @override
     def update(self, dt) -> None:
         self.rect.move_ip(0, self.speed * dt)
-        self.rect.clamp_ip(WIN_RECT)
-        return super().update()
+
+        # if you want to keep the ship in win
+        # self.rect.clamp_ip(WIN_RECT)
+
+        # if you want to remove the ship for any group (in the window center y)
+        if self.rect.bottom < WIN_RECT.centery:
+            self.kill()
 
 
 class Game:
