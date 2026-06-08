@@ -7,6 +7,7 @@ Better encapsulation with a Game class
 """
 
 from enum import Enum, auto
+from typing import override
 import pygame
 
 WIN_RECT = pygame.Rect(0, 0, 600, 100)
@@ -30,9 +31,11 @@ class Defender(pygame.sprite.Sprite):
         self.rect.bottom = WIN_RECT.bottom - Defender.BOTTOM_GAP
         self.speed = Defender.DEFAULT_SPEED
 
-    def update(self, dt, reverse=False) -> None:
-        if reverse:
-            self.speed *= -1
+    def reverse_direction(self) -> None:
+        self.speed *= -1
+
+    @override
+    def update(self, dt) -> None:
         self.rect.move_ip(self.speed * dt, 0)
 
 
@@ -67,37 +70,34 @@ class Game:
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
 
-        self.defender = pygame.sprite.GroupSingle(Defender())
+        self.defender = Defender()
         self.borders = pygame.sprite.Group()
         self.borders.add(Border(Border.Position.LEFT))
         self.borders.add(Border(Border.Position.RIGHT))
+        self.all_sprites = pygame.sprite.Group(self.defender, self.borders)
 
     def run(self) -> None:
         """Run the main game loop"""
-        running = True
-        while running:
+        while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
-
-            running = self.event_loop()
             self.update(dt)
             self.draw()
 
-    def event_loop(self) -> bool:
+    def handle_events(self) -> bool:
+        """Run the event loops, return False in case of termination request"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
         return True
 
     def update(self, dt) -> None:
-        if pygame.sprite.spritecollide(self.defender.sprite, self.borders, False):  # type: ignore
-            self.defender.update(dt, reverse=True)
-        else:
-            self.defender.update(dt)
+        if pygame.sprite.spritecollide(self.defender, self.borders, False):
+            self.defender.reverse_direction()
+        self.defender.update(dt)
 
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
-        self.defender.draw(self.screen)
-        self.borders.draw(self.screen)
+        self.all_sprites.draw(self.screen)
         self.window.flip()
 
 
