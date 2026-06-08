@@ -67,16 +67,13 @@ class Game:
 
     def run(self) -> None:
         """Run the main game loop"""
-
-        running = True
-        while running:
+        while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
-
-            running = self.event_loop()
             self.update(dt)
             self.draw()
 
-    def event_loop(self) -> bool:
+    def handle_events(self) -> bool:
+        """Run the event loops, return False in case of termination request"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
