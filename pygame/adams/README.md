@@ -20,13 +20,13 @@
 - 6: [Particle swarm /6](2/2/6.py) - more features added
 - 7: [Landscape example](2/2/7.py)
 
-## Section 3 - Load and Blit Bitmaps
+## Section 3 - Load and blit bitmaps
 - 1: [Load and blit](2/3/1.py)
 - 2: [Partial blitting](2/3/2.py)
 - 3: [Message boxes](2/3/3.py)
 - 4: [Landscape blit](2/3/4.py) - !!! Caching surfaces is not useful in such simple cases !!!
 
-## Section 4 - Moving Bitmaps
+## Section 4 - Moving bitmaps
 - 1: [Using Rect and its attributes](2/4/1.py)
 - 2: [Speed in pixel for frame](2/4/2.py) - simple but unreliable
 - 3: [Normalizing speed](2/4/3.py) - pixel for second, based on delta time, using FRect
@@ -37,3 +37,6 @@
 - 3: [Sprite Group](2/5/3.py)
 - 4: [A Game class](2/5/4.py) - encapsulating the game framework in a class
 - 5: [Add/remove sprite to group](2/5/5.py)
+
+## Section 6 Handling keyboard input
+- 1: [Control direction by keys](2/6/1.py)
