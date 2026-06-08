@@ -40,3 +40,4 @@
 
 ## Section 6 Handling keyboard input
 - 1: [Control direction by keys](2/6/1.py)
+- 2: [Modifier keys - shift](2/6/2.py)
