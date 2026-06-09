@@ -10,35 +10,22 @@ from os import path
 from typing import Any
 import pygame
 
-WINDOW = pygame.Rect((0, 0), (700, 200))
-FPS = 60
+FPS = 30
+
+WIN_RECT = pygame.Rect(0, 0, 700, 200)
 TITLE = "Collision Types"
-PATH: dict[str, str] = {}
-PATH["file"] = path.dirname(path.abspath(__file__))
-PATH["image"] = path.join(PATH["file"], "images")
-MODE = "rect"
-
-
-@staticmethod
-def filepath(name: str) -> str:
-    return path.join(PATH["file"], name)
-
-
-@staticmethod
-def imagepath(name: str) -> str:
-    return path.join(PATH["image"], name)
 
 
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, filename1: str, filename2: str) -> None:
         super().__init__()
-        self.image_normal = pygame.image.load(imagepath(filename1)).convert_alpha()
-        self.image_hit = pygame.image.load(imagepath(filename2)).convert_alpha()
+        self.image_normal = pygame.image.load(filename1).convert_alpha()
+        self.image_hit = pygame.image.load(filename2).convert_alpha()
         self.image = self.image_normal
         self.rect: pygame.Rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
-        self.radius = self.rect.width // 2
-        self.rect.centery = WINDOW.centery
+        self.radius = self.rect.centerx
+        self.rect.centery = WIN_RECT.centery
         self.hit = False
 
     def update(self, *args: Any, **kwargs: Any) -> None:
@@ -51,7 +38,7 @@ class Bullet(pygame.sprite.Sprite):
 
     def __init__(self, picturefile: str) -> None:
         super().__init__()
-        self.image = pygame.image.load(imagepath(picturefile)).convert_alpha()
+        self.image = pygame.image.load(picturefile).convert_alpha()
         self.rect: pygame.Rect = self.image.get_rect()
         self.radius = self.rect.centery
         self.mask = pygame.mask.from_surface(self.image)
@@ -77,21 +64,25 @@ class Bullet(pygame.sprite.Sprite):
 
 
 class Game(object):
+    BULLET = "images/shoot.png"
+    BRICK = ("images/brick1.png", "images/brick2.png")
+    SHIP = ("images/ship1.png", "images/ship2.png")
+    ALIEN = ("images/alienbig1.png", "images/alienbig2.png")
+    DEFAULT_MODE = "rect"
 
     def __init__(self) -> None:
-        pygame.init()
-        self.window = pygame.Window(size=WINDOW.size, title=TITLE)
+        self.window = pygame.Window(TITLE, WIN_RECT.size)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
 
-        self.font = pygame.font.Font(pygame.font.get_default_font(), 24)
-        self.bullet = Bullet("shoot.png")
+        self.font = pygame.font.Font(None, 24)
+        self.bullet = Bullet(Game.BULLET)
         self.bullet_group = pygame.sprite.GroupSingle(self.bullet)
         self.all_obstacles = pygame.sprite.Group()
-        self.all_obstacles.add(Obstacle("brick1.png", "brick2.png"))
-        self.all_obstacles.add(Obstacle("ship1.png", "ship2.png"))
-        self.all_obstacles.add(Obstacle("alienbig1.png", "alienbig2.png"))
-        self.mode = MODE
+        self.all_obstacles.add(Obstacle(*Game.BRICK))
+        self.all_obstacles.add(Obstacle(*Game.SHIP))
+        self.all_obstacles.add(Obstacle(*Game.ALIEN))
+        self.mode = Game.DEFAULT_MODE
         self.running = False
 
     def run(self) -> None:
@@ -138,14 +129,14 @@ class Game(object):
         self.all_obstacles.draw(self.screen)
         self.bullet_group.draw(self.screen)
         text_surface_modus = self.font.render(f"Mode: {self.mode}", True, "blue")
-        self.screen.blit(text_surface_modus, dest=(10, WINDOW.bottom - 30))
+        self.screen.blit(text_surface_modus, dest=(10, WIN_RECT.bottom - 30))
         self.window.flip()
 
     def resize(self) -> None:
         total_width = 0
         for s in self.all_obstacles:
             total_width += s.rect.width
-        padding = (WINDOW.width - total_width) // 4
+        padding = (WIN_RECT.width - total_width) // 4
         for i in range(len(self.all_obstacles)):
             if i == 0:
                 self.all_obstacles.sprites()[i].rect.left = padding
@@ -167,6 +158,10 @@ class Game(object):
 
 
 if __name__ == "__main__":
-    Game().run()
-    pygame.quit()
-    print("Done.")
+    pygame.init()
+
+    try:
+        Game().run()
+    finally:
+        pygame.quit()
+        print("Done.")
