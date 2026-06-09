@@ -6,14 +6,12 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Types of collision
 """
 
-from os import path
-from typing import Any
+from typing import Any, override
 import pygame
 
 FPS = 30
 
 WIN_RECT = pygame.Rect(0, 0, 700, 200)
-TITLE = "Collision Types"
 
 
 class Obstacle(pygame.sprite.Sprite):
@@ -26,12 +24,10 @@ class Obstacle(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.radius = self.rect.centerx
         self.rect.centery = WIN_RECT.centery
-        self.hit = False
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
-        if "hit" in kwargs.keys():
-            self.hit = kwargs["hit"]
-        self.image = self.image_hit if (self.hit) else self.image_normal
+    @override
+    def update(self, hit: bool) -> None:
+        self.image = self.image_hit if hit else self.image_normal
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -52,7 +48,7 @@ class Bullet(pygame.sprite.Sprite):
         }
         self.set_direction("stop")
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
+    def update(self, *_, **kwargs: Any) -> None:
         if "action" in kwargs.keys():
             if kwargs["action"] == "move":
                 self.rect.move_ip(self.speed)
@@ -64,6 +60,9 @@ class Bullet(pygame.sprite.Sprite):
 
 
 class Game(object):
+    TITLE = "Collision Types"
+    BACKGROUND_COLOR = "white"
+
     BULLET = "images/shoot.png"
     BRICK = ("images/brick1.png", "images/brick2.png")
     SHIP = ("images/ship1.png", "images/ship2.png")
@@ -71,7 +70,7 @@ class Game(object):
     DEFAULT_MODE = "rect"
 
     def __init__(self) -> None:
-        self.window = pygame.Window(TITLE, WIN_RECT.size)
+        self.window = pygame.Window(Game.TITLE, WIN_RECT.size)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
 
@@ -119,13 +118,22 @@ class Game(object):
             elif event.type == pygame.KEYUP:
                 self.bullet.update(direction="stop")
 
+    def collide(self, obstacle):
+        if self.mode == "circle":
+            return pygame.sprite.collide_circle(self.bullet, obstacle)
+        elif self.mode == "mask":
+            return pygame.sprite.collide_mask(self.bullet, obstacle)
+        else:
+            return pygame.sprite.collide_rect(self.bullet, obstacle)
+
     def update(self) -> None:
-        self.check_for_collision()
         self.bullet_group.update(action="move")
-        self.all_obstacles.update()
+
+        for obstacle in self.all_obstacles:
+            obstacle.update(self.collide(obstacle))
 
     def draw(self) -> None:
-        self.screen.fill("white")
+        self.screen.fill(Game.BACKGROUND_COLOR)
         self.all_obstacles.draw(self.screen)
         self.bullet_group.draw(self.screen)
         text_surface_modus = self.font.render(f"Mode: {self.mode}", True, "blue")
@@ -144,17 +152,6 @@ class Game(object):
                 self.all_obstacles.sprites()[i].rect.left = (
                     self.all_obstacles.sprites()[i - 1].rect.right + padding
                 )
-
-    def check_for_collision(self) -> None:
-        if self.mode == "circle":
-            for s in self.all_obstacles:
-                s.update(hit=pygame.sprite.collide_circle(self.bullet, s))
-        elif self.mode == "mask":
-            for s in self.all_obstacles:
-                s.update(hit=pygame.sprite.collide_mask(self.bullet, s))
-        else:
-            for s in self.all_obstacles:
-                s.update(hit=pygame.sprite.collide_rect(self.bullet, s))
 
 
 if __name__ == "__main__":
