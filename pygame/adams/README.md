@@ -48,3 +48,6 @@
 - 2: [Text as a Sprite](2/7/2.py)
 - 3: [List of installed fonts](2/7/3.py)
 - 4: [Using locally installed fonts](2/7/4.py)
+
+## Section 8 Collision Detection
+- 1: [Types of collision](2/8/1.py)
