@@ -3,7 +3,7 @@ Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_bo
 
 My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
-Minimal pygame app - classical way
+Minimal pygame app - in the classic way
 """
 
 import pygame
@@ -14,22 +14,29 @@ BACKGROUND_COLOR = "white"
 
 
 def main():
-    pygame.init()
     screen = pygame.display.set_mode(SCREEN_SIZE)
     pygame.display.set_caption(TITLE)
 
     running = True
+    # main loop
     while running:
+        # event loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
+        # update state
+
+        # rendering
         screen.fill(BACKGROUND_COLOR)
         pygame.display.flip()
 
-    pygame.quit()
-
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
