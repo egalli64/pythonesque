@@ -46,3 +46,4 @@
 ## Section 7 Text output using fonts
 - 1: [Simple text rendering](2/7/1.py)
 - 2: [Text as a Sprite](2/7/2.py)
+- 3: [List of installed fonts](2/7/3.py)
