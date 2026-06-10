@@ -10,30 +10,34 @@ import pygame
 
 FPS = 30
 
-TITLE = "Hello, pygame-ce!"
 WIN_SIZE = (400, 100)
 WIN_POS = (10, 50)
+TITLE = "Hello, pygame-ce!"
 BACKGROUND_COLOR = (0, 255, 0)
 
 
 def main():
-    pygame.init()
-    window = pygame.Window(size=WIN_SIZE, title=TITLE, position=WIN_POS)
+    window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
 
     running = True
     while running:
+        clock.tick(FPS)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
         screen.fill(BACKGROUND_COLOR)
         window.flip()
-        clock.tick(FPS)
-
-    pygame.quit()
 
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
