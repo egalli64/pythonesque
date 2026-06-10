@@ -80,14 +80,25 @@ class Game(object):
         self.probe = Probe(Game.PROBE)
         self.probe_group = pygame.sprite.GroupSingle(self.probe)
 
+        self.target_setup()
+
+        self.mode = Game.DEFAULT_MODE
+
+    def target_setup(self) -> None:
         self.all_targets = pygame.sprite.Group()
         self.all_targets.add(Target(*Game.BRICK))
         self.all_targets.add(Target(*Game.SHIP))
         self.all_targets.add(Target(*Game.ALIEN))
-        self.mode = Game.DEFAULT_MODE
+
+        targets_width = sum(s.rect.width for s in self.all_targets)
+        padding = (WIN_RECT.width - targets_width) // (len(self.all_targets) + 1)
+
+        x = padding
+        for target in self.all_targets:
+            target.rect.left = x
+            x = target.rect.right + padding
 
     def run(self) -> None:
-        self.resize()
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
 
@@ -135,19 +146,6 @@ class Game(object):
         self.screen.blit(text_info, Game.INFO_POS)
 
         self.window.flip()
-
-    def resize(self) -> None:
-        total_width = 0
-        for s in self.all_targets:
-            total_width += s.rect.width
-        padding = (WIN_RECT.width - total_width) // 4
-        for i in range(len(self.all_targets)):
-            if i == 0:
-                self.all_targets.sprites()[i].rect.left = padding
-            else:
-                self.all_targets.sprites()[i].rect.left = (
-                    self.all_targets.sprites()[i - 1].rect.right + padding
-                )
 
     def get_direction(self, keys: pygame.key.ScancodeWrapper) -> Probe.Direction:
         if keys[pygame.K_LEFT]:
