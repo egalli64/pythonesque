@@ -19,14 +19,14 @@ BACKGROUND_COLOR = pygame.Color(200, 200, 200)
 
 
 def main():
-    pygame.init()
-
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
 
     running = True
     while running:
+        clock.tick(FPS)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -51,32 +51,29 @@ def main():
         # for many pixels see surfarray (NumPy based)
 
         window.flip()
-        clock.tick(FPS)
-
-    pygame.quit()
 
 
 def draw_filled_rectangle(screen: pygame.Surface):
-    # a Rect created from left, top, width, and height
+    # read the rectangle as (left, top), (width, height)
     rect = pygame.Rect(10, 10, 20, 30)
-    # passing to draw.rect() a screen, a color, and a rect
+    # draw.rect() requires at least a screen, a color, and a rect
     pygame.draw.rect(screen, "red", rect)
 
 
 def draw_rectangle(screen: pygame.Surface):
-    """Just the rectangle border, as specified"""
+    """Draw just the rectangle border, as specified"""
     rect = pygame.Rect(60, 10, 20, 30)
     pygame.draw.rect(screen, "red", rect, width=3, border_radius=5)
 
 
 def draw_filled_polygon(screen: pygame.Surface):
-    # the points coordinates for the polygon vertices
-    points = ((120, 10), (160, 10), (140, 90))
-    pygame.draw.polygon(screen, "green", points)
+    # the polygon area is determined by a sequence of points
+    vertices = ((120, 10), (160, 10), (140, 90))
+    pygame.draw.polygon(screen, "green", vertices)
 
 
 def draw_polygon(screen: pygame.Surface):
-    """Just the polygon border, as specified"""
+    """Draw just the polygon border, as specified"""
     points = ((180, 10), (220, 10), (200, 90))
     pygame.draw.polygon(screen, "green", points, width=1)
 
@@ -106,5 +103,10 @@ def draw_pixel_modern(screen: pygame.Surface):
 
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
