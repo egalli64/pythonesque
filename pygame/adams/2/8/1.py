@@ -7,17 +7,17 @@ Types of collision
 """
 
 from enum import Enum
-from typing import Any, override
+from typing import override
 import pygame
 
 WIN_RECT = pygame.Rect(0, 0, 700, 200)
 
 
-class Obstacle(pygame.sprite.Sprite):
-    def __init__(self, filename1: str, filename2: str) -> None:
+class Target(pygame.sprite.Sprite):
+    def __init__(self, filename: str, filename_hit: str) -> None:
         super().__init__()
-        self.image_normal = pygame.image.load(filename1).convert_alpha()
-        self.image_hit = pygame.image.load(filename2).convert_alpha()
+        self.image_normal = pygame.image.load(filename).convert_alpha()
+        self.image_hit = pygame.image.load(filename_hit).convert_alpha()
         self.image = self.image_normal
         self.rect: pygame.Rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
@@ -49,6 +49,7 @@ class Probe(pygame.sprite.Sprite):
         self.rect.center = Probe.START_POSITION
         self.direction = Probe.Direction.STOP.value
 
+    @override
     def update(self, dt) -> None:
         self.rect.move_ip(Probe.SPEED * self.direction * dt)
         self.rect.clamp_ip(WIN_RECT)
@@ -68,6 +69,8 @@ class Game(object):
     ALIEN = ("images/alienbig1.png", "images/alienbig2.png")
     DEFAULT_MODE = "rect"
 
+    INFO_POS = (10, WIN_RECT.bottom - 30)
+
     def __init__(self) -> None:
         self.window = pygame.Window(Game.TITLE, WIN_RECT.size)
         self.screen = self.window.get_surface()
@@ -76,10 +79,11 @@ class Game(object):
         self.font = pygame.font.Font(None, 24)
         self.probe = Probe(Game.PROBE)
         self.probe_group = pygame.sprite.GroupSingle(self.probe)
-        self.all_obstacles = pygame.sprite.Group()
-        self.all_obstacles.add(Obstacle(*Game.BRICK))
-        self.all_obstacles.add(Obstacle(*Game.SHIP))
-        self.all_obstacles.add(Obstacle(*Game.ALIEN))
+
+        self.all_targets = pygame.sprite.Group()
+        self.all_targets.add(Target(*Game.BRICK))
+        self.all_targets.add(Target(*Game.SHIP))
+        self.all_targets.add(Target(*Game.ALIEN))
         self.mode = Game.DEFAULT_MODE
 
     def run(self) -> None:
@@ -106,41 +110,43 @@ class Game(object):
                     self.mode = "mask"
         return True
 
-    def collide(self, obstacle):
+    def collide(self, target: Target):
         if self.mode == "circle":
-            return pygame.sprite.collide_circle(self.probe, obstacle)
+            return pygame.sprite.collide_circle(self.probe, target)
         elif self.mode == "mask":
-            return pygame.sprite.collide_mask(self.probe, obstacle)
+            return pygame.sprite.collide_mask(self.probe, target)
         else:
-            return pygame.sprite.collide_rect(self.probe, obstacle)
+            return pygame.sprite.collide_rect(self.probe, target)
 
     def update(self, dt) -> None:
         keys = pygame.key.get_pressed()
         self.probe.set_direction(self.get_direction(keys))
         self.probe.update(dt)
 
-        for obstacle in self.all_obstacles:
-            obstacle.update(self.collide(obstacle))
+        for target in self.all_targets:
+            target.update(self.collide(target))
 
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
-        self.all_obstacles.draw(self.screen)
+        self.all_targets.draw(self.screen)
         self.probe_group.draw(self.screen)
-        text_surface_modus = self.font.render(f"Mode: {self.mode}", True, "blue")
-        self.screen.blit(text_surface_modus, dest=(10, WIN_RECT.bottom - 30))
+
+        text_info = self.font.render(f"Mode: {self.mode}", True, "blue")
+        self.screen.blit(text_info, Game.INFO_POS)
+
         self.window.flip()
 
     def resize(self) -> None:
         total_width = 0
-        for s in self.all_obstacles:
+        for s in self.all_targets:
             total_width += s.rect.width
         padding = (WIN_RECT.width - total_width) // 4
-        for i in range(len(self.all_obstacles)):
+        for i in range(len(self.all_targets)):
             if i == 0:
-                self.all_obstacles.sprites()[i].rect.left = padding
+                self.all_targets.sprites()[i].rect.left = padding
             else:
-                self.all_obstacles.sprites()[i].rect.left = (
-                    self.all_obstacles.sprites()[i - 1].rect.right + padding
+                self.all_targets.sprites()[i].rect.left = (
+                    self.all_targets.sprites()[i - 1].rect.right + padding
                 )
 
     def get_direction(self, keys: pygame.key.ScancodeWrapper) -> Probe.Direction:
