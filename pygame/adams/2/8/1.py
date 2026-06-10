@@ -31,7 +31,6 @@ class Obstacle(pygame.sprite.Sprite):
 
 
 class Bullet(pygame.sprite.Sprite):
-
     def __init__(self, picturefile: str) -> None:
         super().__init__()
         self.image = pygame.image.load(picturefile).convert_alpha()
@@ -82,25 +81,23 @@ class Game(object):
         self.all_obstacles.add(Obstacle(*Game.SHIP))
         self.all_obstacles.add(Obstacle(*Game.ALIEN))
         self.mode = Game.DEFAULT_MODE
-        self.running = False
 
     def run(self) -> None:
         self.resize()
-        self.running = True
-        while self.running:
-            self.watch_for_events()
+        while self.handle_events():
+            self.clock.tick(FPS)
+
             self.update()
             self.draw()
-            self.clock.tick(FPS)
-        pygame.quit()
 
-    def watch_for_events(self) -> None:
+    def handle_events(self) -> bool:
+        """Run the event loops, return False in case of termination request"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.running = False
+                    return False
                 elif event.key == pygame.K_DOWN:
                     self.bullet.update(direction="down")
                 elif event.key == pygame.K_UP:
@@ -117,6 +114,7 @@ class Game(object):
                     self.mode = "mask"
             elif event.type == pygame.KEYUP:
                 self.bullet.update(direction="stop")
+        return True
 
     def collide(self, obstacle):
         if self.mode == "circle":
