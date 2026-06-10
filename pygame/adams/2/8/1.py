@@ -6,10 +6,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Types of collision
 """
 
+from enum import Enum
 from typing import Any, override
 import pygame
-
-FPS = 30
 
 WIN_RECT = pygame.Rect(0, 0, 700, 200)
 
@@ -30,39 +29,40 @@ class Obstacle(pygame.sprite.Sprite):
         self.image = self.image_hit if hit else self.image_normal
 
 
-class Bullet(pygame.sprite.Sprite):
-    def __init__(self, picturefile: str) -> None:
+class Probe(pygame.sprite.Sprite):
+    START_POSITION = (10, 10)
+    SPEED = 100
+
+    class Direction(Enum):
+        STOP = pygame.Vector2(0, 0)
+        RIGHT = pygame.Vector2(1, 0)
+        LEFT = pygame.Vector2(-1, 0)
+        UP = pygame.Vector2(0, -1)
+        DOWN = pygame.Vector2(0, 1)
+
+    def __init__(self, filename: str) -> None:
         super().__init__()
-        self.image = pygame.image.load(picturefile).convert_alpha()
+        self.image = pygame.image.load(filename).convert_alpha()
         self.rect: pygame.Rect = self.image.get_rect()
         self.radius = self.rect.centery
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect.center = (10, 10)
-        self.directions = {
-            "stop": (0, 0),
-            "down": (0, 1),
-            "up": (0, -1),
-            "left": (-1, 0),
-            "right": (1, 0),
-        }
-        self.set_direction("stop")
+        self.rect.center = Probe.START_POSITION
+        self.direction = Probe.Direction.STOP.value
 
-    def update(self, *_, **kwargs: Any) -> None:
-        if "action" in kwargs.keys():
-            if kwargs["action"] == "move":
-                self.rect.move_ip(self.speed)
-        elif "direction" in kwargs.keys():
-            self.set_direction(kwargs["direction"])
+    def update(self, dt) -> None:
+        self.rect.move_ip(Probe.SPEED * self.direction * dt)
+        self.rect.clamp_ip(WIN_RECT)
 
-    def set_direction(self, direction: str) -> None:
-        self.speed = self.directions[direction]
+    def set_direction(self, direction: Direction) -> None:
+        self.direction = direction.value
 
 
 class Game(object):
+    FPS = 30
     TITLE = "Collision Types"
     BACKGROUND_COLOR = "white"
 
-    BULLET = "images/shoot.png"
+    PROBE = "images/shoot.png"
     BRICK = ("images/brick1.png", "images/brick2.png")
     SHIP = ("images/ship1.png", "images/ship2.png")
     ALIEN = ("images/alienbig1.png", "images/alienbig2.png")
@@ -74,8 +74,8 @@ class Game(object):
         self.clock = pygame.time.Clock()
 
         self.font = pygame.font.Font(None, 24)
-        self.bullet = Bullet(Game.BULLET)
-        self.bullet_group = pygame.sprite.GroupSingle(self.bullet)
+        self.probe = Probe(Game.PROBE)
+        self.probe_group = pygame.sprite.GroupSingle(self.probe)
         self.all_obstacles = pygame.sprite.Group()
         self.all_obstacles.add(Obstacle(*Game.BRICK))
         self.all_obstacles.add(Obstacle(*Game.SHIP))
@@ -85,9 +85,9 @@ class Game(object):
     def run(self) -> None:
         self.resize()
         while self.handle_events():
-            self.clock.tick(FPS)
+            dt = self.clock.tick(Game.FPS) / 1000
 
-            self.update()
+            self.update(dt)
             self.draw()
 
     def handle_events(self) -> bool:
@@ -98,34 +98,26 @@ class Game(object):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return False
-                elif event.key == pygame.K_DOWN:
-                    self.bullet.update(direction="down")
-                elif event.key == pygame.K_UP:
-                    self.bullet.update(direction="up")
-                elif event.key == pygame.K_LEFT:
-                    self.bullet.update(direction="left")
-                elif event.key == pygame.K_RIGHT:
-                    self.bullet.update(direction="right")
                 elif event.key == pygame.K_r:
                     self.mode = "rect"
                 elif event.key == pygame.K_c:
                     self.mode = "circle"
                 elif event.key == pygame.K_m:
                     self.mode = "mask"
-            elif event.type == pygame.KEYUP:
-                self.bullet.update(direction="stop")
         return True
 
     def collide(self, obstacle):
         if self.mode == "circle":
-            return pygame.sprite.collide_circle(self.bullet, obstacle)
+            return pygame.sprite.collide_circle(self.probe, obstacle)
         elif self.mode == "mask":
-            return pygame.sprite.collide_mask(self.bullet, obstacle)
+            return pygame.sprite.collide_mask(self.probe, obstacle)
         else:
-            return pygame.sprite.collide_rect(self.bullet, obstacle)
+            return pygame.sprite.collide_rect(self.probe, obstacle)
 
-    def update(self) -> None:
-        self.bullet_group.update(action="move")
+    def update(self, dt) -> None:
+        keys = pygame.key.get_pressed()
+        self.probe.set_direction(self.get_direction(keys))
+        self.probe.update(dt)
 
         for obstacle in self.all_obstacles:
             obstacle.update(self.collide(obstacle))
@@ -133,7 +125,7 @@ class Game(object):
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
         self.all_obstacles.draw(self.screen)
-        self.bullet_group.draw(self.screen)
+        self.probe_group.draw(self.screen)
         text_surface_modus = self.font.render(f"Mode: {self.mode}", True, "blue")
         self.screen.blit(text_surface_modus, dest=(10, WIN_RECT.bottom - 30))
         self.window.flip()
@@ -150,6 +142,18 @@ class Game(object):
                 self.all_obstacles.sprites()[i].rect.left = (
                     self.all_obstacles.sprites()[i - 1].rect.right + padding
                 )
+
+    def get_direction(self, keys: pygame.key.ScancodeWrapper) -> Probe.Direction:
+        if keys[pygame.K_LEFT]:
+            return Probe.Direction.LEFT
+        elif keys[pygame.K_RIGHT]:
+            return Probe.Direction.RIGHT
+        elif keys[pygame.K_UP]:
+            return Probe.Direction.UP
+        elif keys[pygame.K_DOWN]:
+            return Probe.Direction.DOWN
+        else:
+            return Probe.Direction.STOP
 
 
 if __name__ == "__main__":
