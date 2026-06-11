@@ -63,10 +63,10 @@ class Game(object):
     TITLE = "Collision Types"
     BACKGROUND_COLOR = "white"
 
-    PROBE = "images/shoot.png"
-    BRICK = ("images/brick1.png", "images/brick2.png")
-    SHIP = ("images/ship1.png", "images/ship2.png")
-    ALIEN = ("images/alienbig1.png", "images/alienbig2.png")
+    PROBE = "../images/shoot.png"
+    BRICK = ("../images/brick_1.png", "../images/brick_2.png")
+    SHIP = ("../images/ship_1.png", "../images/ship_2.png")
+    ALIEN = ("../images/alien_big_1.png", "../images/alien_big_2.png")
     DEFAULT_MODE = "rect"
 
     INFO_POS = (10, WIN_RECT.bottom - 30)
@@ -122,12 +122,27 @@ class Game(object):
         return True
 
     def collide(self, target: Target):
-        if self.mode == "circle":
-            return pygame.sprite.collide_circle(self.probe, target)
-        elif self.mode == "mask":
-            return pygame.sprite.collide_mask(self.probe, target)
-        else:
-            return pygame.sprite.collide_rect(self.probe, target)
+        match self.mode:
+            case "circle":
+                return pygame.sprite.collide_circle(self.probe, target)
+            case "mask":
+                return pygame.sprite.collide_mask(self.probe, target)
+            case _:
+                return pygame.sprite.collide_rect(self.probe, target)
+
+    def alt_collide(self) -> None:
+        """Here is probably not the most natural approach"""
+        match self.mode:
+            case "circle":
+                func = pygame.sprite.collide_circle
+            case "mask":
+                func = pygame.sprite.collide_mask
+            case _:
+                func = pygame.sprite.collide_rect
+
+        hits = pygame.sprite.spritecollide(self.probe, self.all_targets, False, func)  # type: ignore
+        for target in self.all_targets:
+            target.update(target in hits)
 
     def update(self, dt) -> None:
         keys = pygame.key.get_pressed()
@@ -136,6 +151,7 @@ class Game(object):
 
         for target in self.all_targets:
             target.update(self.collide(target))
+        # self.alt_collide() # probably not worthy here
 
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
