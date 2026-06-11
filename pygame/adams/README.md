@@ -51,3 +51,4 @@
 
 ## Section 8 Collision Detection
 - 1: [Types of collision](2/8/1.py)
+- 2: [Collision with a group](2/8/1.py)
