@@ -10,11 +10,9 @@ import pygame
 import pygame.gfxdraw
 
 FPS = 30
-
 TITLE = "Grafic Primitives"
 WIN_SIZE = (530, 530)
 WIN_POS = (10, 50)
-
 BACKGROUND_COLOR = pygame.Color(200, 200, 200)
 
 
@@ -23,13 +21,8 @@ def main():
     screen = window.get_surface()
     clock = pygame.time.Clock()
 
-    running = True
-    while running:
+    while handle_events():
         clock.tick(FPS)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
 
         screen.fill(BACKGROUND_COLOR)
 
@@ -100,6 +93,13 @@ def draw_pixel_modern(screen: pygame.Surface):
         for j in range(255):
             # pick on screen the x, y pixel, set it with the given color
             pygame.gfxdraw.pixel(screen, 265 + i, 265 + j, (i, 255, j))
+
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
