@@ -3,7 +3,7 @@ Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_bo
 
 My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
-Particle swarm /1
+Particle swarm /1 - create static particles
 """
 
 from dataclasses import dataclass
@@ -31,17 +31,13 @@ class Circle:
 
 
 def main():
-    pygame.init()
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
     circles = set()
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    while handle_events():
+        clock.tick(FPS)
 
         if pygame.mouse.get_pressed()[0]:
             circles.add(Circle(screen, pygame.mouse.get_pos()))
@@ -51,11 +47,20 @@ def main():
             circle.draw()
 
         window.flip()
-        clock.tick(FPS)
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
