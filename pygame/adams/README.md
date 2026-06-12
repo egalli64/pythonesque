@@ -59,3 +59,4 @@
 
 ## Section 10 Mouse
 - 1: [Mouse actions](2/a/1.py)
+- 2: [Simple double click](2/a/2.py)
