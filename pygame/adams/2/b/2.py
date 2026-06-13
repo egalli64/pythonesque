@@ -46,7 +46,16 @@ class Game:
                     self.volume_alter(Game.VOLUME_STEP)
                 elif event.button == 5:  # down
                     self.volume_alter(-Game.VOLUME_STEP)
+                elif event.type == pygame.MOUSEWHEEL:
+                    self.change_volume(event.y)
+
         return True
+
+    def change_volume(self, delta):
+        volume = pygame.mixer.music.get_volume() + delta * Game.VOLUME_STEP
+        volume = pygame.math.clamp(volume, 0.0, 1.0)
+        pygame.mixer.music.set_volume(volume)  # clamped to [0, 1] by pygame
+
 
     def volume_alter(self, delta: float) -> None:
         volume = self.bubble.get_volume() + delta
