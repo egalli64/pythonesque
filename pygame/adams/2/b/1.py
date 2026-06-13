@@ -6,7 +6,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Background music
 """
 
-from typing import Any
 import pygame
 
 
@@ -18,8 +17,9 @@ class Game:
     FONT_SIZE = 40
     TEXT_COLOR = "red"
     MUSIC_FILE = "sounds/lucifer.mid"
-    MUSIC_DEFAULT_VOLUME = 0.05
+    VOLUME_DEFAULT = 0.05
     VOLUME_STEP = 0.05
+    VOLUME_FADEOUT = 5000  # ms
 
     def __init__(self) -> None:
         self.window = pygame.Window(Game.TITLE, Game.WIN_RECT.size)
@@ -31,7 +31,7 @@ class Game:
 
     def sounds(self) -> None:
         pygame.mixer.music.load(Game.MUSIC_FILE)
-        pygame.mixer.music.set_volume(Game.MUSIC_DEFAULT_VOLUME)
+        pygame.mixer.music.set_volume(Game.VOLUME_DEFAULT)
         pygame.mixer.music.play(loops=-1)  # forever
 
     def handle_events(self) -> bool:
@@ -42,23 +42,14 @@ class Game:
                 return False
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_f:
-                    self.music_start_stop(fadeout=5000)
+                    pygame.mixer.music.fadeout(Game.VOLUME_FADEOUT)
                 elif event.key == pygame.K_j:
-                    self.music_start_stop(loop=-1)
+                    pygame.mixer.music.play(loops=-1)  # forever
                 elif event.key == pygame.K_p:
                     self.pause_alter()
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 4:  # up
-                    self.volume_alter(Game.VOLUME_STEP)
-                elif event.button == 5:  # down
-                    self.volume_alter(-Game.VOLUME_STEP)
+            elif event.type == pygame.MOUSEWHEEL:
+                self.change_volume(event.y)
         return True
-
-    def music_start_stop(self, **kwargs: Any) -> None:
-        if "fadeout" in kwargs.keys():
-            pygame.mixer.music.fadeout(kwargs["fadeout"])
-        if "loop" in kwargs.keys():
-            pygame.mixer.music.play(kwargs["loop"], 0.0)
 
     def pause_alter(self) -> None:
         if self.pause:
@@ -67,11 +58,10 @@ class Game:
             pygame.mixer.music.pause()
         self.pause = not self.pause
 
-    def volume_alter(self, delta: float) -> None:
-        volume = pygame.mixer.music.get_volume()
-        volume += delta
+    def change_volume(self, delta):
+        volume = pygame.mixer.music.get_volume() + delta * Game.VOLUME_STEP
         volume = pygame.math.clamp(volume, 0.0, 1.0)
-        pygame.mixer.music.set_volume(volume)
+        pygame.mixer.music.set_volume(volume)  # clamped to [0, 1] by pygame
 
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
