@@ -27,12 +27,15 @@ class Game:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(None, Game.FONT_SIZE)
         self.pause = False
-        self.sounds()
 
-    def sounds(self) -> None:
         pygame.mixer.music.load(Game.MUSIC_FILE)
         pygame.mixer.music.set_volume(Game.VOLUME_DEFAULT)
         pygame.mixer.music.play(loops=-1)  # forever
+
+        self.info = self.font.render("Volume: _.__", True, Game.TEXT_COLOR)
+        self.info_rect = self.info.get_rect()
+        self.info_rect.center = Game.WIN_RECT.center
+        self.cur_volume = -1  # invalid volume
 
     def handle_events(self) -> bool:
         for event in pygame.event.get():
@@ -43,8 +46,10 @@ class Game:
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_f:
                     pygame.mixer.music.fadeout(Game.VOLUME_FADEOUT)
+                    print("Fadeout")
                 elif event.key == pygame.K_j:
                     pygame.mixer.music.play(loops=-1)  # forever
+                    print("Play")
                 elif event.key == pygame.K_p:
                     self.pause_alter()
             elif event.type == pygame.MOUSEWHEEL:
@@ -57,6 +62,7 @@ class Game:
         else:
             pygame.mixer.music.pause()
         self.pause = not self.pause
+        print("Pause is now", "on" if self.pause else "off")
 
     def change_volume(self, delta):
         volume = pygame.mixer.music.get_volume() + delta * Game.VOLUME_STEP
@@ -66,11 +72,12 @@ class Game:
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
         volume = pygame.mixer.music.get_volume()
-        info = self.font.render(f"Volume: {volume:3.2f}", True, Game.TEXT_COLOR)
-        info_rect = info.get_rect()
-        info_rect.center = Game.WIN_RECT.center
-        self.screen.blit(info, info_rect)
+        if volume != self.cur_volume:
+            text = f"Volume: {volume:.2f}"
+            self.info = self.font.render(text, True, Game.TEXT_COLOR)
+            self.cur_volume = volume
 
+        self.screen.blit(self.info, self.info_rect)
         self.window.flip()
 
     def run(self):
