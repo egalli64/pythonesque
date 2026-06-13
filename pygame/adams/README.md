@@ -64,3 +64,4 @@
 
 ## Section 11 Sound
 - 1: [Background music](2/b/1.py)
+- 2: [Effects](2/b/2.py)
