@@ -6,37 +6,37 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Sound effects
 """
 
-from os import path
 import pygame
 
 
 class Game:
     FPS = 30
-    WINDOW: pygame.Rect = pygame.Rect(0, 0, 400, 200)
+    WIN_RECT: pygame.Rect = pygame.Rect(0, 0, 400, 200)
+    BACKGROUND_COLOR = "black"
+    TITLE = "Sound effects"
+    FONT_SIZE = 40
+    TEXT_COLOR = "red"
+    EFFECT_BUBBLE = "sounds/plop.mp3"
+    EFFECT_CLASH = "sounds/glass.wav"
+
     VOLUME_STEP = 0.05
 
     def __init__(self) -> None:
-        self.window = pygame.Window(
-            size=Game.WINDOW.size, title="Sound Background Music"
-        )
+        self.window = pygame.Window(Game.TITLE, Game.WIN_RECT.size)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
-        self.font_bigsize = pygame.font.Font(pygame.font.get_default_font(), 40)
-        self.running = True
-        self.pause = False
-        self.sounds()
+        self.font = pygame.font.Font(None, 40)
 
-    def sounds(self) -> None:
-        self.bubble = pygame.mixer.Sound("sounds/plop.mp3")
-        self.clash = pygame.mixer.Sound("sounds/glass.wav")
+        self.bubble = pygame.mixer.Sound(Game.EFFECT_BUBBLE)
+        self.clash = pygame.mixer.Sound(Game.EFFECT_CLASH)
 
-    def watch_for_events(self) -> None:
+    def handle_events(self) -> bool:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.running = False
+                    return False
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 1:  # left
                     self.bubble.play()
@@ -46,6 +46,7 @@ class Game:
                     self.volume_alter(Game.VOLUME_STEP)
                 elif event.button == 5:  # down
                     self.volume_alter(-Game.VOLUME_STEP)
+        return True
 
     def volume_alter(self, delta: float) -> None:
         volume = self.bubble.get_volume() + delta
@@ -53,20 +54,20 @@ class Game:
         self.clash.set_volume(volume)
 
     def draw(self) -> None:
-        self.screen.fill("black")
+        self.screen.fill(self.BACKGROUND_COLOR)
         volume = self.bubble.get_volume()
-        volume_surface = self.font_bigsize.render(f"Volume: {volume:.2f}", True, "red")
+        text = f"Volume: {volume:.2f}"
+        volume_surface = self.font.render(text, True, Game.TEXT_COLOR)
         volume_rect = volume_surface.get_rect()
-        volume_rect.center = Game.WINDOW.center
+        volume_rect.center = Game.WIN_RECT.center
         self.screen.blit(volume_surface, volume_rect)
         self.window.flip()
 
     def run(self):
         self.running = True
-        while self.running:
-            self.watch_for_events()
-            self.draw()
+        while self.handle_events():
             self.clock.tick(Game.FPS)
+            self.draw()
 
 
 if __name__ == "__main__":
