@@ -66,7 +66,6 @@ class Game:
 
     def change_volume(self, delta):
         volume = pygame.mixer.music.get_volume() + delta * Game.VOLUME_STEP
-        volume = pygame.math.clamp(volume, 0.0, 1.0)
         pygame.mixer.music.set_volume(volume)  # clamped to [0, 1] by pygame
 
     def draw(self) -> None:
