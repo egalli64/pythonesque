@@ -25,10 +25,15 @@ class Game:
         self.window = pygame.Window(Game.TITLE, Game.WIN_RECT.size)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(None, 40)
+        self.font = pygame.font.Font(None, Game.FONT_SIZE)
 
         self.bubble = pygame.mixer.Sound(Game.EFFECT_BUBBLE)
         self.clash = pygame.mixer.Sound(Game.EFFECT_CLASH)
+
+        self.info = self.font.render("Volume: _.__", True, Game.TEXT_COLOR)
+        self.info_rect = self.info.get_rect()
+        self.info_rect.center = Game.WIN_RECT.center
+        self.cur_volume = -1  # invalid volume
 
     def handle_events(self) -> bool:
         for event in pygame.event.get():
@@ -42,34 +47,25 @@ class Game:
                     self.bubble.play()
                 elif event.button == 3:  # right
                     self.clash.play()
-                elif event.button == 4:  # up
-                    self.volume_alter(Game.VOLUME_STEP)
-                elif event.button == 5:  # down
-                    self.volume_alter(-Game.VOLUME_STEP)
-                elif event.type == pygame.MOUSEWHEEL:
-                    self.change_volume(event.y)
+            elif event.type == pygame.MOUSEWHEEL:
+                self.change_volume(event.y)
 
         return True
 
     def change_volume(self, delta):
-        volume = pygame.mixer.music.get_volume() + delta * Game.VOLUME_STEP
-        volume = pygame.math.clamp(volume, 0.0, 1.0)
-        pygame.mixer.music.set_volume(volume)  # clamped to [0, 1] by pygame
-
-
-    def volume_alter(self, delta: float) -> None:
-        volume = self.bubble.get_volume() + delta
+        volume = self.bubble.get_volume() + delta * Game.VOLUME_STEP
         self.bubble.set_volume(volume)
         self.clash.set_volume(volume)
 
     def draw(self) -> None:
         self.screen.fill(self.BACKGROUND_COLOR)
         volume = self.bubble.get_volume()
-        text = f"Volume: {volume:.2f}"
-        volume_surface = self.font.render(text, True, Game.TEXT_COLOR)
-        volume_rect = volume_surface.get_rect()
-        volume_rect.center = Game.WIN_RECT.center
-        self.screen.blit(volume_surface, volume_rect)
+        if volume != self.cur_volume:
+            text = f"Volume: {volume:.2f}"
+            self.info = self.font.render(text, True, Game.TEXT_COLOR)
+            self.cur_volume = volume
+
+        self.screen.blit(self.info, self.info_rect)
         self.window.flip()
 
     def run(self):
