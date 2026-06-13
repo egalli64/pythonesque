@@ -11,7 +11,6 @@ from random import randint
 import pygame
 
 FPS = 30
-
 TITLE = "Particle swarm /3"
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
@@ -25,46 +24,48 @@ class Circle:
     def __init__(self, pos) -> None:
         self.pos = pygame.Vector2(pos[0] + randint(-2, 2), pos[1] + randint(-2, 2))
         self.color = (randint(100, 255), randint(50, 255), 0)
-        self.speedy = randint(-100, 0) / 10.01
+        self.speed_y = randint(-100, 0) / 10.01
 
     def update(self) -> None:
-        self.speedy += Circle.GRAVITY
-        self.pos.y += self.speedy
+        self.speed_y += Circle.GRAVITY
+        self.pos.y += self.speed_y
 
     def draw(self, screen: pygame.Surface) -> None:
         pygame.draw.circle(screen, self.color, self.pos, Circle.RADIUS)
 
 
 def main():
-    pygame.init()
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
     circles = []
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    while handle_events():
+        clock.tick(FPS)
 
         if pygame.mouse.get_pressed()[0]:
             circles.append(Circle(pygame.mouse.get_pos()))
-
         for circle in circles:
             circle.update()
 
         screen.fill(BACKGROUND_COLOR)
-
         for circle in circles:
             circle.draw(screen)
-
         window.flip()
-        clock.tick(FPS)
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
