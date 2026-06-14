@@ -6,13 +6,14 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Stereo sound
 """
 
-from enum import Enum, auto
+from enum import Enum
 from typing import override
 import pygame
 
 TILE_SIZE = 32  # square tile, in bit
 MAP_SIZE = (25, 7)  # tiles, width, height
 WIN_RECT = pygame.Rect(0, 0, TILE_SIZE * MAP_SIZE[0], TILE_SIZE * MAP_SIZE[1])
+TRANSPARENT_COLOR = "black"
 
 
 class Ground:
@@ -34,8 +35,7 @@ class Ground:
 
 class Tank(pygame.sprite.Sprite):
     IMAGE = "images/tank.png"
-    SOUND_DRIVE = "sounds/drive.wav"
-    TRANSPARENT_COLOR = "black"
+    SOUND = "sounds/drive.wav"
     SPEED = 50
 
     class Direction(Enum):
@@ -52,19 +52,16 @@ class Tank(pygame.sprite.Sprite):
                 Tank.Direction.RIGHT: Tank.Direction.LEFT,
             }[self]
 
-        def __str__(self):
-            return self.name.lower()
-
     def __init__(self) -> None:
         super().__init__()
         self.images = {}
 
         picture = pygame.image.load(Tank.IMAGE).convert()
-        picture.set_colorkey(Tank.TRANSPARENT_COLOR)
+        picture.set_colorkey(TRANSPARENT_COLOR)
         self.images[Tank.Direction.UP] = picture
-        self.images[Tank.Direction.DOWN] = pygame.transform.rotate(picture, 180)
-        self.images[Tank.Direction.LEFT] = pygame.transform.rotate(picture, +90)
+        self.images[Tank.Direction.LEFT] = pygame.transform.rotate(picture, 90)
         self.images[Tank.Direction.RIGHT] = pygame.transform.rotate(picture, -90)
+        self.images[Tank.Direction.DOWN] = pygame.transform.rotate(picture, 180)
 
         self.direction: Tank.Direction = Tank.Direction.RIGHT
         self.image = self.images[self.direction]
@@ -72,11 +69,11 @@ class Tank(pygame.sprite.Sprite):
         assert self.rect.width == self.rect.height == TILE_SIZE, "Bad tile size"
 
         self.rect.left, self.rect.top = 3 * TILE_SIZE, 2 * TILE_SIZE  # initial position
-        self.sound_drive = pygame.mixer.Sound(Tank.SOUND_DRIVE)
         self.channel = pygame.mixer.find_channel()
         if self.channel:
+            sound = pygame.mixer.Sound(Tank.SOUND)
             self.stereo()
-            self.channel.play(self.sound_drive, -1)
+            self.channel.play(sound, -1)
         self.speed = None
 
     @override
@@ -99,40 +96,43 @@ class Tank(pygame.sprite.Sprite):
 
 
 class Bullet(pygame.sprite.Sprite):
-    SOUND_FIRE = None
+    SOUND = "sounds/fire.wav"
+    IMAGES = {
+        Tank.Direction.LEFT: "images/bullet_left.png",
+        Tank.Direction.RIGHT: "images/bullet_right.png",
+    }
+    SPEED = 300
 
     def __init__(self, tank: Tank) -> None:
-        assert tank.direction != (Tank.Direction.UP), "Firing up disabled"
-        assert tank.direction != (Tank.Direction.DOWN), "Firing down disabled"
+        assert tank.direction != (Tank.Direction.UP), "Firing up is disabled"
+        assert tank.direction != (Tank.Direction.DOWN), "Firing down is disabled"
         super().__init__()
 
-        bulletspeed = 300
-        directions = {
-            Tank.Direction.LEFT: pygame.Vector2(-bulletspeed, 0),
-            Tank.Direction.RIGHT: pygame.Vector2(bulletspeed, 0),
-        }
-        fullfilename = f"images/bullet_{tank.direction}.png"
-        self.image = pygame.image.load(fullfilename).convert()
-        self.image.set_colorkey("black")
+        self.image = pygame.image.load(Bullet.IMAGES[tank.direction]).convert()
+        self.image.set_colorkey(TRANSPARENT_COLOR)
         self.rect: pygame.Rect = self.image.get_rect()
         self.direction = tank.direction
         self.rect.center = tank.rect.center
-        self.speed = directions[tank.direction]
 
-        if Bullet.SOUND_FIRE == None:
-            Bullet.SOUND_FIRE = pygame.mixer.Sound("sounds/fire.wav")
-        volume_right = self.rect.centerx / WIN_RECT.width
-        volume_left = 1 - volume_right
-        self.channel: pygame.mixer.Channel = pygame.mixer.find_channel()
+        self.channel = pygame.mixer.find_channel()
         if self.channel:
-            self.channel.set_volume(volume_left, volume_right)
-            self.channel.play(Bullet.SOUND_FIRE)
+            sound = pygame.mixer.Sound(Bullet.SOUND)
+            self.stereo()
+            self.channel.play(sound)
+
+    def stereo(self) -> None:
+        right = self.rect.centerx / WIN_RECT.width
+        self.channel.set_volume(1 - right, right)
 
     @override
     def update(self, dt) -> None:
-        self.rect.move_ip(self.speed * dt)
+        movement = pygame.Vector2(self.direction.value) * Bullet.SPEED * dt
+        self.rect.move_ip(*movement)
+
         if not WIN_RECT.contains(self.rect):
             self.kill()
+        else:
+            self.stereo()
 
 
 class Game:
