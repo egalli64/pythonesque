@@ -6,6 +6,7 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Stereo sound
 """
 
+from enum import Enum, auto
 from typing import override
 import pygame
 
@@ -37,18 +38,35 @@ class Tank(pygame.sprite.Sprite):
     TRANSPARENT_COLOR = "black"
     SPEED = 50
 
+    class Direction(Enum):
+        UP = (0, -1)
+        DOWN = (0, 1)
+        LEFT = (-1, 0)
+        RIGHT = (1, 0)
+
+        def opposite(self):
+            return {
+                Tank.Direction.UP: Tank.Direction.DOWN,
+                Tank.Direction.DOWN: Tank.Direction.UP,
+                Tank.Direction.LEFT: Tank.Direction.RIGHT,
+                Tank.Direction.RIGHT: Tank.Direction.LEFT,
+            }[self]
+
+        def __str__(self):
+            return self.name.lower()
+
     def __init__(self) -> None:
         super().__init__()
         self.images = {}
 
         picture = pygame.image.load(Tank.IMAGE).convert()
         picture.set_colorkey(Tank.TRANSPARENT_COLOR)
-        self.images["up"] = picture
-        self.images["down"] = pygame.transform.rotate(picture, 180)
-        self.images["left"] = pygame.transform.rotate(picture, +90)
-        self.images["right"] = pygame.transform.rotate(picture, -90)
+        self.images[Tank.Direction.UP] = picture
+        self.images[Tank.Direction.DOWN] = pygame.transform.rotate(picture, 180)
+        self.images[Tank.Direction.LEFT] = pygame.transform.rotate(picture, +90)
+        self.images[Tank.Direction.RIGHT] = pygame.transform.rotate(picture, -90)
 
-        self.direction = "right"
+        self.direction: Tank.Direction = Tank.Direction.RIGHT
         self.image = self.images[self.direction]
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
         assert self.rect.width == self.rect.height == TILE_SIZE, "Bad tile size"
@@ -59,34 +77,24 @@ class Tank(pygame.sprite.Sprite):
         if self.channel:
             self.stereo()
             self.channel.play(self.sound_drive, -1)
-        self.speed = Tank.SPEED
+        self.speed = None
 
     @override
     def update(self, dt) -> None:
         self.image = self.images[self.direction]
-        if self.direction == "up" or self.direction == "left":
-            self.speed = -1 * Tank.SPEED
-        elif self.direction == "down" or self.direction == "right":
-            self.speed = Tank.SPEED
-        if self.direction == "up" or self.direction == "down":
-            self.rect.move_ip(0, self.speed * dt)
-            if self.rect.top <= WIN_RECT.top:
-                self.turn("down")
-            if self.rect.bottom >= WIN_RECT.bottom:
-                self.turn("up")
-        elif self.direction == "left" or self.direction == "right":
-            self.rect.move_ip(self.speed * dt, 0)
-            if self.rect.left <= WIN_RECT.left:
-                self.turn("right")
-            if self.rect.right >= WIN_RECT.right:
-                self.turn("left")
+        movement = pygame.Vector2(self.direction.value) * Tank.SPEED * dt
+        self.rect.move_ip(*movement)
+
+        if not WIN_RECT.contains(self.rect):
+            self.direction = self.direction.opposite()
+
         self.stereo()
 
     def stereo(self) -> None:
         right = self.rect.centerx / WIN_RECT.width
         self.channel.set_volume(1 - right, right)
 
-    def turn(self, direction: str) -> None:
+    def turn(self, direction: Direction) -> None:
         self.direction = direction
 
 
@@ -94,13 +102,14 @@ class Bullet(pygame.sprite.Sprite):
     SOUND_FIRE = None
 
     def __init__(self, tank: Tank) -> None:
-        assert tank.direction not in ("up", "down"), "Unexpected fire direction"
+        assert tank.direction != (Tank.Direction.UP), "Firing up disabled"
+        assert tank.direction != (Tank.Direction.DOWN), "Firing down disabled"
         super().__init__()
 
         bulletspeed = 300
         directions = {
-            "left": pygame.Vector2(-bulletspeed, 0),
-            "right": pygame.Vector2(bulletspeed, 0),
+            Tank.Direction.LEFT: pygame.Vector2(-bulletspeed, 0),
+            Tank.Direction.RIGHT: pygame.Vector2(bulletspeed, 0),
         }
         fullfilename = f"images/bullet_{tank.direction}.png"
         self.image = pygame.image.load(fullfilename).convert()
@@ -148,19 +157,19 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     return False
                 elif event.key == pygame.K_UP:
-                    self.tank.turn("up")
+                    self.tank.turn(Tank.Direction.UP)
                 elif event.key == pygame.K_DOWN:
-                    self.tank.turn("down")
+                    self.tank.turn(Tank.Direction.DOWN)
                 elif event.key == pygame.K_LEFT:
-                    self.tank.turn("left")
+                    self.tank.turn(Tank.Direction.LEFT)
                 elif event.key == pygame.K_RIGHT:
-                    self.tank.turn("right")
+                    self.tank.turn(Tank.Direction.RIGHT)
                 elif event.key == pygame.K_SPACE:
                     self.fire()
         return True
 
     def fire(self) -> None:
-        if self.tank.direction in ["up", "down"]:
+        if self.tank.direction in [Tank.Direction.UP, Tank.Direction.DOWN]:
             print("North/South fire disabled!")
         elif len(self.all_bullets) < 5:
             self.all_bullets.add(Bullet(self.tank))
