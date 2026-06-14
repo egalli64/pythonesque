@@ -6,9 +6,7 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Stereo sound
 """
 
-from time import time
-from typing import Any, override
-
+from typing import override
 import pygame
 
 TILE_SIZE = 32  # square tile, in bit
@@ -63,6 +61,7 @@ class Tank(pygame.sprite.Sprite):
             self.channel.play(self.sound_drive, -1)
         self.speed = Tank.SPEED
 
+    @override
     def update(self, dt) -> None:
         self.image = self.images[self.direction]
         if self.direction == "up" or self.direction == "left":
@@ -129,16 +128,16 @@ class Bullet(pygame.sprite.Sprite):
 
 class Game:
     FPS = 30
+    TITLE = "Stereo panning sound"
 
     def __init__(self) -> None:
-        pygame.init()
-        self.window = pygame.Window(size=WIN_RECT.size, title="Stereo panning sound")
+        self.window = pygame.Window(Game.TITLE, WIN_RECT.size)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
 
         self.ground = Ground()
-        self.tankreference = Tank()
-        self.tank = pygame.sprite.GroupSingle(self.tankreference)
+        self.tank = Tank()
+        self.tank_group = pygame.sprite.GroupSingle(self.tank)
         self.all_bullets = pygame.sprite.Group()
 
     def handle_events(self) -> bool:
@@ -149,22 +148,22 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     return False
                 elif event.key == pygame.K_UP:
-                    self.tankreference.turn("up")
+                    self.tank.turn("up")
                 elif event.key == pygame.K_DOWN:
-                    self.tankreference.turn("down")
+                    self.tank.turn("down")
                 elif event.key == pygame.K_LEFT:
-                    self.tankreference.turn("left")
+                    self.tank.turn("left")
                 elif event.key == pygame.K_RIGHT:
-                    self.tankreference.turn("right")
+                    self.tank.turn("right")
                 elif event.key == pygame.K_SPACE:
                     self.fire()
         return True
 
     def fire(self) -> None:
-        if self.tankreference.direction in ["up", "down"]:
+        if self.tank.direction in ["up", "down"]:
             print("North/South fire disabled!")
         elif len(self.all_bullets) < 5:
-            self.all_bullets.add(Bullet(self.tankreference))
+            self.all_bullets.add(Bullet(self.tank))
 
     def run(self) -> None:
         while self.handle_events():
@@ -174,7 +173,7 @@ class Game:
             self.all_bullets.update(dt)
 
             self.ground.draw(self.screen)
-            self.tank.draw(self.screen)
+            self.tank_group.draw(self.screen)
             self.all_bullets.draw(self.screen)
             self.window.flip()
 
