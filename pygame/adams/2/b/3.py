@@ -11,7 +11,9 @@ from typing import Any
 
 import pygame
 
-WIN_RECT: pygame.Rect = pygame.Rect(0, 0, 800, 224)
+TILE_SIZE = 32  # square tile, in bit
+MAP_SIZE = (25, 7)  # tiles, width, height
+WIN_RECT = pygame.Rect(0, 0, TILE_SIZE * MAP_SIZE[0], TILE_SIZE * MAP_SIZE[1])
 FPS = 30
 DELTATIME = 1.0 / FPS
 
@@ -21,6 +23,7 @@ class Ground:
 
     def __init__(self) -> None:
         tile = pygame.image.load(Ground.IMAGE).convert()
+        assert tile.get_width() == tile.get_height() == TILE_SIZE, "Bad tile size"
 
         self.background = pygame.Surface(WIN_RECT.size)
 
@@ -34,13 +37,16 @@ class Ground:
 
 class Tank(pygame.sprite.Sprite):
     IMAGE = "images/tank.png"
+    SOUND_DRIVE = "sounds/drive.wav"
+    TRANSPARENT_COLOR = "black"
+    SPEED = 50
 
     def __init__(self) -> None:
         super().__init__()
         self.images = {}
 
         picture = pygame.image.load(Tank.IMAGE).convert()
-        picture.set_colorkey("black")
+        picture.set_colorkey(Tank.TRANSPARENT_COLOR)
         self.images["up"] = picture
         self.images["down"] = pygame.transform.rotate(picture, 180)
         self.images["left"] = pygame.transform.rotate(picture, +90)
@@ -49,42 +55,39 @@ class Tank(pygame.sprite.Sprite):
         self.direction = "right"
         self.image = self.images[self.direction]
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
-        self.rect.left, self.rect.top = 3 * self.rect.width, 2 * self.rect.height
-        self.sound_drive = pygame.mixer.Sound("sounds/drive.wav")
+        assert self.rect.width == self.rect.height == TILE_SIZE, "Bad tile size"
+
+        self.rect.left, self.rect.top = 3 * TILE_SIZE, 2 * TILE_SIZE  # initial position
+        self.sound_drive = pygame.mixer.Sound(Tank.SOUND_DRIVE)
         self.channel = pygame.mixer.find_channel()
         if self.channel:
             self.stereo()
             self.channel.play(self.sound_drive, -1)
-        self.speed = 50
+        self.speed = Tank.SPEED
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
-        if "go" in kwargs.keys():
-            if kwargs["go"]:
-                self.image = self.images[self.direction]
-                if self.direction == "up" or self.direction == "left":
-                    self.speed = -50
-                elif self.direction == "down" or self.direction == "right":
-                    self.speed = 50
-                if self.direction == "up" or self.direction == "down":
-                    self.rect.move_ip(0, self.speed * DELTATIME)
-                    if self.rect.top <= WIN_RECT.top:
-                        self.turn("down")
-                    if self.rect.bottom >= WIN_RECT.bottom:
-                        self.turn("up")
-                elif self.direction == "left" or self.direction == "right":
-                    self.rect.move_ip(self.speed * DELTATIME, 0)
-                    if self.rect.left <= WIN_RECT.left:
-                        self.turn("right")
-                    if self.rect.right >= WIN_RECT.right:
-                        self.turn("left")
-                self.stereo()
-        if "turn" in kwargs.keys():
-            self.turn(kwargs["turn"])
+    def update(self) -> None:
+        self.image = self.images[self.direction]
+        if self.direction == "up" or self.direction == "left":
+            self.speed = -1 * Tank.SPEED
+        elif self.direction == "down" or self.direction == "right":
+            self.speed = Tank.SPEED
+        if self.direction == "up" or self.direction == "down":
+            self.rect.move_ip(0, self.speed * DELTATIME)
+            if self.rect.top <= WIN_RECT.top:
+                self.turn("down")
+            if self.rect.bottom >= WIN_RECT.bottom:
+                self.turn("up")
+        elif self.direction == "left" or self.direction == "right":
+            self.rect.move_ip(self.speed * DELTATIME, 0)
+            if self.rect.left <= WIN_RECT.left:
+                self.turn("right")
+            if self.rect.right >= WIN_RECT.right:
+                self.turn("left")
+        self.stereo()
 
     def stereo(self) -> None:
-        volume_right = self.rect.centerx / WIN_RECT.width
-        volume_left = 1 - volume_right
-        self.channel.set_volume(volume_left, volume_right)
+        right = self.rect.centerx / WIN_RECT.width
+        self.channel.set_volume(1 - right, right)
 
     def turn(self, direction: str) -> None:
         self.direction = direction
@@ -126,7 +129,6 @@ class Bullet(pygame.sprite.Sprite):
 
 
 class Game:
-
     def __init__(self) -> None:
         pygame.init()
         self.window = pygame.Window(size=WIN_RECT.size, title="Stereo panning sound")
@@ -147,13 +149,13 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
                 elif event.key == pygame.K_UP:
-                    self.tank.update(turn="up")
+                    self.tankreference.turn("up")
                 elif event.key == pygame.K_DOWN:
-                    self.tank.update(turn="down")
+                    self.tankreference.turn("down")
                 elif event.key == pygame.K_LEFT:
-                    self.tank.update(turn="left")
+                    self.tankreference.turn("left")
                 elif event.key == pygame.K_RIGHT:
-                    self.tank.update(turn="right")
+                    self.tankreference.turn("right")
                 elif event.key == pygame.K_SPACE:
                     self.fire()
 
@@ -170,7 +172,7 @@ class Game:
         self.window.flip()
 
     def update(self) -> None:
-        self.tank.update(go=True)
+        self.tank.update()
         self.all_bullets.update()
 
     def run(self) -> None:
