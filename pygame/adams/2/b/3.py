@@ -7,15 +7,13 @@ Stereo sound
 """
 
 from time import time
-from typing import Any
+from typing import Any, override
 
 import pygame
 
 TILE_SIZE = 32  # square tile, in bit
 MAP_SIZE = (25, 7)  # tiles, width, height
 WIN_RECT = pygame.Rect(0, 0, TILE_SIZE * MAP_SIZE[0], TILE_SIZE * MAP_SIZE[1])
-FPS = 30
-DELTATIME = 1.0 / FPS
 
 
 class Ground:
@@ -65,20 +63,20 @@ class Tank(pygame.sprite.Sprite):
             self.channel.play(self.sound_drive, -1)
         self.speed = Tank.SPEED
 
-    def update(self) -> None:
+    def update(self, dt) -> None:
         self.image = self.images[self.direction]
         if self.direction == "up" or self.direction == "left":
             self.speed = -1 * Tank.SPEED
         elif self.direction == "down" or self.direction == "right":
             self.speed = Tank.SPEED
         if self.direction == "up" or self.direction == "down":
-            self.rect.move_ip(0, self.speed * DELTATIME)
+            self.rect.move_ip(0, self.speed * dt)
             if self.rect.top <= WIN_RECT.top:
                 self.turn("down")
             if self.rect.bottom >= WIN_RECT.bottom:
                 self.turn("up")
         elif self.direction == "left" or self.direction == "right":
-            self.rect.move_ip(self.speed * DELTATIME, 0)
+            self.rect.move_ip(self.speed * dt, 0)
             if self.rect.left <= WIN_RECT.left:
                 self.turn("right")
             if self.rect.right >= WIN_RECT.right:
@@ -122,13 +120,16 @@ class Bullet(pygame.sprite.Sprite):
             self.channel.set_volume(volume_left, volume_right)
             self.channel.play(Bullet.SOUND_FIRE)
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
-        self.rect.move_ip(self.speed * DELTATIME)
+    @override
+    def update(self, dt) -> None:
+        self.rect.move_ip(self.speed * dt)
         if not WIN_RECT.contains(self.rect):
             self.kill()
 
 
 class Game:
+    FPS = 30
+
     def __init__(self) -> None:
         pygame.init()
         self.window = pygame.Window(size=WIN_RECT.size, title="Stereo panning sound")
@@ -139,15 +140,14 @@ class Game:
         self.tankreference = Tank()
         self.tank = pygame.sprite.GroupSingle(self.tankreference)
         self.all_bullets = pygame.sprite.Group()
-        self.running = True
 
-    def watch_for_events(self) -> None:
+    def handle_events(self) -> bool:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.running = False
+                    return False
                 elif event.key == pygame.K_UP:
                     self.tankreference.turn("up")
                 elif event.key == pygame.K_DOWN:
@@ -158,6 +158,7 @@ class Game:
                     self.tankreference.turn("right")
                 elif event.key == pygame.K_SPACE:
                     self.fire()
+        return True
 
     def fire(self) -> None:
         if self.tankreference.direction in ["up", "down"]:
@@ -165,28 +166,17 @@ class Game:
         elif len(self.all_bullets) < 5:
             self.all_bullets.add(Bullet(self.tankreference))
 
-    def draw(self) -> None:
-        self.ground.draw(self.screen)
-        self.tank.draw(self.screen)
-        self.all_bullets.draw(self.screen)
-        self.window.flip()
-
-    def update(self) -> None:
-        self.tank.update()
-        self.all_bullets.update()
-
     def run(self) -> None:
-        time_previous = time()
-        self.running = True
-        while self.running:
-            self.watch_for_events()
-            self.update()
-            self.draw()
-            self.clock.tick(FPS)
-            time_current = time()
-            DELTATIME = time_current - time_previous
-            time_previous = time_current
-        pygame.quit()
+        while self.handle_events():
+            dt = self.clock.tick(Game.FPS) / 1000
+
+            self.tank.update(dt)
+            self.all_bullets.update(dt)
+
+            self.ground.draw(self.screen)
+            self.tank.draw(self.screen)
+            self.all_bullets.draw(self.screen)
+            self.window.flip()
 
 
 if __name__ == "__main__":
