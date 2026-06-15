@@ -8,35 +8,37 @@ User defined events
 
 import pygame
 from random import choice, randint
-from typing import Any, Tuple
+from typing import Any
 
 WIN_RECT = pygame.Rect(0, 0, 600, 150)
 EVENT_BUTTON_PRESSED = pygame.event.custom_type()
 EVENT_OVERFLOW = pygame.event.custom_type()
 
 
-class Button(pygame.sprite.Sprite):
+class StartButton(pygame.sprite.Sprite):
     TEXT_COLOR = "black"
+    TEXT = ("Stop", "Start")
 
-    def __init__(self, text, position, group) -> None:
+    def __init__(self, pos, group) -> None:
         super().__init__(group)
         self.font = pygame.font.SysFont(None, 30)
-        self.text = text
-        self.image = self.font.render(self.text, True, Button.TEXT_COLOR)
-        self.rect: pygame.Rect = self.image.get_rect(topleft=(position))
+        self.running = False
+        self.image = self.font.render(StartButton.TEXT[1], True, StartButton.TEXT_COLOR)
+        self.rect: pygame.Rect = self.image.get_rect(topleft=pos)
         self.dirty = False
 
     def update(self) -> None:
         if self.dirty:
-            self.image = self.font.render(self.text, True, Button.TEXT_COLOR)
+            text = StartButton.TEXT[0] if self.running else StartButton.TEXT[1]
+            self.image = self.font.render(text, True, StartButton.TEXT_COLOR)
             self.dirty = False
 
     def on_click(self, event_in):
         if event_in.button == 1 and self.rect.collidepoint(event_in.pos):
-            event_out = pygame.event.Event(EVENT_BUTTON_PRESSED, text=self.text)
+            event_out = pygame.event.Event(EVENT_BUTTON_PRESSED, running=self.running)
             pygame.event.post(event_out)
 
-            self.text = "Start" if self.text == "Stop" else "Stop"
+            self.running = not self.running
             self.dirty = True
 
 
@@ -52,26 +54,19 @@ class Particle(pygame.sprite.Sprite):
         )
         self.speed = randint(50, 100)
         self.direction = pygame.Vector2(choice((-1, 1)), choice((-1, 1)))
-        self.halted = True
+        self.freezed = True
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
-        if "action" in kwargs.keys():
-            if kwargs["action"] == "move":
-                if not self.halted:
-                    self._move()
-            elif kwargs["action"] == "Start":
-                self.halted = False
-            elif kwargs["action"] == "Stop":
-                self.halted = True
+    def update(self, td) -> None:
+        if not self.freezed:
+            self.rect.move_ip(self.speed * self.direction * td)
+            if self.rect.left < WIN_RECT.left or self.rect.right > WIN_RECT.right:
+                self.direction[0] *= -1
+            if self.rect.top < WIN_RECT.top or self.rect.bottom > WIN_RECT.bottom:
+                self.direction[1] *= -1
+            self.rect.clamp_ip(WIN_RECT)
 
-    def _move(self) -> None:
-        td = 1 / 30  # TODO: real implementation
-        self.rect.move_ip(self.speed * self.direction * td)
-        if self.rect.left < WIN_RECT.left or self.rect.right > WIN_RECT.right:
-            self.direction[0] *= -1
-        if self.rect.top < WIN_RECT.top or self.rect.bottom > WIN_RECT.bottom:
-            self.direction[1] *= -1
-        self.rect.clamp_ip(WIN_RECT)
+    def set_freezed(self, freezed: bool):
+        self.freezed = freezed
 
 
 class Box(pygame.sprite.Sprite):
@@ -114,9 +109,9 @@ class Game:
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
         self.all_sprites = pygame.sprite.Group()
-        self.all_particles = pygame.sprite.Group()
+        self.all_particles: pygame.sprite.Group[Particle] = pygame.sprite.Group()
         self.generate_particles()
-        self.button = Button("Start", (30, WIN_RECT.bottom - 30), self.all_sprites)
+        self.button = StartButton((30, WIN_RECT.bottom - 30), self.all_sprites)
         self.all_boxes = pygame.sprite.Group()
         self.generate_boxes()
 
@@ -125,7 +120,7 @@ class Game:
             td = self.clock.tick(Game.FPS) / 1000
 
             self.button.update()
-            self.all_particles.update(action="move")
+            self.all_particles.update(td)
             self.check_boxcollision()
 
             self.screen.fill("white")
@@ -142,7 +137,8 @@ class Game:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 self.button.on_click(event)
             elif event.type == EVENT_BUTTON_PRESSED:
-                self.all_particles.update(action=event.text)
+                for particle in self.all_particles:
+                    particle.set_freezed(event.running)
             elif event.type == EVENT_OVERFLOW:
                 if event.index < Game.BOX_COUNT - 1:
                     self.all_boxes.sprites()[event.index + 1].update(counter="inc")
