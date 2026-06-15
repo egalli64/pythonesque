@@ -16,20 +16,28 @@ EVENT_OVERFLOW = pygame.event.custom_type()
 
 
 class Button(pygame.sprite.Sprite):
+    TEXT_COLOR = "black"
+
     def __init__(self, text, position, group) -> None:
         super().__init__(group)
         self.font = pygame.font.SysFont(None, 30)
-        self.centerxy = (WIN_RECT.centerx, self.font.get_height() // 2)
         self.text = text
-        self.image = self.font.render(self.text, True, "black")
+        self.image = self.font.render(self.text, True, Button.TEXT_COLOR)
         self.rect: pygame.Rect = self.image.get_rect(topleft=(position))
+        self.dirty = False
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
-        if "action" in kwargs.keys():
-            if kwargs["action"] == "pressed":
-                evt = pygame.event.Event(EVENT_BUTTON_PRESSED, text=self.text)
-                pygame.event.post(evt)
-        return super().update(*args, **kwargs)
+    def update(self) -> None:
+        if self.dirty:
+            self.image = self.font.render(self.text, True, Button.TEXT_COLOR)
+            self.dirty = False
+
+    def on_click(self, event_in):
+        if event_in.button == 1 and self.rect.collidepoint(event_in.pos):
+            event_out = pygame.event.Event(EVENT_BUTTON_PRESSED, text=self.text)
+            pygame.event.post(event_out)
+
+            self.text = "Start" if self.text == "Stop" else "Stop"
+            self.dirty = True
 
 
 class Particle(pygame.sprite.Sprite):
@@ -44,7 +52,7 @@ class Particle(pygame.sprite.Sprite):
         )
         self.speed = randint(50, 100)
         self.direction = pygame.Vector2(choice((-1, 1)), choice((-1, 1)))
-        self.halted = False
+        self.halted = True
 
     def update(self, *args: Any, **kwargs: Any) -> None:
         if "action" in kwargs.keys():
@@ -108,13 +116,7 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.all_particles = pygame.sprite.Group()
         self.generate_particles()
-        self.all_buttons = pygame.sprite.Group()
-        self.all_buttons.add(
-            Button("Start", (30, WIN_RECT.bottom - 30), self.all_sprites)
-        )
-        self.all_buttons.add(
-            Button("Stop", (100, WIN_RECT.bottom - 30), self.all_sprites)
-        )
+        self.button = Button("Start", (30, WIN_RECT.bottom - 30), self.all_sprites)
         self.all_boxes = pygame.sprite.Group()
         self.generate_boxes()
 
@@ -122,7 +124,7 @@ class Game:
         while self.handle_events():
             td = self.clock.tick(Game.FPS) / 1000
 
-            self.all_buttons.update()
+            self.button.update()
             self.all_particles.update(action="move")
             self.check_boxcollision()
 
@@ -138,8 +140,7 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     return False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    self.check_button_pressed(event.pos)
+                self.button.on_click(event)
             elif event.type == EVENT_BUTTON_PRESSED:
                 self.all_particles.update(action=event.text)
             elif event.type == EVENT_OVERFLOW:
@@ -161,11 +162,6 @@ class Game:
     def generate_particles(self) -> None:
         for _ in range(Game.PARTICLE_COUNT):
             self.all_particles.add(Particle(self.all_sprites))
-
-    def check_button_pressed(self, position: Tuple[int]) -> None:
-        for b in self.all_buttons.sprites():
-            if b.rect.collidepoint(position):
-                b.update(action="pressed")
 
     def check_boxcollision(self) -> None:
         c = pygame.sprite.groupcollide(self.all_particles, self.all_boxes, True, False)
