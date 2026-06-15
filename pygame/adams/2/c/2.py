@@ -8,12 +8,9 @@ User defined events
 
 import pygame
 from random import choice, randint
-from time import time
 from typing import Any, Tuple
 
 WINDOW = pygame.Rect(0, 0, 600, 150)
-FPS = 30
-DELTATIME = 1.0 / FPS
 STARTNOFPARTICLES = 999
 NOFBOXES = 3
 BOXWIDTH = 50
@@ -23,7 +20,6 @@ EVENT_OVERFLOW = pygame.event.custom_type()
 
 
 class Button(pygame.sprite.Sprite):
-
     def __init__(self, text, position, group) -> None:
         super().__init__(group)
         self.font = pygame.font.SysFont(None, 30)
@@ -42,7 +38,7 @@ class Button(pygame.sprite.Sprite):
 
 class Particle(pygame.sprite.Sprite):
     def __init__(self, group) -> None:
-        super().__init__(*group)
+        super().__init__(group)
         self.image = pygame.Surface((randint(3, 6), randint(3, 6)))
         self.image.fill((0, randint(100, 255), 0))
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
@@ -50,7 +46,7 @@ class Particle(pygame.sprite.Sprite):
             randint(30, WINDOW.right - 30),
             randint(30, WINDOW.bottom - 30),
         )
-        self.speed = randint(100, 400)
+        self.speed = randint(50, 100)
         self.direction = pygame.Vector2(choice((-1, 1)), choice((-1, 1)))
         self.halted = False
 
@@ -65,7 +61,8 @@ class Particle(pygame.sprite.Sprite):
                 self.halted = True
 
     def _move(self) -> None:
-        self.rect.move_ip(self.speed * self.direction * DELTATIME)
+        td = 1 / 30  # TODO: real implementation
+        self.rect.move_ip(self.speed * self.direction * td)
         if self.rect.left < WINDOW.left or self.rect.right > WINDOW.right:
             self.direction[0] *= -1
         if self.rect.top < WINDOW.top or self.rect.bottom > WINDOW.bottom:
@@ -101,6 +98,8 @@ class Box(pygame.sprite.Sprite):
 
 
 class Game:
+    FPS = 30
+
     def __init__(self) -> None:
         self.window = pygame.Window("Event (1)", WINDOW.size)
         self.screen = self.window.get_surface()
@@ -110,33 +109,35 @@ class Game:
         self.all_particles = pygame.sprite.Group()
         self.generate_particles(STARTNOFPARTICLES)
         self.all_buttons = pygame.sprite.Group()
-        pos: Tuple[int, int] = (30, WINDOW.bottom - 30)
-        start = Button("Start", pos, self.all_sprites)
-        self.all_buttons.add(start)
-        stop = Button("Stop", (100, WINDOW.bottom - 30), self.all_sprites)
-        self.all_buttons.add(stop)
+        self.all_buttons.add(
+            Button("Start", (30, WINDOW.bottom - 30), self.all_sprites)
+        )
+        self.all_buttons.add(
+            Button("Stop", (100, WINDOW.bottom - 30), self.all_sprites)
+        )
         self.all_boxes = pygame.sprite.Group()
         self.generate_boxes(NOFBOXES)
         self.running = True
 
     def run(self) -> None:
-        time_previous = time()
-        while self.running:
-            self.watch_for_events()
-            self.update()
-            self.draw()
-            self.clock.tick(FPS)
-            time_current = time()
-            DELTATIME = time_current - time_previous
-            time_previous = time_current
+        while self.handle_events():
+            td = self.clock.tick(Game.FPS) / 1000
 
-    def watch_for_events(self) -> None:
+            self.all_buttons.update()
+            self.all_particles.update(action="move")
+            self.check_boxcollision()
+
+            self.screen.fill("white")
+            self.all_sprites.draw(self.screen)
+            self.window.flip()
+
+    def handle_events(self) -> bool:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.running = False
+                    return False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     self.check_button_pressed(event.pos)
@@ -146,15 +147,7 @@ class Game:
                 if event.index < NOFBOXES - 1:
                     self.all_boxes.sprites()[event.index + 1].update(counter="inc")
 
-    def update(self):
-        self.all_buttons.update()
-        self.all_particles.update(action="move")
-        self.check_boxcollision()
-
-    def draw(self) -> None:
-        self.screen.fill("white")
-        self.all_sprites.draw(self.screen)
-        self.window.flip()
+        return True
 
     def generate_boxes(self, number: int) -> None:
         for i in range(number):
