@@ -10,11 +10,7 @@ import pygame
 from random import choice, randint
 from typing import Any, Tuple
 
-WINDOW = pygame.Rect(0, 0, 600, 150)
-STARTNOFPARTICLES = 999
-NOFBOXES = 3
-BOXWIDTH = 50
-
+WIN_RECT = pygame.Rect(0, 0, 600, 150)
 EVENT_BUTTON_PRESSED = pygame.event.custom_type()
 EVENT_OVERFLOW = pygame.event.custom_type()
 
@@ -23,7 +19,7 @@ class Button(pygame.sprite.Sprite):
     def __init__(self, text, position, group) -> None:
         super().__init__(group)
         self.font = pygame.font.SysFont(None, 30)
-        self.centerxy = (WINDOW.centerx, self.font.get_height() // 2)
+        self.centerxy = (WIN_RECT.centerx, self.font.get_height() // 2)
         self.text = text
         self.image = self.font.render(self.text, True, "black")
         self.rect: pygame.Rect = self.image.get_rect(topleft=(position))
@@ -43,8 +39,8 @@ class Particle(pygame.sprite.Sprite):
         self.image.fill((0, randint(100, 255), 0))
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
         self.rect.topleft = (
-            randint(30, WINDOW.right - 30),
-            randint(30, WINDOW.bottom - 30),
+            randint(30, WIN_RECT.right - 30),
+            randint(30, WIN_RECT.bottom - 30),
         )
         self.speed = randint(50, 100)
         self.direction = pygame.Vector2(choice((-1, 1)), choice((-1, 1)))
@@ -63,18 +59,20 @@ class Particle(pygame.sprite.Sprite):
     def _move(self) -> None:
         td = 1 / 30  # TODO: real implementation
         self.rect.move_ip(self.speed * self.direction * td)
-        if self.rect.left < WINDOW.left or self.rect.right > WINDOW.right:
+        if self.rect.left < WIN_RECT.left or self.rect.right > WIN_RECT.right:
             self.direction[0] *= -1
-        if self.rect.top < WINDOW.top or self.rect.bottom > WINDOW.bottom:
+        if self.rect.top < WIN_RECT.top or self.rect.bottom > WIN_RECT.bottom:
             self.direction[1] *= -1
-        self.rect.clamp_ip(WINDOW)
+        self.rect.clamp_ip(WIN_RECT)
 
 
 class Box(pygame.sprite.Sprite):
-    def __init__(self, index, position, group) -> None:
+    IMAGE_SIZE = (50, 20)
+
+    def __init__(self, index, pos, group) -> None:
         super().__init__(group)
-        self.image: pygame.Surface = pygame.Surface((BOXWIDTH, 20))
-        self.rect = self.image.get_rect(center=position)
+        self.image: pygame.Surface = pygame.Surface(Box.IMAGE_SIZE)
+        self.rect = self.image.get_rect(center=pos)
         self.font = pygame.font.SysFont(None, 30)
         self.counter = 0
         self.index = index
@@ -99,25 +97,26 @@ class Box(pygame.sprite.Sprite):
 
 class Game:
     FPS = 30
+    TITLE = "User defined events"
+    PARTICLE_COUNT = 100
+    BOX_COUNT = 3
 
     def __init__(self) -> None:
-        self.window = pygame.Window("Event (1)", WINDOW.size)
+        self.window = pygame.Window(Game.TITLE, WIN_RECT.size)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
-        self.running = True
         self.all_sprites = pygame.sprite.Group()
         self.all_particles = pygame.sprite.Group()
-        self.generate_particles(STARTNOFPARTICLES)
+        self.generate_particles()
         self.all_buttons = pygame.sprite.Group()
         self.all_buttons.add(
-            Button("Start", (30, WINDOW.bottom - 30), self.all_sprites)
+            Button("Start", (30, WIN_RECT.bottom - 30), self.all_sprites)
         )
         self.all_buttons.add(
-            Button("Stop", (100, WINDOW.bottom - 30), self.all_sprites)
+            Button("Stop", (100, WIN_RECT.bottom - 30), self.all_sprites)
         )
         self.all_boxes = pygame.sprite.Group()
-        self.generate_boxes(NOFBOXES)
-        self.running = True
+        self.generate_boxes()
 
     def run(self) -> None:
         while self.handle_events():
@@ -144,23 +143,23 @@ class Game:
             elif event.type == EVENT_BUTTON_PRESSED:
                 self.all_particles.update(action=event.text)
             elif event.type == EVENT_OVERFLOW:
-                if event.index < NOFBOXES - 1:
+                if event.index < Game.BOX_COUNT - 1:
                     self.all_boxes.sprites()[event.index + 1].update(counter="inc")
 
         return True
 
-    def generate_boxes(self, number: int) -> None:
-        for i in range(number):
+    def generate_boxes(self) -> None:
+        for i in range(Game.BOX_COUNT):
             self.all_boxes.add(
                 Box(
                     i,
-                    (WINDOW.right - 50 - i * 100, WINDOW.centery),
+                    (WIN_RECT.right - 50 - i * 100, WIN_RECT.centery),
                     self.all_sprites,
                 )
             )
 
-    def generate_particles(self, number: int) -> None:
-        for i in range(number):
+    def generate_particles(self) -> None:
+        for _ in range(Game.PARTICLE_COUNT):
             self.all_particles.add(Particle(self.all_sprites))
 
     def check_button_pressed(self, position: Tuple[int]) -> None:
