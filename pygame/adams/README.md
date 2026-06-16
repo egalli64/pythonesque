@@ -70,3 +70,4 @@
 ## Section 12 Events
 - 1: [Printing events](2/c/1.py)
 - 2: [User defined events](2/c/2.py)
+- 3: [Periodic events](2/c/3.py)
