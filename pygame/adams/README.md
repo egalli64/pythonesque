@@ -71,3 +71,7 @@
 - 1: [Printing events](2/c/1.py)
 - 2: [User defined events](2/c/2.py)
 - 3: [Periodic events](2/c/3.py)
+
+# Chapter 3 - Techniques
+## Section 1 - Animation
+- 1: [A running cat](3/1/1.py)
