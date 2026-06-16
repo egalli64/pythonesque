@@ -8,7 +8,7 @@ User defined events
 
 import pygame
 from random import choice, randint
-from typing import Any
+from typing import List, override
 
 WIN_RECT = pygame.Rect(0, 0, 600, 150)
 EVENT_BUTTON_PRESSED = pygame.event.custom_type()
@@ -27,6 +27,7 @@ class StartButton(pygame.sprite.Sprite):
         self.rect: pygame.Rect = self.image.get_rect(topleft=pos)
         self.dirty = False
 
+    @override
     def update(self) -> None:
         if self.dirty:
             text = StartButton.TEXT[0] if self.running else StartButton.TEXT[1]
@@ -56,6 +57,7 @@ class Particle(pygame.sprite.Sprite):
         self.direction = pygame.Vector2(choice((-1, 1)), choice((-1, 1)))
         self.freezed = True
 
+    @override
     def update(self, td) -> None:
         if not self.freezed:
             self.rect.move_ip(self.speed * self.direction * td)
@@ -71,36 +73,41 @@ class Particle(pygame.sprite.Sprite):
 
 class Box(pygame.sprite.Sprite):
     IMAGE_SIZE = (50, 20)
+    BACKGROUND_COLOR = "gray"
+    VALUE_COLOR = "blue"
+    VALUE_POS = (18, 1)
 
-    def __init__(self, index, pos, group) -> None:
-        super().__init__(group)
+    def __init__(self, exp) -> None:
+        super().__init__()
         self.image: pygame.Surface = pygame.Surface(Box.IMAGE_SIZE)
+        pos = (WIN_RECT.right - 50 - exp * 100, WIN_RECT.centery)
         self.rect = self.image.get_rect(center=pos)
         self.font = pygame.font.SysFont(None, 30)
-        self.counter = 0
-        self.index = index
-        self.fill()
+        self.value = 0
+        self.exp = exp
+        self.dirty = True
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
-        if "counter" in kwargs.keys():
-            if kwargs["counter"] == "inc":
-                self.counter += 1
-                if self.counter == 10:
-                    evt = pygame.event.Event(EVENT_OVERFLOW, index=self.index)
-                    pygame.event.post(evt)
-                    self.counter = 0
-                self.fill()
-        return super().update(*args, **kwargs)
+    @override
+    def update(self) -> None:
+        if self.dirty:
+            self.image.fill(Box.BACKGROUND_COLOR)
+            surface = self.font.render(f"{self.value}", False, Box.VALUE_COLOR)
+            self.image.blit(surface, Box.VALUE_POS)
+            self.dirty = False
 
-    def fill(self) -> None:
-        self.image.fill("gray")
-        number = self.font.render(f"{self.counter}", False, "Blue")
-        self.image.blit(number, (18, 1))
+    def increase(self, delta):
+        self.dirty = True
+        current = self.value + delta
+        self.value = current % 10
+        if x := current // 10:
+            event = pygame.event.Event(EVENT_OVERFLOW, next=self.exp + 1, delta=x)
+            pygame.event.post(event)
 
 
 class Game:
     FPS = 30
     TITLE = "User defined events"
+    BACKGROUND_COLOR = "white"
     PARTICLE_COUNT = 100
     BOX_COUNT = 3
 
@@ -110,10 +117,16 @@ class Game:
         self.clock = pygame.time.Clock()
         self.all_sprites = pygame.sprite.Group()
         self.all_particles: pygame.sprite.Group[Particle] = pygame.sprite.Group()
-        self.generate_particles()
+        for _ in range(Game.PARTICLE_COUNT):
+            self.all_particles.add(Particle(self.all_sprites))
+
         self.button = StartButton((30, WIN_RECT.bottom - 30), self.all_sprites)
         self.all_boxes = pygame.sprite.Group()
-        self.generate_boxes()
+        self.boxes: List[Box] = []
+        for i in range(Game.BOX_COUNT):
+            self.boxes.append(cur := Box(i))
+            self.all_boxes.add(cur)
+        self.all_sprites.add(self.all_boxes)
 
     def run(self) -> None:
         while self.handle_events():
@@ -121,9 +134,13 @@ class Game:
 
             self.button.update()
             self.all_particles.update(td)
-            self.check_boxcollision()
+            collidings = pygame.sprite.groupcollide(
+                self.all_particles, self.all_boxes, True, False
+            )
+            self.boxes[0].increase(len(collidings))
+            self.all_boxes.update()
 
-            self.screen.fill("white")
+            self.screen.fill(Game.BACKGROUND_COLOR)
             self.all_sprites.draw(self.screen)
             self.window.flip()
 
@@ -140,29 +157,8 @@ class Game:
                 for particle in self.all_particles:
                     particle.set_freezed(event.running)
             elif event.type == EVENT_OVERFLOW:
-                if event.index < Game.BOX_COUNT - 1:
-                    self.all_boxes.sprites()[event.index + 1].update(counter="inc")
-
+                self.boxes[event.next].increase(event.delta)
         return True
-
-    def generate_boxes(self) -> None:
-        for i in range(Game.BOX_COUNT):
-            self.all_boxes.add(
-                Box(
-                    i,
-                    (WIN_RECT.right - 50 - i * 100, WIN_RECT.centery),
-                    self.all_sprites,
-                )
-            )
-
-    def generate_particles(self) -> None:
-        for _ in range(Game.PARTICLE_COUNT):
-            self.all_particles.add(Particle(self.all_sprites))
-
-    def check_boxcollision(self) -> None:
-        c = pygame.sprite.groupcollide(self.all_particles, self.all_boxes, True, False)
-        for _ in c:
-            self.all_boxes.sprites()[0].update(counter="inc")
 
 
 if __name__ == "__main__":
