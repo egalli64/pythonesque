@@ -6,7 +6,7 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 A running cat
 """
 
-from typing import Any
+from typing import override
 import pygame
 
 WIN_RECT = pygame.Rect(0, 0, 300, 200)
@@ -14,24 +14,20 @@ TITLE = "Cat animation"
 
 
 class Timer:
+    MIN_DURATION = 10
 
-    def __init__(self, duration: int, with_start: bool = True):
+    def __init__(self, duration: int):
         self.duration = duration
-        if with_start:
-            self.next = pygame.time.get_ticks()
-        else:
-            self.next = pygame.time.get_ticks() + self.duration
+        self.next = pygame.time.get_ticks() + duration
 
-    def is_next_stop_reached(self) -> bool:
+    def is_time(self) -> bool:
         if pygame.time.get_ticks() > self.next:
             self.next = pygame.time.get_ticks() + self.duration
             return True
         return False
 
-    def change_duration(self, delta: int = 10):
-        self.duration += delta
-        if self.duration < 0:
-            self.duration = 0
+    def change_duration(self, delta: int):
+        self.duration = max(Timer.MIN_DURATION, self.duration + delta)
 
 
 class Cat(pygame.sprite.Sprite):
@@ -50,19 +46,18 @@ class Cat(pygame.sprite.Sprite):
         self.image: pygame.Surface = self.images[self.imageindex]
         self.rect: pygame.Rect = self.image.get_rect()
         self.rect.center = WIN_RECT.center
-        self.animation_time = Timer(100)
+        self.timer = Timer(100)
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
-        if "animation_delta" in kwargs.keys():
-            self.change_animation_time(kwargs["animation_delta"])
-        if self.animation_time.is_next_stop_reached():
+    @override
+    def update(self) -> None:
+        if self.timer.is_time():
             self.imageindex += 1
             if self.imageindex >= len(self.images):
                 self.imageindex = 0
             self.image = self.images[self.imageindex]
 
-    def change_animation_time(self, delta: int) -> None:
-        self.animation_time.change_duration(delta)
+    def change_timing(self, delta: int) -> None:
+        self.timer.change_duration(delta)
 
 
 class CatAnimation:
@@ -73,7 +68,7 @@ class CatAnimation:
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
 
-        self.font = pygame.font.Font(pygame.font.get_default_font(), 12)
+        self.font = pygame.font.Font(None, 12)
         self.cat = Cat()
         self.cat_group = pygame.sprite.GroupSingle(self.cat)
 
@@ -92,9 +87,9 @@ class CatAnimation:
                 if event.key == pygame.K_ESCAPE:
                     return False
                 elif event.key == pygame.K_PLUS:
-                    self.cat.update(animation_delta=-10)
+                    self.cat.change_timing(-10)
                 elif event.key == pygame.K_MINUS:
-                    self.cat.update(animation_delta=10)
+                    self.cat.change_timing(10)
         return True
 
     def update(self) -> None:
@@ -104,7 +99,7 @@ class CatAnimation:
         self.screen.fill("gray")
         self.cat_group.draw(self.screen)
         text_image = self.font.render(
-            f"animation time: {self.cat.animation_time.duration}",
+            f"animation time: {self.cat.timer.duration}",
             True,
             "white",
         )
