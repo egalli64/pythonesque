@@ -6,16 +6,10 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 A running cat
 """
 
-from time import time
 from typing import Any
-
 import pygame
 
-from os import path
-
-WINDOW = pygame.Rect(0, 0, 300, 200)
-FPS = 30
-DELTATIME = 1.0 / FPS
+WIN_RECT = pygame.Rect(0, 0, 300, 200)
 TITLE = "Cat animation"
 
 
@@ -55,7 +49,7 @@ class Cat(pygame.sprite.Sprite):
         self.imageindex = 0
         self.image: pygame.Surface = self.images[self.imageindex]
         self.rect: pygame.Rect = self.image.get_rect()
-        self.rect.center = WINDOW.center
+        self.rect.center = WIN_RECT.center
         self.animation_time = Timer(100)
 
     def update(self, *args: Any, **kwargs: Any) -> None:
@@ -66,47 +60,42 @@ class Cat(pygame.sprite.Sprite):
             if self.imageindex >= len(self.images):
                 self.imageindex = 0
             self.image = self.images[self.imageindex]
-            # implement game logic here
 
     def change_animation_time(self, delta: int) -> None:
         self.animation_time.change_duration(delta)
 
 
 class CatAnimation:
+    FPS = 30
 
     def __init__(self) -> None:
-        self.window = pygame.Window(TITLE, WINDOW.size)
+        self.window = pygame.Window(TITLE, WIN_RECT.size)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
 
         self.font = pygame.font.Font(pygame.font.get_default_font(), 12)
         self.cat = Cat()
         self.cat_group = pygame.sprite.GroupSingle(self.cat)
-        self.running = False
 
     def run(self) -> None:
-        time_previous = time()
-        self.running = True
-        while self.running:
-            self.watch_for_events()
-            self.update()
-            self.draw()
-            self.clock.tick(FPS)
-            time_current = time()
-            DELTATIME = time_current - time_previous
-            time_previous = time_current
+        while self.handle_events():
+            self.clock.tick(CatAnimation.FPS)
 
-    def watch_for_events(self) -> None:
+            self.cat.update()
+            self.draw()
+
+    def handle_events(self) -> bool:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.running = False
+                    return False
                 elif event.key == pygame.K_PLUS:
                     self.cat.update(animation_delta=-10)
                 elif event.key == pygame.K_MINUS:
                     self.cat.update(animation_delta=10)
+        return True
 
     def update(self) -> None:
         self.cat_group.update()
@@ -120,8 +109,8 @@ class CatAnimation:
             "white",
         )
         text_rect = text_image.get_rect()
-        text_rect.centerx = WINDOW.centerx
-        text_rect.bottom = WINDOW.bottom - 50
+        text_rect.centerx = WIN_RECT.centerx
+        text_rect.bottom = WIN_RECT.bottom - 50
         self.screen.blit(text_image, text_rect)
         self.window.flip()
 
