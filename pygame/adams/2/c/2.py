@@ -44,6 +44,8 @@ class StartButton(pygame.sprite.Sprite):
 
 
 class Particle(pygame.sprite.Sprite):
+    SPEED_RANGE = (50, 100)
+
     def __init__(self, group) -> None:
         super().__init__(group)
         self.image = pygame.Surface((randint(3, 6), randint(3, 6)))
@@ -53,7 +55,7 @@ class Particle(pygame.sprite.Sprite):
             randint(30, WIN_RECT.right - 30),
             randint(30, WIN_RECT.bottom - 30),
         )
-        self.speed = randint(50, 100)
+        self.speed = randint(*Particle.SPEED_RANGE)
         self.direction = pygame.Vector2(choice((-1, 1)), choice((-1, 1)))
         self.freezed = True
 
@@ -158,7 +160,8 @@ class Game:
                 for particle in self.all_particles:
                     particle.set_freezed(event.running)
             elif event.type == EVENT_OVERFLOW:
-                self.boxes[event.next].increase(event.delta)
+                if 0 <= event.next < Game.BOX_COUNT:
+                    self.boxes[event.next].increase(event.delta)
         return True
 
 
