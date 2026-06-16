@@ -134,15 +134,16 @@ class Game:
 
             self.button.update()
             self.all_particles.update(td)
-            collidings = pygame.sprite.groupcollide(
-                self.all_particles, self.all_boxes, True, False
-            )
-            self.boxes[0].increase(len(collidings))
+            self.check_collisions()
             self.all_boxes.update()
 
             self.screen.fill(Game.BACKGROUND_COLOR)
             self.all_sprites.draw(self.screen)
             self.window.flip()
+
+    def check_collisions(self):
+        xs = pygame.sprite.groupcollide(self.all_particles, self.all_boxes, True, False)
+        self.boxes[0].increase(len(xs))
 
     def handle_events(self) -> bool:
         for event in pygame.event.get():
