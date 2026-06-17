@@ -75,3 +75,4 @@
 # Chapter 3 - Techniques
 ## Section 1 - Animation
 - 1: [A running cat](3/1/1.py)
+- 2: [Exploding rocks](3/1/2.py)
