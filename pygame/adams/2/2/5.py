@@ -34,7 +34,6 @@ class Circle:
 
 
 def main():
-    pygame.init()
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
