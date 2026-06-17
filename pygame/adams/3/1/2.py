@@ -7,36 +7,21 @@ Exploding rocks
 """
 
 import random
-from time import time
-from typing import Any
-
 import pygame
 
 WIN_RECT = pygame.Rect(0, 0, 300, 200)
-FPS = 30
-DELTATIME = 1.0 / FPS
-TITLE = "Exploding rocks"
 
 
 class Timer:
+    def __init__(self, delta: int):
+        self.delta = delta
+        self.next = pygame.time.get_ticks() + self.delta
 
-    def __init__(self, duration: int, with_start: bool = True):
-        self.duration = duration
-        if with_start:
-            self.next = pygame.time.get_ticks()
-        else:
-            self.next = pygame.time.get_ticks() + self.duration
-
-    def is_next_stop_reached(self) -> bool:
+    def tick(self) -> bool:
         if pygame.time.get_ticks() > self.next:
-            self.next = pygame.time.get_ticks() + self.duration
+            self.next = pygame.time.get_ticks() + self.delta
             return True
         return False
-
-    def change_duration(self, delta: int = 10):
-        self.duration += delta
-        if self.duration < 0:
-            self.duration = 0
 
 
 class Animation:
@@ -46,15 +31,19 @@ class Animation:
         for filename in namelist:
             bitmap = pygame.image.load(filename).convert_alpha()
             self.images.append(bitmap)
-        self.i = 0
+        self.index = 0
+        self.running = True
 
-    def next(self) -> pygame.Surface:
-        if self.timer.is_next_stop_reached():
-            self.i += 1
-        return self.images[self.i] if self.i < len(self.images) else self.images[0]
+    def current(self) -> pygame.Surface:
+        if self.timer.tick():
+            if self.index < len(self.images) - 1:
+                self.index += 1
+            else:
+                self.running = False
+        return self.images[self.index]
 
-    def is_ended(self) -> bool:
-        return self.i == len(self.images)
+    def done(self) -> bool:
+        return not self.running
 
 
 class Rock(pygame.sprite.Sprite):
@@ -65,71 +54,59 @@ class Rock(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(Rock.FILENAME).convert_alpha()
         self.rect: pygame.Rect = self.image.get_rect()
-        self.rect.centerx = random.randint(
-            self.rect.width, WIN_RECT.width - self.rect.width
-        )
-        self.rect.centery = random.randint(
-            self.rect.height, WIN_RECT.height - self.rect.height
-        )
+        max_pos = (WIN_RECT.width - self.rect.width, WIN_RECT.height - self.rect.height)
+        self.rect.centerx = random.randint(self.rect.width, max_pos[0])
+        self.rect.centery = random.randint(self.rect.height, max_pos[1])
         explosions = [Rock.EXPLOSION_TEMPLATE.format(i) for i in range(1, 5)]
-        self.anim = Animation(explosions, 100)
-        self.timer_lifetime = Timer(random.randint(100, 2000), False)
-        self.bumm = False
+        self.animation = Animation(explosions, 100)
+        self.timer = Timer(random.randint(100, 2000))
+        self.explosion = False
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
-        if self.timer_lifetime.is_next_stop_reached():
-            self.bumm = True
-        if self.bumm:
-            self.image = self.anim.next()
-            c = self.rect.center
+    def update(self) -> None:
+        if self.timer.tick():
+            self.explosion = True
+        if self.explosion:
+            self.image = self.animation.current()
+            center = self.rect.center
             self.rect = self.image.get_rect()
-            self.rect.center = c
-        if self.anim.is_ended():
+            self.rect.center = center
+        if self.animation.done():
             self.kill()
 
 
 class ExplosionAnimation(object):
+    FPS = 30
+    TITLE = "Exploding rocks"
+    BACKGROUND_COLOR = "black"
 
     def __init__(self) -> None:
-        pygame.init()
-        self.window = pygame.Window(size=WIN_RECT.size, title=TITLE)
+        self.window = pygame.Window(ExplosionAnimation.TITLE, WIN_RECT.size)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
 
         self.all_rocks = pygame.sprite.Group()
-        self.timer_newrock = Timer(500)
-        self.running = False
+        self.timer = Timer(500)
 
     def run(self) -> None:
-        time_previous = time()
-        self.running = True
-        while self.running:
-            self.watch_for_events()
-            self.update()
-            self.draw()
-            self.clock.tick(FPS)
-            time_current = time()
-            DELTATIME = time_current - time_previous
-            time_previous = time_current
-        pygame.quit()
+        while self.handle_events():
+            self.clock.tick(ExplosionAnimation.FPS)
 
-    def watch_for_events(self) -> None:
+            if self.timer.tick():
+                self.all_rocks.add(Rock())
+            self.all_rocks.update()
+
+            self.screen.fill(ExplosionAnimation.BACKGROUND_COLOR)
+            self.all_rocks.draw(self.screen)
+            self.window.flip()
+
+    def handle_events(self) -> bool:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.running = False
-
-    def update(self) -> None:
-        if self.timer_newrock.is_next_stop_reached():
-            self.all_rocks.add(Rock())
-        self.all_rocks.update()
-
-    def draw(self) -> None:
-        self.screen.fill("black")
-        self.all_rocks.draw(self.screen)
-        self.window.flip()
+                    return False
+        return True
 
 
 if __name__ == "__main__":
