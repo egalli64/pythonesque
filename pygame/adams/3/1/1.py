@@ -13,6 +13,22 @@ WIN_RECT = pygame.Rect(0, 0, 300, 200)
 TITLE = "Cat animation"
 
 
+class Animation:
+    def __init__(self, namelist: list[str], delta: int = 100, colorkey="black") -> None:
+        self.images: list[pygame.Surface] = []
+        self.timer = Timer(delta)
+        for filename in namelist:
+            bitmap = pygame.image.load(filename).convert()
+            bitmap.set_colorkey(colorkey)
+            self.images.append(bitmap)
+        self.index = 0
+
+    def current(self) -> pygame.Surface:
+        if self.timer.tick():
+            self.index = (self.index + 1) % len(self.images)
+        return self.images[self.index]
+
+
 class Timer:
     MIN_DURATION = 10
 
@@ -20,7 +36,7 @@ class Timer:
         self.duration = duration
         self.next = pygame.time.get_ticks() + duration
 
-    def is_time(self) -> bool:
+    def tick(self) -> bool:
         if pygame.time.get_ticks() > self.next:
             self.next = pygame.time.get_ticks() + self.duration
             return True
@@ -36,28 +52,18 @@ class Cat(pygame.sprite.Sprite):
 
     def __init__(self) -> None:
         super().__init__()
-        self.images: list[pygame.Surface] = []
-        for i in range(6):
-            bitmap = pygame.image.load(Cat.FILE_TEMPLATE.format(i)).convert()
-            bitmap.set_colorkey(Cat.TRANSPARENT_COLOR)
-            self.images.append(bitmap)
+        self.animation = Animation([Cat.FILE_TEMPLATE.format(i) for i in range(6)])
 
-        self.imageindex = 0
-        self.image: pygame.Surface = self.images[self.imageindex]
+        self.image: pygame.Surface = self.animation.current()
         self.rect: pygame.Rect = self.image.get_rect()
         self.rect.center = WIN_RECT.center
-        self.timer = Timer(100)
 
     @override
     def update(self) -> None:
-        if self.timer.is_time():
-            self.imageindex += 1
-            if self.imageindex >= len(self.images):
-                self.imageindex = 0
-            self.image = self.images[self.imageindex]
+        self.image = self.animation.current()
 
     def change_timing(self, delta: int) -> None:
-        self.timer.change_duration(delta)
+        self.animation.timer.change_duration(delta)
 
 
 class CatAnimation:
@@ -99,7 +105,7 @@ class CatAnimation:
         self.screen.fill("gray")
         self.cat_group.draw(self.screen)
         text_image = self.font.render(
-            f"animation time: {self.cat.timer.duration}",
+            f"animation time: {self.cat.animation.timer.duration}",
             True,
             "white",
         )
