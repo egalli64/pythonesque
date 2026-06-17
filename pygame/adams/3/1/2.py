@@ -11,25 +11,11 @@ from time import time
 from typing import Any
 
 import pygame
-from os import path
 
 WIN_RECT = pygame.Rect(0, 0, 300, 200)
 FPS = 30
 DELTATIME = 1.0 / FPS
 TITLE = "Exploding rocks"
-PATH: dict[str, str] = {}
-PATH["file"] = path.dirname(path.abspath(__file__))
-PATH["image"] = path.join(PATH["file"], "../images")
-
-
-@staticmethod
-def filepath(name: str) -> str:
-    return path.join(PATH["file"], name)
-
-
-@staticmethod
-def imagepath(name: str) -> str:
-    return path.join(PATH["image"], name)
 
 
 class Timer:
@@ -54,48 +40,30 @@ class Timer:
 
 
 class Animation:
-
-    def __init__(
-        self,
-        namelist: list[str],
-        endless: bool,
-        animationtime: int,
-        colorkey: tuple[int, int, int] | None = None,
-    ) -> None:
+    def __init__(self, namelist: list[str], delta: int) -> None:
         self.images: list[pygame.Surface] = []
-        self.endless = endless
-        self.timer = Timer(animationtime)
+        self.timer = Timer(delta)
         for filename in namelist:
-            if colorkey == None:
-                bitmap = pygame.image.load(imagepath(filename)).convert_alpha()
-            else:
-                bitmap = pygame.image.load(imagepath(filename)).convert()
-                bitmap.set_colorkey(colorkey)
+            bitmap = pygame.image.load(filename).convert_alpha()
             self.images.append(bitmap)
-        self.imageindex = -1
+        self.i = 0
 
     def next(self) -> pygame.Surface:
         if self.timer.is_next_stop_reached():
-            self.imageindex += 1
-            if self.imageindex >= len(self.images):
-                if self.endless:
-                    self.imageindex = 0
-                else:
-                    self.imageindex = len(self.images) - 1
-        return self.images[self.imageindex]
+            self.i += 1
+        return self.images[self.i] if self.i < len(self.images) else self.images[0]
 
     def is_ended(self) -> bool:
-        if self.endless:
-            return False
-        return self.imageindex >= len(self.images) - 1
+        return self.i == len(self.images)
 
 
 class Rock(pygame.sprite.Sprite):
+    FILENAME = "../images/rock.png"
+    EXPLOSION_TEMPLATE = "../images/explosion-{:d}.png"
 
     def __init__(self):
         super().__init__()
-        i = random.randint(6, 9)
-        self.image = pygame.image.load(imagepath(f"felsen-{i}.png")).convert_alpha()
+        self.image = pygame.image.load(Rock.FILENAME).convert_alpha()
         self.rect: pygame.Rect = self.image.get_rect()
         self.rect.centerx = random.randint(
             self.rect.width, WIN_RECT.width - self.rect.width
@@ -103,7 +71,8 @@ class Rock(pygame.sprite.Sprite):
         self.rect.centery = random.randint(
             self.rect.height, WIN_RECT.height - self.rect.height
         )
-        self.anim = Animation([f"explosion-{i}.png" for i in range(1, 5)], False, 50)
+        explosions = [Rock.EXPLOSION_TEMPLATE.format(i) for i in range(1, 5)]
+        self.anim = Animation(explosions, 100)
         self.timer_lifetime = Timer(random.randint(100, 2000), False)
         self.bumm = False
 
