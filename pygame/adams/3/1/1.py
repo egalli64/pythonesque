@@ -28,6 +28,9 @@ class Animation:
             self.index = (self.index + 1) % len(self.images)
         return self.images[self.index]
 
+    def change_timing(self, delta: int) -> None:
+        self.timer.change_duration(delta)
+
 
 class Timer:
     MIN_DURATION = 10
@@ -63,11 +66,13 @@ class Cat(pygame.sprite.Sprite):
         self.image = self.animation.current()
 
     def change_timing(self, delta: int) -> None:
-        self.animation.timer.change_duration(delta)
+        self.animation.change_timing(delta)
 
 
 class CatAnimation:
     FPS = 30
+    BACKGROUND_COLOR = "gray"
+    TEXT_COLOR = "white"
 
     def __init__(self) -> None:
         self.window = pygame.Window(TITLE, WIN_RECT.size)
@@ -99,20 +104,17 @@ class CatAnimation:
         return True
 
     def update(self) -> None:
-        self.cat_group.update()
+        self.cat.update()
 
     def draw(self) -> None:
-        self.screen.fill("gray")
+        self.screen.fill(CatAnimation.BACKGROUND_COLOR)
         self.cat_group.draw(self.screen)
-        text_image = self.font.render(
-            f"animation time: {self.cat.animation.timer.duration}",
-            True,
-            "white",
-        )
-        text_rect = text_image.get_rect()
+        text = f"animation time: {self.cat.animation.timer.duration}"
+        caption = self.font.render(text, True, CatAnimation.TEXT_COLOR)
+        text_rect = caption.get_rect()
         text_rect.centerx = WIN_RECT.centerx
         text_rect.bottom = WIN_RECT.bottom - 50
-        self.screen.blit(text_image, text_rect)
+        self.screen.blit(caption, text_rect)
         self.window.flip()
 
 
