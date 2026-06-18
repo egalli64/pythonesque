@@ -9,9 +9,8 @@ Message Boxes
 import pygame
 
 FPS = 30
-
 TITLE = "Message Boxes"
-WIN_SIZE = (200, 200)
+WIN_SIZE = (300, 100)
 BACKGROUND_COLOR = "white"
 
 MB_INFO = "This is an info message box."
@@ -20,35 +19,39 @@ MB_ERR = "This is an error message box."
 
 
 def main():
-    pygame.init()
     window = pygame.Window(TITLE, WIN_SIZE)
     screen = window.get_surface()
     clock = pygame.time.Clock()
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-                elif event.key == pygame.K_1:
-                    pygame.display.message_box("Information", MB_INFO)
-                elif event.key == pygame.K_2:
-                    btns = ["Yes", "No"]
-                    x = pygame.display.message_box("⚠", MB_WARN, "warn", buttons=btns)
-                    print("User selected:", x)
-                elif event.key == pygame.K_3:
-                    pygame.display.message_box("Error", MB_ERR, "error")
-
+    while handle_events():
+        clock.tick(FPS)
         screen.fill(BACKGROUND_COLOR)
         window.flip()
-        clock.tick(10)
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                return False
+            elif event.key == pygame.K_1:
+                pygame.display.message_box("Information", MB_INFO)
+            elif event.key == pygame.K_2:
+                btns = ["Yes", "No"]
+                x = pygame.display.message_box("Warning", MB_WARN, "warn", buttons=btns)
+                print("User selected:", x)
+            elif event.key == pygame.K_3:
+                pygame.display.message_box("Error", MB_ERR, "error")
+    return True
 
 
 if __name__ == "__main__":
-    main()
-    print("Done")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
