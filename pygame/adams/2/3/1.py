@@ -9,11 +9,9 @@ Load and Blit Bitmaps
 import pygame
 
 FPS = 30
-
 TITLE = "Load and Draw of Bitmaps"
 WIN_SIZE = (600, 400)
 WIN_POS = (10, 50)
-
 BACKGROUND_COLOR = "white"
 
 SPRITE_DELTA_Y = 10
@@ -33,7 +31,6 @@ DEFENDER_POS = (
 
 
 def main():
-    pygame.init()
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
@@ -48,26 +45,29 @@ def main():
     alien_image.set_colorkey(ALIEN_TRANSPARENT_COLOR)
     alien_image = pygame.transform.scale(alien_image, ALIEN_SIZE)
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    while handle_events():
+        clock.tick(FPS)
 
         screen.fill(BACKGROUND_COLOR)
-
         for i in range(ALIEN_COUNT):
             pos = (i + 1) * ALIEN_GAP + i * ALIEN_SIZE[0], SPRITE_DELTA_Y
             screen.blit(alien_image, pos)
-
         screen.blit(defender_image, DEFENDER_POS)
-
         window.flip()
-        clock.tick(FPS)
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
