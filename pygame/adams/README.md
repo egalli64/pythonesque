@@ -74,5 +74,6 @@
 
 # Chapter 3 - Techniques
 ## Section 1 - Animation
-- 1: [A running cat](3/1/1.py)
+- 1: [A running cat](3/1/1.py) - by time.get_ticks()
 - 2: [Exploding rocks](3/1/2.py)
+- 3: [Colliding rocks](3/1/3.py)
