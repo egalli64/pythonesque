@@ -23,7 +23,6 @@ BACKGROUND_COLOR = "white"
 
 
 def main():
-    pygame.init()
     window = pygame.Window(TITLE, WIN_SIZE)
     screen = window.get_surface()
     clock = pygame.time.Clock()
@@ -59,9 +58,12 @@ def main():
         window.flip()
         clock.tick(FPS)
 
-    pygame.quit()
-
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
