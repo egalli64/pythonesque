@@ -7,24 +7,46 @@ Load and Blit Bitmaps
 """
 
 import pygame
-import config as cfg
+
+FPS = 30
+
+TITLE = "Load and Draw of Bitmaps"
+WIN_SIZE = (600, 400)
+WIN_POS = (10, 50)
+
+BACKGROUND_COLOR = "white"
+
+SPRITE_DELTA_Y = 10
+
+ALIEN_IMAGE = "../images/alien_big.png"
+ALIEN_SIZE = (50, 45)
+ALIEN_TRANSPARENT_COLOR = "black"
+ALIEN_COUNT = 7
+ALIEN_GAP = (WIN_SIZE[0] - ALIEN_COUNT * ALIEN_SIZE[0]) // (ALIEN_COUNT + 1)
+
+DEFENDER_IMAGE = "../images/defender.png"
+DEFENDER_SIZE = (30, 30)
+DEFENDER_POS = (
+    (WIN_SIZE[0] - DEFENDER_SIZE[0]) // 2,  # center
+    WIN_SIZE[1] - DEFENDER_SIZE[1] - SPRITE_DELTA_Y,  # bottom
+)
 
 
 def main():
     pygame.init()
-    window = pygame.Window(cfg.TITLE, cfg.WIN_SIZE, cfg.WIN_POS)
+    window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
 
     # make use of the alpha channel for transparency
-    defender_image = pygame.image.load(cfg.DEFENDER_IMAGE).convert_alpha()
-    defender_image = pygame.transform.scale(defender_image, cfg.DEFENDER_SIZE)
+    defender_image = pygame.image.load(DEFENDER_IMAGE).convert_alpha()
+    defender_image = pygame.transform.scale(defender_image, DEFENDER_SIZE)
 
     # don't preserve transparency
-    alien_image = pygame.image.load(cfg.ALIEN_IMAGE).convert()
+    alien_image = pygame.image.load(ALIEN_IMAGE).convert()
     # make a color in the image transparent
-    alien_image.set_colorkey(cfg.ALIEN_TRANSPARENT_COLOR)
-    alien_image = pygame.transform.scale(alien_image, cfg.ALIEN_SIZE)
+    alien_image.set_colorkey(ALIEN_TRANSPARENT_COLOR)
+    alien_image = pygame.transform.scale(alien_image, ALIEN_SIZE)
 
     running = True
     while running:
@@ -32,16 +54,16 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill(cfg.BACKGROUND_COLOR)
+        screen.fill(BACKGROUND_COLOR)
 
-        for i in range(cfg.ALIEN_COUNT):
-            pos = (i + 1) * cfg.ALIEN_GAP + i * cfg.ALIEN_SIZE[0], cfg.SPRITE_DELTA_Y
+        for i in range(ALIEN_COUNT):
+            pos = (i + 1) * ALIEN_GAP + i * ALIEN_SIZE[0], SPRITE_DELTA_Y
             screen.blit(alien_image, pos)
 
-        screen.blit(defender_image, cfg.DEFENDER_POS)
+        screen.blit(defender_image, DEFENDER_POS)
 
         window.flip()
-        clock.tick(cfg.FPS)
+        clock.tick(FPS)
 
     pygame.quit()
 
