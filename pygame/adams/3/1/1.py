@@ -10,7 +10,6 @@ from typing import override
 import pygame
 
 WIN_RECT = pygame.Rect(0, 0, 300, 200)
-TITLE = "Cat animation"
 
 
 class Animation:
@@ -69,13 +68,14 @@ class Cat(pygame.sprite.Sprite):
         self.animation.change_timing(delta)
 
 
-class CatAnimation:
+class Game:
     FPS = 30
+    TITLE = "Cat animation"
     BACKGROUND_COLOR = "gray"
     TEXT_COLOR = "white"
 
     def __init__(self) -> None:
-        self.window = pygame.Window(TITLE, WIN_RECT.size)
+        self.window = pygame.Window(Game.TITLE, WIN_RECT.size)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
 
@@ -85,7 +85,7 @@ class CatAnimation:
 
     def run(self) -> None:
         while self.handle_events():
-            self.clock.tick(CatAnimation.FPS)
+            self.clock.tick(Game.FPS)
 
             self.cat.update()
             self.draw()
@@ -103,14 +103,11 @@ class CatAnimation:
                     self.cat.change_timing(10)
         return True
 
-    def update(self) -> None:
-        self.cat.update()
-
     def draw(self) -> None:
-        self.screen.fill(CatAnimation.BACKGROUND_COLOR)
+        self.screen.fill(Game.BACKGROUND_COLOR)
         self.cat_group.draw(self.screen)
         text = f"animation time: {self.cat.animation.timer.duration}"
-        caption = self.font.render(text, True, CatAnimation.TEXT_COLOR)
+        caption = self.font.render(text, True, Game.TEXT_COLOR)
         text_rect = caption.get_rect()
         text_rect.centerx = WIN_RECT.centerx
         text_rect.bottom = WIN_RECT.bottom - 50
@@ -122,7 +119,7 @@ if __name__ == "__main__":
     pygame.init()
 
     try:
-        CatAnimation().run()
+        Game().run()
     finally:
         pygame.quit()
         print("Done.")
