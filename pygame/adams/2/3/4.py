@@ -132,7 +132,6 @@ class Sun:
 
 
 def main():
-    pygame.init()
     window = pygame.Window(TITLE, WIN_SIZE)
     screen = window.get_surface()
     clock = pygame.time.Clock()
@@ -142,11 +141,8 @@ def main():
     house = House()
     sun = Sun()
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    while handle_events():
+        clock.tick(FPS)
 
         # Updates
         delta = sun.update()
@@ -158,13 +154,21 @@ def main():
         meadow.draw(screen)
         tree.draw(screen)
         house.draw(screen)
-
         window.flip()
-        clock.tick(FPS)
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
