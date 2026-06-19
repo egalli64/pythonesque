@@ -1,0 +1,142 @@
+"""
+Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_book/
+
+My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
+
+Pong game
+"""
+
+from time import time
+import pygame
+from settings import Settings
+from background import Background
+from pause import Pause
+from help import Help
+from paddle import Paddle
+from ball import Ball
+from score import Score
+from events import Events
+
+
+class Game:
+    TITLE = "Pong"
+
+    def __init__(self):
+        self.window = pygame.Window(Game.TITLE, Settings.WINDOW.size)
+        self.screen = self.window.get_surface()
+        self.clock = pygame.time.Clock()
+
+        self.background = pygame.sprite.GroupSingle(Background())
+        self.all_sprites = pygame.sprite.Group()
+        self.paddle = {}
+        self.paddle["left"] = Paddle("left", self.all_sprites)
+        self.paddle["right"] = Paddle("right", self.all_sprites)
+        self.ball = Ball(self.all_sprites)
+        self.score = Score(self.all_sprites)
+        self.running = True
+        self.pausing = False
+        self.helping = False
+        self.pause = pygame.sprite.GroupSingle(Pause())
+        self.help = pygame.sprite.GroupSingle(Help())
+
+    def run(self):
+        time_previous = time()
+        while self.running:
+            self.watch_for_events()
+            self.update()
+            self.draw()
+            self.clock.tick(Settings.FPS)
+            time_current = time()
+            Settings.DELTATIME = time_current - time_previous
+            time_previous = time_current
+
+    def update(self):
+        if not (self.pausing or self.helping):
+            self.check_collision()
+            for i in Settings.KI.keys():
+                if Settings.KI[i]:
+                    self.paddlecontroler(self.paddle[i])
+            self.all_sprites.update(action="move")
+
+    def draw(self):
+        self.background.draw(self.screen)
+        self.all_sprites.draw(self.screen)
+        if self.pausing:
+            self.pause.draw(self.screen)
+        elif self.helping:
+            self.help.draw(self.screen)
+        self.window.flip()
+
+    def watch_for_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.running = False
+                elif event.key == pygame.K_UP:
+                    if not Settings.KI["right"]:
+                        self.paddle["right"].update(action="up")
+                elif event.key == pygame.K_DOWN:
+                    if not Settings.KI["right"]:
+                        self.paddle["right"].update(action="down")
+                elif event.key == pygame.K_F2:
+                    Settings.SOUNDFLAG = not Settings.SOUNDFLAG
+                elif event.key == pygame.K_w:
+                    if not Settings.KI["left"]:
+                        self.paddle["left"].update(action="up")
+                elif event.key == pygame.K_s:
+                    if not Settings.KI["left"]:
+                        self.paddle["left"].update(action="down")
+                elif event.key == pygame.K_1:
+                    Settings.KI["left"] = not Settings.KI["left"]
+                    if not Settings.KI["left"]:
+                        self.paddle["left"].update(action="halt")
+                elif event.key == pygame.K_2:
+                    Settings.KI["right"] = not Settings.KI["right"]
+                    if not Settings.KI["right"]:
+                        self.paddle["right"].update(action="halt")
+                elif event.key == pygame.K_p:
+                    if not self.helping:
+                        self.pausing = not self.pausing
+                elif event.key == pygame.K_h:
+                    if not self.pausing:
+                        self.helping = not self.helping
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                    if not Settings.KI["right"]:
+                        self.paddle["right"].update(action="halt")
+                elif event.key == pygame.K_w or event.key == pygame.K_s:
+                    if not Settings.KI["left"]:
+                        self.paddle["left"].update(action="halt")
+            elif event.type == Events.POINT_FOR:
+                self.score.update(player=event.player)
+
+    def check_collision(self):
+        if pygame.sprite.collide_rect(self.ball, self.paddle["left"]):
+            self.ball.update(action="hflip")
+            self.ball.rect.left = self.paddle["left"].rect.right + 1
+        elif pygame.sprite.collide_rect(self.ball, self.paddle["right"]):
+            self.ball.update(action="hflip")
+            self.ball.rect.right = self.paddle["right"].rect.left - 1
+
+    def paddlecontroler(self, paddle: Paddle) -> None:
+        if paddle.rect.centery > self.ball.rect.centery and paddle.rect.top > 10:
+            paddle.update(action="up")
+        elif (
+            paddle.rect.centery < self.ball.rect.centery
+            and paddle.rect.bottom < Settings.WINDOW.bottom - 10
+        ):
+            paddle.update(action="down")
+        else:
+            paddle.update(action="halt")
+
+
+if __name__ == "__main__":
+    pygame.init()
+
+    try:
+        Game().run()
+    finally:
+        pygame.quit()
+        print("Done.")
