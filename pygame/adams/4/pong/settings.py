@@ -15,7 +15,6 @@ class Settings:
 
     WINDOW = pygame.Rect(0, 0, 1000, 600)
     FPS = 60
-    DELTATIME = 1.0 / FPS
     KI = {"left": False, "right": False}
     SOUNDFLAG: bool = True
     PATH = {}

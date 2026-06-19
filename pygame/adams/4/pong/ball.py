@@ -46,7 +46,8 @@ class Ball(pygame.sprite.Sprite):
         return super().update(*args, **kwargs)
 
     def move(self) -> None:
-        self.rect.move_ip(self.speedxy * Settings.DELTATIME)
+        dt = 1 / 60 # TODO: actual td
+        self.rect.move_ip(self.speedxy * dt)
         if self.rect.top <= 0:
             self.vertical_flip()
             self.rect.top = 0

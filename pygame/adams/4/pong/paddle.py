@@ -45,8 +45,9 @@ class Paddle(pygame.sprite.Sprite):
         return super().update(*args, **kwargs)
 
     def _move(self) -> None:
+        dt = 1 / 60  # TODO: actual dt
         if self.direction != Paddle.DIRECTION["halt"]:
-            self.rect.move_ip(0, self.speed * self.direction * Settings.DELTATIME)
+            self.rect.move_ip(0, self.speed * self.direction * dt)
             if self.direction == Paddle.DIRECTION["up"]:
                 self.rect.top = max(self.rect.top, Paddle.BORDERDISTANCE["vertical"])
             elif self.direction == Paddle.DIRECTION["down"]:

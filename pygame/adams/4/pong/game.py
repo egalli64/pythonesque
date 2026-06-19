@@ -40,15 +40,10 @@ class Game:
         self.help = pygame.sprite.GroupSingle(Help())
 
     def run(self):
-        time_previous = time()
-        while self.running:
-            self.watch_for_events()
+        while self.handle_events():
+            self.clock.tick(Settings.FPS)
             self.update()
             self.draw()
-            self.clock.tick(Settings.FPS)
-            time_current = time()
-            Settings.DELTATIME = time_current - time_previous
-            time_previous = time_current
 
     def update(self):
         if not (self.pausing or self.helping):
@@ -67,13 +62,13 @@ class Game:
             self.help.draw(self.screen)
         self.window.flip()
 
-    def watch_for_events(self):
+    def handle_events(self) -> bool:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.running = False
+                    return False
                 elif event.key == pygame.K_UP:
                     if not Settings.KI["right"]:
                         self.paddle["right"].update(action="up")
@@ -111,6 +106,7 @@ class Game:
                         self.paddle["left"].update(action="halt")
             elif event.type == Events.POINT_FOR:
                 self.score.update(player=event.player)
+        return True
 
     def check_collision(self):
         if pygame.sprite.collide_rect(self.ball, self.paddle["left"]):
