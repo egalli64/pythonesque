@@ -11,7 +11,7 @@ import pygame
 FPS = 30
 
 TITLE = "Defender Movement"
-WIN_RECT = pygame.Rect(0, 0, 600, 100)
+WIN_RECT = pygame.Rect(0, 0, 400, 100)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
@@ -25,7 +25,6 @@ DIRECTION_LEFT = -1
 
 
 def main():
-    pygame.init()
     window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
@@ -37,26 +36,11 @@ def main():
     defender_rect.bottom = WIN_RECT.height - 5
     defender_x_direction = DIRECTION_RIGHT
 
-    running = True
-    while running:
-        # Events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    while handle_events():
+        clock.tick(FPS)
 
         # Update
-
-        # check the newly generated x value before changing the defender position
-        # new_x = defender_rect.x + defender_x_direction * DEFENDER_SPEED
-        # if new_x + DEFENDER_SIZE[0] >= WIN_RECT.right:  # clamp right
-        #     defender_x_direction = DIRECTION_LEFT
-        #     defender_rect.right = WIN_RECT.right
-        # elif new_x <= WIN_RECT.left:  # clamp left
-        #     defender_x_direction = DIRECTION_RIGHT
-        #     defender_rect.left = WIN_RECT.left
-        # else:
-        #     defender_rect.x = new_x
-
+        # instead of checking the newly generated x value before changing the defender position
         # working on a new Rect shifted by an x, y offset is usually handier
         new_rect = defender_rect.move(defender_x_direction * DEFENDER_SPEED, 0)
         if new_rect.right >= WIN_RECT.right:  # clamp right
@@ -70,13 +54,21 @@ def main():
         # Draw
         screen.fill(BACKGROUND_COLOR)
         screen.blit(defender_image, defender_rect)
-
         window.flip()
-        clock.tick(FPS)
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
