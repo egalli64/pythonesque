@@ -41,17 +41,17 @@ class Game:
 
     def run(self):
         while self.handle_events():
-            self.clock.tick(Settings.FPS)
-            self.update()
+            dt = self.clock.tick(Settings.FPS) / 1000
+            self.update(dt)
             self.draw()
 
-    def update(self):
+    def update(self, dt):
         if not (self.pausing or self.helping):
             self.check_collision()
             for i in Settings.KI.keys():
                 if Settings.KI[i]:
                     self.paddlecontroler(self.paddle[i])
-            self.all_sprites.update(action="move")
+            self.all_sprites.update(dt, action="move")
 
     def draw(self):
         self.background.draw(self.screen)
@@ -110,10 +110,10 @@ class Game:
 
     def check_collision(self):
         if pygame.sprite.collide_rect(self.ball, self.paddle["left"]):
-            self.ball.update(action="hflip")
+            self.ball.horizontal_flip()
             self.ball.rect.left = self.paddle["left"].rect.right + 1
         elif pygame.sprite.collide_rect(self.ball, self.paddle["right"]):
-            self.ball.update(action="hflip")
+            self.ball.horizontal_flip()
             self.ball.rect.right = self.paddle["right"].rect.left - 1
 
     def paddlecontroler(self, paddle: Paddle) -> None:

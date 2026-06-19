@@ -6,7 +6,7 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Pong ball
 """
 
-from random import choice, randint
+from random import choice, uniform
 import pygame
 from settings import Settings
 from events import Events
@@ -16,6 +16,7 @@ class Ball(pygame.sprite.Sprite):
     PLAYER_LEFT = "sounds/left.mp3"
     PLAYER_RIGHT = "sounds/right.mp3"
     BOUNCE = "sounds/bounce.mp3"
+    SPEED = Settings.WINDOW.width / 3
 
     def __init__(self, *groups) -> None:
         super().__init__(*groups)
@@ -29,25 +30,11 @@ class Ball(pygame.sprite.Sprite):
         self.image = pygame.Surface(self.rect.size).convert()
         self.image.set_colorkey("black")
         pygame.draw.circle(self.image, "green", self.rect.center, self.rect.width // 2)
-        self.speed = Settings.WINDOW.width // 3
-        self.speedxy = pygame.Vector2()
+        self.velocity = pygame.Vector2()
         self.service()
 
-    def update(self, *args, **kwargs) -> None:
-        if "action" in kwargs.keys():
-            if kwargs["action"] == "move":
-                self.move()
-            elif kwargs["action"] == "hflip":
-                self.horizontal_flip()
-            elif kwargs["action"] == "vflip":
-                self.vertical_flip()
-            elif kwargs["action"] == "reset":
-                self.service()
-        return super().update(*args, **kwargs)
-
-    def move(self) -> None:
-        dt = 1 / 60 # TODO: actual td
-        self.rect.move_ip(self.speedxy * dt)
+    def update(self, dt, action) -> None:  # TODO: remove action from all update methods
+        self.rect.move_ip(self.velocity * dt)
         if self.rect.top <= 0:
             self.vertical_flip()
             self.rect.top = 0
@@ -65,26 +52,23 @@ class Ball(pygame.sprite.Sprite):
 
     def service(self) -> None:
         self.rect.center = Settings.WINDOW.center
-        self.speedxy = pygame.Vector2(choice([-1, 1]), choice([-1, 1])) * self.speed
+        self.velocity = pygame.Vector2(choice([-1, 1]), choice([-1, 1])) * Ball.SPEED
 
     def horizontal_flip(self) -> None:
         if Settings.SOUNDFLAG:
-            if self.speedxy.x < 0:
+            if self.velocity.x < 0:
                 self.channel.set_volume(0.9, 0.1)
                 self.channel.play(self.sounds["left"])
             else:
                 self.channel.set_volume(0.1, 0.9)
                 self.channel.play(self.sounds["right"])
-        self.speedxy.x *= -1
-        self.respeed()
+
+        self.velocity.x = -1 * (self.velocity.x + uniform(0, Ball.SPEED / 4))
+        self.velocity.y += uniform(0, Ball.SPEED / 4)
 
     def vertical_flip(self) -> None:
         if Settings.SOUNDFLAG:
             rel_pos = self.rect.centerx / Settings.WINDOW.width
             self.channel.set_volume(1.0 - rel_pos, rel_pos)
             self.channel.play(self.sounds["bounce"])
-        self.speedxy.y *= -1
-
-    def respeed(self) -> None:
-        self.speedxy.x += randint(0, self.speed // 4)
-        self.speedxy.y += randint(0, self.speed // 4)
+        self.velocity.y *= -1
