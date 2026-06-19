@@ -33,8 +33,6 @@ LIMIT = 1500  # ms
 
 
 def main():
-    pygame.init()
-
     window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
@@ -48,16 +46,11 @@ def main():
     defender_y_direction = DIRECTION_UP
 
     start_time = pygame.time.get_ticks()
-    running = True
-    while running:
+    while handle_events():
         dt = clock.tick(FPS) / 1000  # delta time, ms since the previous call
 
         if pygame.time.get_ticks() > start_time + LIMIT:
             defender_speed = 0
-        # Events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
 
         # Update
         defender_rect.top += defender_y_direction * defender_speed * dt
@@ -74,8 +67,19 @@ def main():
         window.flip()
     print(f"center y={defender_rect.centery}")
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
-    main()
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
