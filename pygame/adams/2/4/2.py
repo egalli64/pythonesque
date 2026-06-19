@@ -25,8 +25,6 @@ LIMIT = 5000
 
 
 def main():
-    pygame.init()
-
     window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
@@ -40,14 +38,11 @@ def main():
     defender_y_direction = DIRECTION_UP
 
     start_time = pygame.time.get_ticks()
-    running = True
-    while running:
+    while handle_events():
+        clock.tick(FPS)
+
         if pygame.time.get_ticks() > start_time + LIMIT:
             defender_speed = 0
-        # Events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
 
         # Update
         defender_rect.top += defender_y_direction * defender_speed
@@ -59,15 +54,23 @@ def main():
         # Draw
         screen.fill(BACKGROUND_COLOR)
         screen.blit(defender_image, defender_rect)
-
         window.flip()
-        clock.tick(FPS)
 
     print(f"top={defender_rect.top}")
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
