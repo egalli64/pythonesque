@@ -159,8 +159,7 @@ explosion_sound = pygame.mixer.Sound("audio/explosion.wav")
 all_sprites = pygame.sprite.Group()
 meteor_sprites = pygame.sprite.Group()
 laser_sprites = pygame.sprite.Group()
-for i in range(20):
-    Star(all_sprites)
+Star.create_field(20, WIN_RECT.width, WIN_RECT.height, all_sprites)
 player = Player(all_sprites)
 
 CREATE_METEOR_EVENT = pygame.event.custom_type()
