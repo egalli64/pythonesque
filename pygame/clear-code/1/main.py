@@ -10,6 +10,8 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 
 import pygame
 from random import randint, uniform
+from star import Star
+from settings import WIN_RECT
 
 
 class Player(pygame.sprite.Sprite):
@@ -51,14 +53,6 @@ class Player(pygame.sprite.Sprite):
             laser_sound.play()
 
         self.laser_timer()
-
-
-class Star(pygame.sprite.Sprite):
-    def __init__(self, groups, surf):
-        super().__init__(groups)
-        self.image = surf
-        center = (randint(0, WIN_RECT.w), randint(0, WIN_RECT.h))
-        self.rect = self.image.get_rect(center=center)
 
 
 class Laser(pygame.sprite.Sprite):
@@ -141,7 +135,6 @@ def display_score():
 # general setup
 pygame.init()
 TITLE = "Space shooter"
-WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 
 window = pygame.Window(TITLE, WIN_RECT.size)
 screen = window.get_surface()
@@ -149,8 +142,8 @@ screen = window.get_surface()
 running = True
 clock = pygame.time.Clock()
 
-# import
-star_surf = pygame.image.load("images/star.png").convert_alpha()
+# resource loading
+Star.load_resources()
 meteor_surf = pygame.image.load("images/meteor.png").convert_alpha()
 laser_surf = pygame.image.load("images/laser.png").convert_alpha()
 font = pygame.font.Font(None, 40)
@@ -167,7 +160,7 @@ all_sprites = pygame.sprite.Group()
 meteor_sprites = pygame.sprite.Group()
 laser_sprites = pygame.sprite.Group()
 for i in range(20):
-    Star(all_sprites, star_surf)
+    Star(all_sprites)
 player = Player(all_sprites)
 
 CREATE_METEOR_EVENT = pygame.event.custom_type()
@@ -192,5 +185,3 @@ while running:
     window.flip()
 
 pygame.quit()
-
-# 37:55
