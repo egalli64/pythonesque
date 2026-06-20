@@ -9,9 +9,10 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
 import pygame
-from random import randint, uniform
+from random import randint
 from star import Star
 from laser import Laser
+from meteor import Meteor
 from settings import WIN_RECT
 
 
@@ -54,28 +55,6 @@ class Player(pygame.sprite.Sprite):
             self.laser_shoot_time = pygame.time.get_ticks()
 
         self.laser_timer()
-
-
-class Meteor(pygame.sprite.Sprite):
-    def __init__(self, surf, x, groups):
-        super().__init__(groups)
-        self.original_surf = surf
-        self.image = surf
-        self.rect: pygame.FRect = self.image.get_frect(centerx=x)
-        self.start_time = pygame.time.get_ticks()
-        self.lifetime = 3000
-        self.direction = pygame.Vector2(uniform(-0.5, 0.5), 1)
-        self.speed = randint(400, 500)
-        self.rotation_speed = randint(40, 80)
-        self.rotation = 0
-
-    def update(self, dt):
-        self.rect.center += self.direction * self.speed * dt
-        if pygame.time.get_ticks() - self.start_time >= self.lifetime:
-            self.kill()
-        self.rotation += self.rotation_speed * dt
-        self.image = pygame.transform.rotozoom(self.original_surf, self.rotation, 1)
-        self.rect = self.image.get_frect(center=self.rect.center)
 
 
 class Explosion(pygame.sprite.Sprite):
@@ -132,6 +111,7 @@ clock = pygame.time.Clock()
 # resource loading
 Star.load_resources()
 Laser.load_resources()
+Meteor.load_resources()
 meteor_surf = pygame.image.load("images/meteor.png").convert_alpha()
 font = pygame.font.Font(None, 40)
 explosion_frames = [
@@ -157,8 +137,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == CREATE_METEOR_EVENT:
-            x = randint(0, WIN_RECT.width)
-            Meteor(meteor_surf, x, (all_sprites, meteor_sprites))
+            Meteor(randint(0, WIN_RECT.width), (all_sprites, meteor_sprites))
 
     all_sprites.update(dt)
     collisions()
