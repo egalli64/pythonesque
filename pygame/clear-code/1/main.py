@@ -11,16 +11,18 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 import pygame
 from random import randint, uniform
 from star import Star
+from laser import Laser
 from settings import WIN_RECT
 
 
 class Player(pygame.sprite.Sprite):
+    SPEED = 300
+
     def __init__(self, groups):
         super().__init__(groups)
         self.image = pygame.image.load("images/player.png").convert_alpha()
         self.rect: pygame.FRect = self.image.get_frect(center=(WIN_RECT.center))
         self.direction = pygame.Vector2()
-        self.speed = 300
 
         # cooldown
         self.can_shoot = True
@@ -43,30 +45,15 @@ class Player(pygame.sprite.Sprite):
         self.direction = (
             self.direction.normalize() if self.direction else self.direction
         )
-        self.rect.center += self.direction * self.speed * dt
+        self.rect.center += self.direction * Player.SPEED * dt
 
         recent_keys = pygame.key.get_just_pressed()
         if recent_keys[pygame.K_SPACE] and self.can_shoot:
-            Laser(laser_surf, self.rect.midtop, (all_sprites, laser_sprites))
+            Laser(self.rect.midtop, (all_sprites, laser_sprites))
             self.can_shoot = False
             self.laser_shoot_time = pygame.time.get_ticks()
-            laser_sound.play()
 
         self.laser_timer()
-
-
-class Laser(pygame.sprite.Sprite):
-    SPEED = 400
-
-    def __init__(self, surf, pos, groups):
-        super().__init__(groups)
-        self.image = surf
-        self.rect: pygame.FRect = self.image.get_frect(midbottom=pos)
-
-    def update(self, dt):
-        self.rect.centery -= Laser.SPEED * dt
-        if self.rect.bottom < 0:
-            self.kill()
 
 
 class Meteor(pygame.sprite.Sprite):
@@ -144,22 +131,20 @@ clock = pygame.time.Clock()
 
 # resource loading
 Star.load_resources()
+Laser.load_resources()
 meteor_surf = pygame.image.load("images/meteor.png").convert_alpha()
-laser_surf = pygame.image.load("images/laser.png").convert_alpha()
 font = pygame.font.Font(None, 40)
 explosion_frames = [
     pygame.image.load(f"images/explosion/{i}.png").convert_alpha() for i in range(21)
 ]
 
-laser_sound = pygame.mixer.Sound("audio/laser.wav")
-laser_sound.set_volume(0.5)
 explosion_sound = pygame.mixer.Sound("audio/explosion.wav")
 
 # sprites
 all_sprites = pygame.sprite.Group()
 meteor_sprites = pygame.sprite.Group()
 laser_sprites = pygame.sprite.Group()
-Star.create_field(20, WIN_RECT.width, WIN_RECT.height, all_sprites)
+Star.create_field(20, WIN_RECT, all_sprites)
 player = Player(all_sprites)
 
 CREATE_METEOR_EVENT = pygame.event.custom_type()
