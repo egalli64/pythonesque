@@ -8,8 +8,8 @@ Drive: https://drive.google.com/drive/folders/1bUGO9sv5SM3gYO_t9zgifedkQKHUYudO
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
-import pygame
 from random import randint
+import pygame
 
 
 class Star(pygame.sprite.Sprite):
@@ -21,9 +21,9 @@ class Star(pygame.sprite.Sprite):
         cls._image = pygame.image.load(Star.FILENAME).convert_alpha()
 
     @classmethod
-    def create_field(cls, n: int, width: int, height: int, group: pygame.sprite.Group):
+    def create_field(cls, n: int, rect: pygame.Rect, group: pygame.sprite.Group):
         for _ in range(n):
-            Star(width, height, group)
+            Star(*rect.size, group)
 
     def __init__(self, width, height, group):
         super().__init__(group)
