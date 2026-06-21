@@ -16,6 +16,7 @@ class Player(pygame.sprite.Sprite):
     FILENAME = "images/player.png"
     _image: pygame.Surface
     SPEED = 300
+    COOLDOWN = 0.333  # sec
 
     @classmethod
     def load_resources(cls):
@@ -27,10 +28,7 @@ class Player(pygame.sprite.Sprite):
         self.rect: pygame.FRect = self.image.get_frect(center=(WIN_RECT.center))
         self.direction = pygame.Vector2()
 
-        # cooldown
-        self.can_shoot = True
-        self.laser_shoot_time = 0
-        self.cooldown_duration = 400
+        self.cooldown_remaining = 0.0  # ready to shoot
 
         # mask
         self.mask = pygame.mask.from_surface(self.image)
@@ -41,19 +39,12 @@ class Player(pygame.sprite.Sprite):
             self.direction.normalize_ip()
 
     def request_shoot(self):
-        if self.can_shoot:
+        if self.cooldown_remaining == 0:
             event = pygame.event.Event(EVENT_FIRE_LASER, pos=self.rect.midtop)
             pygame.event.post(event)
-            self.can_shoot = False
-            self.laser_shoot_time = pygame.time.get_ticks()
-
-    def laser_timer(self):
-        if not self.can_shoot:
-            current_time = pygame.time.get_ticks()
-            if current_time - self.laser_shoot_time >= self.cooldown_duration:
-                self.can_shoot = True
+            self.cooldown_remaining = Player.COOLDOWN
 
     def update(self, dt):
         self.rect.center += self.direction * Player.SPEED * dt
         self.rect.clamp_ip(WIN_RECT)
-        self.laser_timer()
+        self.cooldown_remaining = max(0, self.cooldown_remaining - dt)
