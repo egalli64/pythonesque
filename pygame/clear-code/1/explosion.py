@@ -25,8 +25,8 @@ class Explosion(pygame.sprite.Sprite):
         ]
         cls._sound = pygame.mixer.Sound(cls.SOUND_FILENAME)
 
-    def __init__(self, pos, group):
-        super().__init__(group)
+    def __init__(self, pos, groups):
+        super().__init__(groups)
         self.fractional_index = 0.0
         self.image = Explosion._frames[0]
         self.rect = self.image.get_rect(center=pos)

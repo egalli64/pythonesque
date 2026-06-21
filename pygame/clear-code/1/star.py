@@ -25,8 +25,8 @@ class Star(pygame.sprite.Sprite):
         for _ in range(n):
             Star(*rect.size, group)
 
-    def __init__(self, width, height, group):
-        super().__init__(group)
+    def __init__(self, width, height, groups):
+        super().__init__(groups)
         self.image = Star._image
         center = (randint(0, width), randint(0, height))
         self.rect = Star._image.get_rect(center=center)

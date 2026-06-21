@@ -15,6 +15,7 @@ from laser import Laser
 from meteor import Meteor
 from explosion import Explosion
 from player import Player
+from score import Score
 from settings import WIN_RECT, EVENT_CREATE_METEOR, EVENT_FIRE_LASER
 
 
@@ -32,17 +33,10 @@ def collisions():
             Explosion(laser.rect.midtop, all_sprites)
 
 
-def display_score():
-    score = pygame.time.get_ticks() // 100
-    surf = font.render(str(score), True, "gray94")
-    rect = surf.get_frect(midbottom=(WIN_RECT.w / 2, WIN_RECT.h - 50))
-    screen.blit(surf, rect)
-    pygame.draw.rect(screen, "gray94", rect.inflate(20, 10).move(0, -2), 4, 10)
-
-
 # general setup
 pygame.init()
 TITLE = "Space shooter"
+FPS = 60
 
 window = pygame.Window(TITLE, WIN_RECT.size)
 screen = window.get_surface()
@@ -56,7 +50,7 @@ Laser.load_resources()
 Meteor.load_resources()
 Player.load_resources()
 Explosion.load_resources()
-font = pygame.font.Font(None, 40)
+Score.load_resources()
 
 # sprite groups
 all_sprites = pygame.sprite.Group()
@@ -65,6 +59,7 @@ laser_sprites = pygame.sprite.Group()
 
 Star.create_field(20, WIN_RECT, all_sprites)
 player = Player(all_sprites)
+score = Score(WIN_RECT.midbottom)
 
 pygame.time.set_timer(EVENT_CREATE_METEOR, 200)
 
@@ -92,14 +87,15 @@ def handle_events() -> bool:
 
 
 while running:
-    dt = clock.tick() / 1000
-    if running := handle_events():
-        all_sprites.update(dt)
+    dt = clock.tick(FPS) / 1000
+    if running := handle_events():  # event handling
+        all_sprites.update(dt)  # update
         collisions()
+        score.update()
 
-        screen.fill("#3a2e3f")
-        display_score()
+        screen.fill("#3a2e3f")  # draw
         all_sprites.draw(screen)
+        score.draw(screen)
         window.flip()
 
 pygame.quit()
