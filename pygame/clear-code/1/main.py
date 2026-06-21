@@ -95,10 +95,19 @@ def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return False
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            player.request_shoot()
         if event.type == EVENT_CREATE_METEOR:
             Meteor(randint(0, WIN_RECT.width), (all_sprites, meteor_sprites))
         elif event.type == EVENT_FIRE_LASER:
             Laser(event.pos, (all_sprites, laser_sprites))
+
+    keys = pygame.key.get_pressed()
+
+    # arrows determine the player direction
+    x = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+    y = keys[pygame.K_DOWN] - keys[pygame.K_UP]
+    player.set_direction(x, y)
 
     return True
 

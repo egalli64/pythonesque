@@ -35,6 +35,18 @@ class Player(pygame.sprite.Sprite):
         # mask
         self.mask = pygame.mask.from_surface(self.image)
 
+    def set_direction(self, x: int, y: int):
+        self.direction.update(x, y)
+        if self.direction:
+            self.direction.normalize_ip()
+
+    def request_shoot(self):
+        if self.can_shoot:
+            event = pygame.event.Event(EVENT_FIRE_LASER, pos=self.rect.midtop)
+            pygame.event.post(event)
+            self.can_shoot = False
+            self.laser_shoot_time = pygame.time.get_ticks()
+
     def laser_timer(self):
         if not self.can_shoot:
             current_time = pygame.time.get_ticks()
@@ -42,19 +54,5 @@ class Player(pygame.sprite.Sprite):
                 self.can_shoot = True
 
     def update(self, dt):
-        keys = pygame.key.get_pressed()
-        self.direction.x = int(keys[pygame.K_RIGHT]) - int(keys[pygame.K_LEFT])
-        self.direction.y = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
-        self.direction = (
-            self.direction.normalize() if self.direction else self.direction
-        )
         self.rect.center += self.direction * Player.SPEED * dt
-
-        recent_keys = pygame.key.get_just_pressed()
-        if recent_keys[pygame.K_SPACE] and self.can_shoot:
-            event = pygame.event.Event(EVENT_FIRE_LASER, pos=self.rect.midtop)
-            pygame.event.post(event)
-            self.can_shoot = False
-            self.laser_shoot_time = pygame.time.get_ticks()
-
         self.laser_timer()
