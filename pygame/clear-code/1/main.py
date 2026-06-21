@@ -90,23 +90,28 @@ player = Player(all_sprites)
 
 pygame.time.set_timer(EVENT_CREATE_METEOR, 200)
 
-while running:
-    dt = clock.tick() / 1000
 
+def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            return False
         if event.type == EVENT_CREATE_METEOR:
             Meteor(randint(0, WIN_RECT.width), (all_sprites, meteor_sprites))
         elif event.type == EVENT_FIRE_LASER:
             Laser(event.pos, (all_sprites, laser_sprites))
 
-    all_sprites.update(dt)
-    collisions()
+    return True
 
-    screen.fill("#3a2e3f")
-    display_score()
-    all_sprites.draw(screen)
-    window.flip()
+
+while running:
+    dt = clock.tick() / 1000
+    if running := handle_events():
+        all_sprites.update(dt)
+        collisions()
+
+        screen.fill("#3a2e3f")
+        display_score()
+        all_sprites.draw(screen)
+        window.flip()
 
 pygame.quit()
