@@ -36,11 +36,11 @@ class Explosion(pygame.sprite.Sprite):
 
 
 def collisions():
-    # global running
+    global running
 
-    # collided = lambda left, right: pygame.sprite.collide_mask(left, right) is not None
-    # if pygame.sprite.spritecollide(player, meteor_sprites, True, collided):
-    #     running = False
+    collided = lambda left, right: pygame.sprite.collide_mask(left, right) is not None
+    if pygame.sprite.spritecollide(player, meteor_sprites, True, collided):
+        running = False
 
     for laser in laser_sprites:
         collided_sprites = pygame.sprite.spritecollide(laser, meteor_sprites, True)
@@ -97,17 +97,18 @@ def handle_events() -> bool:
             return False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             player.request_shoot()
-        if event.type == EVENT_CREATE_METEOR:
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            Laser(event.pos, (all_sprites, laser_sprites))  # cheat fire
+        elif event.type == EVENT_CREATE_METEOR:
             Meteor(randint(0, WIN_RECT.width), (all_sprites, meteor_sprites))
         elif event.type == EVENT_FIRE_LASER:
             Laser(event.pos, (all_sprites, laser_sprites))
 
-    keys = pygame.key.get_pressed()
+    keys = pygame.key.get_pressed()  # for continuous events
 
-    # arrows determine the player direction
     x = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
     y = keys[pygame.K_DOWN] - keys[pygame.K_UP]
-    player.set_direction(x, y)
+    player.set_direction(x, y)  # arrows determine the player direction
 
     return True
 
