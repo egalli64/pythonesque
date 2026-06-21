@@ -55,4 +55,5 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.rect.center += self.direction * Player.SPEED * dt
+        self.rect.clamp_ip(WIN_RECT)
         self.laser_timer()

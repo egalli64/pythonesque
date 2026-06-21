@@ -10,11 +10,13 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 
 from random import randint, uniform
 import pygame
+from settings import WIN_RECT
 
 
 class Meteor(pygame.sprite.Sprite):
     FILENAME = "images/meteor.png"
     _image: pygame.Surface
+    counter = 1
 
     @classmethod
     def load_resources(cls):
@@ -33,8 +35,11 @@ class Meteor(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.rect.center += self.direction * self.speed * dt
-        if pygame.time.get_ticks() - self.start_time >= self.lifetime:
+
+        stale = pygame.time.get_ticks() - self.start_time >= self.lifetime
+        if not self.rect.colliderect(WIN_RECT) or stale:
             self.kill()
+
         self.rotation += self.rotation_speed * dt
         self.image = pygame.transform.rotate(Meteor._image, self.rotation)
         self.rect = self.image.get_frect(center=self.rect.center)

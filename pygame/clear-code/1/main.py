@@ -36,11 +36,11 @@ class Explosion(pygame.sprite.Sprite):
 
 
 def collisions():
-    global running
+    # global running
 
-    collided = lambda left, right: pygame.sprite.collide_mask(left, right) is not None
-    if pygame.sprite.spritecollide(player, meteor_sprites, True, collided):
-        running = False
+    # collided = lambda left, right: pygame.sprite.collide_mask(left, right) is not None
+    # if pygame.sprite.spritecollide(player, meteor_sprites, True, collided):
+    #     running = False
 
     for laser in laser_sprites:
         collided_sprites = pygame.sprite.spritecollide(laser, meteor_sprites, True)
