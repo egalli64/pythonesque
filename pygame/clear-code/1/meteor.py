@@ -15,8 +15,8 @@ from settings import WIN_RECT
 
 class Meteor(pygame.sprite.Sprite):
     FILENAME = "images/meteor.png"
+    MAX_LIFETIME = 3.0  # sec
     _image: pygame.Surface
-    counter = 1
 
     @classmethod
     def load_resources(cls):
@@ -26,8 +26,7 @@ class Meteor(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = Meteor._image
         self.rect: pygame.FRect = self.image.get_frect(center=(x_pos, 0))
-        self.start_time = pygame.time.get_ticks()
-        self.lifetime = 3000
+        self.lifetime = Meteor.MAX_LIFETIME
         self.direction = pygame.Vector2(uniform(-0.5, 0.5), 1)
         self.speed = randint(400, 500)
         self.rotation_speed = randint(40, 80)
@@ -35,11 +34,11 @@ class Meteor(pygame.sprite.Sprite):
 
     def update(self, dt):
         self.rect.center += self.direction * self.speed * dt
+        self.lifetime = max(0, self.lifetime - dt)
 
-        stale = pygame.time.get_ticks() - self.start_time >= self.lifetime
-        if not self.rect.colliderect(WIN_RECT) or stale:
+        if not self.rect.colliderect(WIN_RECT) or self.lifetime == 0:
             self.kill()
-
-        self.rotation += self.rotation_speed * dt
-        self.image = pygame.transform.rotate(Meteor._image, self.rotation)
-        self.rect = self.image.get_frect(center=self.rect.center)
+        else:
+            self.rotation += self.rotation_speed * dt
+            self.image = pygame.transform.rotate(Meteor._image, self.rotation)
+            self.rect = self.image.get_frect(center=self.rect.center)
