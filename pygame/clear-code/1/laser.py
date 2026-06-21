@@ -24,8 +24,8 @@ class Laser(pygame.sprite.Sprite):
         cls._sound = pygame.mixer.Sound(Laser.SOUND_FILENAME)
         cls._sound.set_volume(0.5)
 
-    def __init__(self, mid_bottom, groups):
-        super().__init__(groups)
+    def __init__(self, mid_bottom, *groups):
+        super().__init__(*groups)
         self.image = Laser._image
         self.rect: pygame.FRect = self.image.get_frect(midbottom=mid_bottom)
         Laser._sound.play()

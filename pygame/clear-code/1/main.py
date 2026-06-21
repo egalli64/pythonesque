@@ -16,7 +16,7 @@ from meteor import Meteor
 from explosion import Explosion
 from player import Player
 from score import Score
-from settings import WIN_RECT, EVENT_CREATE_METEOR, EVENT_FIRE_LASER
+from settings import WIN_RECT, EVENT_CREATE_METEOR
 
 
 def collisions():
@@ -69,13 +69,13 @@ def handle_events() -> bool:
         if event.type == pygame.QUIT:
             return False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            player.request_shoot()
+            if laser := player.request_shoot():
+                all_sprites.add(laser)
+                laser_sprites.add(laser)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             Laser(event.pos, (all_sprites, laser_sprites))  # cheat fire
         elif event.type == EVENT_CREATE_METEOR:
             Meteor(randint(0, WIN_RECT.width), (all_sprites, meteor_sprites))
-        elif event.type == EVENT_FIRE_LASER:
-            Laser(event.pos, (all_sprites, laser_sprites))
 
     keys = pygame.key.get_pressed()  # for continuous events
 

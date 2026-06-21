@@ -13,4 +13,3 @@ import pygame
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 
 EVENT_CREATE_METEOR = pygame.event.custom_type()
-EVENT_FIRE_LASER = pygame.event.custom_type()

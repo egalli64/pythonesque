@@ -9,7 +9,8 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
 import pygame
-from settings import WIN_RECT, EVENT_FIRE_LASER
+from laser import Laser
+from settings import WIN_RECT
 
 
 class Player(pygame.sprite.Sprite):
@@ -40,9 +41,10 @@ class Player(pygame.sprite.Sprite):
 
     def request_shoot(self):
         if self.cooldown_remaining == 0:
-            event = pygame.event.Event(EVENT_FIRE_LASER, pos=self.rect.midtop)
-            pygame.event.post(event)
             self.cooldown_remaining = Player.COOLDOWN
+            return Laser(self.rect.midtop)
+        else:
+            return None
 
     def update(self, dt):
         self.rect.center += self.direction * Player.SPEED * dt
