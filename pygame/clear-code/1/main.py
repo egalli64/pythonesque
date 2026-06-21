@@ -13,26 +13,9 @@ from random import randint
 from star import Star
 from laser import Laser
 from meteor import Meteor
+from explosion import Explosion
 from player import Player
 from settings import WIN_RECT, EVENT_CREATE_METEOR, EVENT_FIRE_LASER
-
-
-class Explosion(pygame.sprite.Sprite):
-    DURATION_MODIFIER = 20  # decrease it for longer lasting explosion
-
-    def __init__(self, frames, pos, groups):
-        super().__init__(groups)
-        self.frames = frames
-        self.fractional_index = 0.0
-        self.image = self.frames[0]
-        self.rect = self.image.get_rect(center=pos)
-
-    def update(self, dt):
-        self.fractional_index += dt * Explosion.DURATION_MODIFIER
-        if self.fractional_index >= len(self.frames):
-            self.kill()
-        else:
-            self.image = self.frames[int(self.fractional_index)]
 
 
 def collisions():
@@ -46,8 +29,7 @@ def collisions():
         collided_sprites = pygame.sprite.spritecollide(laser, meteor_sprites, True)
         if collided_sprites:
             laser.kill()
-            Explosion(explosion_frames, laser.rect.midtop, all_sprites)
-            explosion_sound.play()
+            Explosion(laser.rect.midtop, all_sprites)
 
 
 def display_score():
@@ -73,18 +55,14 @@ Star.load_resources()
 Laser.load_resources()
 Meteor.load_resources()
 Player.load_resources()
-meteor_surf = pygame.image.load("images/meteor.png").convert_alpha()
+Explosion.load_resources()
 font = pygame.font.Font(None, 40)
-explosion_frames = [
-    pygame.image.load(f"images/explosion/{i}.png").convert_alpha() for i in range(21)
-]
 
-explosion_sound = pygame.mixer.Sound("audio/explosion.wav")
-
-# sprites
+# sprite groups
 all_sprites = pygame.sprite.Group()
 meteor_sprites = pygame.sprite.Group()
 laser_sprites = pygame.sprite.Group()
+
 Star.create_field(20, WIN_RECT, all_sprites)
 player = Player(all_sprites)
 
