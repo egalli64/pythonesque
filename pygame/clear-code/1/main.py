@@ -19,13 +19,12 @@ from score import Score
 from settings import WIN_RECT, EVENT_CREATE_METEOR
 
 
-def collisions():
-    global running
-
+def player_collision():
     collided = lambda left, right: pygame.sprite.collide_mask(left, right) is not None
-    if pygame.sprite.spritecollide(player, meteor_sprites, True, collided):
-        running = False
+    return pygame.sprite.spritecollide(player, meteor_sprites, True, collided)
 
+
+def meteor_collisions():
     for laser in laser_sprites:
         collided_sprites = pygame.sprite.spritecollide(laser, meteor_sprites, True)
         if collided_sprites:
@@ -41,7 +40,6 @@ FPS = 60
 window = pygame.Window(TITLE, WIN_RECT.size)
 screen = window.get_surface()
 
-running = True
 clock = pygame.time.Clock()
 
 # resource loading
@@ -86,16 +84,20 @@ def handle_events() -> bool:
     return True
 
 
-while running:
+while handle_events():  # event handling
     dt = clock.tick(FPS) / 1000
-    if running := handle_events():  # event handling
-        all_sprites.update(dt)  # update
-        collisions()
-        score.update()
+    all_sprites.update(dt)  # update
 
-        screen.fill("#3a2e3f")  # draw
-        all_sprites.draw(screen)
-        score.draw(screen)
-        window.flip()
+    score.update()  # game logic
+    if player_collision():
+        break
+    meteor_collisions()
 
+    screen.fill("#3a2e3f")  # draw
+    all_sprites.draw(screen)
+    score.draw(screen)
+    window.flip()
+
+print("Game over")
+pygame.time.wait(500)
 pygame.quit()
