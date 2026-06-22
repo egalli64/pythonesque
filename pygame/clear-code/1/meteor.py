@@ -10,7 +10,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 
 from random import randint, uniform
 import pygame
-from settings import WIN_RECT
 
 
 class Meteor(pygame.sprite.Sprite):
@@ -39,7 +38,7 @@ class Meteor(pygame.sprite.Sprite):
         self.rect.center += self.direction * self.speed * dt
         self.lifetime = max(0, self.lifetime - dt)
 
-        if not self.rect.colliderect(WIN_RECT) or self.lifetime == 0:
+        if self.lifetime == 0:
             self.kill()
         else:
             self.rotation += self.rotation_speed * dt
