@@ -57,7 +57,7 @@ laser_sprites = pygame.sprite.Group()
 
 Star.create_field(20, WIN_RECT, all_sprites)
 player = Player(all_sprites)
-score = Score(WIN_RECT.midbottom)
+score = Score(WIN_RECT.centerx, WIN_RECT.bottom - 50)
 
 pygame.time.set_timer(EVENT_CREATE_METEOR, 200)
 

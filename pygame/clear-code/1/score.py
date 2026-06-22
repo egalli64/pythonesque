@@ -14,20 +14,27 @@ import pygame
 class Score:
     FONT_SIZE = 40
     COLOR = "gray94"
+    PADDING = (20, 20)
+    VERTICAL_ADJUSTMENT = 2
 
     @classmethod
     def load_resources(cls):
         cls._font = pygame.font.Font(None, cls.FONT_SIZE)
 
-    def __init__(self, pos):
-        self.pos = pos[0], pos[1] - 50
+    def __init__(self, x, y):
+        self.midbottom = x, y
 
     def update(self):
         score = pygame.time.get_ticks() // 100
-        self.image = Score._font.render(str(score), True, Score.COLOR)
-        self.rect = self.image.get_rect(midbottom=self.pos)
+        text_surface = Score._font.render(str(score), True, Score.COLOR)
+        box_rect = text_surface.get_rect().inflate(*Score.PADDING)
+
+        self.image = pygame.Surface(box_rect.size, pygame.SRCALPHA)
+        pygame.draw.rect(self.image, Score.COLOR, self.image.get_rect(), 4, 10)
+        text_pos = text_surface.get_rect(center=self.image.get_rect().center)
+        text_pos.bottom += Score.VERTICAL_ADJUSTMENT
+        self.image.blit(text_surface, text_pos)
+        self.rect = self.image.get_rect(midbottom=self.midbottom)
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-        rect = self.rect.inflate(20, 10).move(0, -2)
-        pygame.draw.rect(screen, Score.COLOR, rect, 4, 10)
