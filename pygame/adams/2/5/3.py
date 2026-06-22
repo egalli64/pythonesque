@@ -10,7 +10,6 @@ from enum import Enum, auto
 import pygame
 
 FPS = 30
-
 TITLE = "Sprite"
 WIN_RECT = pygame.Rect(0, 0, 600, 100)
 WIN_POS = (10, 50)
@@ -33,7 +32,7 @@ class Defender(pygame.sprite.Sprite):
         self.rect = pygame.FRect(self.image.get_rect())  # type: ignore
         self.rect.centerx = WIN_RECT.centerx
         self.rect.bottom = WIN_RECT.bottom - Defender.BOTTOM_GAP
-        self.speed = 300
+        self.speed = Defender.DEFAULT_SPEED
 
     def update(self, dt) -> None:
         self.rect.move_ip(self.speed * dt, 0)
@@ -63,41 +62,44 @@ class Border(pygame.sprite.Sprite):
 
 
 def main():
-    pygame.init()
-
     window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
 
-    defender = pygame.sprite.GroupSingle(Defender())
+    defender = Defender()
+    defender_group = pygame.sprite.GroupSingle(defender)
     borders = pygame.sprite.Group()
     borders.add(Border(Border.Position.LEFT))
     borders.add(Border(Border.Position.RIGHT))
 
-    running = True
-    while running:
+    while handle_events():
         dt = clock.tick(FPS) / 1000
 
-        # Events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
         # Update
-
-        if pygame.sprite.spritecollide(defender.sprite, borders, False):  # type: ignore
-            defender.sprite.change_direction()  # type: ignore
+        if pygame.sprite.spritecollide(defender_group.sprite, borders, False):  # type: ignore
+            defender.change_direction()
         defender.update(dt)
 
         # Draw
         screen.fill(BACKGROUND_COLOR)
-        defender.draw(screen)  # the group knows how to draw its sprites
+        defender_group.draw(screen)  # the group knows how to draw its sprites
         borders.draw(screen)
 
         window.flip()
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
-    main()
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
