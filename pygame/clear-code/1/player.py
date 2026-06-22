@@ -26,13 +26,11 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, groups):
         super().__init__(groups)
         self.image = Player._image
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect: pygame.FRect = self.image.get_frect(center=(WIN_RECT.center))
         self.direction = pygame.Vector2()
 
         self.cooldown_remaining = 0.0  # ready to shoot
-
-        # mask
-        self.mask = pygame.mask.from_surface(self.image)
 
     def set_direction(self, x: int, y: int):
         self.direction.update(x, y)
