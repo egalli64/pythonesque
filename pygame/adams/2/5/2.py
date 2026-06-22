@@ -70,8 +70,6 @@ class Border(pygame.sprite.Sprite):
 
 
 def main():
-    pygame.init()
-
     window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
@@ -80,14 +78,8 @@ def main():
     border_left = Border(Border.Position.LEFT)
     border_right = Border(Border.Position.RIGHT)
 
-    running = True
-    while running:
+    while handle_events():
         dt = clock.tick(FPS) / 1000
-
-        # Events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
 
         # Update
         if pygame.sprite.collide_rect(defender, border_left):
@@ -104,9 +96,19 @@ def main():
 
         window.flip()
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
