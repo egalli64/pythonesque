@@ -9,7 +9,6 @@ Defender as a Sprite
 import pygame
 
 FPS = 30
-
 TITLE = "Sprite"
 WIN_RECT = pygame.Rect(0, 0, 600, 100)
 WIN_POS = (10, 50)
@@ -35,14 +34,14 @@ class Defender(pygame.sprite.Sprite):
         self.speed = Defender.DEFAULT_SPEED
 
     def update(self, dt) -> None:
-        new_rect = self.rect.move(self.speed * dt, 0)
+        new_rect: pygame.FRect = self.rect.move(self.speed * dt, 0)
         if new_rect.right >= WIN_RECT.right:
             self.change_direction()
             new_rect.right = WIN_RECT.right
         elif new_rect.left <= WIN_RECT.left:
             self.change_direction()
             new_rect.left = WIN_RECT.left
-        self.rect = new_rect  # type: ignore
+        self.rect = new_rect  # type: ignore - PyLance gets confused
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self.image, self.rect)
@@ -52,20 +51,13 @@ class Defender(pygame.sprite.Sprite):
 
 
 def main():
-    pygame.init()
     window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
     defender = Defender()
 
-    running = True
-    while running:
+    while handle_events():
         dt = clock.tick(FPS) / 1000
-
-        # Events
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
 
         # Update
         defender.update(dt)
@@ -75,9 +67,19 @@ def main():
         defender.draw(screen)
         window.flip()
 
-    pygame.quit()
+
+def handle_events() -> bool:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+    return True
 
 
 if __name__ == "__main__":
-    main()
-    print("Done.")
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")
