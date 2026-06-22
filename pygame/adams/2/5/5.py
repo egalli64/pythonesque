@@ -54,8 +54,6 @@ class Game:
     BACKGROUND_COLOR = "white"
 
     def __init__(self) -> None:
-        pygame.init()
-
         self.window = pygame.Window(Game.TITLE, WIN_RECT.size)
 
         self.screen = self.window.get_surface()
@@ -94,6 +92,10 @@ class Game:
 
 
 if __name__ == "__main__":
-    Game().run()
-    pygame.quit()
-    print("Done.")
+    pygame.init()
+
+    try:
+        Game().run()
+    finally:
+        pygame.quit()
+        print("Done.")
