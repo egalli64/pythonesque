@@ -11,11 +11,14 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 import pygame
 
 
-class Obstacle(pygame.sprite.Sprite):
-    COLOR = "blue"
-
-    def __init__(self, pos, size, groups):
+class Ground(pygame.sprite.Sprite):
+    def __init__(self, pos, image, groups):
         super().__init__(groups)
-        self.image = pygame.Surface(size)
-        self.image.fill(Obstacle.COLOR)
-        self.rect = self.image.get_rect(center=pos)
+        self.image = image
+        self.rect = self.image.get_rect(topleft=pos)
+
+class Collision(pygame.sprite.Sprite):
+    def __init__(self, pos, image, groups):
+        super().__init__(groups)
+        self.image = image
+        self.rect = self.image.get_rect(topleft=pos)

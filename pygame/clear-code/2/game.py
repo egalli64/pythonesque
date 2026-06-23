@@ -8,11 +8,10 @@ Google Drive: https://drive.google.com/drive/folders/1WBhwu1yAzgmNwQ2w-SI6G8hzqw
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
-from random import randint
-
 import pygame
+from pytmx.util_pygame import load_pygame
 from player import Player
-from obstacle import Obstacle
+from tmx_objects import Ground, Collision
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Vampire survivor"
@@ -21,6 +20,12 @@ TITLE = "Vampire survivor"
 class Game:
     FPS = 60
     BACKGROUND_COLOR = "black"
+    FILENAME = "data/maps/world.tmx"
+    TILE_SIZE = 64
+
+    @classmethod
+    def load_resources(cls):
+        cls.tmx = load_pygame(cls.FILENAME)
 
     def __init__(self, window, screen):
         self.window = window
@@ -30,11 +35,22 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
 
-        self.player = Player(WIN_RECT.center, self.all_sprites, self.obstacles)
-        for i in range(6):
-            x, y = randint(0, WIN_RECT.width), randint(0, WIN_RECT.height)
-            w, h = randint(60, 100), randint(50, 100)
-            Obstacle((x, y), (w, h), (self.all_sprites, self.obstacles))
+        for layer in Game.tmx.layers:
+            if layer.name == "Ground":
+                for x, y, image in layer.tiles():
+                    pos = (x * Game.TILE_SIZE, y * Game.TILE_SIZE)
+                    Ground(pos, image, self.all_sprites)
+            if layer.name == "Objects":
+                for obj in layer:
+                    pos = (obj.x, obj.y)
+                    Collision(pos, obj.image, (self.all_sprites, self.obstacles))
+            if layer.name == "Collisions":
+                for obj in layer:
+                    image = pygame.Surface((obj.width, obj.height))
+                    Collision((obj.x, obj.y), image, self.obstacles)
+
+        pos = (WIN_RECT.centerx, WIN_RECT.centery - 30)
+        self.player = Player(pos, self.all_sprites, self.obstacles)
 
     def run(self):
         while self.handle_events():
@@ -68,6 +84,7 @@ if __name__ == "__main__":
     window = pygame.Window(TITLE, WIN_RECT.size)
     screen = window.get_surface()
 
+    Game.load_resources()
     Player.load_resources()
 
     try:
