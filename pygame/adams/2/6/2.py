@@ -29,14 +29,13 @@ class Defender(pygame.sprite.Sprite):
     IMAGE = "../images/defender.png"
     SIZE = (30, 30)
 
-    rect: pygame.FRect
     image: pygame.Surface
 
     def __init__(self) -> None:
         super().__init__()
         self.image = pygame.image.load(Defender.IMAGE).convert_alpha()
         self.image = pygame.transform.scale(self.image, Defender.SIZE)  # type: ignore
-        self.rect = pygame.FRect(self.image.get_rect())  # type: ignore
+        self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
         self.rect.center = WIN_RECT.center
         self.speed = Defender.Speed.NORMAL
         self.direction = Defender.Direction.STOP
@@ -67,8 +66,6 @@ class Game(object):
     }
 
     def __init__(self) -> None:
-        pygame.init()
-
         self.window = pygame.Window(Game.TITLE, WIN_RECT.size, Game.WIN_POS)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
@@ -113,6 +110,10 @@ class Game(object):
 
 
 if __name__ == "__main__":
-    Game().run()
-    pygame.quit()
-    print("Done.")
+    pygame.init()
+
+    try:
+        Game().run()
+    finally:
+        pygame.quit()
+        print("Done.")
