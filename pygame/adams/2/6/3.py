@@ -60,8 +60,6 @@ class Game(object):
     BACKGROUND_COLOR = "white"
 
     def __init__(self) -> None:
-        pygame.init()
-
         self.window = pygame.Window(Game.TITLE, WIN_RECT.size, Game.WIN_POS)
         self.screen = self.window.get_surface()
         self.clock = pygame.time.Clock()
@@ -72,7 +70,7 @@ class Game(object):
     def run(self) -> None:
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
-            self.update(dt)
+            self.defender.update(dt)
             self.draw()
 
     def handle_events(self) -> bool:
@@ -82,6 +80,11 @@ class Game(object):
                 return False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 return False
+
+        # countinous events
+        keys = pygame.key.get_pressed()
+        self.defender.set_direction(self.get_direction(keys))
+        self.defender.set_speed(self.get_speed(keys))
         return True
 
     def get_direction(self, keys: pygame.key.ScancodeWrapper) -> Defender.Direction:
@@ -104,14 +107,6 @@ class Game(object):
         else:
             return Defender.Speed.NORMAL
 
-    def update(self, dt):
-        keys = pygame.key.get_pressed()
-
-        self.defender.set_direction(self.get_direction(keys))
-        self.defender.set_speed(self.get_speed(keys))
-
-        self.defender.update(dt)
-
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
         self.defender_group.draw(self.screen)
@@ -119,6 +114,10 @@ class Game(object):
 
 
 if __name__ == "__main__":
-    Game().run()
-    pygame.quit()
-    print("Done.")
+    pygame.init()
+
+    try:
+        Game().run()
+    finally:
+        pygame.quit()
+        print("Done.")
