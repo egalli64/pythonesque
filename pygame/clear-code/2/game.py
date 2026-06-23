@@ -8,8 +8,11 @@ Google Drive: https://drive.google.com/drive/folders/1WBhwu1yAzgmNwQ2w-SI6G8hzqw
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
+from random import randint
+
 import pygame
 from player import Player
+from obstacle import Obstacle
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Vampire survivor"
@@ -25,8 +28,13 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.all_sprites = pygame.sprite.Group()
+        self.obstacles = pygame.sprite.Group()
 
-        self.player = Player(WIN_RECT.center, self.all_sprites)
+        self.player = Player(WIN_RECT.center, self.all_sprites, self.obstacles)
+        for i in range(6):
+            x, y = randint(0, WIN_RECT.width), randint(0, WIN_RECT.height)
+            w, h = randint(60, 100), randint(50, 100)
+            Obstacle((x, y), (w, h), (self.all_sprites, self.obstacles))
 
     def run(self):
         while self.handle_events():
