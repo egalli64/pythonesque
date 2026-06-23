@@ -23,3 +23,6 @@
 
 ## [Introduction to Pygame-ce by Ralf Adams](adams/README.md)
 - https://github.com/adamsralf/pygame_book
+
+## [Clear Code - Master Python by making 5 games](clear-code/README.md)
+- https://www.youtube.com/watch?v=8OMghdHP-zs
