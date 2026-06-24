@@ -37,15 +37,12 @@ class Player(pygame.sprite.Sprite):
             for folder_path, _, file_names in walk(join(cls.PATHNAME, str(direction))):
                 for file_name in file_names:
                     full_path = join(folder_path, file_name)
-                    surf = pygame.image.load(full_path).convert_alpha()
-                    cls._frames.setdefault(direction, []).append(surf)
-
-        print(cls._frames)
+                    image = pygame.image.load(full_path).convert_alpha()
+                    cls._frames.setdefault(direction, []).append(image)
 
     def __init__(self, pos, obstacles):
         super().__init__()
         self.state: Direction = Direction.DOWN
-        print(self.state)
         self.frame_index = 0
         self.image = Player._frames[self.state][self.frame_index]
         self.rect: pygame.FRect = self.image.get_frect(center=pos)
