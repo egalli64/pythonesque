@@ -20,8 +20,8 @@ class Bullet(pygame.sprite.Sprite):
     def load_resources(cls):
         cls._image = pygame.image.load(cls.FILENAME).convert_alpha()
 
-    def __init__(self, pos, direction, groups):
-        super().__init__(groups)
+    def __init__(self, pos, direction):
+        super().__init__()
         self.image = Bullet._image
         self.rect: pygame.FRect = Bullet._image.get_frect(center=pos)
         self.lifetime = Bullet.LIFETIME

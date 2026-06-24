@@ -60,16 +60,11 @@ class Game:
                     Collision((obj.x, obj.y), image, self.obstacles)
 
         self.gun = Gun(self.player, self.all_sprites)
-        self.can_shoot = True
-        self.shoot_time = 0
-        self.gun_cooldown = 100
 
     def run(self):
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
 
-            self.gun_timer()
-            self.input()
             self.all_sprites.update(dt)
 
             self.screen.fill(Game.BACKGROUND_COLOR)
@@ -90,24 +85,12 @@ class Game:
         y = keys[pygame.K_DOWN] - keys[pygame.K_UP]
         self.player.set_direction(x, y)
 
+        if pygame.mouse.get_pressed()[0]:
+            if bullet := self.gun.shoot():
+                self.bullets.add(bullet)
+                self.all_sprites.add(bullet)
+
         return True
-
-    def input(self):
-        if pygame.mouse.get_pressed()[0] and self.can_shoot:
-            pos = self.gun.rect.center + self.gun.direction * 50
-            Bullet(
-                pos,
-                self.gun.direction,
-                (self.all_sprites, self.bullets),
-            )
-            self.can_shoot = False
-            self.shoot_time = pygame.time.get_ticks()
-
-    def gun_timer(self):
-        if not self.can_shoot:
-            current_time = pygame.time.get_ticks()
-            if current_time - self.shoot_time >= self.gun_cooldown:
-                self.can_shoot = True
 
 
 if __name__ == "__main__":
