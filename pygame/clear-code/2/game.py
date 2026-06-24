@@ -13,6 +13,7 @@ from pytmx.util_pygame import load_pygame
 from player import Player
 from tmx_objects import Ground, Collision
 from camera import CameraGroup
+from gun import Gun, Bullet
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Vampire survivor"
@@ -27,6 +28,7 @@ class Game:
     @classmethod
     def load_resources(cls):
         cls.tmx = load_pygame(cls.FILENAME)
+        cls._bullet = pygame.image.load("images/gun/bullet.png").convert_alpha()
 
     def __init__(self, window, screen):
         self.window = window
@@ -34,6 +36,7 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.obstacles = pygame.sprite.Group()
+        self.bullets = pygame.sprite.Group()
 
         # camera is bound to the player
         pos = (WIN_RECT.centerx, WIN_RECT.centery - 30)
@@ -55,10 +58,17 @@ class Game:
                     image = pygame.Surface((obj.width, obj.height))
                     Collision((obj.x, obj.y), image, self.obstacles)
 
+        self.gun = Gun(self.player, self.all_sprites)
+        self.can_shoot = True
+        self.shoot_time = 0
+        self.gun_cooldown = 100
+
     def run(self):
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
 
+            self.gun_timer()
+            self.input()
             self.all_sprites.update(dt)
 
             self.screen.fill(Game.BACKGROUND_COLOR)
@@ -80,6 +90,24 @@ class Game:
         self.player.set_direction(x, y)
 
         return True
+
+    def input(self):
+        if pygame.mouse.get_pressed()[0] and self.can_shoot:
+            pos = self.gun.rect.center + self.gun.player_direction * 50
+            Bullet(
+                Game._bullet,
+                pos,
+                self.gun.player_direction,
+                (self.all_sprites, self.bullets),
+            )
+            self.can_shoot = False
+            self.shoot_time = pygame.time.get_ticks()
+
+    def gun_timer(self):
+        if not self.can_shoot:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.shoot_time >= self.gun_cooldown:
+                self.can_shoot = True
 
 
 if __name__ == "__main__":
