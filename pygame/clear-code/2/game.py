@@ -13,7 +13,8 @@ from pytmx.util_pygame import load_pygame
 from player import Player
 from tmx_objects import Ground, Collision
 from camera import CameraGroup
-from gun import Gun, Bullet
+from gun import Gun
+from bullet import Bullet
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Vampire survivor"
@@ -93,11 +94,10 @@ class Game:
 
     def input(self):
         if pygame.mouse.get_pressed()[0] and self.can_shoot:
-            pos = self.gun.rect.center + self.gun.player_direction * 50
+            pos = self.gun.rect.center + self.gun.direction * 50
             Bullet(
-                Game._bullet,
                 pos,
-                self.gun.player_direction,
+                self.gun.direction,
                 (self.all_sprites, self.bullets),
             )
             self.can_shoot = False
@@ -117,6 +117,8 @@ if __name__ == "__main__":
 
     Game.load_resources()
     Player.load_resources()
+    Gun.load_resources()
+    Bullet.load_resources()
 
     try:
         Game(window, screen).run()
