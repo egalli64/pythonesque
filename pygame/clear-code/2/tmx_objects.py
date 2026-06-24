@@ -16,9 +16,11 @@ class Ground(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = image
         self.rect = self.image.get_rect(topleft=pos)
+        self.camera_layer = 0
 
 class Collision(pygame.sprite.Sprite):
     def __init__(self, pos, image, groups):
         super().__init__(groups)
         self.image = image
         self.rect = self.image.get_rect(topleft=pos)
+        self.camera_layer = 1

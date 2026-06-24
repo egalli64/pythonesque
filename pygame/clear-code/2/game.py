@@ -12,6 +12,7 @@ import pygame
 from pytmx.util_pygame import load_pygame
 from player import Player
 from tmx_objects import Ground, Collision
+from camera import CameraGroup
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Vampire survivor"
@@ -32,8 +33,13 @@ class Game:
         self.screen = screen
         self.clock = pygame.time.Clock()
 
-        self.all_sprites = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
+
+        # camera is bound to the player
+        pos = (WIN_RECT.centerx, WIN_RECT.centery - 30)
+        self.player = Player(pos, self.obstacles)
+        self.all_sprites = CameraGroup(WIN_RECT, self.player)
+        self.all_sprites.add(self.player)
 
         for layer in Game.tmx.layers:
             if layer.name == "Ground":
@@ -49,9 +55,6 @@ class Game:
                     image = pygame.Surface((obj.width, obj.height))
                     Collision((obj.x, obj.y), image, self.obstacles)
 
-        pos = (WIN_RECT.centerx, WIN_RECT.centery - 30)
-        self.player = Player(pos, self.all_sprites, self.obstacles)
-
     def run(self):
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
@@ -59,7 +62,7 @@ class Game:
             self.all_sprites.update(dt)
 
             self.screen.fill(Game.BACKGROUND_COLOR)
-            self.all_sprites.draw(self.screen)
+            self.all_sprites.camera_draw(self.screen)
             window.flip()
 
     def handle_events(self) -> bool:

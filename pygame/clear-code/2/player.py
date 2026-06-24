@@ -19,15 +19,16 @@ class Player(pygame.sprite.Sprite):
     def load_resources(cls):
         cls._image = pygame.image.load(Player.FILENAME).convert_alpha()
 
-    def __init__(self, pos, groups, obstacles):
-        super().__init__(groups)
+    def __init__(self, pos, obstacles):
+        super().__init__()
         self.image = Player._image
         self.rect: pygame.FRect = self.image.get_frect(center=pos)
 
         self.direction = pygame.Vector2()
         self.speed = Player.SPEED
         self.obstacles = obstacles
-        self.hitbox_rect = self.rect.inflate(-60, 0)
+        self.hitbox_rect = self.rect.inflate(-60, -90)
+        self.camera_layer = 1
 
     def set_direction(self, x: int, y: int):
         self.direction.update(x, y)
