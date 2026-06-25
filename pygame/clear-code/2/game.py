@@ -75,6 +75,9 @@ class Game:
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
 
+            self.bullet_collisions()
+            if self.enemy_collision():
+                break
             self.all_sprites.update(dt)
 
             self.screen.fill(Game.BACKGROUND_COLOR)
@@ -107,6 +110,19 @@ class Game:
 
         return True
 
+    def bullet_collisions(self):
+        for bullet in self.bullets:
+            collidings = pygame.sprite.spritecollide(bullet, self.enemies, False)
+            if collidings:
+                # self.impact_sound.play()
+                for sprite in collidings:
+                    sprite.kill()
+                bullet.kill()
+
+    def enemy_collision(self):
+        collided = lambda a, b: pygame.sprite.collide_mask(a, b) is not None
+        return pygame.sprite.spritecollideany(self.player, self.enemies, collided)
+
 
 if __name__ == "__main__":
     pygame.init()
@@ -122,5 +138,6 @@ if __name__ == "__main__":
     try:
         Game(window, screen).run()
     finally:
+        pygame.time.wait(500)
         pygame.quit()
         print("Done.")
