@@ -29,7 +29,6 @@ class Game:
     @classmethod
     def load_resources(cls):
         cls.tmx = load_pygame(cls.FILENAME)
-        cls._bullet = pygame.image.load("images/gun/bullet.png").convert_alpha()
 
     def __init__(self, window, screen):
         self.window = window
@@ -39,7 +38,7 @@ class Game:
         self.obstacles = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
 
-        # camera is bound to the player
+        # camera - player - obstacles are intertwined, consider implementing a collision system
         pos = (WIN_RECT.centerx, WIN_RECT.centery - 30)
         self.player = Player(pos, self.obstacles)
         self.all_sprites = CameraGroup(WIN_RECT, self.player)
