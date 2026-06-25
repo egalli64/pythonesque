@@ -8,19 +8,34 @@ Google Drive: https://drive.google.com/drive/folders/1WBhwu1yAzgmNwQ2w-SI6G8hzqw
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
+from os import walk
+from os.path import join
+from random import choice
 import pygame
 
 
 class Enemy(pygame.sprite.Sprite):
-    ANIMATION_SPEED = 6
+    PATHNAME = "images/enemies"
     SPEED = 350
+    ANIMATION_SPEED = 6
 
-    def __init__(self, pos, frames, groups, player, obstacles):
-        super().__init__(groups)
+    @classmethod
+    def load_resources(cls):
+        folders = list(walk(cls.PATHNAME))[0][1]
+        cls._frames = {}
+        for folder in folders:
+            for folder_path, _, file_names in walk(join(cls.PATHNAME, folder)):
+                for file_name in file_names:
+                    full_path = join(folder_path, file_name)
+                    image = pygame.image.load(full_path).convert_alpha()
+                    cls._frames.setdefault(folder, []).append(image)
+
+    def __init__(self, pos, player, obstacles):
+        super().__init__()
         self.player = player
 
-        # image
-        self.frames, self.frame_index = frames, 0
+        self.frames = choice(list(Enemy._frames.values()))
+        self.frame_index = 0
         self.image = self.frames[self.frame_index]
 
         # rect

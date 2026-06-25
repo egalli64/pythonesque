@@ -8,8 +8,6 @@ Google Drive: https://drive.google.com/drive/folders/1WBhwu1yAzgmNwQ2w-SI6G8hzqw
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
-from os import walk
-from os.path import join
 from random import choice
 import pygame
 from pytmx.util_pygame import load_pygame
@@ -30,6 +28,7 @@ class Game:
     BACKGROUND_COLOR = "black"
     FILENAME = "data/maps/world.tmx"
     TILE_SIZE = 64
+    EVENT_CREATE_ENEMY = pygame.event.custom_type()
 
     @classmethod
     def load_resources(cls):
@@ -52,22 +51,8 @@ class Game:
 
         self.gun = Gun(self.player, WIN_RECT.center, self.all_sprites)
 
-        # enemies
-        self.spawn_positions = []
-        self.enemy_event = pygame.event.custom_type()
-        pygame.time.set_timer(self.enemy_event, 300)
-
-        folders = list(walk("images/enemies"))[0][1]
-        self.enemy_frames = {}
-        for folder in folders:
-            for folder_path, _, file_names in walk(join("images/enemies", folder)):
-                self.enemy_frames[folder] = []
-                for file_name in sorted(
-                    file_names, key=lambda name: int(name.split(".")[0])
-                ):
-                    full_path = join(folder_path, file_name)
-                    surf = pygame.image.load(full_path).convert_alpha()
-                    self.enemy_frames[folder].append(surf)
+        self.enemy_spawn_positions = []
+        pygame.time.set_timer(Game.EVENT_CREATE_ENEMY, 300)
 
         for layer in Game.tmx.layers:
             match layer.name:
@@ -86,7 +71,7 @@ class Game:
                 case "Entities":
                     for obj in layer:
                         if obj.name == "Enemy":
-                            self.spawn_positions.append((obj.x, obj.y))
+                            self.enemy_spawn_positions.append((obj.x, obj.y))
 
     def run(self):
         while self.handle_events():
@@ -105,14 +90,11 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return False
-            if event.type == self.enemy_event:
-                Enemy(
-                    choice(self.spawn_positions),
-                    choice(list(self.enemy_frames.values())),
-                    (self.all_sprites, self.enemies),
-                    self.player,
-                    self.obstacles,
-                )
+            if event.type == Game.EVENT_CREATE_ENEMY:
+                pos = choice(self.enemy_spawn_positions)
+                enemy = Enemy(pos, self.player, self.obstacles)
+                self.all_sprites.add(enemy)
+                self.enemies.add(enemy)
 
         keys = pygame.key.get_pressed()  # continuous events handling
 
@@ -137,6 +119,7 @@ if __name__ == "__main__":
     Player.load_resources()
     Gun.load_resources()
     Bullet.load_resources()
+    Enemy.load_resources()
 
     try:
         Game(window, screen).run()
