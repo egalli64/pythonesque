@@ -59,7 +59,7 @@ class Game:
                     image = pygame.Surface((obj.width, obj.height))
                     Collision((obj.x, obj.y), image, self.obstacles)
 
-        self.gun = Gun(self.player, self.all_sprites)
+        self.gun = Gun(self.player, WIN_RECT.center, self.all_sprites)
 
     def run(self):
         while self.handle_events():
