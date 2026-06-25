@@ -20,10 +20,16 @@ class CameraGroup(pygame.sprite.Group):
         self.target = target
         self.offset = pygame.Vector2()
 
-    def camera_draw(self, screen):
-        self.offset.x = -(self.target.rect.centerx - self.viewport.width / 2)
-        self.offset.y = -(self.target.rect.centery - self.viewport.height / 2)
+    def set_target(self, target):
+        self.target = target
 
-        layer_y = lambda sprite: (sprite.camera_layer, sprite.rect.centery)
-        for sprite in sorted(self.sprites(), key=layer_y):
-            screen.blit(sprite.image, sprite.rect.topleft + self.offset)
+    def camera_draw(self, screen):
+        if self.target:
+            self.offset.x = -(self.target.rect.centerx - self.viewport.width / 2)
+            self.offset.y = -(self.target.rect.centery - self.viewport.height / 2)
+
+            layer_y = lambda sprite: (sprite.camera_layer, sprite.rect.centery)
+            for sprite in sorted(self.sprites(), key=layer_y):
+                screen.blit(sprite.image, sprite.rect.topleft + self.offset)
+        else:
+            self.draw(screen)

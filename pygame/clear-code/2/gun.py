@@ -26,8 +26,8 @@ class Gun(pygame.sprite.Sprite):
         cls._bullet = pygame.image.load(cls.FILENAME).convert_alpha()
         cls._image = pygame.image.load(Gun.FILENAME).convert_alpha()
 
-    def __init__(self, player, pos, groups):
-        super().__init__(groups)
+    def __init__(self, player, pos):
+        super().__init__()
 
         self.player = player
         self.shooting_focus = pos[0], pos[1] - Gun.PLAYER_CENTER_DISPLACEMENT

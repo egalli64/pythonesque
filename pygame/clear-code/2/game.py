@@ -42,14 +42,7 @@ class Game:
         self.obstacles = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
-
-        # camera - player - obstacles are intertwined, consider implementing a collision system
-        pos = (WIN_RECT.centerx, WIN_RECT.centery - 30)
-        self.player = Player(pos, self.obstacles)
-        self.all_sprites = CameraGroup(WIN_RECT, self.player)
-        self.all_sprites.add(self.player)
-
-        self.gun = Gun(self.player, WIN_RECT.center, self.all_sprites)
+        self.all_sprites = CameraGroup(WIN_RECT, None)
 
         self.enemy_spawn_positions = []
         pygame.time.set_timer(Game.EVENT_CREATE_ENEMY, 300)
@@ -70,6 +63,11 @@ class Game:
                         Collision((obj.x, obj.y), image, self.obstacles)
                 case "Entities":
                     for obj in layer:
+                        if obj.name == "Player":
+                            self.player = Player((obj.x, obj.y), self.obstacles)
+                            self.gun = Gun(self.player, WIN_RECT.center)
+                            self.all_sprites.add((self.player, self.gun))
+                            self.all_sprites.set_target(self.player)
                         if obj.name == "Enemy":
                             self.enemy_spawn_positions.append((obj.x, obj.y))
 
