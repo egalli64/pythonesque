@@ -29,10 +29,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.centery += self.direction * Player.SPEED * dt
         self.rect.clamp_ip(self.viewport)
 
-    def get_direction(self):
-        keys = pygame.key.get_pressed()
-        self.direction = int(keys[pygame.K_DOWN]) - int(keys[pygame.K_UP])
+    def set_direction(self, direction):
+        self.direction = direction
 
     def update(self, dt):
-        self.get_direction()
         self.move(dt)

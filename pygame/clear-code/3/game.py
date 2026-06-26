@@ -46,6 +46,9 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return False
+
+        keys = pygame.key.get_pressed()
+        self.player.set_direction(keys[pygame.K_DOWN] - keys[pygame.K_UP])
         return True
 
 
