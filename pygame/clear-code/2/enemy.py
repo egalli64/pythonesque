@@ -16,8 +16,9 @@ import pygame
 
 class Enemy(pygame.sprite.Sprite):
     PATHNAME = "images/enemies"
-    SPEED = 350
+    SPEED = 250
     ANIMATION_SPEED = 6
+    DEATH_DURATION = 0.4
 
     @classmethod
     def load_resources(cls):
@@ -33,15 +34,14 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self, pos, player, obstacles):
         super().__init__()
         self.player = player
+        self.obstacles = obstacles
+        self.death_time = 0
 
         self.frames = choice(list(Enemy._frames.values()))
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
-
-        # rect
         self.rect: pygame.FRect = self.image.get_frect(center=pos)
         self.hitbox_rect = self.rect.inflate(-20, -40)
-        self.obstacles = obstacles
         self.direction = pygame.Vector2()
         self.camera_layer = 1
 
@@ -78,6 +78,16 @@ class Enemy(pygame.sprite.Sprite):
                 if self.direction.y > 0:
                     self.hitbox_rect.bottom = obstacle.rect.top
 
+    def destroy(self):
+        self.death_time = Enemy.DEATH_DURATION
+        self.image = pygame.mask.from_surface(self.frames[0]).to_surface()
+        self.image.set_colorkey("black")
+
     def update(self, dt):
-        self.move(dt)
-        self.animate(dt)
+        if self.death_time:
+            self.death_time -= dt
+            if self.death_time <= 0:
+                self.kill()
+        else:
+            self.move(dt)
+            self.animate(dt)

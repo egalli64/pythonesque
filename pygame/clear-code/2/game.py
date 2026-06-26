@@ -31,6 +31,7 @@ class Game:
     IMPACT_FILENAME = "audio/impact.ogg"
     TILE_SIZE = 64
     EVENT_CREATE_ENEMY = pygame.event.custom_type()
+    DELTA_CREATE_ENEMY = 500
 
     @classmethod
     def load_resources(cls):
@@ -47,11 +48,11 @@ class Game:
 
         self.obstacles = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
-        self.enemies = pygame.sprite.Group()
+        self.enemies: pygame.sprite.Group[Enemy] = pygame.sprite.Group()
         self.all_sprites = CameraGroup(WIN_RECT, None)
 
         self.enemy_spawn_positions = []
-        pygame.time.set_timer(Game.EVENT_CREATE_ENEMY, 300)
+        pygame.time.set_timer(Game.EVENT_CREATE_ENEMY, Game.DELTA_CREATE_ENEMY)
 
         for layer in Game.tmx.layers:
             match layer.name:
@@ -118,11 +119,11 @@ class Game:
 
     def bullet_collisions(self):
         for bullet in self.bullets:
-            collidings = pygame.sprite.spritecollide(bullet, self.enemies, False)
-            if collidings:
+            enemies = pygame.sprite.spritecollide(bullet, self.enemies, False)
+            if enemies:
                 self._impact.play()
-                for sprite in collidings:
-                    sprite.kill()
+                for enemy in enemies:
+                    enemy.destroy()
                 bullet.kill()
 
     def enemy_collision(self):
@@ -144,6 +145,6 @@ if __name__ == "__main__":
     try:
         Game(window, screen).run()
     finally:
-        pygame.time.wait(500)
+        pygame.time.wait(1000)
         pygame.quit()
         print("Done.")
