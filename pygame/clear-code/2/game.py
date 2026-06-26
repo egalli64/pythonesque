@@ -26,13 +26,19 @@ TITLE = "Vampire survivor"
 class Game:
     FPS = 60
     BACKGROUND_COLOR = "black"
-    FILENAME = "data/maps/world.tmx"
+    WORLD_FILENAME = "data/maps/world.tmx"
+    MUSIC_FILENAME = "audio/music.wav"
+    IMPACT_FILENAME = "audio/impact.ogg"
     TILE_SIZE = 64
     EVENT_CREATE_ENEMY = pygame.event.custom_type()
 
     @classmethod
     def load_resources(cls):
-        cls.tmx = load_pygame(cls.FILENAME)
+        cls.tmx = load_pygame(cls.WORLD_FILENAME)
+        # cls.music = pygame.mixer.Sound(cls.MUSIC_FILENAME)
+        # cls.music.set_volume(0.5)
+        # cls.music.play(loops=-1)
+        cls._impact = pygame.mixer.Sound(cls.IMPACT_FILENAME)
 
     def __init__(self, window, screen):
         self.window = window
@@ -114,7 +120,7 @@ class Game:
         for bullet in self.bullets:
             collidings = pygame.sprite.spritecollide(bullet, self.enemies, False)
             if collidings:
-                # self.impact_sound.play()
+                self._impact.play()
                 for sprite in collidings:
                     sprite.kill()
                 bullet.kill()

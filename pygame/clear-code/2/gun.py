@@ -18,13 +18,15 @@ class Gun(pygame.sprite.Sprite):
     DISTANCE = 140
     PLAYER_CENTER_DISPLACEMENT = 60
     BULLET_START = 50
-    FILENAME = "images/gun/gun.png"
+    IMAGE_FILENAME = "images/gun/gun.png"
+    SOUND_FILENAME = "audio/shoot.wav"
     COOLDOWN = 0.1
 
     @classmethod
     def load_resources(cls):
-        cls._bullet = pygame.image.load(cls.FILENAME).convert_alpha()
-        cls._image = pygame.image.load(Gun.FILENAME).convert_alpha()
+        cls._image = pygame.image.load(Gun.IMAGE_FILENAME).convert_alpha()
+        cls._shot = pygame.mixer.Sound(cls.SOUND_FILENAME)
+        cls._shot.set_volume(0.2)
 
     def __init__(self, player, pos):
         super().__init__()
@@ -64,6 +66,7 @@ class Gun(pygame.sprite.Sprite):
         if not self.cooldown:
             pos = self.rect.center + self.direction * Gun.BULLET_START
             self.cooldown = Gun.COOLDOWN
+            Gun._shot.play()
             return Bullet(pos, self.direction)
         else:
             return None
