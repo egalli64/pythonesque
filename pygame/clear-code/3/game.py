@@ -16,34 +16,37 @@ TITLE = "Pong"
 
 
 class Game:
+    FPS = 60
     BACKGROUND_COLOR = "#002633"
 
     def __init__(self, window, screen):
         self.window = window
         self.screen = screen
         self.clock = pygame.time.Clock()
-        self.running = True
 
-        # sprites
         self.all_sprites = pygame.sprite.Group()
-        self.paddle_sprites = pygame.sprite.Group()
-        self.player = Player((self.all_sprites, self.paddle_sprites))
-        self.ball = Ball(self.all_sprites, self.paddle_sprites)
+        self.paddles = pygame.sprite.Group()
+        self.player = Player((self.all_sprites, self.paddles))
+        self.ball = Ball(self.all_sprites, self.paddles)
 
     def run(self):
-        while self.running:
-            dt = self.clock.tick() / 1000
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
+        while self.handle_events():
+            dt = self.clock.tick(Game.FPS) / 1000
 
-            # update
             self.all_sprites.update(dt)
 
-            # draw
             self.screen.fill(Game.BACKGROUND_COLOR)
             self.all_sprites.draw(self.screen)
             window.flip()
+
+    def handle_events(self) -> bool:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return False
+        return True
 
 
 if __name__ == "__main__":
