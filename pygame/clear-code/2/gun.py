@@ -42,7 +42,8 @@ class Gun(pygame.sprite.Sprite):
 
     def get_direction(self):
         mouse_pos = pygame.Vector2(pygame.mouse.get_pos())
-        self.direction = (mouse_pos - self.shooting_focus).normalize()
+        if mouse_pos != self.shooting_focus:
+            self.direction = (mouse_pos - self.shooting_focus).normalize()
 
     def rotate_gun(self):
         angle = degrees(atan2(*self.direction) - pi / 2)
