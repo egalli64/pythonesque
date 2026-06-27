@@ -19,14 +19,12 @@ class Defender(pygame.sprite.Sprite):
     DEFAULT_SPEED = 150  # pixel/second
     BOTTOM_GAP = 5
 
-    rect: pygame.FRect
-    image: pygame.Surface
-
     def __init__(self) -> None:
         super().__init__()
+
         self.image = pygame.image.load(Defender.IMAGE).convert_alpha()
-        self.image = pygame.transform.scale(self.image, Defender.SIZE)  # type: ignore
-        self.rect = pygame.FRect(self.image.get_rect())  # type: ignore
+        self.image = pygame.transform.scale(self.image, Defender.SIZE)
+        self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
         self.rect.centerx = WIN_RECT.centerx
         self.rect.bottom = WIN_RECT.bottom - Defender.BOTTOM_GAP
         self.speed = Defender.DEFAULT_SPEED
@@ -49,6 +47,7 @@ class Border(pygame.sprite.Sprite):
 
     def __init__(self, position: Position) -> None:
         super().__init__()
+
         self.image = pygame.image.load(Border.IMAGE).convert_alpha()
         self.image = pygame.transform.scale(self.image, Border.SIZE)
         self.rect = self.image.get_rect()
