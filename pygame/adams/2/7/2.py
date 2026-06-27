@@ -63,8 +63,6 @@ class TextSprite(pygame.sprite.Sprite):
 
 
 def main():
-    pygame.init()
-
     window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
@@ -114,5 +112,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    pygame.quit()
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")

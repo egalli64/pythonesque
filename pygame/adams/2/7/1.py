@@ -17,8 +17,6 @@ TEXT_COLOR = "black"
 
 
 def main():
-    pygame.init()
-
     window = pygame.Window(TITLE, WIN_RECT.size)
     screen = window.get_surface()
     clock = pygame.time.Clock()
@@ -49,5 +47,10 @@ def handle_events() -> bool:
 
 
 if __name__ == "__main__":
-    main()
-    pygame.quit()
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")

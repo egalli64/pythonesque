@@ -21,7 +21,6 @@ FPS = 30
 
 
 def main():
-    pygame.init()
     window = pygame.Window(TITLE, WIN_RECT.size)
 
     screen = window.get_surface()
@@ -53,5 +52,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    pygame.quit()
+    pygame.init()
+
+    try:
+        main()
+    finally:
+        pygame.quit()
+        print("Done.")

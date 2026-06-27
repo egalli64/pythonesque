@@ -29,12 +29,10 @@ class Defender(pygame.sprite.Sprite):
     IMAGE = "../images/defender.png"
     SIZE = (30, 30)
 
-    image: pygame.Surface
-
     def __init__(self) -> None:
         super().__init__()
         self.image = pygame.image.load(Defender.IMAGE).convert_alpha()
-        self.image = pygame.transform.scale(self.image, Defender.SIZE)  # type: ignore
+        self.image = pygame.transform.scale(self.image, Defender.SIZE)
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
         self.rect.center = WIN_RECT.center
         self.speed = Defender.Speed.NORMAL
