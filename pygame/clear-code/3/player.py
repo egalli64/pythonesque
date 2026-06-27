@@ -23,14 +23,13 @@ class Player(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, Player.PADDLE_COLOR, self.image.get_rect(), 0, 4)
         center = (viewport.right - 50, viewport.centery)
         self.rect: pygame.FRect = self.image.get_frect(center=center)
+        self.old_rect = self.rect
         self.direction = 0
-
-    def move(self, dt):
-        self.rect.centery += self.direction * Player.SPEED * dt
-        self.rect.clamp_ip(self.viewport)
 
     def set_direction(self, direction):
         self.direction = direction
 
     def update(self, dt):
-        self.move(dt)
+        self.old_rect = self.rect.copy()
+        self.rect.centery += self.direction * Player.SPEED * dt
+        self.rect.clamp_ip(self.viewport)
