@@ -17,11 +17,13 @@ class Ball(pygame.sprite.Sprite):
     SPEED = 450
     COLORS = ("#ee622c", "#c14f24")
 
-    def __init__(self, groups, viewport, paddles):
+    def __init__(self, groups, viewport, paddles, update_score):
         super().__init__(groups)
 
         self.viewport = viewport
         self.paddles = paddles
+        self.update_score = update_score
+
         self.image = pygame.Surface(Ball.SIZE, pygame.SRCALPHA)
         center = (Ball.SIZE[0] / 2, Ball.SIZE[1] / 2)
         pygame.draw.circle(self.image, Ball.COLORS[0], center, Ball.SIZE[0] / 2)
@@ -80,8 +82,9 @@ class Ball(pygame.sprite.Sprite):
         elif self.rect.bottom >= self.viewport.height:
             self.rect.bottom = self.viewport.height
             self.direction.y *= -1
-
         elif self.rect.right >= self.viewport.width or self.rect.left <= 0:
+            scorer = "player" if self.rect.x < self.viewport.centerx else "opponent"
+            self.update_score(scorer)
             self.reset(self.direction.x * -1)
 
     def reset(self, x_swap=None):

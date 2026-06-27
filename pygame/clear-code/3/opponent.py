@@ -33,4 +33,4 @@ class Opponent(Paddle):
 
     def update(self, dt):
         self.set_direction()
-        super().update(dt)
+        super().update(dt / 2)
