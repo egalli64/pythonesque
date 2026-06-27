@@ -32,9 +32,7 @@ class Ball(pygame.sprite.Sprite):
         self.rect: pygame.FRect = self.image.get_frect(center=viewport.center)
         self.old_rect = self.rect
 
-        x = choice((1, -1))
-        y = uniform(0.7, 0.8) * choice((-1, 1))
-        self.direction = pygame.Vector2(x, y)
+        self.reset()
 
     def move(self, dt):
         self.rect.x += self.direction.x * Ball.SPEED * dt
@@ -79,18 +77,18 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.top <= 0:
             self.rect.top = 0
             self.direction.y *= -1
-
-        if self.rect.bottom >= self.viewport.height:
+        elif self.rect.bottom >= self.viewport.height:
             self.rect.bottom = self.viewport.height
             self.direction.y *= -1
 
-        if self.rect.right >= self.viewport.width:
-            self.rect.right = self.viewport.width
-            self.direction.x *= -1
+        elif self.rect.right >= self.viewport.width or self.rect.left <= 0:
+            self.reset(self.direction.x * -1)
 
-        if self.rect.left <= 0:
-            self.rect.left = 0
-            self.direction.x *= -1
+    def reset(self, x_swap=None):
+        self.rect.center = self.viewport.center
+        x = x_swap if x_swap else choice((1, -1))
+        y = uniform(0.7, 0.8) * choice((-1, 1))
+        self.direction = pygame.Vector2(x, y)
 
     def update(self, dt):
         self.old_rect = self.rect.copy()
