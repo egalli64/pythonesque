@@ -16,5 +16,7 @@ class Player(Paddle):
     def __init__(self, viewport: pygame.Rect, groups):
         super().__init__(viewport, groups)
 
+        self.rect.centerx = viewport.right - Paddle.BORDER_DISTANCE
+
     def set_direction(self, direction):
         self.direction = direction

@@ -9,6 +9,7 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 
 import pygame
 from player import Player
+from opponent import Opponent
 from ball import Ball
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
@@ -28,6 +29,7 @@ class Game:
         self.paddles = pygame.sprite.Group()
         self.player = Player(WIN_RECT, (self.all_sprites, self.paddles))
         self.ball = Ball(self.all_sprites, WIN_RECT, self.paddles)
+        self.opponent = Opponent(self.ball, WIN_RECT, (self.all_sprites, self.paddles))
 
     def run(self):
         while self.handle_events():
