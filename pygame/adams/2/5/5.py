@@ -8,7 +8,6 @@ Self add a Sprite to a Group + remove it from any group
 
 from random import randint
 from typing import override
-
 import pygame
 
 WIN_RECT = pygame.Rect(0, 0, 300, 600)
@@ -19,14 +18,11 @@ class Ship(pygame.sprite.Sprite):
     SIZE = (30, 30)
     DEFAULT_SPEED = -300  # pixel/second
 
-    rect: pygame.FRect
-    image: pygame.Surface
-
     def __init__(self, pos: tuple[int, int], group: pygame.sprite.Group) -> None:
         super().__init__(group)
         self.image = pygame.image.load(Ship.IMAGE).convert_alpha()
-        self.image = pygame.transform.scale(self.image, Ship.SIZE)  # type: ignore
-        self.rect = pygame.FRect(self.image.get_rect())  # type: ignore
+        self.image = pygame.transform.scale(self.image, Ship.SIZE)
+        self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
         self.rect.left = pos[0]
         self.rect.bottom = pos[1]
         self.speed = Ship.DEFAULT_SPEED
