@@ -9,27 +9,12 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 
 import pygame
 
+from paddle import Paddle
 
-class Player(pygame.sprite.Sprite):
-    PADDLE_SIZE = (40, 100)
-    SPEED = 500
-    PADDLE_COLOR = "#ee322c"
 
+class Player(Paddle):
     def __init__(self, viewport: pygame.Rect, groups):
-        super().__init__(groups)
-
-        self.viewport: pygame.Rect = viewport
-        self.image = pygame.Surface(Player.PADDLE_SIZE, pygame.SRCALPHA)
-        pygame.draw.rect(self.image, Player.PADDLE_COLOR, self.image.get_rect(), 0, 4)
-        center = (viewport.right - 50, viewport.centery)
-        self.rect: pygame.FRect = self.image.get_frect(center=center)
-        self.old_rect = self.rect
-        self.direction = 0
+        super().__init__(viewport, groups)
 
     def set_direction(self, direction):
         self.direction = direction
-
-    def update(self, dt):
-        self.old_rect = self.rect.copy()
-        self.rect.centery += self.direction * Player.SPEED * dt
-        self.rect.clamp_ip(self.viewport)
