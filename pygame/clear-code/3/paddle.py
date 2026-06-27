@@ -12,7 +12,7 @@ import pygame
 
 class Paddle(pygame.sprite.Sprite):
     SIZE = (40, 100)
-    COLOR = "#ee322c"
+    COLORS = ("#ee322c", "#b12521")
     SPEED = 500
     BORDER_DISTANCE = 50
 
@@ -21,7 +21,9 @@ class Paddle(pygame.sprite.Sprite):
 
         self.viewport: pygame.Rect = viewport
         self.image = pygame.Surface(Paddle.SIZE, pygame.SRCALPHA)
-        pygame.draw.rect(self.image, Paddle.COLOR, self.image.get_rect(), 0, 4)
+        pygame.draw.rect(self.image, Paddle.COLORS[0], self.image.get_rect(), 0, 4)
+        self.shadow = self.image.copy()
+        pygame.draw.rect(self.shadow, Paddle.COLORS[1], self.shadow.get_rect(), 0, 4)
 
         self.rect: pygame.FRect = self.image.get_frect(centery=viewport.centery)
         self.old_rect = self.rect.copy()

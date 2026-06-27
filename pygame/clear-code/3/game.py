@@ -11,6 +11,7 @@ import pygame
 from player import Player
 from opponent import Opponent
 from ball import Ball
+from shadowed import Shadowed
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Pong"
@@ -25,7 +26,7 @@ class Game:
         self.screen = screen
         self.clock = pygame.time.Clock()
 
-        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites = Shadowed(self.screen)
         self.paddles = pygame.sprite.Group()
         self.player = Player(WIN_RECT, (self.all_sprites, self.paddles))
         self.ball = Ball(self.all_sprites, WIN_RECT, self.paddles)
@@ -38,7 +39,7 @@ class Game:
             self.all_sprites.update(dt)
 
             self.screen.fill(Game.BACKGROUND_COLOR)
-            self.all_sprites.draw(self.screen)
+            self.all_sprites.draw()
             window.flip()
 
     def handle_events(self) -> bool:

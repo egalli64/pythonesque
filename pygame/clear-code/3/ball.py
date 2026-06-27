@@ -15,7 +15,7 @@ import pygame
 class Ball(pygame.sprite.Sprite):
     SIZE = (30, 30)
     SPEED = 450
-    COLOR = "#ee622c"
+    COLORS = ("#ee622c", "#c14f24")
 
     def __init__(self, groups, viewport, paddles):
         super().__init__(groups)
@@ -24,7 +24,11 @@ class Ball(pygame.sprite.Sprite):
         self.paddles = paddles
         self.image = pygame.Surface(Ball.SIZE, pygame.SRCALPHA)
         center = (Ball.SIZE[0] / 2, Ball.SIZE[1] / 2)
-        pygame.draw.circle(self.image, Ball.COLOR, center, Ball.SIZE[0] / 2)
+        pygame.draw.circle(self.image, Ball.COLORS[0], center, Ball.SIZE[0] / 2)
+
+        self.shadow = self.image.copy()
+        pygame.draw.circle(self.shadow, Ball.COLORS[1], center, Ball.SIZE[1] / 2)
+
         self.rect: pygame.FRect = self.image.get_frect(center=viewport.center)
         self.old_rect = self.rect
 
