@@ -16,3 +16,6 @@
 
 ## 3: [Pong](3)
 - https://www.youtube.com/watch?v=8OMghdHP-zs&t=22529s
+
+## 4: [Platformer](4)
+- https://www.youtube.com/watch?v=8OMghdHP-zs&t=26735s
