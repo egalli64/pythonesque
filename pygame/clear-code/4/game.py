@@ -10,28 +10,26 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 
 import pygame
 from pytmx.util_pygame import load_pygame
-from camera import Camera
+from camera import CameraGroup
 from sprite import Sprite
 from player import Player
 
-WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+WIN_RECT = pygame.Rect(0, 0, 1280, 720)
+TITLE = "Platformer"
 TILE_SIZE = 64
 FPS = 60
 BACKGROUND_COLOR = "#fcdfcd"
 
 
 class Game:
-    def __init__(self):
-        self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        pygame.display.set_caption("Platformer")
+    def __init__(self, window, screen):
+        self.window = window
+        self.screen = screen
         self.clock = pygame.time.Clock()
-        self.running = True
 
-        # groups
-        self.all_sprites = Camera()
+        self.all_sprites = CameraGroup(WIN_RECT)
         self.collision_sprites = pygame.sprite.Group()
 
-        # load game
         self.setup()
 
     def setup(self):
@@ -54,27 +52,32 @@ class Game:
                 )
 
     def run(self):
-        while self.running:
+        while self.handle_events():
             dt = self.clock.tick(FPS) / 1000
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-
-            # update
             self.all_sprites.update(dt)
 
-            # draw
-            self.display_surface.fill(BACKGROUND_COLOR)
-            self.all_sprites.camera_draw(self.player.rect.center)
-            pygame.display.update()
+            self.screen.fill(BACKGROUND_COLOR)
+            self.all_sprites.camera_draw(screen, self.player.rect.center)
+            window.flip()
+
+    def handle_events(self) -> bool:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return False
+        return True
 
 
 if __name__ == "__main__":
     pygame.init()
+    window = pygame.Window(TITLE, WIN_RECT.size)
+    screen = window.get_surface()
 
     try:
-        Game().run()
+        Game(window, screen).run()
     finally:
         pygame.quit()
         print("Done.")

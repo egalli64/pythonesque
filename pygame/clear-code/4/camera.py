@@ -14,15 +14,15 @@ import pygame
 from settings import *
 
 
-class Camera(pygame.sprite.Group):
-    def __init__(self):
+class CameraGroup(pygame.sprite.Group):
+    def __init__(self, viewport: pygame.Rect):
         super().__init__()
-        self.display_surface: pygame.Surface = pygame.display.get_surface()  # type: ignore
-        self.offset = pygame.Vector2()
+        self.viewport = viewport
 
-    def camera_draw(self, target_pos):
-        self.offset.x = -(target_pos[0] - WINDOW_WIDTH / 2)
-        self.offset.y = -(target_pos[1] - WINDOW_HEIGHT / 2)
+    def camera_draw(self, screen, target_pos):
+        offset = pygame.Vector2()
+        offset.x = -(target_pos[0] - self.viewport.centerx)
+        offset.y = -(target_pos[1] - self.viewport.centery)
 
         for sprite in self:
-            self.display_surface.blit(sprite.image, sprite.rect.topleft + self.offset)
+            screen.blit(sprite.image, sprite.rect.topleft + offset)
