@@ -11,9 +11,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 import pygame
 
 
-from settings import *
-
-
 class CameraGroup(pygame.sprite.Group):
     def __init__(self, viewport: pygame.Rect):
         super().__init__()
