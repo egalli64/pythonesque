@@ -16,48 +16,49 @@ from player import Player
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Platformer"
-TILE_SIZE = 64
-FPS = 60
-BACKGROUND_COLOR = "#fcdfcd"
 
 
 class Game:
+    FPS = 60
+    WORLD_FILENAME = "data/maps/world.tmx"
+    TILE_SIZE = 64
+    BACKGROUND_COLOR = "#fcdfcd"
+
+    @classmethod
+    def load_resources(cls):
+        cls.tmx_map = load_pygame(cls.WORLD_FILENAME)
+
     def __init__(self, window, screen):
         self.window = window
         self.screen = screen
         self.clock = pygame.time.Clock()
 
         self.all_sprites = CameraGroup(WIN_RECT)
-        self.collision_sprites = pygame.sprite.Group()
+        self.obstacles = pygame.sprite.Group()
 
-        self.setup()
-
-    def setup(self):
-        tmx_map = load_pygame("data/maps/world.tmx")
-
-        for x, y, image in tmx_map.get_layer_by_name("Main").tiles():  # type: ignore
-            Sprite(
-                (x * TILE_SIZE, y * TILE_SIZE),
-                image,
-                (self.all_sprites, self.collision_sprites),
-            )
-
-        for x, y, image in tmx_map.get_layer_by_name("Decoration").tiles():  # type: ignore
-            Sprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
-
-        for obj in tmx_map.get_layer_by_name("Entities"):  # type: ignore
-            if obj.name == "Player":
-                self.player = Player(
-                    (obj.x, obj.y), self.all_sprites, self.collision_sprites
-                )
+        for layer in Game.tmx_map.layers:
+            match layer.name:
+                case "Main":
+                    for x, y, image in layer.tiles():
+                        pos = (x * Game.TILE_SIZE, y * Game.TILE_SIZE)
+                        Sprite(pos, image, (self.all_sprites, self.obstacles))
+                case "Decoration":
+                    for x, y, image in layer.tiles():
+                        pos = (x * Game.TILE_SIZE, y * Game.TILE_SIZE)
+                        Sprite(pos, image, self.all_sprites)
+                case "Entities":
+                    for obj in layer:
+                        if obj.name == "Player":
+                            pos = (obj.x, obj.y)
+                            self.player = Player(pos, self.all_sprites, self.obstacles)
 
     def run(self):
         while self.handle_events():
-            dt = self.clock.tick(FPS) / 1000
+            dt = self.clock.tick(Game.FPS) / 1000
 
             self.all_sprites.update(dt)
 
-            self.screen.fill(BACKGROUND_COLOR)
+            self.screen.fill(Game.BACKGROUND_COLOR)
             self.all_sprites.camera_draw(screen, self.player.rect.center)
             window.flip()
 
@@ -75,6 +76,8 @@ if __name__ == "__main__":
     pygame.init()
     window = pygame.Window(TITLE, WIN_RECT.size)
     screen = window.get_surface()
+
+    Game.load_resources()
 
     try:
         Game(window, screen).run()
