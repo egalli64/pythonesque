@@ -84,6 +84,7 @@ if __name__ == "__main__":
     screen = window.get_surface()
 
     Game.load_resources()
+    Player.load_resources()
 
     try:
         Game(window, screen).run()

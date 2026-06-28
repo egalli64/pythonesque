@@ -16,3 +16,16 @@ class Sprite(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = image
         self.rect: pygame.FRect = self.image.get_frect(topleft=pos)
+
+
+class AnimatedSprite(Sprite):
+    ANIMATION_SPEED = 10
+
+    def __init__(self, pos, frames, groups):
+        self.frames = frames
+        self.frame_index = 0
+        super().__init__(pos, self.frames[self.frame_index], groups)
+
+    def animate(self, dt):
+        self.frame_index += AnimatedSprite.ANIMATION_SPEED * dt
+        self.image = self.frames[int(self.frame_index) % len(self.frames)]

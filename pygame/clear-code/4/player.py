@@ -8,22 +8,34 @@ Google Drive: https://drive.google.com/drive/folders/1FCSPHzD9R4RBUypDTB_FIfwlyi
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
+from os import walk
+from os.path import join
 import pygame
-from sprite import Sprite
+from sprite import AnimatedSprite
 
 
-class Player(Sprite):
-    SPEED = 500
+class Player(AnimatedSprite):
+    SPEED = 400
     GRAVITY = 50
     JUMP_SPEED = -20
+    PATHNAME = "images/player"
+
+    @classmethod
+    def load_resources(cls):
+        cls._frames = []
+        for folder_path, _, file_names in walk(cls.PATHNAME):
+            for file_name in file_names:
+                full_path = join(folder_path, file_name)
+                image = pygame.image.load(full_path).convert_alpha()
+                cls._frames.append(image)
 
     def __init__(self, pos, groups, obstacles):
-        image = pygame.Surface((40, 80))
-        super().__init__(pos, image, groups)
+        super().__init__(pos, Player._frames, groups)
 
         self.direction = pygame.Vector2()
         self.obstacles = obstacles
         self.on_floor = False
+        self.flip = False
 
     def set_horizontal_direction(self, x: int):
         self.direction.x = x
@@ -56,6 +68,19 @@ class Player(Sprite):
 
         self.on_floor = any(probe.colliderect(x.rect) for x in self.obstacles)
 
+    def animate(self, dt):
+        if self.direction.x:
+            self.frame_index += Player.ANIMATION_SPEED * dt
+            self.flip = self.direction.x < 0
+        else:
+            self.frame_index = 0
+
+        if not self.on_floor:
+            self.frame_index = 1
+
+        self.image = self.frames[int(self.frame_index) % len(self.frames)]
+        self.image = pygame.transform.flip(self.image, self.flip, False)
+
     def update(self, dt):
         self.check_floor()
         self.rect.x += self.direction.x * Player.SPEED * dt
@@ -64,3 +89,5 @@ class Player(Sprite):
         self.direction.y += Player.GRAVITY * dt
         self.rect.y += self.direction.y
         self.vertical_collision()
+
+        self.animate(dt)
