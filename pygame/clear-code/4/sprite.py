@@ -12,7 +12,7 @@ import pygame
 
 
 class Sprite(pygame.sprite.Sprite):
-    def __init__(self, pos, surf, groups):
+    def __init__(self, pos, image: pygame.Surface, groups):
         super().__init__(groups)
-        self.image = surf
-        self.rect = self.image.get_frect(topleft=pos)
+        self.image = image
+        self.rect: pygame.FRect = self.image.get_frect(topleft=pos)
