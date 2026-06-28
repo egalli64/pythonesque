@@ -14,37 +14,53 @@ from sprite import Sprite
 
 class Player(Sprite):
     SPEED = 500
+    GRAVITY = 50
+    JUMP_SPEED = -20
 
-    def __init__(self, pos, groups, collision_sprites):
+    def __init__(self, pos, groups, obstacles):
         image = pygame.Surface((40, 80))
         super().__init__(pos, image, groups)
 
         self.direction = pygame.Vector2()
-        self.collision_sprites = collision_sprites
+        self.obstacles = obstacles
+        self.on_floor = False
 
-    def set_direction(self, x: int, y: int):
-        self.direction.update(x, y)
-        if self.direction:
-            self.direction.normalize_ip()
+    def set_horizontal_direction(self, x: int):
+        self.direction.x = x
+
+    def jump(self):
+        if self.on_floor:
+            self.direction.y = Player.JUMP_SPEED
 
     def horizontal_collision(self):
-        for sprite in self.collision_sprites:
-            if sprite.rect.colliderect(self.rect):
+        for obstacle in self.obstacles:
+            if obstacle.rect.colliderect(self.rect):
                 if self.direction.x > 0:
-                    self.rect.right = sprite.rect.left
+                    self.rect.right = obstacle.rect.left
                 if self.direction.x < 0:
-                    self.rect.left = sprite.rect.right
+                    self.rect.left = obstacle.rect.right
 
     def vertical_collision(self):
-        for sprite in self.collision_sprites:
-            if sprite.rect.colliderect(self.rect):
+        for obstacle in self.obstacles:
+            if obstacle.rect.colliderect(self.rect):
                 if self.direction.y > 0:
-                    self.rect.bottom = sprite.rect.top
+                    self.rect.bottom = obstacle.rect.top
                 if self.direction.y < 0:
-                    self.rect.top = sprite.rect.bottom
+                    self.rect.top = obstacle.rect.bottom
+                self.direction.y = 0
+
+    def check_floor(self):
+        probe = self.rect.inflate(-10, 0)
+        probe.height = 2
+        probe.top = self.rect.bottom
+
+        self.on_floor = any(probe.colliderect(x.rect) for x in self.obstacles)
 
     def update(self, dt):
+        self.check_floor()
         self.rect.x += self.direction.x * Player.SPEED * dt
         self.horizontal_collision()
-        self.rect.y += self.direction.y * Player.SPEED * dt
+
+        self.direction.y += Player.GRAVITY * dt
+        self.rect.y += self.direction.y
         self.vertical_collision()

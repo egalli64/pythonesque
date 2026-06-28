@@ -71,10 +71,9 @@ class Game:
                     return False
 
         keys = pygame.key.get_pressed()  # continuous events handling
-
-        x = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
-        y = keys[pygame.K_DOWN] - keys[pygame.K_UP]
-        self.player.set_direction(x, y)
+        self.player.set_horizontal_direction(keys[pygame.K_RIGHT] - keys[pygame.K_LEFT])
+        if keys[pygame.K_SPACE]:
+            self.player.jump()
 
         return True
 
