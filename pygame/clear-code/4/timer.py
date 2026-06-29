@@ -14,8 +14,7 @@ import pygame
 class Timer:
     def __init__(self, duration, func=None, repeat=None, autostart=False):
         self.duration = duration
-        self.start_time = 0
-        self.active = False
+        self.activation_time = 0
         self.func = func
         self.repeat = repeat
 
@@ -23,20 +22,17 @@ class Timer:
             self.activate()
 
     def __bool__(self):
-        return self.active
+        """A timer is true if it is active"""
+        return self.activation_time != 0
 
     def activate(self):
-        self.active = True
-        self.start_time = pygame.time.get_ticks()
+        self.activation_time = pygame.time.get_ticks()
 
     def deactivate(self):
-        self.active = False
-        self.start_time = 0
-        if self.repeat:
-            self.activate()
+        self.activation_time = pygame.time.get_ticks() if self.repeat else 0
 
     def update(self):
-        if pygame.time.get_ticks() - self.start_time >= self.duration:
-            if self.func and self.start_time != 0:
+        if pygame.time.get_ticks() - self.activation_time >= self.duration:
+            if self.func and self.activation_time != 0:
                 self.func()
             self.deactivate()
