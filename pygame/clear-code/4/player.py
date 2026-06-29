@@ -10,6 +10,8 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 
 import pygame
 from sprite import AnimatedSprite
+from bullet import Bullet, Fire
+from timer import Timer  # type: ignore
 
 
 class Player(AnimatedSprite):
@@ -30,12 +32,27 @@ class Player(AnimatedSprite):
         self.on_floor = False
         self.flip = False
 
+        self.cooldown = Timer(500)
+
     def set_horizontal_direction(self, x: int):
         self.direction.x = x
 
     def jump(self):
         if self.on_floor:
             self.direction.y = Player.JUMP_SPEED
+
+    def shoot(self):
+        if not self.cooldown:
+            direction = -1 if self.flip else 1
+            x = self.rect.centerx + direction * 34
+            if self.flip:
+                x -= Bullet._image.get_width()
+            self.cooldown.activate()
+
+            pos = (x, self.rect.centery)
+            return Bullet(pos, direction), Fire(self.rect.center, self)
+        else:
+            return None
 
     def horizontal_collision(self):
         for obstacle in self.obstacles:
@@ -55,7 +72,9 @@ class Player(AnimatedSprite):
                 self.direction.y = 0
 
     def check_floor(self):
-        probe = pygame.FRect((0,0), (self.rect.width, 2)).move_to(midtop = self.rect.midbottom)
+        probe = pygame.FRect((0, 0), (self.rect.width, 2)).move_to(
+            midtop=self.rect.midbottom
+        )
         self.on_floor = any(probe.colliderect(x.rect) for x in self.obstacles)
 
     def animate(self, dt):
@@ -80,4 +99,5 @@ class Player(AnimatedSprite):
         self.rect.y += self.direction.y
         self.vertical_collision()
 
+        self.cooldown.update()
         self.animate(dt)

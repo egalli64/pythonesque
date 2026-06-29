@@ -14,9 +14,7 @@ from camera import CameraGroup
 from sprite import Sprite
 from player import Player
 from enemies import Bee, Worm
-from bullet import Bullet
-from fire import Fire
-from timer import Timer  # type: ignore
+from bullet import Bullet, Fire
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Platformer"
@@ -64,21 +62,11 @@ class Game:
         Bee((500, 600), self.all_sprites)
         Worm((700, 600), self.all_sprites)
 
-        self.shoot_timer = Timer(500)
-
-    def create_bullet(self, pos, direction):
-        x = pos[0] + direction * 34
-        if direction == -1:
-            x -= Bullet._image.get_width()
-        Bullet((x, pos[1]), direction, (self.all_sprites, self.bullets))
-        Fire(pos, self.all_sprites, self.player)
-
     def run(self):
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
 
             self.all_sprites.update(dt)
-            self.shoot_timer.update()
 
             self.screen.fill(Game.BACKGROUND_COLOR)
             self.all_sprites.camera_draw(screen, self.player.rect.center)
@@ -97,9 +85,11 @@ class Game:
         if keys[pygame.K_SPACE]:
             self.player.jump()
 
-        if keys[pygame.K_s] and not self.shoot_timer:
-            self.create_bullet(self.player.rect.center, -1 if self.player.flip else 1)
-            self.shoot_timer.activate()
+        if keys[pygame.K_s]:
+            if shot := self.player.shoot():
+                self.all_sprites.add(shot[0])
+                self.bullets.add(shot[0])
+                self.all_sprites.add(shot[1])
 
         return True
 
