@@ -33,6 +33,8 @@ class Bullet(Sprite):
 
 class Fire(Sprite):
     FILENAME = "images/gun/fire.png"
+    Y_OFFSET = pygame.Vector2(0, 8)
+    DURATION = 100
 
     @classmethod
     def load_resources(cls):
@@ -42,21 +44,20 @@ class Fire(Sprite):
         super().__init__(pos, Fire._image)
         self.player = player
         self.flip = player.flip
-        self.timer = Timer(100, autostart=True, func=self.kill)
-        self.y_offset = pygame.Vector2(0, 8)
+        self.timer = Timer(Fire.DURATION, autostart=True)
         if self.player.flip:
-            self.rect.midright = self.player.rect.midleft + self.y_offset
+            self.rect.midright = self.player.rect.midleft + Fire.Y_OFFSET
             self.image = pygame.transform.flip(self.image, True, False)
         else:
-            self.rect.midleft = self.player.rect.midright + self.y_offset
+            self.rect.midleft = self.player.rect.midright + Fire.Y_OFFSET
 
     def update(self, _):
         self.timer.update()
 
-        if self.player.flip:
-            self.rect.midright = self.player.rect.midleft + self.y_offset
-        else:
-            self.rect.midleft = self.player.rect.midright + self.y_offset
-
-        if self.flip != self.player.flip:
+        if not self.timer or self.flip != self.player.flip:
             self.kill()
+        else:
+            if self.player.flip:
+                self.rect.midright = self.player.rect.midleft + Fire.Y_OFFSET
+            else:
+                self.rect.midleft = self.player.rect.midright + Fire.Y_OFFSET
