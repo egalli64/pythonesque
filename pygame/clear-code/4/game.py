@@ -13,6 +13,7 @@ from pytmx.util_pygame import load_pygame
 from camera import CameraGroup
 from sprite import Sprite
 from player import Player
+from enemies import Bee, Worm
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Platformer"
@@ -52,6 +53,9 @@ class Game:
                             pos = (obj.x, obj.y)
                             self.player = Player(pos, self.all_sprites, self.obstacles)
 
+        Bee((500, 600), self.all_sprites)
+        Worm((700, 600), self.all_sprites)
+
     def run(self):
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
@@ -85,6 +89,8 @@ if __name__ == "__main__":
 
     Game.load_resources()
     Player.load_resources()
+    Bee.load_resources()
+    Worm.load_resources()
 
     try:
         Game(window, screen).run()

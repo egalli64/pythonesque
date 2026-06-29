@@ -8,6 +8,8 @@ Google Drive: https://drive.google.com/drive/folders/1FCSPHzD9R4RBUypDTB_FIfwlyi
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
+from os import walk
+from os.path import join
 import pygame
 
 
@@ -20,6 +22,16 @@ class Sprite(pygame.sprite.Sprite):
 
 class AnimatedSprite(Sprite):
     ANIMATION_SPEED = 10
+
+    @staticmethod
+    def import_folder(root):
+        frames = []
+        for folder_path, _, file_names in walk(root):
+            for file_name in file_names:
+                full_path = join(folder_path, file_name)
+                image = pygame.image.load(full_path).convert_alpha()
+                frames.append(image)
+        return frames
 
     def __init__(self, pos, frames, groups):
         self.frames = frames

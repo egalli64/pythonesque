@@ -22,12 +22,7 @@ class Player(AnimatedSprite):
 
     @classmethod
     def load_resources(cls):
-        cls._frames = []
-        for folder_path, _, file_names in walk(cls.PATHNAME):
-            for file_name in file_names:
-                full_path = join(folder_path, file_name)
-                image = pygame.image.load(full_path).convert_alpha()
-                cls._frames.append(image)
+        cls._frames = cls.import_folder(Player.PATHNAME)
 
     def __init__(self, pos, groups, obstacles):
         super().__init__(pos, Player._frames, groups)
