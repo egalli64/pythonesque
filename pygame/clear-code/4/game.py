@@ -22,12 +22,17 @@ TITLE = "Platformer"
 class Game:
     FPS = 60
     WORLD_FILENAME = "data/maps/world.tmx"
+    MUSIC_FILENAME = "audio/music.wav"
     TILE_SIZE = 64
     BACKGROUND_COLOR = "#fcdfcd"
 
     @classmethod
     def load_resources(cls):
         cls.tmx_map = load_pygame(cls.WORLD_FILENAME)
+        # cls.music = pygame.mixer.Sound(cls.MUSIC_FILENAME)
+        # cls.music.set_volume(0.7)
+        # cls.music.play(loops=-1)
+
 
     def __init__(self, window, screen):
         self.window = window
