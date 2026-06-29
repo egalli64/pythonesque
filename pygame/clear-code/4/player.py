@@ -8,8 +8,6 @@ Google Drive: https://drive.google.com/drive/folders/1FCSPHzD9R4RBUypDTB_FIfwlyi
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
-from os import walk
-from os.path import join
 import pygame
 from sprite import AnimatedSprite
 
@@ -57,10 +55,7 @@ class Player(AnimatedSprite):
                 self.direction.y = 0
 
     def check_floor(self):
-        probe = self.rect.inflate(-10, 0)
-        probe.height = 2
-        probe.top = self.rect.bottom
-
+        probe = pygame.FRect((0,0), (self.rect.width, 2)).move_to(midtop = self.rect.midbottom)
         self.on_floor = any(probe.colliderect(x.rect) for x in self.obstacles)
 
     def animate(self, dt):
