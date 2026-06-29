@@ -14,6 +14,9 @@ from camera import CameraGroup
 from sprite import Sprite
 from player import Player
 from enemies import Bee, Worm
+from bullet import Bullet
+from fire import Fire
+from timer import Timer  # type: ignore
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Platformer"
@@ -33,7 +36,6 @@ class Game:
         # cls.music.set_volume(0.7)
         # cls.music.play(loops=-1)
 
-
     def __init__(self, window, screen):
         self.window = window
         self.screen = screen
@@ -41,6 +43,7 @@ class Game:
 
         self.all_sprites = CameraGroup(WIN_RECT)
         self.obstacles = pygame.sprite.Group()
+        self.bullets = pygame.sprite.Group()
 
         for layer in Game.tmx_map.layers:
             match layer.name:
@@ -61,11 +64,21 @@ class Game:
         Bee((500, 600), self.all_sprites)
         Worm((700, 600), self.all_sprites)
 
+        self.shoot_timer = Timer(500)
+
+    def create_bullet(self, pos, direction):
+        x = pos[0] + direction * 34
+        if direction == -1:
+            x -= Bullet._image.get_width()
+        Bullet((x, pos[1]), direction, (self.all_sprites, self.bullets))
+        Fire(pos, self.all_sprites, self.player)
+
     def run(self):
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
 
             self.all_sprites.update(dt)
+            self.shoot_timer.update()
 
             self.screen.fill(Game.BACKGROUND_COLOR)
             self.all_sprites.camera_draw(screen, self.player.rect.center)
@@ -84,6 +97,10 @@ class Game:
         if keys[pygame.K_SPACE]:
             self.player.jump()
 
+        if keys[pygame.K_s] and not self.shoot_timer:
+            self.create_bullet(self.player.rect.center, -1 if self.player.flip else 1)
+            self.shoot_timer.activate()
+
         return True
 
 
@@ -96,6 +113,8 @@ if __name__ == "__main__":
     Player.load_resources()
     Bee.load_resources()
     Worm.load_resources()
+    Bullet.load_resources()
+    Fire.load_resources()
 
     try:
         Game(window, screen).run()
