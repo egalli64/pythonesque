@@ -8,11 +8,46 @@ Google Drive: https://drive.google.com/drive/folders/1FCSPHzD9R4RBUypDTB_FIfwlyi
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
+from abc import ABC, abstractmethod
+from math import sin
+from random import randint
+import pygame
 from sprite import AnimatedSprite
+from timer import Timer  # type: ignore
 
 
-class Bee(AnimatedSprite):
+class Enemy(AnimatedSprite, ABC):
+    def __init__(self, frames, pos, groups):
+        super().__init__(frames, pos, groups)
+        self.death_timer = Timer(200, func=self.kill)
+
+    def destroy(self):
+        self.death_timer.activate()
+        self.animation_speed = 0
+        self.image = pygame.mask.from_surface(self.image).to_surface()
+        self.image.set_colorkey("black")
+
+    def update(self, dt):
+        self.death_timer.update()
+        if not self.death_timer:
+            self.move(dt)
+            self.animate(dt)
+        self.constraint()
+
+    @abstractmethod
+    def move(self, dt):
+        pass
+
+    @abstractmethod
+    def constraint(self):
+        pass
+
+
+class Bee(Enemy):
     PATHNAME = "images/enemies/bee"
+    SPEED_RANGE = (300, 500)
+    AMPLITUDE_RANGE = (500, 600)
+    FREQUENCY_RANGE = (300, 600)
 
     @classmethod
     def load_resources(cls):
@@ -20,20 +55,41 @@ class Bee(AnimatedSprite):
 
     def __init__(self, pos, groups):
         super().__init__(pos, Bee._frames, groups)
+        self.speed = randint(*Bee.SPEED_RANGE)
+        self.amplitude = randint(*Bee.AMPLITUDE_RANGE)
+        self.frequency = randint(*Bee.FREQUENCY_RANGE)
 
-    def update(self, dt):
-        self.animate(dt)
+    def move(self, dt):
+        self.rect.x -= self.speed * dt
+        angle = pygame.time.get_ticks() / self.frequency
+        self.rect.y += sin(angle) * self.amplitude * dt
+
+    def constraint(self):
+        if self.rect.right <= 0:
+            self.kill()
 
 
-class Worm(AnimatedSprite):
+class Worm(Enemy):
     PATHNAME = "images/enemies/worm"
+    SPEED_RANGE = (150, 200)
 
     @classmethod
     def load_resources(cls):
         cls._frames = cls.import_folder(Worm.PATHNAME)
 
-    def __init__(self, pos, groups):
-        super().__init__(pos, Worm._frames, groups)
+    def __init__(self, rect, groups):
+        super().__init__(rect.topleft, Worm._frames, groups)
+        self.rect.bottomleft = rect.bottomleft
+        self.main_rect = rect
+        self.speed = randint(*Worm.SPEED_RANGE)
+        self.direction = 1
 
-    def update(self, dt):
-        self.animate(dt)
+    def move(self, dt):
+        self.rect.x += self.direction * self.speed * dt
+
+    def constraint(self):
+        if not self.main_rect.contains(self.rect):
+            self.direction *= -1
+            self.frames = [
+                pygame.transform.flip(surf, True, False) for surf in self.frames
+            ]

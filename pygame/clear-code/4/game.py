@@ -42,6 +42,7 @@ class Game:
         self.all_sprites = CameraGroup(WIN_RECT)
         self.obstacles = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
 
         for layer in Game.tmx_map.layers:
             match layer.name:
@@ -58,9 +59,11 @@ class Game:
                         if obj.name == "Player":
                             pos = (obj.x, obj.y)
                             self.player = Player(pos, self.all_sprites, self.obstacles)
+                        elif obj.name == "Worm":
+                            rect = pygame.FRect(obj.x, obj.y, obj.width, obj.height)
+                            Worm(rect, (self.all_sprites, self.enemies))
 
         Bee((500, 600), self.all_sprites)
-        Worm((700, 600), self.all_sprites)
 
     def run(self):
         while self.handle_events():
