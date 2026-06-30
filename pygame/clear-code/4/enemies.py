@@ -17,11 +17,18 @@ from timer import Timer  # type: ignore
 
 
 class Enemy(AnimatedSprite, ABC):
+    SOUND_FILENAME = "audio/impact.ogg"
+
+    @classmethod
+    def load_resources(cls):
+        cls.kill_sound = pygame.mixer.Sound(cls.SOUND_FILENAME)
+
     def __init__(self, frames, pos, groups):
         super().__init__(frames, pos, groups)
         self.death_timer = Timer(200, func=self.kill)
 
     def destroy(self):
+        Enemy.kill_sound.play()
         self.death_timer.activate()
         self.animation_speed = 0
         self.image = pygame.mask.from_surface(self.image).to_surface()

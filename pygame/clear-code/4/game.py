@@ -15,7 +15,7 @@ from pytmx.util_pygame import load_pygame
 from camera import CameraGroup
 from sprite import Sprite
 from player import Player
-from enemies import Bee, Worm
+from enemies import Bee, Worm, Enemy
 from bullet import Bullet, Fire
 from timer import Timer  # type: ignore
 
@@ -76,12 +76,23 @@ class Game:
         pos = (Game.MAP_SIZE[0] + WIN_RECT.width), randint(0, Game.MAP_SIZE[1])
         Bee(pos, (self.all_sprites, self.enemies))
 
+    def collision(self):
+        collided = lambda a, b: pygame.sprite.collide_mask(a, b) is not None
+
+        for bullet in self.bullets:
+            kills = pygame.sprite.spritecollide(bullet, self.enemies, False, collided)
+            if kills:
+                bullet.kill()
+                for enemy in kills:
+                    enemy.destroy()
+
     def run(self):
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
 
             self.bee_timer.update()
             self.all_sprites.update(dt)
+            self.collision()
 
             self.screen.fill(Game.BACKGROUND_COLOR)
             self.all_sprites.camera_draw(screen, self.player.rect.center)
@@ -120,6 +131,7 @@ if __name__ == "__main__":
     Worm.load_resources()
     Bullet.load_resources()
     Fire.load_resources()
+    Enemy.load_resources()
 
     try:
         Game(window, screen).run()
