@@ -19,10 +19,12 @@ class Player(AnimatedSprite):
     GRAVITY = 50
     JUMP_SPEED = -20
     PATHNAME = "images/player"
+    SOUND_FILENAME = "audio/shoot.wav"
 
     @classmethod
     def load_resources(cls):
         cls._frames = cls.import_folder(Player.PATHNAME)
+        cls.shoot_sound = pygame.mixer.Sound(cls.SOUND_FILENAME)
 
     def __init__(self, pos, groups, obstacles):
         super().__init__(pos, Player._frames, groups)
@@ -43,6 +45,7 @@ class Player(AnimatedSprite):
 
     def shoot(self):
         if not self.cooldown:
+            Player.shoot_sound.play()
             direction = -1 if self.flip else 1
             x = self.rect.centerx + direction * 34
             if self.flip:
