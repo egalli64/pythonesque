@@ -1,7 +1,7 @@
 # Clear Code - Master Python by making 5 games
 
 - YouTube: https://www.youtube.com/watch?v=8OMghdHP-zs
-- GitHub: https://github.com/clear-code-projects/5games/tree/main/space%20shooter
+- GitHub: https://github.com/clear-code-projects/5games
 - Drive: https://drive.google.com/drive/folders/1bUGO9sv5SM3gYO_t9zgifedkQKHUYudO
 - My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 
@@ -19,3 +19,6 @@
 
 ## 4: [Platformer](4)
 - https://www.youtube.com/watch?v=8OMghdHP-zs&t=26735s
+
+## 5: [Monster battle](5)
+- https://www.youtube.com/watch?v=8OMghdHP-zs&t=32960s
