@@ -8,6 +8,8 @@ Google Drive: https://drive.google.com/drive/folders/1FCSPHzD9R4RBUypDTB_FIfwlyi
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
+from random import randint
+
 import pygame
 from pytmx.util_pygame import load_pygame
 from camera import CameraGroup
@@ -15,6 +17,7 @@ from sprite import Sprite
 from player import Player
 from enemies import Bee, Worm
 from bullet import Bullet, Fire
+from timer import Timer  # type: ignore
 
 WIN_RECT = pygame.Rect(0, 0, 1280, 720)
 TITLE = "Platformer"
@@ -26,13 +29,16 @@ class Game:
     MUSIC_FILENAME = "audio/music.wav"
     TILE_SIZE = 64
     BACKGROUND_COLOR = "#fcdfcd"
+    DELTA_BEE = 100
 
     @classmethod
     def load_resources(cls):
         cls.tmx_map = load_pygame(cls.WORLD_FILENAME)
-        # cls.music = pygame.mixer.Sound(cls.MUSIC_FILENAME)
-        # cls.music.set_volume(0.7)
-        # cls.music.play(loops=-1)
+        width = cls.tmx_map.width * cls.TILE_SIZE
+        height = cls.tmx_map.height * cls.TILE_SIZE
+        cls.MAP_SIZE = (width, height)
+        cls.music = pygame.mixer.Sound(cls.MUSIC_FILENAME)
+        cls.music.set_volume(0.7)
 
     def __init__(self, window, screen):
         self.window = window
@@ -63,12 +69,18 @@ class Game:
                             rect = pygame.FRect(obj.x, obj.y, obj.width, obj.height)
                             Worm(rect, (self.all_sprites, self.enemies))
 
-        Bee((500, 600), self.all_sprites)
+        self.bee_timer = Timer(Game.DELTA_BEE, self.create_bee, True, True)
+        # Game.music.play(loops=-1)
+
+    def create_bee(self):
+        pos = (Game.MAP_SIZE[0] + WIN_RECT.width), randint(0, Game.MAP_SIZE[1])
+        Bee(pos, (self.all_sprites, self.enemies))
 
     def run(self):
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
 
+            self.bee_timer.update()
             self.all_sprites.update(dt)
 
             self.screen.fill(Game.BACKGROUND_COLOR)
