@@ -18,6 +18,8 @@ class Player(AnimatedSprite):
     SPEED = 400
     GRAVITY = 50
     JUMP_SPEED = -20
+    COOLDOWN_TIME = 200
+    X_SHOOT_DELTA = 34
     PATHNAME = "images/player"
     SOUND_FILENAME = "audio/shoot.wav"
 
@@ -34,7 +36,7 @@ class Player(AnimatedSprite):
         self.on_floor = False
         self.flip = False
 
-        self.cooldown = Timer(500)
+        self.cooldown = Timer(Player.COOLDOWN_TIME)
 
     def set_horizontal_direction(self, x: int):
         self.direction.x = x
@@ -47,7 +49,7 @@ class Player(AnimatedSprite):
         if not self.cooldown:
             Player.shoot_sound.play()
             direction = -1 if self.flip else 1
-            x = self.rect.centerx + direction * 34
+            x = self.rect.centerx + direction * Player.X_SHOOT_DELTA
             if self.flip:
                 x -= Bullet._image.get_width()
             self.cooldown.activate()

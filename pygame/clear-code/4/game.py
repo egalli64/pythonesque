@@ -86,13 +86,16 @@ class Game:
                 for enemy in kills:
                     enemy.destroy()
 
+        return pygame.sprite.spritecollide(self.player, self.enemies, False, collided)
+
     def run(self):
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
 
             self.bee_timer.update()
             self.all_sprites.update(dt)
-            self.collision()
+            if self.collision():
+                break
 
             self.screen.fill(Game.BACKGROUND_COLOR)
             self.all_sprites.camera_draw(screen, self.player.rect.center)
@@ -136,5 +139,6 @@ if __name__ == "__main__":
     try:
         Game(window, screen).run()
     finally:
+        pygame.time.wait(1000)
         pygame.quit()
         print("Done.")
