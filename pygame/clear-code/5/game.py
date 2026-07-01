@@ -18,6 +18,7 @@ from settings import MONSTER_DATA
 from support import folder_importer
 from monster import Monster, Opponent
 from random import choice
+from ui import UI
 
 
 class Game:
@@ -44,6 +45,8 @@ class Game:
             opponent_name, self.front_surfs[opponent_name], self.all_sprites
         )
 
+        self.ui = UI(self.monster)
+
     def import_assets(self):
         self.back_surfs = folder_importer("images", "back")
         self.front_surfs = folder_importer("images", "front")
@@ -61,10 +64,12 @@ class Game:
             dt = self.clock.tick(Game.FPS) / 1000
 
             self.all_sprites.update(dt)
+            self.ui.update()
 
             self.screen.blit(self.bg_surfs["bg"], (0, 0))
             self.draw_monster_floor()
             self.all_sprites.draw(self.screen)
+            self.ui.draw(self.screen)
             window.flip()
 
     def handle_events(self) -> bool:
