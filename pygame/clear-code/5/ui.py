@@ -14,13 +14,14 @@ from settings import WINDOW_HEIGHT, WINDOW_WIDTH, COLORS
 
 
 class UI:
-    def __init__(self, monster, player_monsters, simple_surfs):
-        self.display_surface = pygame.display.get_surface()
+    def __init__(self, screen, monster, player_monsters, simple_surfs, get_input):
+        self.screen = screen
         self.font = pygame.font.Font(None, 30)
         self.left = WINDOW_WIDTH / 2 - 100
         self.top = WINDOW_HEIGHT / 2 + 50
         self.monster = monster
         self.simple_surfs = simple_surfs
+        self.get_input = get_input
 
         # control
         self.general_options = ["attack", "heal", "switch", "escape"]
@@ -67,11 +68,11 @@ class UI:
                 - int(keys[pygame.K_LEFT])
             ) % self.cols
             if keys[pygame.K_SPACE]:
-                print(
-                    self.monster.abilities[
-                        self.attack_index["col"] + self.attack_index["row"] * 2
-                    ]
-                )
+                attack = self.monster.abilities[
+                    self.attack_index["col"] + self.attack_index["row"] * 2
+                ]
+                self.get_input(self.state, attack)
+                self.state = "general"
 
         elif self.state == "switch":
             self.switch_index = (
@@ -79,7 +80,14 @@ class UI:
             ) % len(self.available_monsters)
 
             if keys[pygame.K_SPACE]:
-                print(self.available_monsters[self.switch_index])
+                self.get_input(self.state, self.available_monsters[self.switch_index])
+                self.state = "general"
+        elif self.state == "heal":
+            self.get_input("heal")
+            self.state = "general"
+
+        elif self.state == "escape":
+            self.get_input("escape")
 
         if keys[pygame.K_ESCAPE]:
             self.state = "general"
