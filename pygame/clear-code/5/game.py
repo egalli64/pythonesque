@@ -10,18 +10,23 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 
 import pygame
 
-from settings import WINDOW_HEIGHT, WINDOW_WIDTH, MONSTER_DATA
+WIN_RECT = pygame.Rect(0, 0, 1280, 720)
+TITLE = "Monster Battle"
+
+
+from settings import MONSTER_DATA
 from support import folder_importer
 from monster import Monster, Opponent
 from random import choice
 
 
 class Game:
-    def __init__(self):
-        self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-        pygame.display.set_caption("Monster Battle")
+    FPS = 60
+
+    def __init__(self, window, screen):
+        self.window = window
+        self.screen = screen
         self.clock = pygame.time.Clock()
-        self.running = True
         self.import_assets()
 
         # groups
@@ -49,33 +54,36 @@ class Game:
             floor_rect = self.bg_surfs["floor"].get_frect(
                 center=sprite.rect.midbottom + pygame.Vector2(0, -10)
             )
-            self.display_surface.blit(self.bg_surfs["floor"], floor_rect)
+            self.screen.blit(self.bg_surfs["floor"], floor_rect)
 
     def run(self):
-        while self.running:
-            dt = self.clock.tick() / 1000
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        self.running = False
+        while self.handle_events():
+            dt = self.clock.tick(Game.FPS) / 1000
 
-            # update
             self.all_sprites.update(dt)
 
-            # draw
-            self.display_surface.blit(self.bg_surfs["bg"], (0, 0))
+            self.screen.blit(self.bg_surfs["bg"], (0, 0))
             self.draw_monster_floor()
-            self.all_sprites.draw(self.display_surface)
-            pygame.display.update()
+            self.all_sprites.draw(self.screen)
+            window.flip()
+
+    def handle_events(self) -> bool:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return False
+        return True
 
 
 if __name__ == "__main__":
     pygame.init()
+    window = pygame.Window(TITLE, WIN_RECT.size)
+    screen = window.get_surface()
 
     try:
-        Game().run()
+        Game(window, screen).run()
     finally:
         pygame.quit()
         print("Done.")
