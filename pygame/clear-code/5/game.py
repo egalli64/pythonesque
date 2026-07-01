@@ -15,10 +15,11 @@ TITLE = "Monster Battle"
 
 
 from settings import MONSTER_DATA, ABILITIES_DATA, ELEMENT_DATA
-from support import folder_importer
+from support import folder_importer, tile_importer
 from monster import Monster, Opponent
 from random import choice
-from ui import UI
+from ui import UI, OpponentUI
+from attack import AttackAnimationSprite
 from timer import Timer  # type: ignore
 
 
@@ -62,6 +63,7 @@ class Game:
             self.simple_surfs,
             self.get_input,
         )
+        self.opponent_ui = OpponentUI(self.opponent)
 
         # timers
         self.timers = {
@@ -72,6 +74,11 @@ class Game:
     def get_input(self, state, data=None):
         if state == "attack":
             self.apply_attack(self.opponent, data)
+        elif state == "heal":
+            self.monster.health += 50
+            AttackAnimationSprite(
+                self.monster, self.attack_frames["green"], self.all_sprites
+            )
 
         elif state == "escape":
             self.running = False
@@ -82,7 +89,7 @@ class Game:
         attack_data = ABILITIES_DATA[attack]
         attack_multiplier = ELEMENT_DATA[attack_data["element"]][target.element]
         target.health -= attack_data["damage"] * attack_multiplier
-        print(f"{attack},{target.health}/{target.max_health}")
+        AttackAnimationSprite(target, self.attack_frames[attack_data['animation']], self.all_sprites)
 
     def opponent_turn(self):
         attack = choice(self.opponent.abilities)
@@ -101,6 +108,7 @@ class Game:
         self.front_surfs = folder_importer("images", "front")
         self.bg_surfs = folder_importer("images", "other")
         self.simple_surfs = folder_importer("images", "simple")
+        self.attack_frames = tile_importer(4, "images", "attacks")
 
     def draw_monster_floor(self):
         for sprite in self.all_sprites:
@@ -122,6 +130,7 @@ class Game:
             self.draw_monster_floor()
             self.all_sprites.draw(self.screen)
             self.ui.draw(self.screen)
+            self.opponent_ui.draw(self.screen)
             window.flip()
 
     def handle_events(self) -> bool:
