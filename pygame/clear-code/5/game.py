@@ -31,24 +31,22 @@ class Game:
         self.screen = screen
         self.clock = pygame.time.Clock()
         self.import_assets()
-        self.audio["music"].play(-1)
+        # self.audio["music"].play(-1)
         self.player_active = True
 
-        # groups
         self.all_sprites = pygame.sprite.Group()
 
-        player_monster_list = ["Sparchu", "Jacana", "Plumette", "Atrox"]
-        self.player_monsters = [
-            Monster(name, self.back_surfs[name]) for name in player_monster_list
-        ]
+        names = ["Sparchu", "Jacana", "Plumette", "Atrox"]
+        self.player_monsters = [Monster(name, self.back_surfs[name]) for name in names]
+
         self.monster: Monster = self.player_monsters[0]
         self.all_sprites.add(self.monster)
+
         opponent_name = choice(list(MONSTER_DATA.keys()))
         self.opponent = Opponent(
             opponent_name, self.front_surfs[opponent_name], self.all_sprites
         )
 
-        # ui
         self.ui = UI(
             self.screen,
             self.monster,
@@ -58,7 +56,6 @@ class Game:
         )
         self.opponent_ui = OpponentUI(self.opponent)
 
-        # timers
         self.timers = {
             "player end": Timer(1000, func=self.opponent_turn),
             "opponent end": Timer(1000, func=self.player_turn),
@@ -79,8 +76,6 @@ class Game:
             self.all_sprites.add(self.monster)
             self.ui.monster = self.monster
 
-        # elif state == "escape":
-        #     self.running = False
         self.player_active = False
         self.timers["player end"].activate()
 
