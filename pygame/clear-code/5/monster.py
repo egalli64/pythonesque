@@ -14,8 +14,11 @@ from settings import MONSTER_DATA, ABILITIES_DATA, WINDOW_HEIGHT, WINDOW_WIDTH
 from random import sample
 
 
-class Creature:
-    def get_data(self, name):
+class Creature(pygame.sprite.Sprite):
+    def __init__(self, name, image, *groups):
+        super().__init__(*groups)
+
+        self.image: pygame.Surface = image
         self.element = MONSTER_DATA[name]["element"]
         self._health = self.max_health = MONSTER_DATA[name]["health"]
         self.abilities = sample(list(ABILITIES_DATA.keys()), 4)
@@ -30,20 +33,16 @@ class Creature:
         self._health = min(self.max_health, max(0, value))
 
 
-class Monster(pygame.sprite.Sprite, Creature):
-    def __init__(self, name, surf):
-        super().__init__()
-        self.image = surf
+class Monster(Creature):
+    def __init__(self, name, image):
+        super().__init__(name, image)
         self.rect = self.image.get_frect(bottomleft=(100, WINDOW_HEIGHT))
-        self.get_data(name)
 
     def __repr__(self):
         return f"{self.name}: {self.health}/{self.max_health}"
 
 
-class Opponent(pygame.sprite.Sprite, Creature):
-    def __init__(self, name, surf, groups):
-        super().__init__(groups)
-        self.image = surf
+class Opponent(Creature):
+    def __init__(self, name, image, groups):
+        super().__init__(name, image, groups)
         self.rect = self.image.get_frect(midbottom=(WINDOW_WIDTH - 250, 300))
-        self.get_data(name)
