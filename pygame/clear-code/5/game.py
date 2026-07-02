@@ -15,8 +15,8 @@ TITLE = "Monster Battle"
 
 
 from settings import MONSTER_DATA, ABILITIES_DATA, ELEMENT_DATA
-from support import folder_importer, tile_importer
-from monster import Monster, Opponent
+from support import folder_importer, tile_importer, audio_importer
+from monster import Creature, Monster, Opponent
 from random import choice
 from ui import UI, OpponentUI
 from attack import AttackAnimationSprite
@@ -31,20 +31,13 @@ class Game:
         self.screen = screen
         self.clock = pygame.time.Clock()
         self.import_assets()
+        self.audio["music"].play(-1)
         self.player_active = True
 
         # groups
         self.all_sprites = pygame.sprite.Group()
 
-        # data
-        player_monster_list = [
-            "Sparchu",
-            "Cleaf",
-            "Jacana",
-            "Gulfin",
-            "Pouch",
-            "Larvea",
-        ]
+        player_monster_list = ["Sparchu", "Jacana", "Plumette", "Atrox"]
         self.player_monsters = [
             Monster(name, self.back_surfs[name]) for name in player_monster_list
         ]
@@ -79,6 +72,12 @@ class Game:
             AttackAnimationSprite(
                 self.monster, self.attack_frames["green"], self.all_sprites
             )
+            self.audio["green"].play()
+        elif state == "switch":
+            self.monster.kill()
+            self.monster = data
+            self.all_sprites.add(self.monster)
+            self.ui.monster = self.monster
 
         elif state == "escape":
             self.running = False
@@ -89,15 +88,38 @@ class Game:
         attack_data = ABILITIES_DATA[attack]
         attack_multiplier = ELEMENT_DATA[attack_data["element"]][target.element]
         target.health -= attack_data["damage"] * attack_multiplier
-        AttackAnimationSprite(target, self.attack_frames[attack_data['animation']], self.all_sprites)
+        AttackAnimationSprite(
+            target, self.attack_frames[attack_data["animation"]], self.all_sprites
+        )
+        self.audio[attack_data["animation"]].play()
 
     def opponent_turn(self):
-        attack = choice(self.opponent.abilities)
-        self.apply_attack(self.monster, attack)
-        self.timers["opponent end"].activate()
+        if self.opponent.health <= 0:
+            self.player_active = True
+            self.opponent.kill()
+            monster_name = choice(list(MONSTER_DATA.keys()))
+            self.opponent = Opponent(
+                monster_name, self.front_surfs[monster_name], self.all_sprites
+            )
+            self.opponent_ui.monster = self.opponent
+        else:
+            attack = choice(self.opponent.abilities)
+            self.apply_attack(self.monster, attack)
+            self.timers["opponent end"].activate()
 
     def player_turn(self):
         self.player_active = True
+        if self.monster.health <= 0:
+            available_monsters = [
+                monster for monster in self.player_monsters if monster.health > 0
+            ]
+            if available_monsters:
+                self.monster.kill()
+                self.monster = available_monsters[0]
+                self.all_sprites.add(self.monster)
+                self.ui.monster = self.monster
+            else:
+                self.running = False
 
     def update_timers(self):
         for timer in self.timers.values():
@@ -109,13 +131,15 @@ class Game:
         self.bg_surfs = folder_importer("images", "other")
         self.simple_surfs = folder_importer("images", "simple")
         self.attack_frames = tile_importer(4, "images", "attacks")
+        self.audio = audio_importer("audio")
 
     def draw_monster_floor(self):
         for sprite in self.all_sprites:
-            floor_rect = self.bg_surfs["floor"].get_frect(
-                center=sprite.rect.midbottom + pygame.Vector2(0, -10)
-            )
-            self.screen.blit(self.bg_surfs["floor"], floor_rect)
+            if isinstance(sprite, Creature):
+                floor_rect = self.bg_surfs["floor"].get_frect(
+                    center=sprite.rect.midbottom + pygame.Vector2(0, -10)
+                )
+                self.screen.blit(self.bg_surfs["floor"], floor_rect)
 
     def run(self):
         while self.handle_events():
