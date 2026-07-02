@@ -55,7 +55,6 @@ class UI:
                 self.state = self.general_options[
                     self.general_index["col"] + self.general_index["row"] * 2
                 ]
-
         elif self.state == "attack":
             self.attack_index["row"] = (
                 self.attack_index["row"]
@@ -91,14 +90,15 @@ class UI:
             self.get_input("heal")
             self.state = "general"
 
-        elif self.state == "escape":
-            self.get_input("escape")
-
-        if keys[pygame.K_ESCAPE]:
+    def escape(self):
+        if self.state != "general":
             self.state = "general"
             self.general_index = {"col": 0, "row": 0}
             self.attack_index = {"col": 0, "row": 0}
             self.switch_index = 0
+            return True
+        else:
+            return False
 
     def quad_select(self, screen, index, options):
         # bg

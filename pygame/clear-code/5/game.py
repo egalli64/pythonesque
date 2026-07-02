@@ -41,7 +41,7 @@ class Game:
         self.player_monsters = [
             Monster(name, self.back_surfs[name]) for name in player_monster_list
         ]
-        self.monster = self.player_monsters[0]
+        self.monster: Monster = self.player_monsters[0]
         self.all_sprites.add(self.monster)
         opponent_name = choice(list(MONSTER_DATA.keys()))
         self.opponent = Opponent(
@@ -79,8 +79,8 @@ class Game:
             self.all_sprites.add(self.monster)
             self.ui.monster = self.monster
 
-        elif state == "escape":
-            self.running = False
+        # elif state == "escape":
+        #     self.running = False
         self.player_active = False
         self.timers["player end"].activate()
 
@@ -161,9 +161,10 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_ESCAPE:
-            #         return False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return self.ui.escape()
+
         return True
 
 
