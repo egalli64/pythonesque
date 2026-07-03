@@ -13,6 +13,16 @@ from os.path import join
 from os import walk
 
 
+def import_folder(root):
+    frames = {}
+    for folder_path, _, file_names in walk(root):
+        for file_name in file_names:
+            full_path = join(folder_path, file_name)
+            name = file_name.split(".")[0]
+            frames[name] = pygame.image.load(full_path).convert_alpha()
+    return frames
+
+
 def folder_importer(*path):
     surfs = {}
     for folder_path, _, file_names in walk(join(*path)):

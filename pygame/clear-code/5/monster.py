@@ -10,30 +10,21 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 
 from os.path import join
 from os import walk
+from random import sample
 import pygame
 
 from settings import MONSTER_DATA, ABILITIES_DATA, WINDOW_HEIGHT, WINDOW_WIDTH
-from random import sample
+from support import import_folder
 
 
 class Creature(pygame.sprite.Sprite):
     PATH_BACK = "images/back"
     PATH_FRONT = "images/front"
 
-    @staticmethod
-    def import_folder(root):
-        frames = {}
-        for folder_path, _, file_names in walk(root):
-            for file_name in file_names:
-                full_path = join(folder_path, file_name)
-                name = file_name.split(".")[0]
-                frames[name] = pygame.image.load(full_path).convert_alpha()
-        return frames
-
     @classmethod
     def load_resources(cls):
-        cls._backs = cls.import_folder(cls.PATH_BACK)
-        cls._fronts = cls.import_folder(cls.PATH_FRONT)
+        cls._backs = import_folder(cls.PATH_BACK)
+        cls._fronts = import_folder(cls.PATH_FRONT)
 
     def __init__(self, name, *groups):
         super().__init__(*groups)
