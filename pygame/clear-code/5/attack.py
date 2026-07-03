@@ -9,16 +9,18 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
 import pygame
-from support import import_tiles
+from support import import_tiles, audio_importer
 
 
 class Attack(pygame.sprite.Sprite):
-    PATH = "images/attacks"
+    PATH_FRAMES = "images/attacks"
     N_SLICES = 4
+    PATH_AUDIO = "audio/attacks"
 
     @classmethod
     def load_resources(cls):
-        cls._frames = import_tiles(cls.N_SLICES, cls.PATH)
+        cls._frames = import_tiles(cls.N_SLICES, cls.PATH_FRAMES)
+        cls.audio = audio_importer(cls.PATH_AUDIO)
 
     def __init__(self, kind, target, groups):
         super().__init__(groups)
@@ -26,6 +28,7 @@ class Attack(pygame.sprite.Sprite):
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_frect(center=target.rect.center)
+        self.audio[kind].play()
 
     def update(self, dt):
         self.frame_index += 5 * dt

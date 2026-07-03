@@ -15,7 +15,6 @@ TITLE = "Monster Battle"
 
 
 from settings import MONSTER_DATA, ABILITIES_DATA, ELEMENT_DATA
-from support import audio_importer
 from monster import Creature, Monster, Opponent
 from random import choice
 from ui import UI, OpponentUI
@@ -27,19 +26,20 @@ class Game:
     FPS = 60
     BACKGROUND_FILENAME = "images/other/bg.png"
     FLOOR_FILENAME = "images/other/floor.png"
+    MUSIC_FILENAME = "audio/music.mp3"
 
     @classmethod
     def load_resources(cls):
         cls.floor = pygame.image.load(Game.FLOOR_FILENAME)
         cls.background = pygame.image.load(Game.BACKGROUND_FILENAME)
+        cls.music = pygame.mixer.Sound(Game.MUSIC_FILENAME)
 
     def __init__(self, window, screen):
         self.window = window
         self.screen = screen
         self.clock = pygame.time.Clock()
-        self.import_assets()
-        # self.audio["music"].play(-1)
         self.player_active = True
+        # self.music.play(-1)
 
         self.all_sprites = pygame.sprite.Group()
 
@@ -71,7 +71,6 @@ class Game:
         elif state == "heal":
             self.monster.health += 50
             Attack(self.monster, "green", self.all_sprites)
-            self.audio["green"].play()
         elif state == "switch":
             self.monster.kill()
             self.monster = data
@@ -86,7 +85,6 @@ class Game:
         attack_multiplier = ELEMENT_DATA[attack_data["element"]][target.element]
         target.health -= attack_data["damage"] * attack_multiplier
         Attack(attack_data["animation"], target, self.all_sprites)
-        self.audio[attack_data["animation"]].play()
 
     def opponent_turn(self):
         if self.opponent.health <= 0:
@@ -117,9 +115,6 @@ class Game:
     def update_timers(self):
         for timer in self.timers.values():
             timer.update()
-
-    def import_assets(self):
-        self.audio = audio_importer("audio")
 
     def draw_monster_floor(self):
         for sprite in self.all_sprites:
