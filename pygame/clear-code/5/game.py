@@ -15,7 +15,7 @@ TITLE = "Monster Battle"
 
 
 from settings import MONSTER_DATA, ABILITIES_DATA, ELEMENT_DATA
-from support import folder_importer, tile_importer, audio_importer
+from support import import_folder, folder_importer, tile_importer, audio_importer
 from monster import Creature, Monster, Opponent
 from random import choice
 from ui import UI, OpponentUI
@@ -25,6 +25,13 @@ from timer import Timer  # type: ignore
 
 class Game:
     FPS = 60
+    BACKGROUND_FILENAME = "images/other/bg.png"
+    FLOOR_FILENAME = "images/other/floor.png"
+
+    @classmethod
+    def load_resources(cls):
+        cls.floor = pygame.image.load(Game.FLOOR_FILENAME)
+        cls.background = pygame.image.load(Game.BACKGROUND_FILENAME)
 
     def __init__(self, window, screen):
         self.window = window
@@ -117,7 +124,6 @@ class Game:
             timer.update()
 
     def import_assets(self):
-        self.bg_surfs = folder_importer("images", "other")
         self.simple_surfs = folder_importer("images", "simple")
         self.attack_frames = tile_importer(4, "images", "attacks")
         self.audio = audio_importer("audio")
@@ -125,10 +131,10 @@ class Game:
     def draw_monster_floor(self):
         for sprite in self.all_sprites:
             if isinstance(sprite, Creature):
-                floor_rect = self.bg_surfs["floor"].get_frect(
+                floor_rect = Game.floor.get_frect(
                     center=sprite.rect.midbottom + pygame.Vector2(0, -10)
                 )
-                self.screen.blit(self.bg_surfs["floor"], floor_rect)
+                self.screen.blit(Game.floor, floor_rect)
 
     def run(self):
         while self.handle_events():
@@ -139,7 +145,7 @@ class Game:
             if self.player_active:
                 self.ui.update()
 
-            self.screen.blit(self.bg_surfs["bg"], (0, 0))
+            self.screen.blit(Game.background, (0, 0))
             self.draw_monster_floor()
             self.all_sprites.draw(self.screen)
             self.ui.draw(self.screen)
@@ -163,6 +169,7 @@ if __name__ == "__main__":
     screen = window.get_surface()
 
     Creature.load_resources()
+    Game.load_resources()
 
     try:
         Game(window, screen).run()
