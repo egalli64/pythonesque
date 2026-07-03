@@ -37,15 +37,13 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
 
         names = ["Sparchu", "Jacana", "Plumette", "Atrox"]
-        self.player_monsters = [Monster(name, self.back_surfs[name]) for name in names]
+        self.player_monsters = [Monster(name) for name in names]
 
         self.monster: Monster = self.player_monsters[0]
         self.all_sprites.add(self.monster)
 
         opponent_name = choice(list(MONSTER_DATA.keys()))
-        self.opponent = Opponent(
-            opponent_name, self.front_surfs[opponent_name], self.all_sprites
-        )
+        self.opponent = Opponent(opponent_name, self.all_sprites)
 
         self.ui = UI(
             self.screen,
@@ -93,9 +91,7 @@ class Game:
             self.player_active = True
             self.opponent.kill()
             monster_name = choice(list(MONSTER_DATA.keys()))
-            self.opponent = Opponent(
-                monster_name, self.front_surfs[monster_name], self.all_sprites
-            )
+            self.opponent = Opponent(monster_name, self.all_sprites)
             self.opponent_ui.monster = self.opponent
         else:
             attack = choice(self.opponent.abilities)
@@ -121,8 +117,6 @@ class Game:
             timer.update()
 
     def import_assets(self):
-        self.back_surfs = folder_importer("images", "back")
-        self.front_surfs = folder_importer("images", "front")
         self.bg_surfs = folder_importer("images", "other")
         self.simple_surfs = folder_importer("images", "simple")
         self.attack_frames = tile_importer(4, "images", "attacks")
@@ -167,6 +161,8 @@ if __name__ == "__main__":
     pygame.init()
     window = pygame.Window(TITLE, WIN_RECT.size)
     screen = window.get_surface()
+
+    Creature.load_resources()
 
     try:
         Game(window, screen).run()

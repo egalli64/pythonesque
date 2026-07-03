@@ -8,6 +8,8 @@ Google Drive: https://drive.google.com/drive/folders/15VQ37pgCwXxHZ8oBK0yc_CzKQe
 My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
+from os.path import join
+from os import walk
 import pygame
 
 from settings import MONSTER_DATA, ABILITIES_DATA, WINDOW_HEIGHT, WINDOW_WIDTH
@@ -15,10 +17,27 @@ from random import sample
 
 
 class Creature(pygame.sprite.Sprite):
-    def __init__(self, name, image, *groups):
+    PATH_BACK = "images/back"
+    PATH_FRONT = "images/front"
+
+    @staticmethod
+    def import_folder(root):
+        frames = {}
+        for folder_path, _, file_names in walk(root):
+            for file_name in file_names:
+                full_path = join(folder_path, file_name)
+                name = file_name.split(".")[0]
+                frames[name] = pygame.image.load(full_path).convert_alpha()
+        return frames
+
+    @classmethod
+    def load_resources(cls):
+        cls._backs = cls.import_folder(cls.PATH_BACK)
+        cls._fronts = cls.import_folder(cls.PATH_FRONT)
+
+    def __init__(self, name, *groups):
         super().__init__(*groups)
 
-        self.image: pygame.Surface = image
         self.element = MONSTER_DATA[name]["element"]
         self._health = self.max_health = MONSTER_DATA[name]["health"]
         self.abilities = sample(list(ABILITIES_DATA.keys()), 4)
@@ -34,8 +53,9 @@ class Creature(pygame.sprite.Sprite):
 
 
 class Monster(Creature):
-    def __init__(self, name, image):
-        super().__init__(name, image)
+    def __init__(self, name):
+        super().__init__(name)
+        self.image: pygame.Surface = Creature._backs[name]
         self.rect = self.image.get_frect(bottomleft=(100, WINDOW_HEIGHT))
 
     def __repr__(self):
@@ -43,6 +63,7 @@ class Monster(Creature):
 
 
 class Opponent(Creature):
-    def __init__(self, name, image, groups):
-        super().__init__(name, image, groups)
+    def __init__(self, name, groups):
+        super().__init__(name, groups)
+        self.image: pygame.Surface = Creature._fronts[name]
         self.rect = self.image.get_frect(midbottom=(WINDOW_WIDTH - 250, 300))
