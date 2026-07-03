@@ -15,11 +15,11 @@ TITLE = "Monster Battle"
 
 
 from settings import MONSTER_DATA, ABILITIES_DATA, ELEMENT_DATA
-from support import import_folder, folder_importer, tile_importer, audio_importer
+from support import audio_importer
 from monster import Creature, Monster, Opponent
 from random import choice
 from ui import UI, OpponentUI
-from attack import AttackAnimationSprite
+from attack import Attack
 from timer import Timer  # type: ignore
 
 
@@ -70,9 +70,7 @@ class Game:
             self.apply_attack(self.opponent, data)
         elif state == "heal":
             self.monster.health += 50
-            AttackAnimationSprite(
-                self.monster, self.attack_frames["green"], self.all_sprites
-            )
+            Attack(self.monster, "green", self.all_sprites)
             self.audio["green"].play()
         elif state == "switch":
             self.monster.kill()
@@ -87,9 +85,7 @@ class Game:
         attack_data = ABILITIES_DATA[attack]
         attack_multiplier = ELEMENT_DATA[attack_data["element"]][target.element]
         target.health -= attack_data["damage"] * attack_multiplier
-        AttackAnimationSprite(
-            target, self.attack_frames[attack_data["animation"]], self.all_sprites
-        )
+        Attack(attack_data["animation"], target, self.all_sprites)
         self.audio[attack_data["animation"]].play()
 
     def opponent_turn(self):
@@ -123,7 +119,6 @@ class Game:
             timer.update()
 
     def import_assets(self):
-        self.attack_frames = tile_importer(4, "images", "attacks")
         self.audio = audio_importer("audio")
 
     def draw_monster_floor(self):
@@ -169,6 +164,7 @@ if __name__ == "__main__":
     Creature.load_resources()
     Game.load_resources()
     UI.load_resources()
+    Attack.load_resources()
 
     try:
         Game(window, screen).run()

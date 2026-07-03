@@ -9,12 +9,21 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 """
 
 import pygame
+from support import import_tiles
 
 
-class AttackAnimationSprite(pygame.sprite.Sprite):
-    def __init__(self, target, frames, groups):
+class Attack(pygame.sprite.Sprite):
+    PATH = "images/attacks"
+    N_SLICES = 4
+
+    @classmethod
+    def load_resources(cls):
+        cls._frames = import_tiles(cls.N_SLICES, cls.PATH)
+
+    def __init__(self, kind, target, groups):
         super().__init__(groups)
-        self.frames, self.frame_index = frames, 0
+        self.frames = Attack._frames[kind]
+        self.frame_index = 0
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_frect(center=target.rect.center)
 
