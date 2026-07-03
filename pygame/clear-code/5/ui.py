@@ -11,16 +11,22 @@ My version: https://github.com/egalli64/pythonesque/ pygame/clear-code folder
 import pygame
 
 from settings import WINDOW_HEIGHT, WINDOW_WIDTH, COLORS
+from support import import_folder
 
 
 class UI:
-    def __init__(self, screen, monster, player_monsters, simple_surfs, get_input):
+    PATH_IMAGES = "images/simple"
+
+    @classmethod
+    def load_resources(cls):
+        cls.images = import_folder(cls.PATH_IMAGES)
+
+    def __init__(self, screen, monster, player_monsters, get_input):
         self.screen = screen
         self.font = pygame.font.Font(None, 30)
         self.left = WINDOW_WIDTH / 2 - 100
         self.top = WINDOW_HEIGHT / 2 + 50
         self.monster = monster
-        self.simple_surfs = simple_surfs
         self.get_input = get_input
 
         # control
@@ -155,14 +161,14 @@ class UI:
             color = COLORS["gray"] if i == self.switch_index else COLORS["black"]
             name = self.available_monsters[i].name
 
-            simple_surf = self.simple_surfs[name]
-            simple_rect = simple_surf.get_frect(center=(x - 100, y))
+            monster_image = UI.images[name]
+            monster_rect = monster_image.get_frect(center=(x - 100, y))
 
             text_surf = self.font.render(name, True, color)
             text_rect = text_surf.get_frect(midleft=(x, y))
             if rect.collidepoint(text_rect.center):
                 screen.blit(text_surf, text_rect)
-                screen.blit(simple_surf, simple_rect)
+                screen.blit(monster_image, monster_rect)
 
     def stats(self, screen):
         # bg

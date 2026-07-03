@@ -56,7 +56,6 @@ class Game:
             self.screen,
             self.monster,
             self.player_monsters,
-            self.simple_surfs,
             self.get_input,
         )
         self.opponent_ui = OpponentUI(self.opponent)
@@ -124,7 +123,6 @@ class Game:
             timer.update()
 
     def import_assets(self):
-        self.simple_surfs = folder_importer("images", "simple")
         self.attack_frames = tile_importer(4, "images", "attacks")
         self.audio = audio_importer("audio")
 
@@ -170,6 +168,7 @@ if __name__ == "__main__":
 
     Creature.load_resources()
     Game.load_resources()
+    UI.load_resources()
 
     try:
         Game(window, screen).run()
