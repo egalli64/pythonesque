@@ -73,6 +73,7 @@ class Game:
             self.monster.health += 50
             Attack("green", self.monster.rect, self.all_sprites)
         elif state == "switch":
+            assert isinstance(data, Monster)
             self.monster.kill()
             self.monster = data
             self.all_sprites.add(self.monster)
