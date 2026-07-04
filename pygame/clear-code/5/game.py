@@ -27,6 +27,7 @@ class Game:
     BACKGROUND_FILENAME = "images/other/bg.png"
     FLOOR_FILENAME = "images/other/floor.png"
     MUSIC_FILENAME = "audio/music.mp3"
+    EVENT_KILLED = pygame.event.custom_type()
 
     @classmethod
     def load_resources(cls):
@@ -43,7 +44,7 @@ class Game:
 
         self.all_sprites = pygame.sprite.Group()
 
-        names = ["Sparchu", "Jacana", "Plumette", "Atrox"]
+        names = ["Sparchu", "Jacana"]  # , "Plumette", "Atrox"]
         self.player_monsters = [Monster(name) for name in names]
 
         self.monster: Monster = self.player_monsters[0]
@@ -108,7 +109,7 @@ class Game:
                 self.all_sprites.add(self.monster)
                 self.ui.monster = self.monster
             else:
-                self.running = False
+                pygame.event.post(pygame.event.Event(Game.EVENT_KILLED))
 
     def update_timers(self):
         for timer in self.timers.values():
@@ -140,22 +141,25 @@ class Game:
 
     def handle_events(self) -> bool:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return False
-            elif event.type == pygame.KEYDOWN:
-                match event.key:
-                    case pygame.K_ESCAPE:
-                        return self.ui.escape()
-                    case pygame.K_SPACE:
-                        self.ui.select()
-                    case pygame.K_DOWN:
-                        self.ui.change_row(1)
-                    case pygame.K_UP:
-                        self.ui.change_row(-1)
-                    case pygame.K_RIGHT:
-                        self.ui.change_col(1)
-                    case pygame.K_LEFT:
-                        self.ui.change_col(-1)
+            match event.type:
+                case pygame.QUIT:
+                    return False
+                case pygame.KEYDOWN:
+                    match event.key:
+                        case pygame.K_ESCAPE:
+                            return self.ui.escape()
+                        case pygame.K_SPACE:
+                            self.ui.select()
+                        case pygame.K_DOWN:
+                            self.ui.change_row(1)
+                        case pygame.K_UP:
+                            self.ui.change_row(-1)
+                        case pygame.K_RIGHT:
+                            self.ui.change_col(1)
+                        case pygame.K_LEFT:
+                            self.ui.change_col(-1)
+                case Game.EVENT_KILLED:
+                    return False
 
         return True
 
@@ -173,5 +177,6 @@ if __name__ == "__main__":
     try:
         Game(window, screen).run()
     finally:
+        pygame.time.wait(500)
         pygame.quit()
         print("Done.")
