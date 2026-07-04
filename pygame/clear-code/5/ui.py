@@ -45,40 +45,32 @@ class UI:
         self.switch_index = 0
 
     def select(self):
-        print("general index:", self.general_index)
         match self.state:
             case "general":
                 i = self.general_index["col"]
                 j = self.general_index["row"]
                 self.state = self.general_options[i + j * 2]
-                print("from general to", self.state)
             case "attack":
                 i = self.general_index["col"]
                 j = self.general_index["row"]
                 attack = self.monster.abilities[i + j * 2]
                 self.get_input(self.state, attack)
                 self.state = "general"
-                print("from attack to general", i + j * 2)
             case "switch":
                 data = self.available_monsters[self.switch_index]
                 self.get_input(self.state, data)
                 self.state = "general"
-                print("from switch to general")
 
     def change_row(self, delta):
         if self.state in ("general", "attack"):
-            print("Change row", self.general_index)
             self.general_index["row"] = (self.general_index["row"] + delta) % self.rows
-            print("Changed row", self.general_index)
         elif self.state == "switch" and self.available_monsters:
             max = len(self.available_monsters)
             self.switch_index = (self.switch_index + delta) % max
 
     def change_col(self, delta):
         if self.state in ("general", "attack"):
-            print("Change col", self.general_index)
             self.general_index["col"] = (self.general_index["col"] + delta) % self.cols
-            print("Changed col", self.general_index)
 
     def input(self):
         if self.state == "heal":
@@ -96,12 +88,10 @@ class UI:
             return False
 
     def quad_select(self, screen, index, options):
-        # bg
         rect = pygame.FRect(self.left + 40, self.top + 60, 400, 200)
         pygame.draw.rect(screen, COLORS["white"], rect, 0, 4)
         pygame.draw.rect(screen, COLORS["gray"], rect, 4, 4)
 
-        # menu
         for col in range(self.cols):
             for row in range(self.rows):
                 x = (
@@ -126,12 +116,10 @@ class UI:
                 screen.blit(text_surf, text_rect)
 
     def switch(self, screen):
-        # bg
         rect = pygame.FRect(self.left + 40, self.top - 140, 400, 400)
         pygame.draw.rect(screen, COLORS["white"], rect, 0, 4)
         pygame.draw.rect(screen, COLORS["gray"], rect, 4, 4)
 
-        # menu
         v_offset = (
             0
             if self.switch_index < self.visible_monsters
@@ -160,12 +148,10 @@ class UI:
                 screen.blit(monster_image, monster_rect)
 
     def stats(self, screen):
-        # bg
         rect = pygame.FRect(self.left, self.top, 250, 80)
         pygame.draw.rect(screen, COLORS["white"], rect, 0, 4)
         pygame.draw.rect(screen, COLORS["gray"], rect, 4, 4)
 
-        # data
         name_surf = self.font.render(self.monster.name, True, COLORS["black"])
         name_rect = name_surf.get_frect(
             topleft=rect.topleft + pygame.Vector2(rect.width * 0.05, 12)

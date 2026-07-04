@@ -143,18 +143,19 @@ class Game:
             if event.type == pygame.QUIT:
                 return False
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    return self.ui.escape()
-                elif event.key == pygame.K_SPACE:
-                    self.ui.select()
-                elif event.key == pygame.K_DOWN:
-                    self.ui.change_row(1)
-                elif event.key == pygame.K_UP:
-                    self.ui.change_row(-1)
-                elif event.key == pygame.K_RIGHT:
-                    self.ui.change_col(1)
-                elif event.key == pygame.K_LEFT:
-                    self.ui.change_col(-1)
+                match event.key:
+                    case pygame.K_ESCAPE:
+                        return self.ui.escape()
+                    case pygame.K_SPACE:
+                        self.ui.select()
+                    case pygame.K_DOWN:
+                        self.ui.change_row(1)
+                    case pygame.K_UP:
+                        self.ui.change_row(-1)
+                    case pygame.K_RIGHT:
+                        self.ui.change_col(1)
+                    case pygame.K_LEFT:
+                        self.ui.change_col(-1)
 
         return True
 
