@@ -27,7 +27,7 @@ class Game:
     BACKGROUND_FILENAME = "images/other/bg.png"
     FLOOR_FILENAME = "images/other/floor.png"
     MUSIC_FILENAME = "audio/music.mp3"
-    EVENT_KILLED = pygame.event.custom_type()
+    EVENT_ESCAPE = pygame.event.custom_type()
 
     @classmethod
     def load_resources(cls):
@@ -44,7 +44,7 @@ class Game:
 
         self.all_sprites = pygame.sprite.Group()
 
-        names = ["Sparchu", "Jacana"]  # , "Plumette", "Atrox"]
+        names = ["Sparchu", "Jacana", "Plumette", "Atrox"]
         self.player_monsters = [Monster(name) for name in names]
 
         self.monster: Monster = self.player_monsters[0]
@@ -77,6 +77,8 @@ class Game:
             self.monster = data
             self.all_sprites.add(self.monster)
             self.ui.monster = self.monster
+        elif state == "escape":
+            pygame.event.post(pygame.event.Event(Game.EVENT_ESCAPE))
 
         self.player_active = False
         self.timers["player end"].activate()
@@ -109,7 +111,7 @@ class Game:
                 self.all_sprites.add(self.monster)
                 self.ui.monster = self.monster
             else:
-                pygame.event.post(pygame.event.Event(Game.EVENT_KILLED))
+                pygame.event.post(pygame.event.Event(Game.EVENT_ESCAPE))
 
     def update_timers(self):
         for timer in self.timers.values():
@@ -158,7 +160,7 @@ class Game:
                             self.ui.change_col(1)
                         case pygame.K_LEFT:
                             self.ui.change_col(-1)
-                case Game.EVENT_KILLED:
+                case Game.EVENT_ESCAPE:
                     return False
 
         return True
