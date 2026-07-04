@@ -62,15 +62,19 @@ class UI:
                 self.state = "general"
 
     def change_row(self, delta):
-        if self.state in ("general", "attack"):
+        if self.state == "general":
             self.general_index["row"] = (self.general_index["row"] + delta) % self.rows
+        elif self.state == "attack":
+            self.attack_index["row"] = (self.attack_index["row"] + delta) % self.rows
         elif self.state == "switch" and self.available_monsters:
             max = len(self.available_monsters)
             self.switch_index = (self.switch_index + delta) % max
 
     def change_col(self, delta):
-        if self.state in ("general", "attack"):
+        if self.state == "general":
             self.general_index["col"] = (self.general_index["col"] + delta) % self.cols
+        elif self.state == "attack":
+            self.attack_index["col"] = (self.attack_index["col"] + delta) % self.cols
 
     def input(self):
         if self.state == "heal":
