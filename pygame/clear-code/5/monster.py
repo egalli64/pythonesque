@@ -44,17 +44,21 @@ class Creature(pygame.sprite.Sprite):
 
 
 class Monster(Creature):
+    BOTTOM_LEFT = (100, WINDOW_HEIGHT)
+
     def __init__(self, name):
         super().__init__(name)
         self.image: pygame.Surface = Creature._backs[name]
-        self.rect = self.image.get_frect(bottomleft=(100, WINDOW_HEIGHT))
+        self.rect: pygame.Rect = self.image.get_rect(bottomleft=Monster.BOTTOM_LEFT)
 
     def __repr__(self):
         return f"{self.name}: {self.health}/{self.max_health}"
 
 
 class Opponent(Creature):
+    MID_BOTTOM = (WINDOW_WIDTH - 250, 300)
+
     def __init__(self, name, groups):
         super().__init__(name, groups)
         self.image: pygame.Surface = Creature._fronts[name]
-        self.rect = self.image.get_frect(midbottom=(WINDOW_WIDTH - 250, 300))
+        self.rect: pygame.Rect = self.image.get_rect(midbottom=Opponent.MID_BOTTOM)
