@@ -70,7 +70,7 @@ class Game:
             self.apply_attack(self.opponent, data)
         elif state == "heal":
             self.monster.health += 50
-            Attack(self.monster, "green", self.all_sprites)
+            Attack("green", self.monster.rect, self.all_sprites)
         elif state == "switch":
             self.monster.kill()
             self.monster = data
@@ -84,7 +84,7 @@ class Game:
         attack_data = ABILITIES_DATA[attack]
         attack_multiplier = ELEMENT_DATA[attack_data["element"]][target.element]
         target.health -= attack_data["damage"] * attack_multiplier
-        Attack(attack_data["animation"], target, self.all_sprites)
+        Attack(attack_data["animation"], target.rect, self.all_sprites)
 
     def opponent_turn(self):
         if self.opponent.health <= 0:
@@ -101,12 +101,10 @@ class Game:
     def player_turn(self):
         self.player_active = True
         if self.monster.health <= 0:
-            available_monsters = [
-                monster for monster in self.player_monsters if monster.health > 0
-            ]
-            if available_monsters:
+            monsters = [m for m in self.player_monsters if m.health > 0]
+            if monsters:
                 self.monster.kill()
-                self.monster = available_monsters[0]
+                self.monster = monsters[0]
                 self.all_sprites.add(self.monster)
                 self.ui.monster = self.monster
             else:
@@ -147,6 +145,16 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return self.ui.escape()
+                elif event.key == pygame.K_SPACE:
+                    self.ui.select()
+                elif event.key == pygame.K_DOWN:
+                    self.ui.change_row(1)
+                elif event.key == pygame.K_UP:
+                    self.ui.change_row(-1)
+                elif event.key == pygame.K_RIGHT:
+                    self.ui.change_col(1)
+                elif event.key == pygame.K_LEFT:
+                    self.ui.change_col(-1)
 
         return True
 

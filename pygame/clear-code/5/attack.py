@@ -22,12 +22,12 @@ class Attack(pygame.sprite.Sprite):
         cls._frames = import_tiles(cls.N_SLICES, cls.PATH_FRAMES)
         cls.audio = audio_importer(cls.PATH_AUDIO)
 
-    def __init__(self, kind, target, groups):
+    def __init__(self, kind, rect: pygame.Rect, groups):
         super().__init__(groups)
         self.frames = Attack._frames[kind]
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
-        self.rect = self.image.get_frect(center=target.rect.center)
+        self.rect = self.image.get_frect(center=rect.center)
         self.audio[kind].play()
 
     def update(self, dt):

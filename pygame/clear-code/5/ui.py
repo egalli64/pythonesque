@@ -44,55 +44,44 @@ class UI:
         ]
         self.switch_index = 0
 
-    def input(self):
-        keys = pygame.key.get_just_pressed()
-        if self.state == "general":
-            self.general_index["row"] = (
-                self.general_index["row"]
-                + int(keys[pygame.K_DOWN])
-                - int(keys[pygame.K_UP])
-            ) % self.rows
-            self.general_index["col"] = (
-                self.general_index["col"]
-                + int(keys[pygame.K_RIGHT])
-                - int(keys[pygame.K_LEFT])
-            ) % self.cols
-            if keys[pygame.K_SPACE]:
-                self.state = self.general_options[
-                    self.general_index["col"] + self.general_index["row"] * 2
-                ]
-        elif self.state == "attack":
-            self.attack_index["row"] = (
-                self.attack_index["row"]
-                + int(keys[pygame.K_DOWN])
-                - int(keys[pygame.K_UP])
-            ) % self.rows
-            self.attack_index["col"] = (
-                self.attack_index["col"]
-                + int(keys[pygame.K_RIGHT])
-                - int(keys[pygame.K_LEFT])
-            ) % self.cols
-            if keys[pygame.K_SPACE]:
-                attack = self.monster.abilities[
-                    self.attack_index["col"] + self.attack_index["row"] * 2
-                ]
+    def select(self):
+        print("general index:", self.general_index)
+        match self.state:
+            case "general":
+                i = self.general_index["col"]
+                j = self.general_index["row"]
+                self.state = self.general_options[i + j * 2]
+                print("from general to", self.state)
+            case "attack":
+                i = self.general_index["col"]
+                j = self.general_index["row"]
+                attack = self.monster.abilities[i + j * 2]
                 self.get_input(self.state, attack)
                 self.state = "general"
+                print("from attack to general", i + j * 2)
+            case "switch":
+                data = self.available_monsters[self.switch_index]
+                self.get_input(self.state, data)
+                self.state = "general"
+                print("from switch to general")
 
-        elif self.state == "switch":
-            if self.available_monsters:
-                self.switch_index = (
-                    self.switch_index
-                    + int(keys[pygame.K_DOWN])
-                    - int(keys[pygame.K_UP])
-                ) % len(self.available_monsters)
+    def change_row(self, delta):
+        if self.state in ("general", "attack"):
+            print("Change row", self.general_index)
+            self.general_index["row"] = (self.general_index["row"] + delta) % self.rows
+            print("Changed row", self.general_index)
+        elif self.state == "switch" and self.available_monsters:
+            max = len(self.available_monsters)
+            self.switch_index = (self.switch_index + delta) % max
 
-                if keys[pygame.K_SPACE]:
-                    self.get_input(
-                        self.state, self.available_monsters[self.switch_index]
-                    )
-                    self.state = "general"
-        elif self.state == "heal":
+    def change_col(self, delta):
+        if self.state in ("general", "attack"):
+            print("Change col", self.general_index)
+            self.general_index["col"] = (self.general_index["col"] + delta) % self.cols
+            print("Changed col", self.general_index)
+
+    def input(self):
+        if self.state == "heal":
             self.get_input("heal")
             self.state = "general"
 
