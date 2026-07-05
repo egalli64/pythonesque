@@ -39,7 +39,7 @@ class Game:
         self.pausing = False
         self.helping = False
         self.pause = pygame.sprite.GroupSingle(Pause())
-        self.help = pygame.sprite.GroupSingle(Help())
+        self.help = Help()
 
     def run(self):
         while self.handle_events():
