@@ -28,7 +28,7 @@ class Game:
         self.screen = screen
         self.clock = pygame.time.Clock()
 
-        self.background = pygame.sprite.GroupSingle(Background())
+        self.background = Background(WIN_RECT)
         self.all_sprites = pygame.sprite.Group()
         self.paddle = {}
         self.paddle["left"] = Paddle("left", self.all_sprites)
@@ -123,7 +123,7 @@ class Game:
             paddle.update(action="up")
         elif (
             paddle.rect.centery < self.ball.rect.centery
-            and paddle.rect.bottom < Settings.WINDOW.bottom - 10
+            and paddle.rect.bottom < WIN_RECT.bottom - 10
         ):
             paddle.update(action="down")
         else:
