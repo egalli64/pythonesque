@@ -6,7 +6,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Pong game
 """
 
-from time import time
 import pygame
 from settings import Settings
 from background import Background
@@ -17,13 +16,16 @@ from ball import Ball
 from score import Score
 from events import Events
 
+WIN_RECT = pygame.Rect(0, 0, 1000, 600)
+TITLE = "Pong"
+
 
 class Game:
-    TITLE = "Pong"
+    FPS = 60
 
-    def __init__(self):
-        self.window = pygame.Window(Game.TITLE, Settings.WINDOW.size)
-        self.screen = self.window.get_surface()
+    def __init__(self, window, screen):
+        self.window = window
+        self.screen = screen
         self.clock = pygame.time.Clock()
 
         self.background = pygame.sprite.GroupSingle(Background())
@@ -41,7 +43,7 @@ class Game:
 
     def run(self):
         while self.handle_events():
-            dt = self.clock.tick(Settings.FPS) / 1000
+            dt = self.clock.tick(Game.FPS) / 1000
             self.update(dt)
             self.draw()
 
@@ -130,9 +132,11 @@ class Game:
 
 if __name__ == "__main__":
     pygame.init()
+    window = pygame.Window(TITLE, WIN_RECT.size)
+    screen = window.get_surface()
 
     try:
-        Game().run()
+        Game(window, screen).run()
     finally:
         pygame.quit()
         print("Done.")
