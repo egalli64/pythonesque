@@ -14,7 +14,6 @@ class Settings:
     """Project global settings."""
 
     WINDOW = pygame.Rect(0, 0, 1000, 600)
-    FPS = 60
     KI = {"left": False, "right": False}
     SOUNDFLAG: bool = True
     PATH = {}
