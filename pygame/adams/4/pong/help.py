@@ -6,9 +6,7 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Pong help
 """
 
-from typing import Tuple
 import pygame
-from settings import Settings
 
 TEXT_L = """h
 p
@@ -42,9 +40,9 @@ TEXT_R = """- toggle help mode
 class Help:
     FONT_COLOR = "white"
 
-    def __init__(self, *groups: Tuple[pygame.sprite.Group]) -> None:
+    def __init__(self, viewport: pygame.Rect, *groups) -> None:
         super().__init__(*groups)
-        self.rect = pygame.Rect(Settings.WINDOW.topleft, Settings.WINDOW.size)
+        self.rect = pygame.Rect(viewport.topleft, viewport.size)
         self.image = pygame.Surface(self.rect.size).convert_alpha()
         self.image.fill([20, 20, 20, 200])
         font = pygame.font.Font(None, 36)
