@@ -33,7 +33,7 @@ class Game:
         self.paddle = {}
         self.paddle["left"] = Paddle("left", self.all_sprites)
         self.paddle["right"] = Paddle("right", self.all_sprites)
-        self.ball = Ball(self.all_sprites)
+        self.ball = Ball(WIN_RECT, self.all_sprites)
         self.score = Score(self.all_sprites)
         self.running = True
         self.pausing = False
@@ -134,6 +134,8 @@ if __name__ == "__main__":
     pygame.init()
     window = pygame.Window(TITLE, WIN_RECT.size)
     screen = window.get_surface()
+
+    Ball.load_resources()
 
     try:
         Game(window, screen).run()

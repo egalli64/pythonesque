@@ -8,22 +8,25 @@ Pong ball
 
 from random import choice, uniform
 import pygame
-from settings import Settings
 from events import Events
-
+from settings import Settings
 
 class Ball(pygame.sprite.Sprite):
     PLAYER_LEFT = "sounds/left.mp3"
     PLAYER_RIGHT = "sounds/right.mp3"
     BOUNCE = "sounds/bounce.mp3"
-    SPEED = Settings.WINDOW.width / 3
+    SPEED = 333
 
-    def __init__(self, *groups) -> None:
+    @classmethod
+    def load_resources(cls):
+        cls.left_sound = pygame.mixer.Sound(Ball.PLAYER_LEFT)
+        cls.right_sound = pygame.mixer.Sound(Ball.PLAYER_RIGHT)
+        cls.bounce_sound = pygame.mixer.Sound(Ball.BOUNCE)
+
+    def __init__(self, viewport: pygame.Rect, *groups) -> None:
         super().__init__(*groups)
-        self.sounds: dict[str, pygame.mixer.Sound] = {}
-        self.sounds["left"] = pygame.mixer.Sound(Ball.PLAYER_LEFT)
-        self.sounds["right"] = pygame.mixer.Sound(Ball.PLAYER_RIGHT)
-        self.sounds["bounce"] = pygame.mixer.Sound(Ball.BOUNCE)
+
+        self.viewport = viewport
         self.channel = pygame.mixer.find_channel()
         self.rect: pygame.FRect = pygame.FRect(0, 0, 20, 20)
 
@@ -38,37 +41,37 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.top <= 0:
             self.vertical_flip()
             self.rect.top = 0
-        elif self.rect.bottom >= Settings.WINDOW.bottom:
+        elif self.rect.bottom >= self.viewport.bottom:
             self.vertical_flip()
-            self.rect.bottom = Settings.WINDOW.bottom
+            self.rect.bottom = self.viewport.bottom
         elif self.rect.right < 0:
             Events.MYEVENT.player = 2
             pygame.event.post(Events.MYEVENT)
             self.service()
-        elif self.rect.left > Settings.WINDOW.right:
+        elif self.rect.left > self.viewport.right:
             Events.MYEVENT.player = 1
             pygame.event.post(Events.MYEVENT)
             self.service()
 
     def service(self) -> None:
-        self.rect.center = Settings.WINDOW.center
+        self.rect.center = self.viewport.center
         self.velocity = pygame.Vector2(choice([-1, 1]), choice([-1, 1])) * Ball.SPEED
 
     def horizontal_flip(self) -> None:
         if Settings.SOUNDFLAG:
             if self.velocity.x < 0:
                 self.channel.set_volume(0.9, 0.1)
-                self.channel.play(self.sounds["left"])
+                self.channel.play(Ball.left_sound)
             else:
                 self.channel.set_volume(0.1, 0.9)
-                self.channel.play(self.sounds["right"])
+                self.channel.play(Ball.right_sound)
 
         self.velocity.x = -1 * (self.velocity.x + uniform(0, Ball.SPEED / 4))
         self.velocity.y += uniform(0, Ball.SPEED / 4)
 
     def vertical_flip(self) -> None:
         if Settings.SOUNDFLAG:
-            rel_pos = self.rect.centerx / Settings.WINDOW.width
+            rel_pos = self.rect.centerx / self.viewport.width
             self.channel.set_volume(1.0 - rel_pos, rel_pos)
-            self.channel.play(self.sounds["bounce"])
+            self.channel.play(Ball.bounce_sound)
         self.velocity.y *= -1
