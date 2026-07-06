@@ -13,9 +13,9 @@ p
 ESC
 
 F2
-k
-l
-r
+N/A
+1
+2
 
 UP
 DOWN
@@ -39,13 +39,14 @@ TEXT_R = """- toggle help mode
 
 class Help:
     FONT_COLOR = "white"
+    FONT_SIZE = 28
 
     def __init__(self, viewport: pygame.Rect, *groups) -> None:
         super().__init__(*groups)
         self.rect = pygame.Rect(viewport.topleft, viewport.size)
         self.image = pygame.Surface(self.rect.size).convert_alpha()
         self.image.fill([20, 20, 20, 200])
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font(None, Help.FONT_SIZE)
         lines = font.render(TEXT_L, True, Help.FONT_COLOR)
         self.image.blit(lines, (10, 10))
         lines = font.render(TEXT_R, True, Help.FONT_COLOR)
