@@ -31,8 +31,8 @@ class Game:
         self.background = Background(WIN_RECT)
         self.all_sprites = pygame.sprite.Group()
         self.paddle = {}
-        self.paddle["left"] = Paddle("left", self.all_sprites)
-        self.paddle["right"] = Paddle("right", self.all_sprites)
+        self.paddle["left"] = Paddle("left", WIN_RECT, self.all_sprites)
+        self.paddle["right"] = Paddle("right", WIN_RECT, self.all_sprites)
         self.ball = Ball(WIN_RECT, self.all_sprites)
         self.score = Score(self.all_sprites)
         self.running = True

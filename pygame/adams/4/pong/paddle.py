@@ -7,6 +7,7 @@ Pong paddle
 """
 
 import pygame
+
 from settings import Settings
 
 
@@ -14,10 +15,12 @@ class Paddle(pygame.sprite.Sprite):
     BORDERDISTANCE = {"horizontal": 50, "vertical": 10}
     DIRECTION = {"up": -1, "down": 1, "halt": 0}
 
-    def __init__(self, player: str, *groups) -> None:
+    def __init__(self, player: str, viewport: pygame.Rect, *groups) -> None:
         super().__init__(*groups)
-        self.rect: pygame.FRect = pygame.FRect(0, 0, 15, Settings.WINDOW.height // 10)
-        self.rect.centery = Settings.WINDOW.centery
+
+        self.viewport = viewport
+        self.rect: pygame.FRect = pygame.FRect(0, 0, 15, viewport.height // 10)
+        self.rect.centery = viewport.centery
         self.images = {
             "byhand": pygame.Surface(self.rect.size).convert(),
             "byki": pygame.Surface(self.rect.size).convert(),
@@ -28,10 +31,8 @@ class Paddle(pygame.sprite.Sprite):
         if self.player == "left":
             self.rect.left = Paddle.BORDERDISTANCE["horizontal"]
         else:
-            self.rect.right = (
-                Settings.WINDOW.right - Paddle.BORDERDISTANCE["horizontal"]
-            )
-        self.speed = Settings.WINDOW.height // 2
+            self.rect.right = viewport.right - Paddle.BORDERDISTANCE["horizontal"]
+        self.speed = viewport.height // 2
         self.direction = Paddle.DIRECTION["halt"]
         self.select_image()
 
@@ -53,7 +54,7 @@ class Paddle(pygame.sprite.Sprite):
             elif self.direction == Paddle.DIRECTION["down"]:
                 self.rect.bottom = min(
                     self.rect.bottom,
-                    Settings.WINDOW.height - Paddle.BORDERDISTANCE["vertical"],
+                    self.viewport.height - Paddle.BORDERDISTANCE["vertical"],
                 )
 
     def select_image(self) -> None:
