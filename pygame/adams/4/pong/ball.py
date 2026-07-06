@@ -9,7 +9,7 @@ Pong ball
 from random import choice, uniform
 import pygame
 from events import Events
-from settings import Settings
+
 
 class Ball(pygame.sprite.Sprite):
     PLAYER_LEFT = "sounds/left.mp3"
@@ -28,13 +28,17 @@ class Ball(pygame.sprite.Sprite):
 
         self.viewport = viewport
         self.channel = pygame.mixer.find_channel()
-        self.rect: pygame.FRect = pygame.FRect(0, 0, 20, 20)
+        self.sound_effect = True
 
+        self.rect: pygame.FRect = pygame.FRect(0, 0, 20, 20)
         self.image = pygame.Surface(self.rect.size).convert()
         self.image.set_colorkey("black")
         pygame.draw.circle(self.image, "green", self.rect.center, self.rect.width // 2)
         self.velocity = pygame.Vector2()
         self.service()
+
+    def toggle_sound_effect(self):
+        self.sound_effect = not self.sound_effect
 
     def update(self, dt, action) -> None:  # TODO: remove action from all update methods
         self.rect.move_ip(self.velocity * dt)
@@ -58,7 +62,7 @@ class Ball(pygame.sprite.Sprite):
         self.velocity = pygame.Vector2(choice([-1, 1]), choice([-1, 1])) * Ball.SPEED
 
     def horizontal_flip(self) -> None:
-        if Settings.SOUNDFLAG:
+        if self.sound_effect:
             if self.velocity.x < 0:
                 self.channel.set_volume(0.9, 0.1)
                 self.channel.play(Ball.left_sound)
@@ -70,7 +74,7 @@ class Ball(pygame.sprite.Sprite):
         self.velocity.y += uniform(0, Ball.SPEED / 4)
 
     def vertical_flip(self) -> None:
-        if Settings.SOUNDFLAG:
+        if self.sound_effect:
             rel_pos = self.rect.centerx / self.viewport.width
             self.channel.set_volume(1.0 - rel_pos, rel_pos)
             self.channel.play(Ball.bounce_sound)

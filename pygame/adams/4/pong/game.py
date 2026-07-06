@@ -50,7 +50,6 @@ class Game:
         if not (self.pausing or self.helping):
             self.check_collision()
             for i in Settings.KI.keys():
-                print(i)
                 if Settings.KI[i]:
                     self.paddlecontroler(self.paddles[0 if i == "left" else 1])
             self.all_sprites.update(dt, action="move")
@@ -78,7 +77,7 @@ class Game:
                     if not Settings.KI["right"]:
                         self.paddles[1].update(action="down")
                 elif event.key == pygame.K_F2:
-                    Settings.SOUNDFLAG = not Settings.SOUNDFLAG
+                    self.ball.toggle_sound_effect()
                 elif event.key == pygame.K_w:
                     if not Settings.KI["left"]:
                         self.paddles[0].update(action="up")
