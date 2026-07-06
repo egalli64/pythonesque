@@ -8,47 +8,56 @@ Pong paddle
 
 import pygame
 
-from settings import Settings
-
 
 class Paddle(pygame.sprite.Sprite):
     BORDERDISTANCE = {"horizontal": 50, "vertical": 10}
     DIRECTION = {"up": -1, "down": 1, "halt": 0}
+    SPEED = 300
+    RECT = ((0, 0), (15, 60))
+    USER_COLOR = "yellow"
+    AUTO_COLOR = "deepskyblue2"
+
+    @classmethod
+    def load_resources(cls):
+        cls.user_image = pygame.Surface(Paddle.RECT[1]).convert()
+        cls.user_image.fill(Paddle.USER_COLOR)
+        cls.auto_image = pygame.Surface(Paddle.RECT[1]).convert()
+        cls.auto_image.fill(Paddle.AUTO_COLOR)
 
     def __init__(self, player: str, viewport: pygame.Rect) -> None:
         super().__init__()
 
         self.viewport = viewport
-        self.rect: pygame.FRect = pygame.FRect(0, 0, 15, viewport.height // 10)
+        self.auto = False
+        self.rect: pygame.FRect = pygame.FRect(Paddle.RECT)
         self.rect.centery = viewport.centery
-        self.images = {
-            "byhand": pygame.Surface(self.rect.size).convert(),
-            "byki": pygame.Surface(self.rect.size).convert(),
-        }
-        self.images["byhand"].fill("yellow")
-        self.images["byki"].fill("deepskyblue2")
         self.player = player
         if self.player == "left":
             self.rect.left = Paddle.BORDERDISTANCE["horizontal"]
         else:
             self.rect.right = viewport.right - Paddle.BORDERDISTANCE["horizontal"]
-        self.speed = viewport.height // 2
         self.direction = Paddle.DIRECTION["halt"]
         self.select_image()
 
-    def update(self, *args, **kwargs) -> None:
+    def toggle_auto(self):
+        self.auto = not self.auto
+        self.select_image()
+
+    def set_direction(self, direction):
+        self.direction = direction
+
+    def update(self, *args, **kwargs):
         if "action" in kwargs.keys():
             if kwargs["action"] == "move":
                 self._move()
             elif kwargs["action"] in Paddle.DIRECTION.keys():
                 self.direction = Paddle.DIRECTION[kwargs["action"]]
         self.select_image()
-        return super().update(*args, **kwargs)
 
     def _move(self) -> None:
         dt = 1 / 60  # TODO: actual dt
         if self.direction != Paddle.DIRECTION["halt"]:
-            self.rect.move_ip(0, self.speed * self.direction * dt)
+            self.rect.move_ip(0, Paddle.SPEED * self.direction * dt)
             if self.direction == Paddle.DIRECTION["up"]:
                 self.rect.top = max(self.rect.top, Paddle.BORDERDISTANCE["vertical"])
             elif self.direction == Paddle.DIRECTION["down"]:
@@ -57,14 +66,17 @@ class Paddle(pygame.sprite.Sprite):
                     self.viewport.height - Paddle.BORDERDISTANCE["vertical"],
                 )
 
-    def select_image(self) -> None:
-        if self.player == "left":
-            if Settings.KI["left"]:
-                self.image = self.images["byki"]
+    def select_image(self):
+        self.image = Paddle.auto_image if self.auto else Paddle.user_image
+
+    def auto_move(self, y_target):
+        if self.auto:
+            if self.rect.centery > y_target and self.rect.top > 10:
+                self.update(action="up")
+            elif (
+                self.rect.centery < y_target
+                and self.rect.bottom < self.viewport.bottom - 10
+            ):
+                self.update(action="down")
             else:
-                self.image = self.images["byhand"]
-        else:
-            if Settings.KI["right"]:
-                self.image = self.images["byki"]
-            else:
-                self.image = self.images["byhand"]
+                self.update(action="halt")
