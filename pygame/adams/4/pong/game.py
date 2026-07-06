@@ -38,7 +38,7 @@ class Game:
         self.running = True
         self.pausing = False
         self.helping = False
-        self.pause = pygame.sprite.GroupSingle(Pause())
+        self.pause = Pause(WIN_RECT)
         self.help = Help(WIN_RECT)
 
     def run(self):
