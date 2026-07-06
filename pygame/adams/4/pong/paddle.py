@@ -15,8 +15,8 @@ class Paddle(pygame.sprite.Sprite):
     BORDERDISTANCE = {"horizontal": 50, "vertical": 10}
     DIRECTION = {"up": -1, "down": 1, "halt": 0}
 
-    def __init__(self, player: str, viewport: pygame.Rect, *groups) -> None:
-        super().__init__(*groups)
+    def __init__(self, player: str, viewport: pygame.Rect) -> None:
+        super().__init__()
 
         self.viewport = viewport
         self.rect: pygame.FRect = pygame.FRect(0, 0, 15, viewport.height // 10)
