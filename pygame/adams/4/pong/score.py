@@ -7,27 +7,23 @@ Pong score
 """
 
 import pygame
-from settings import Settings
 
 
 class Score(pygame.sprite.Sprite):
+    CENTER_X = 500
+    TOP = 15
+    TEXT = "{} : {}"
+    COLOR = "white"
+
     def __init__(self, *groups):
         super().__init__(*groups)
-        self.font = pygame.font.SysFont(None, 30)
+        self.font = pygame.font.SysFont(None, 36)
         self.score = {1: 0, 2: 0}
-        self.image: pygame.Surface | None = None
-        self.rect: pygame.Rect | None = None
-        self.render()
 
-    def update(self, *args, **kwargs) -> None:
-        if "player" in kwargs.keys():
-            self.score[kwargs["player"]] += 1
-            self.render()
-        return super().update(*args, **kwargs)
+    def point_for(self, player):
+        self.score[player] += 1
 
-    def render(self):
-        """Renders the score."""
-        self.image = self.font.render(
-            f"{self.score[1]} : {self.score[2]}", True, "white"
-        )
-        self.rect = self.image.get_rect(centerx=Settings.WINDOW.centerx, top=15)
+    def update(self, *args, **kwargs):
+        text = Score.TEXT.format(self.score[1], self.score[2])
+        self.image = self.font.render(text, True, Score.COLOR)
+        self.rect = self.image.get_rect(centerx=Score.CENTER_X, top=Score.TOP)

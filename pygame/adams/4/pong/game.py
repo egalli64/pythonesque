@@ -107,7 +107,7 @@ class Game:
                     if not Settings.KI["left"]:
                         self.paddle["left"].update(action="halt")
             elif event.type == Events.POINT_FOR:
-                self.score.update(player=event.player)
+                self.score.point_for(event.player)
         return True
 
     def check_collision(self):
