@@ -11,15 +11,19 @@ Credits:
 """
 
 import pygame
-from settings import Settings
 
 
-class Background(pygame.sprite.Sprite):
-    """Sprite class with nearly no function for drawing the background image."""
+class Background:
+    FILENAME = "images/aquarium.png"
+
+    @classmethod
+    def load_resources(cls):
+        cls._image = pygame.image.load(Background.FILENAME).convert()
 
     def __init__(self, viewport) -> None:
-        super().__init__()
-        imagename = Settings.get_image("aquarium.png")
-        self.image: pygame.Surface = pygame.image.load(imagename).convert()
+        self.image: pygame.Surface = Background._image
         self.image = pygame.transform.scale(self.image, viewport.size)
         self.rect = self.image.get_rect()
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)

@@ -41,7 +41,7 @@ class Game:
         self.window = window
         self.screen = screen
         self.clock = pygame.time.Clock()
-        self.background = pygame.sprite.GroupSingle(Background(WIN_RECT))
+        self.background = Background(WIN_RECT)
         self.all_sprites = pygame.sprite.Group()
         self.pausing = False
         self.msgpause = Message("pause.png")
@@ -207,6 +207,7 @@ if __name__ == "__main__":
     screen = window.get_surface()
 
     Game.load_resources()
+    Background.load_resources()
 
     try:
         Game(window, screen).run()
