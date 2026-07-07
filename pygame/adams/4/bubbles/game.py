@@ -11,8 +11,7 @@ Credits:
 """
 
 from math import sqrt
-from time import time
-from typing import Dict, Tuple
+from typing import Tuple
 
 import pygame
 from settings import Settings
@@ -27,6 +26,7 @@ TITLE = "Bubbles"
 
 
 class Game:
+    FPS = 60
     POP_SOUND_FILE = "sounds/pop.mp3"
     BURST_SOUND_FILE = "sounds/burst.mp3"
     CLASH_SOUND_FILE = "sounds/clash.wav"
@@ -77,7 +77,7 @@ class Game:
         self.all_sprites.draw(self.screen)
         self.window.flip()
 
-    def update(self) -> None:
+    def update(self, dt) -> None:
         if self.do_start:
             self.restart()
         if not self.pausing:
@@ -195,15 +195,10 @@ class Game:
         return False
 
     def run(self) -> None:
-        """Starting point and main loop of the game."""
-        time_previous = time()
         while self.handle_events():
-            self.update()
+            dt = self.clock.tick(Game.FPS) / 1000
+            self.update(dt)
             self.draw()
-            self.clock.tick(Settings.FPS)
-            time_current = time()
-            Settings.DELTATIME = time_current - time_previous
-            time_previous = time_current
 
 
 if __name__ == "__main__":

@@ -18,8 +18,6 @@ import pygame
 
 class Settings:
     WINDOW = pygame.Rect(0, 0, 1220, 1002)
-    FPS = 60
-    DELTATIME = 1.0 / FPS
     PATH: Dict[str, str] = {}
     PATH["file"] = os.path.dirname(os.path.abspath(__file__))
     PATH["image"] = os.path.join(PATH["file"], "images")

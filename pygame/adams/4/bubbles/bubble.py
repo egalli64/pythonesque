@@ -48,8 +48,9 @@ class Bubble(pygame.sprite.Sprite):
                                       (mode/blue), (mode/red))
         """
         if "action" in kwargs.keys():
+            dt = 1 / 60  # TODO: use actual dt
             if kwargs["action"] == "grow":
-                self.fradius += self.speed * Settings.DELTATIME
+                self.fradius += self.speed * dt
                 self.fradius = min(self.fradius, Settings.RADIUS["max"])
                 self.radius = round(self.fradius)
                 center = self.rect.center
