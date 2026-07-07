@@ -27,21 +27,20 @@ TITLE = "Bubbles"
 
 
 class Game:
-    SOUND_CONTAINER: Dict[str, pygame.mixer.Sound] = {}
+    POP_SOUND_FILE = "sounds/pop.mp3"
+    BURST_SOUND_FILE = "sounds/burst.mp3"
+    CLASH_SOUND_FILE = "sounds/clash.wav"
+
+    @classmethod
+    def load_resources(cls):
+        cls.pop_sound = pygame.mixer.Sound(Game.POP_SOUND_FILE)
+        cls.burst_sound = pygame.mixer.Sound(Game.BURST_SOUND_FILE)
+        cls.clash_sound = pygame.mixer.Sound(Game.CLASH_SOUND_FILE)
 
     def __init__(self, window, screen) -> None:
         self.window = window
         self.screen = screen
         self.clock = pygame.time.Clock()
-        Game.SOUND_CONTAINER["bubble"] = pygame.mixer.Sound(
-            Settings.get_sound("pop.mp3")
-        )
-        Game.SOUND_CONTAINER["burst"] = pygame.mixer.Sound(
-            Settings.get_sound("burst.mp3")
-        )
-        Game.SOUND_CONTAINER["clash"] = pygame.mixer.Sound(
-            Settings.get_sound("clash.wav")
-        )
         self.background = pygame.sprite.GroupSingle(Background())
         self.all_sprites = pygame.sprite.Group()
         self.pausing = False
@@ -84,7 +83,7 @@ class Game:
         if not self.pausing:
             if self.check_bubblecollision():
                 if not self.restarting:
-                    Game.SOUND_CONTAINER["clash"].play()
+                    Game.clash_sound.play()
                     self.all_sprites.add(self.msgrestart)
                     self.restarting = True
             else:
@@ -128,7 +127,7 @@ class Game:
                     b.radius -= Settings.DISTANCE
                     if not collided:
                         self.all_sprites.add(b)
-                        Game.SOUND_CONTAINER["bubble"].play()
+                        Game.pop_sound.play()
                         break
 
     def collidepoint(
@@ -166,7 +165,7 @@ class Game:
         """If the mouse position is inside a bubble, burst it."""
         for bubble in self.all_sprites:
             if self.collidepoint(mousepos, bubble):
-                Game.SOUND_CONTAINER["burst"].play()
+                Game.burst_sound.play()
                 bubble.update(action="sting")
 
     def check_bubblecollision(self) -> bool:
@@ -211,6 +210,8 @@ if __name__ == "__main__":
     pygame.init()
     window = pygame.Window(TITLE, WIN_RECT.size)
     screen = window.get_surface()
+
+    Game.load_resources()
 
     try:
         Game(window, screen).run()
