@@ -22,17 +22,16 @@ from message import Message
 from bubble import Bubble
 from score import Points
 
+WIN_RECT = pygame.Rect(0, 0, 1220, 1002)
+TITLE = "Bubbles"
+
 
 class Game:
-    """The class Game is main starting class of the game."""
-
     SOUND_CONTAINER: Dict[str, pygame.mixer.Sound] = {}
 
-    def __init__(self) -> None:
-        """Constructor."""
-        pygame.init()
-        self.window = pygame.Window(size=Settings.WINDOW.size, title=Settings.CAPTION)
-        self.screen = self.window.get_surface()
+    def __init__(self, window, screen) -> None:
+        self.window = window
+        self.screen = screen
         self.clock = pygame.time.Clock()
         Game.SOUND_CONTAINER["bubble"] = pygame.mixer.Sound(
             Settings.get_sound("pop.mp3")
@@ -45,49 +44,44 @@ class Game:
         )
         self.background = pygame.sprite.GroupSingle(Background())
         self.all_sprites = pygame.sprite.Group()
-        self.running = True
         self.pausing = False
         self.msgpause = Message("pause.png")
         self.msgrestart = Message("restart.png")
 
         self.restart()
 
-    def watch_for_events(self) -> None:
+    def handle_events(self) -> bool:
         """Looking for any type of event and poke a reaction."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.running = False
+                    return False
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_p:
                     self.setpause()
                 elif event.key == pygame.K_j:
                     self.do_start = True
                 elif event.key == pygame.K_n:
-                    self.running = False
+                    return False
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 3:
                     self.setpause()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # left
                     self.sting(pygame.mouse.get_pos())
+        return True
 
     def draw(self) -> None:
-        """Draws all sprite on the screen."""
         self.background.draw(self.screen)
         self.all_sprites.draw(self.screen)
-        # pygame.draw.rect(self.screen, "red", Settings.playground, 2)
-        # for b in self.all_bubbles:
-        #     pygame.draw.rect(self.screen, "red", b.rect, 2)  # type: ignore
         self.window.flip()
 
     def update(self) -> None:
-        """This method is responsible for the main game logic."""
         if self.do_start:
             self.restart()
-        if not self.pausing and self.running:
+        if not self.pausing:
             if self.check_bubblecollision():
                 if not self.restarting:
                     Game.SOUND_CONTAINER["clash"].play()
@@ -204,21 +198,22 @@ class Game:
     def run(self) -> None:
         """Starting point and main loop of the game."""
         time_previous = time()
-        self.running = True
-        while self.running:
-            self.watch_for_events()
+        while self.handle_events():
             self.update()
             self.draw()
             self.clock.tick(Settings.FPS)
             time_current = time()
             Settings.DELTATIME = time_current - time_previous
             time_previous = time_current
-        pygame.quit()
-
-
-def main():
-    Game().run()
 
 
 if __name__ == "__main__":
-    main()
+    pygame.init()
+    window = pygame.Window(TITLE, WIN_RECT.size)
+    screen = window.get_surface()
+
+    try:
+        Game(window, screen).run()
+    finally:
+        pygame.quit()
+        print("Done.")
