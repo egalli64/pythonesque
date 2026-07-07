@@ -41,7 +41,7 @@ class Game:
         self.window = window
         self.screen = screen
         self.clock = pygame.time.Clock()
-        self.background = pygame.sprite.GroupSingle(Background())
+        self.background = pygame.sprite.GroupSingle(Background(WIN_RECT))
         self.all_sprites = pygame.sprite.Group()
         self.pausing = False
         self.msgpause = Message("pause.png")
