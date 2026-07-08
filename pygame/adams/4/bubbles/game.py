@@ -10,7 +10,6 @@ Credits:
  * Sound: https://www.fesliyanstudios.com/royalty-free-sound-effects-download
 """
 
-from math import sqrt
 from typing import Tuple
 
 import pygame
@@ -26,19 +25,13 @@ WIN_RECT = pygame.Rect(0, 0, 1220, 1002)
 TITLE = "Bubbles"
 
 
-def is_in(point: Tuple[int, int], bubble) -> bool:
-    """Check if a point is inside or on the edge of the circle."""
-    delta_x = point[0] - bubble.rect.centerx
-    delta_y = point[1] - bubble.rect.centery
-    return delta_x * delta_x + delta_y * delta_y <= bubble.radius * bubble.radius
-
-
 class Game:
     do_start: bool
     restarting: bool
     bubble_speed: int
     timer_bubble: Timer
     timer_bubble_speed: Timer
+    bubbles: pygame.sprite.Group[Bubble]
 
     FPS = 60
     POP_SOUND_FILE = "sounds/pop.mp3"
@@ -57,7 +50,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.background = Background(WIN_RECT)
         self.all_sprites = pygame.sprite.Group()
-        self.bubbles = pygame.sprite.Group()
+        self.bubbles = pygame.sprite.Group[Bubble]()
         self.pausing = False
         self.m_pause = Message("pause.png")
         self.m_restart = Message("restart.png")
@@ -148,24 +141,17 @@ class Game:
                         break
 
     def set_cursor(self) -> None:
-        """Changes the mouse cursor depending if it is inside or on the edge of a bubble."""
-        is_over = False
         pos = pygame.mouse.get_pos()
         for bubble in self.bubbles:
-            assert isinstance(bubble, Bubble)
-            if is_in(pos, bubble):
-                is_over = True
+            if bubble.contains(pos):
+                pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
                 break
-        if is_over:
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_CROSSHAIR)
 
     def sting(self, pos: Tuple[int, int]) -> None:
-        """If the mouse position is inside a bubble, burst it."""
         for bubble in self.bubbles:
-            assert isinstance(bubble, Bubble)
-            if is_in(pos, bubble):
+            if bubble.contains(pos):
                 Game.burst_sound.play()
                 self.score.change_score(bubble.sting())
 

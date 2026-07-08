@@ -11,7 +11,7 @@ Credits:
 """
 
 from random import randint
-
+from typing import Tuple
 
 import pygame
 from settings import Settings
@@ -19,7 +19,8 @@ from bubble_factory import BubbleFactory
 
 
 class Bubble(pygame.sprite.Sprite):
-    """The sprite class of the bubble."""
+    image: pygame.Surface
+    rect: pygame.Rect
 
     def __init__(self, speed: int) -> None:
         """Constructor."""
@@ -33,7 +34,7 @@ class Bubble(pygame.sprite.Sprite):
         plain = self.mode == "blue"
         self.image = self.factory.get(plain, self.radius)
 
-        self.rect: pygame.Rect = self.image.get_rect()
+        self.rect = self.image.get_rect()
         self.fradius = float(self.radius)
         self.speed = speed
 
@@ -76,17 +77,22 @@ class Bubble(pygame.sprite.Sprite):
 
     def randompos(self) -> None:
         """Computes a new position of the center by random."""
-        bubbledistance = Settings.DISTANCE + BubbleFactory.RADIUS_RANGE[0]
-        centerx = randint(
-            Settings.PLAYGROUND.left + bubbledistance,
-            Settings.PLAYGROUND.right - bubbledistance,
+        distance = Settings.DISTANCE + BubbleFactory.RADIUS_RANGE[0]
+        center_x = randint(
+            Settings.PLAYGROUND.left + distance,
+            Settings.PLAYGROUND.right - distance,
         )
-        centery = randint(
-            Settings.PLAYGROUND.top + bubbledistance,
-            Settings.PLAYGROUND.bottom - bubbledistance,
+        center_y = randint(
+            Settings.PLAYGROUND.top + distance,
+            Settings.PLAYGROUND.bottom - distance,
         )
-        self.rect.center = (centerx, centery)
+        self.rect.center = (center_x, center_y)
 
     def sting(self):
         self.kill()
         return self.radius
+
+    def contains(self, pos: Tuple[int, int]) -> bool:
+        delta_x = pos[0] - self.rect.centerx
+        delta_y = pos[1] - self.rect.centery
+        return delta_x * delta_x + delta_y * delta_y <= self.radius * self.radius
