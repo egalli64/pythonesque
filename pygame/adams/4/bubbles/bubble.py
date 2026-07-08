@@ -11,29 +11,28 @@ Credits:
 """
 
 from random import randint
-from typing import Dict
 
 
 import pygame
 from settings import Settings
-from bubble_container import BubbleContainer
+from bubble_factory import BubbleFactory
 
 
 class Bubble(pygame.sprite.Sprite):
     """The sprite class of the bubble."""
 
-    BUBBLE_CONTAINER: Dict[str, BubbleContainer] = {}
-
     def __init__(self, speed: int) -> None:
         """Constructor."""
         super().__init__()
 
-        Bubble.BUBBLE_CONTAINER["blue"] = BubbleContainer("bubble1.png")
-        Bubble.BUBBLE_CONTAINER["red"] = BubbleContainer("bubble2.png")
+        self.factory = BubbleFactory()
 
         self.mode = "blue"
-        self.radius = Settings.RADIUS["min"]
-        self.image = Bubble.BUBBLE_CONTAINER[self.mode].get(self.radius)
+        self.radius = BubbleFactory.RADIUS_RANGE[0]
+
+        plain = self.mode == "blue"
+        self.image = self.factory.get(plain, self.radius)
+
         self.rect: pygame.Rect = self.image.get_rect()
         self.fradius = float(self.radius)
         self.speed = speed
@@ -51,10 +50,13 @@ class Bubble(pygame.sprite.Sprite):
             dt = 1 / 60  # TODO: use actual dt
             if kwargs["action"] == "grow":
                 self.fradius += self.speed * dt
-                self.fradius = min(self.fradius, Settings.RADIUS["max"])
+                self.fradius = min(self.fradius, BubbleFactory.RADIUS_RANGE[1])
                 self.radius = round(self.fradius)
                 center = self.rect.center
-                self.image = Bubble.BUBBLE_CONTAINER[self.mode].get(self.radius)
+
+                plain = self.mode == "blue"
+                self.image = self.factory.get(plain, self.radius)
+
                 self.rect = self.image.get_rect()
                 self.rect.center = center
             elif kwargs["action"] == "sting":
@@ -70,11 +72,13 @@ class Bubble(pygame.sprite.Sprite):
         """
         if mode != self.mode:
             self.mode = mode
-            self.image = Bubble.BUBBLE_CONTAINER[self.mode].get(self.radius)
+
+            plain = self.mode == "blue"
+            self.image = self.factory.get(plain, self.radius)
 
     def randompos(self) -> None:
         """Computes a new position of the center by random."""
-        bubbledistance = Settings.DISTANCE + Settings.RADIUS["min"]
+        bubbledistance = Settings.DISTANCE + BubbleFactory.RADIUS_RANGE[0]
         centerx = randint(
             Settings.PLAYGROUND.left + bubbledistance,
             Settings.PLAYGROUND.right - bubbledistance,

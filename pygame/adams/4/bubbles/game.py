@@ -20,6 +20,7 @@ from background import Background
 from message import Message
 from bubble import Bubble
 from score import Points
+from bubble_factory import BubbleFactory
 
 WIN_RECT = pygame.Rect(0, 0, 1220, 1002)
 TITLE = "Bubbles"
@@ -208,6 +209,7 @@ if __name__ == "__main__":
 
     Game.load_resources()
     Background.load_resources()
+    BubbleFactory.load_resources()
 
     try:
         Game(window, screen).run()
