@@ -26,23 +26,11 @@ WIN_RECT = pygame.Rect(0, 0, 1220, 1002)
 TITLE = "Bubbles"
 
 
-def collide_point(
-        point: Tuple[int, int], sprite: pygame.sprite.Sprite
-) -> bool:
-    """Checks if a point is inside or on the edge of the circle.
-
-    Args:
-        point (Tuple[int, int]): Coordinates of the point
-        sprite (pygame.sprite.Sprite): Sprite with self.radius attribute
-
-    Returns:
-        bool: True if the point is inside or on the edge; otherwise False
-    """
-    if hasattr(sprite, "radius"):
-        delta_x = point[0] - sprite.rect.centerx  # type: ignore
-        delta_y = point[1] - sprite.rect.centery  # type: ignore
-        return sqrt(delta_x * delta_x + delta_y * delta_y) <= sprite.radius  # type: ignore
-    return False
+def is_in(point: Tuple[int, int], bubble) -> bool:
+    """Check if a point is inside or on the edge of the circle."""
+    delta_x = point[0] - bubble.rect.centerx
+    delta_y = point[1] - bubble.rect.centery
+    return delta_x * delta_x + delta_y * delta_y <= bubble.radius * bubble.radius
 
 
 class Game:
@@ -69,6 +57,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.background = Background(WIN_RECT)
         self.all_sprites = pygame.sprite.Group()
+        self.bubbles = pygame.sprite.Group()
         self.pausing = False
         self.m_pause = Message("pause.png")
         self.m_restart = Message("restart.png")
@@ -144,16 +133,17 @@ class Game:
                 self.bubble_speed += 5
         if self.timer_bubble.is_next_stop_reached():
             if len(self.all_sprites) <= Settings.MAX_BUBBLES:
-                b = Bubble(self.bubble_speed)
+                bubble = Bubble(self.bubble_speed)
                 for _ in range(100):
-                    b.randompos()
-                    b.radius += Settings.DISTANCE
+                    bubble.randompos()
+                    bubble.radius += Settings.DISTANCE
                     collided = pygame.sprite.spritecollide(
-                        b, self.all_sprites, False, pygame.sprite.collide_circle
+                        bubble, self.all_sprites, False, pygame.sprite.collide_circle
                     )
-                    b.radius -= Settings.DISTANCE
+                    bubble.radius -= Settings.DISTANCE
                     if not collided:
-                        self.all_sprites.add(b)
+                        self.bubbles.add(bubble)
+                        self.all_sprites.add(bubble)
                         Game.pop_sound.play()
                         break
 
@@ -161,8 +151,9 @@ class Game:
         """Changes the mouse cursor depending if it is inside or on the edge of a bubble."""
         is_over = False
         pos = pygame.mouse.get_pos()
-        for b in self.all_sprites:
-            if collide_point(pos, b):
+        for bubble in self.bubbles:
+            assert isinstance(bubble, Bubble)
+            if is_in(pos, bubble):
                 is_over = True
                 break
         if is_over:
@@ -172,8 +163,9 @@ class Game:
 
     def sting(self, pos: Tuple[int, int]) -> None:
         """If the mouse position is inside a bubble, burst it."""
-        for bubble in self.all_sprites:
-            if collide_point(pos, bubble):
+        for bubble in self.bubbles:
+            assert isinstance(bubble, Bubble)
+            if is_in(pos, bubble):
                 Game.burst_sound.play()
                 self.score.change_score(bubble.sting())
 
