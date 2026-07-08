@@ -28,28 +28,18 @@ class Bubble(pygame.sprite.Sprite):
 
         self.factory = BubbleFactory()
 
-        self.radius = BubbleFactory.RADIUS_RANGE[0]
+        self.radius: float = BubbleFactory.RADIUS_RANGE[0]
         self.image = self.factory.get(self.radius)
 
         self.rect = self.image.get_rect()
-        self.fradius = float(self.radius)
         self.speed = speed
 
     def update(self, *args, **kwargs) -> None:
-        """Let the bubble grow.
-
-        Args:
-            *args (Tuple[int]): not used
-            **kwargs Dict[str, Any]: possible key/value pairs:
-                                      (action/grow), (action/sting),
-                                      (mode/blue), (mode/red))
-        """
         if "action" in kwargs.keys():
             dt = 1 / 60  # TODO: use actual dt
             if kwargs["action"] == "grow":
-                self.fradius += self.speed * dt
-                self.fradius = min(self.fradius, BubbleFactory.RADIUS_RANGE[1])
-                self.radius = round(self.fradius)
+                self.radius += self.speed * dt
+                self.radius = min(self.radius, BubbleFactory.RADIUS_RANGE[1])
                 center = self.rect.center
 
                 self.image = self.factory.get(self.radius)
@@ -73,9 +63,9 @@ class Bubble(pygame.sprite.Sprite):
         )
         self.rect.center = (center_x, center_y)
 
-    def sting(self):
+    def pop(self):
         self.kill()
-        return self.radius
+        return round(self.radius)
 
     def contains(self, pos: Tuple[int, int]) -> bool:
         delta_x = pos[0] - self.rect.centerx

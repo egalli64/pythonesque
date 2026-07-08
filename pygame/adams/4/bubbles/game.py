@@ -153,7 +153,7 @@ class Game:
         for bubble in self.bubbles:
             if bubble.contains(pos):
                 Game.burst_sound.play()
-                self.score.change_score(bubble.sting())
+                self.score.change_score(bubble.pop())
 
     def check_collision(self) -> bool:
         for bubble in self.bubbles:
