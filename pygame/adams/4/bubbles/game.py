@@ -158,15 +158,15 @@ class Game:
     def check_collision(self) -> bool:
         for bubble in self.bubbles:
             if not Settings.PLAYGROUND.contains(bubble):
-                bubble.update(mode="red")
+                bubble.offending()
                 return True
 
         collisions = pygame.sprite.groupcollide(self.bubbles, self.bubbles, False, False, pygame.sprite.collide_circle)
         for left in collisions:
             for right in collisions[left]:
                 if left != right:
-                    left.update(mode="red")
-                    right.update(mode="red")
+                    left.offending()
+                    right.offending()
                     return True
 
         return False

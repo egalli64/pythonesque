@@ -28,11 +28,8 @@ class Bubble(pygame.sprite.Sprite):
 
         self.factory = BubbleFactory()
 
-        self.mode = "blue"
         self.radius = BubbleFactory.RADIUS_RANGE[0]
-
-        plain = self.mode == "blue"
-        self.image = self.factory.get(plain, self.radius)
+        self.image = self.factory.get(self.radius)
 
         self.rect = self.image.get_rect()
         self.fradius = float(self.radius)
@@ -55,25 +52,13 @@ class Bubble(pygame.sprite.Sprite):
                 self.radius = round(self.fradius)
                 center = self.rect.center
 
-                plain = self.mode == "blue"
-                self.image = self.factory.get(plain, self.radius)
+                self.image = self.factory.get(self.radius)
 
                 self.rect = self.image.get_rect()
                 self.rect.center = center
-        elif "mode" in kwargs.keys():
-            self.set_mode(kwargs["mode"])
 
-    def set_mode(self, mode: str) -> None:
-        """Sets the bubble in the mode "red" or "blue".
-
-        Args:
-            mode (str): "red" oder "blue"
-        """
-        if mode != self.mode:
-            self.mode = mode
-
-            plain = self.mode == "blue"
-            self.image = self.factory.get(plain, self.radius)
+    def offending(self) -> None:
+        self.image = self.factory.get(self.radius, False)
 
     def randompos(self) -> None:
         """Computes a new position of the center by random."""

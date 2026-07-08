@@ -30,7 +30,7 @@ class BubbleFactory:
     def __init__(self):
         self.cache = {}
 
-    def get(self, plain: bool, radius: int) -> pygame.Surface:
+    def get(self, radius: int, plain: bool = True) -> pygame.Surface:
         key = (plain, radius)
         if key not in self.cache:
             image = BubbleFactory._image if plain else BubbleFactory._image_x
