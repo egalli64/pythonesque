@@ -26,7 +26,32 @@ WIN_RECT = pygame.Rect(0, 0, 1220, 1002)
 TITLE = "Bubbles"
 
 
+def collide_point(
+        point: Tuple[int, int], sprite: pygame.sprite.Sprite
+) -> bool:
+    """Checks if a point is inside or on the edge of the circle.
+
+    Args:
+        point (Tuple[int, int]): Coordinates of the point
+        sprite (pygame.sprite.Sprite): Sprite with self.radius attribute
+
+    Returns:
+        bool: True if the point is inside or on the edge; otherwise False
+    """
+    if hasattr(sprite, "radius"):
+        delta_x = point[0] - sprite.rect.centerx  # type: ignore
+        delta_y = point[1] - sprite.rect.centery  # type: ignore
+        return sqrt(delta_x * delta_x + delta_y * delta_y) <= sprite.radius  # type: ignore
+    return False
+
+
 class Game:
+    do_start: bool
+    restarting: bool
+    bubble_speed: int
+    timer_bubble: Timer
+    timer_bubble_speed: Timer
+
     FPS = 60
     POP_SOUND_FILE = "sounds/pop.mp3"
     BURST_SOUND_FILE = "sounds/burst.mp3"
@@ -45,10 +70,10 @@ class Game:
         self.background = Background(WIN_RECT)
         self.all_sprites = pygame.sprite.Group()
         self.pausing = False
-        self.msgpause = Message("pause.png")
-        self.msgrestart = Message("restart.png")
+        self.m_pause = Message("pause.png")
+        self.m_restart = Message("restart.png")
 
-        self.restart()
+        self.reset()
 
     def handle_events(self) -> bool:
         """Looking for any type of event and poke a reaction."""
@@ -60,14 +85,14 @@ class Game:
                     return False
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_p:
-                    self.setpause()
+                    self.set_pause()
                 elif event.key == pygame.K_j:
                     self.do_start = True
                 elif event.key == pygame.K_n:
                     return False
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 3:
-                    self.setpause()
+                    self.set_pause()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # left
                     self.sting(pygame.mouse.get_pos())
@@ -80,19 +105,19 @@ class Game:
 
     def update(self, dt) -> None:
         if self.do_start:
-            self.restart()
+            self.reset()
         if not self.pausing:
-            if self.check_bubblecollision():
+            if self.check_collision():
                 if not self.restarting:
                     Game.clash_sound.play()
-                    self.all_sprites.add(self.msgrestart)
+                    self.all_sprites.add(self.m_restart)
                     self.restarting = True
             else:
                 self.all_sprites.update(action="grow")
                 self.spawn_bubble()
-            self.set_mousecursor()
+            self.set_cursor()
 
-    def restart(self):
+    def reset(self):
         """Resets all attributes in order to start/restart the game."""
         Settings.POINTS = 0
         self.all_sprites.empty()
@@ -103,12 +128,12 @@ class Game:
         self.do_start = False
         self.restarting = False
 
-    def setpause(self):
+    def set_pause(self):
         """Manages the pause mode."""
         if not self.pausing:
-            self.all_sprites.add(self.msgpause)
+            self.all_sprites.add(self.m_pause)
         else:
-            self.msgpause.kill()
+            self.m_pause.kill()
         self.pausing = not self.pausing
 
     def spawn_bubble(self) -> None:
@@ -131,30 +156,12 @@ class Game:
                         Game.pop_sound.play()
                         break
 
-    def collidepoint(
-        self, point: Tuple[int, int], sprite: pygame.sprite.Sprite
-    ) -> bool:
-        """Checks if a point is inside or on the edge of the circle.
-
-        Args:
-            point (Tuple[int, int]): Coordinates of the point
-            sprite (pygame.sprite.Sprite): Sprite with self.radius attribute
-
-        Returns:
-            bool: True if the point is inside or on the edge; otherwise False
-        """
-        if hasattr(sprite, "radius"):
-            deltax = point[0] - sprite.rect.centerx  # type: ignore
-            deltay = point[1] - sprite.rect.centery  # type: ignore
-            return sqrt(deltax * deltax + deltay * deltay) <= sprite.radius  # type: ignore
-        return False
-
-    def set_mousecursor(self) -> None:
+    def set_cursor(self) -> None:
         """Changes the mouse cursor depending if it is inside or on the edge of a bubble."""
         is_over = False
         pos = pygame.mouse.get_pos()
         for b in self.all_sprites:
-            if self.collidepoint(pos, b):
+            if collide_point(pos, b):
                 is_over = True
                 break
         if is_over:
@@ -162,14 +169,14 @@ class Game:
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_CROSSHAIR)
 
-    def sting(self, mousepos: Tuple[int, int]) -> None:
+    def sting(self, pos: Tuple[int, int]) -> None:
         """If the mouse position is inside a bubble, burst it."""
         for bubble in self.all_sprites:
-            if self.collidepoint(mousepos, bubble):
+            if collide_point(pos, bubble):
                 Game.burst_sound.play()
                 bubble.update(action="sting")
 
-    def check_bubblecollision(self) -> bool:
+    def check_collision(self) -> bool:
         """Checks if two bubbles collide or a bubble the playground border reaches.
 
         Returns:
@@ -180,8 +187,8 @@ class Game:
                 bubble1 = self.all_sprites.sprites()[index1]
                 bubble2 = self.all_sprites.sprites()[index2]
                 if (
-                    type(bubble1).__name__ == "Bubble"
-                    and type(bubble2).__name__ == "Bubble"
+                        type(bubble1).__name__ == "Bubble"
+                        and type(bubble2).__name__ == "Bubble"
                 ):
                     if pygame.sprite.collide_circle(bubble1, bubble2):
                         bubble1.update(mode="red")
@@ -204,15 +211,15 @@ class Game:
 
 if __name__ == "__main__":
     pygame.init()
-    window = pygame.Window(TITLE, WIN_RECT.size)
-    screen = window.get_surface()
+    pg_window = pygame.Window(TITLE, WIN_RECT.size)
+    pg_screen = pg_window.get_surface()
 
     Game.load_resources()
     Background.load_resources()
     BubbleFactory.load_resources()
 
     try:
-        Game(window, screen).run()
+        Game(pg_window, pg_screen).run()
     finally:
         pygame.quit()
         print("Done.")
