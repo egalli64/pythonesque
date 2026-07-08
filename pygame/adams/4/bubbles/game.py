@@ -19,7 +19,7 @@ from timing import Timer
 from background import Background
 from message import Message
 from bubble import Bubble
-from score import Points
+from score import Score
 from bubble_factory import BubbleFactory
 
 WIN_RECT = pygame.Rect(0, 0, 1220, 1002)
@@ -72,6 +72,7 @@ class Game:
         self.pausing = False
         self.m_pause = Message("pause.png")
         self.m_restart = Message("restart.png")
+        self.score = Score()
 
         self.reset()
 
@@ -100,6 +101,7 @@ class Game:
 
     def draw(self) -> None:
         self.background.draw(self.screen)
+        self.score.draw(self.screen)
         self.all_sprites.draw(self.screen)
         self.window.flip()
 
@@ -107,6 +109,7 @@ class Game:
         if self.do_start:
             self.reset()
         if not self.pausing:
+            self.score.update(None)
             if self.check_collision():
                 if not self.restarting:
                     Game.clash_sound.play()
@@ -118,10 +121,8 @@ class Game:
             self.set_cursor()
 
     def reset(self):
-        """Resets all attributes in order to start/restart the game."""
-        Settings.POINTS = 0
+        self.score.change_score()
         self.all_sprites.empty()
-        self.all_sprites.add(Points())
         self.bubble_speed = 10
         self.timer_bubble = Timer(500, False)
         self.timer_bubble_speed = Timer(10000, False)
@@ -174,7 +175,7 @@ class Game:
         for bubble in self.all_sprites:
             if collide_point(pos, bubble):
                 Game.burst_sound.play()
-                bubble.update(action="sting")
+                self.score.change_score(bubble.sting())
 
     def check_collision(self) -> bool:
         """Checks if two bubbles collide or a bubble the playground border reaches.
@@ -217,6 +218,7 @@ if __name__ == "__main__":
     Game.load_resources()
     Background.load_resources()
     BubbleFactory.load_resources()
+    Score.load_resources()
 
     try:
         Game(pg_window, pg_screen).run()

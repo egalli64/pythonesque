@@ -14,24 +14,38 @@ import pygame
 from settings import Settings
 
 
-class Points(pygame.sprite.Sprite):
-    """Class in order to generate a image of the score."""
+class Score:
+    image: pygame.Surface
+    rect: pygame.Rect
+    dirty: bool
 
-    def __init__(self) -> None:
-        """Constructor"""
-        super().__init__()
-        self.font = pygame.font.Font(pygame.font.get_default_font(), 18)
-        self.oldpoints = -1
+    FILENAME = None
+    TEXT = "Points: {}"
+    COLOR = "red"
 
-    def update(self, *args, **kwargs) -> None:
-        """Let the bubble grow.
+    @classmethod
+    def load_resources(cls):
+        cls.font = pygame.font.Font(Score.FILENAME, 32)
 
-        Args:
-            *args (Tuple[int]): not used
-            **kwargs Dict[str, Any]: not used
-        """
-        if self.oldpoints != Settings.POINTS:
-            self.image = self.font.render(f"Points: {Settings.POINTS}", True, "red")
-            self.rect = self.image.get_rect()
-            self.rect.left = Settings.BOX.left
-            self.rect.top = Settings.BOX.top
+    def __init__(self):
+        self.score = 0
+
+        self.reset()
+
+    def reset(self):
+        self.image = Score.font.render(f"Score: {self.score}", True, Score.COLOR)
+        self.rect = self.image.get_rect()
+        self.rect.left = Settings.BOX.left
+        self.rect.top = Settings.BOX.top
+        self.dirty = False
+
+    def change_score(self, delta=None):
+        self.score = self.score + delta if delta else 0
+        self.dirty = True
+
+    def update(self, action):
+        if self.dirty:
+            self.reset()
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)

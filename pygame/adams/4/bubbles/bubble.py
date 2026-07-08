@@ -59,8 +59,6 @@ class Bubble(pygame.sprite.Sprite):
 
                 self.rect = self.image.get_rect()
                 self.rect.center = center
-            elif kwargs["action"] == "sting":
-                self.stung()
         elif "mode" in kwargs.keys():
             self.set_mode(kwargs["mode"])
 
@@ -89,7 +87,6 @@ class Bubble(pygame.sprite.Sprite):
         )
         self.rect.center = (centerx, centery)
 
-    def stung(self):
-        """The bubble removes itself and the score increases."""
+    def sting(self):
         self.kill()
-        Settings.POINTS += self.radius
+        return self.radius
