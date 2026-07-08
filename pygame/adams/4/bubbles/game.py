@@ -156,29 +156,19 @@ class Game:
                 self.score.change_score(bubble.sting())
 
     def check_collision(self) -> bool:
-        """Checks if two bubbles collide or a bubble the playground border reaches.
+        for bubble in self.bubbles:
+            if not Settings.PLAYGROUND.contains(bubble):
+                bubble.update(mode="red")
+                return True
 
-        Returns:
-            bool: True if bubbles or a bubble collides; otherwise False
-        """
-        for index1 in range(0, len(self.all_sprites) - 1):
-            for index2 in range(index1 + 1, len(self.all_sprites)):
-                bubble1 = self.all_sprites.sprites()[index1]
-                bubble2 = self.all_sprites.sprites()[index2]
-                if (
-                        type(bubble1).__name__ == "Bubble"
-                        and type(bubble2).__name__ == "Bubble"
-                ):
-                    if pygame.sprite.collide_circle(bubble1, bubble2):
-                        bubble1.update(mode="red")
-                        bubble2.update(mode="red")
-                        return True
-                    if not Settings.PLAYGROUND.contains(bubble1):
-                        bubble1.update(mode="red")
-                        return True
-                    if not Settings.PLAYGROUND.contains(bubble2):
-                        bubble2.update(mode="red")
-                        return True
+        collisions = pygame.sprite.groupcollide(self.bubbles, self.bubbles, False, False, pygame.sprite.collide_circle)
+        for left in collisions:
+            for right in collisions[left]:
+                if left != right:
+                    left.update(mode="red")
+                    right.update(mode="red")
+                    return True
+
         return False
 
     def run(self) -> None:
