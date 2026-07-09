@@ -49,7 +49,7 @@ class Game:
         self.screen = screen
         self.clock = pygame.time.Clock()
         self.background = Background(WIN_RECT)
-        self.all_sprites = pygame.sprite.Group()
+        self.message = pygame.sprite.GroupSingle()
         self.bubbles = pygame.sprite.Group[Bubble]()
         self.pausing = False
         self.m_pause = Message("pause.png")
@@ -84,7 +84,8 @@ class Game:
     def draw(self) -> None:
         self.background.draw(self.screen)
         self.score.draw(self.screen)
-        self.all_sprites.draw(self.screen)
+        self.message.draw(self.screen)
+        self.bubbles.draw(self.screen)
         self.window.flip()
 
     def update(self, dt) -> None:
@@ -95,16 +96,17 @@ class Game:
             if self.check_collision():
                 if not self.restarting:
                     Game.clash_sound.play()
-                    self.all_sprites.add(self.m_restart)
+                    self.message.add(self.m_restart)
                     self.restarting = True
             else:
-                self.all_sprites.update(action="grow")
+                self.bubbles.update(action="grow")
                 self.spawn_bubble()
             self.set_cursor()
 
     def reset(self):
         self.score.change_score()
-        self.all_sprites.empty()
+        self.message.empty()
+        self.bubbles.empty()
         self.bubble_speed = 10
         self.timer_bubble = Timer(500, False)
         self.timer_bubble_speed = Timer(10000, False)
@@ -114,29 +116,27 @@ class Game:
     def set_pause(self):
         """Manages the pause mode."""
         if not self.pausing:
-            self.all_sprites.add(self.m_pause)
+            self.message.add(self.m_pause)
         else:
             self.m_pause.kill()
         self.pausing = not self.pausing
 
     def spawn_bubble(self) -> None:
-        """Spawns a new bubble and checks if there is enough space around the bubble."""
         if self.timer_bubble_speed.is_next_stop_reached():
             if self.bubble_speed < 100:
                 self.bubble_speed += 5
         if self.timer_bubble.is_next_stop_reached():
-            if len(self.all_sprites) <= Settings.MAX_BUBBLES:
+            if len(self.bubbles) <= Settings.MAX_BUBBLES:
                 bubble = Bubble(self.bubble_speed)
                 for _ in range(100):
                     bubble.randompos()
                     bubble.radius += Settings.DISTANCE
                     collided = pygame.sprite.spritecollide(
-                        bubble, self.all_sprites, False, pygame.sprite.collide_circle
+                        bubble, self.bubbles, False, pygame.sprite.collide_circle
                     )
                     bubble.radius -= Settings.DISTANCE
                     if not collided:
                         self.bubbles.add(bubble)
-                        self.all_sprites.add(bubble)
                         Game.pop_sound.play()
                         break
 
