@@ -50,7 +50,6 @@ class Game:
     def __init__(self, window, screen) -> None:
         self.window = window
         self.screen = screen
-        self.clock = pygame.time.Clock()
         self.background = Background(WIN_RECT)
         self.message = pygame.sprite.GroupSingle()
         self.bubbles = pygame.sprite.Group[Bubble]()
@@ -62,18 +61,16 @@ class Game:
         self.reset()
 
     def handle_events(self) -> bool:
-        """Looking for any type of event and poke a reaction."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return False
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_p:
+                elif event.key == pygame.K_p and not self.terminated:
                     self.set_pause()
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 3:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 3 and not self.terminated:
                     self.set_pause()
 
             if self.terminated:
@@ -103,16 +100,14 @@ class Game:
         self.window.flip()
 
     def update(self, dt) -> None:
-        if not self.paused:
-            self.score.update(None)
-            if self.check_collision():
-                if not self.terminated:
-                    Game.clash_sound.play()
-                    self.message.add(self.m_restart)
-                    self.terminated = True
-            else:
-                self.bubbles.update(dt)
-            self.set_cursor()
+        self.score.update(None)
+        if self.check_collision():
+            Game.clash_sound.play()
+            self.message.add(self.m_restart)
+            self.terminated = True
+        else:
+            self.bubbles.update(dt)
+        self.set_cursor()
 
     def reset(self):
         self.score.change_score()
@@ -183,8 +178,10 @@ class Game:
         return False
 
     def run(self) -> None:
+        clock = pygame.time.Clock()
+
         while self.handle_events():
-            dt = self.clock.tick(Game.FPS) / 1000
+            dt = clock.tick(Game.FPS) / 1000
             if not self.paused and not self.terminated:
                 self.update(dt)
             self.draw()
