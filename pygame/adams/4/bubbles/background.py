@@ -27,3 +27,4 @@ class Background:
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        pygame.draw.rect(screen, (255, 0, 0), (90, 90, 1055, 615), 1)
