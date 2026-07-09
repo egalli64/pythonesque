@@ -108,8 +108,8 @@ class Game:
         self.message.empty()
         self.bubbles.empty()
         self.bubble_speed = 10
-        self.timer_bubble = Timer(500, False)
-        self.timer_bubble_speed = Timer(10000, False)
+        self.timer_bubble = Timer(500)
+        self.timer_bubble_speed = Timer(10000)
         self.do_start = False
         self.restarting = False
 
@@ -122,10 +122,10 @@ class Game:
         self.pausing = not self.pausing
 
     def spawn_bubble(self) -> None:
-        if self.timer_bubble_speed.is_next_stop_reached():
+        if self.timer_bubble_speed.expired():
             if self.bubble_speed < 100:
                 self.bubble_speed += 5
-        if self.timer_bubble.is_next_stop_reached():
+        if self.timer_bubble.expired():
             if len(self.bubbles) <= Settings.MAX_BUBBLES:
                 bubble = Bubble(self.bubble_speed)
                 for _ in range(100):

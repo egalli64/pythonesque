@@ -14,28 +14,14 @@ import pygame
 
 
 class Timer:
-    """Timer in order to check time periodes."""
-
-    def __init__(self, duration: int, with_start: bool = True) -> None:
-        """Constructor
-
-        Args:
-            duration (int): duration of the time interval in milli seconds
-            with_start (bool, optional): Controls if the first period will count (True) or not (False). Defaults to True.
-        """
+    def __init__(self, duration: int) -> None:
         self.duration = duration
-        if with_start:
-            self.next = pygame.time.get_ticks()
-        else:
-            self.next = pygame.time.get_ticks() + self.duration
+        self.next = pygame.time.get_ticks()
 
-    def is_next_stop_reached(self) -> bool:
-        """Checks if the end of a time period is reached or exceeded.
-
-        Returns:
-            bool: True if the end of the period is reached or exceeded; otherwise False
-        """
-        if pygame.time.get_ticks() > self.next:
-            self.next = pygame.time.get_ticks() + self.duration
+    def expired(self) -> bool:
+        ticks = pygame.time.get_ticks()
+        if ticks > self.next:
+            self.next = ticks + self.duration
             return True
-        return False
+        else:
+            return False
