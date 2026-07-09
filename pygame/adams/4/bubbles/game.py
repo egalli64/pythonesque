@@ -99,7 +99,7 @@ class Game:
                     self.message.add(self.m_restart)
                     self.restarting = True
             else:
-                self.bubbles.update(action="grow")
+                self.bubbles.update(dt)
                 self.spawn_bubble()
             self.set_cursor()
 

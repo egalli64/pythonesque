@@ -34,18 +34,15 @@ class Bubble(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.speed = speed
 
-    def update(self, *args, **kwargs) -> None:
-        if "action" in kwargs.keys():
-            dt = 1 / 60  # TODO: use actual dt
-            if kwargs["action"] == "grow":
-                self.radius += self.speed * dt
-                self.radius = min(self.radius, BubbleFactory.RADIUS_RANGE[1])
-                center = self.rect.center
+    def update(self, dt) -> None:
+        self.radius += self.speed * dt
+        self.radius = min(self.radius, BubbleFactory.RADIUS_RANGE[1])
+        center = self.rect.center
 
-                self.image = self.factory.get(self.radius)
+        self.image = self.factory.get(self.radius)
 
-                self.rect = self.image.get_rect()
-                self.rect.center = center
+        self.rect = self.image.get_rect()
+        self.rect.center = center
 
     def offending(self) -> None:
         self.image = self.factory.get(self.radius, False)
