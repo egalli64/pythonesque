@@ -25,7 +25,6 @@ TITLE = "Bubbles"
 
 
 class Game:
-    do_start: bool
     terminated: bool
     bubble_speed: int
     bubbles: pygame.sprite.Group[Bubble]
@@ -80,7 +79,7 @@ class Game:
             if self.terminated:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_j:
-                        self.do_start = True
+                        self.reset()
                     elif event.key == pygame.K_n:
                         return False
 
@@ -104,8 +103,6 @@ class Game:
         self.window.flip()
 
     def update(self, dt) -> None:
-        if self.do_start:
-            self.reset()
         if not self.paused:
             self.score.update(None)
             if self.check_collision():
@@ -122,7 +119,6 @@ class Game:
         self.message.empty()
         self.bubbles.empty()
         self.bubble_speed = Game.BUBBLE_SPEED_RANGE[0]
-        self.do_start = False
         self.terminated = False
 
         pygame.time.set_timer(Game.SPAWN_BUBBLE_EVENT, Game.SPAWN_DELTA_TIME)
@@ -189,7 +185,7 @@ class Game:
     def run(self) -> None:
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
-            if not self.paused:
+            if not self.paused and not self.terminated:
                 self.update(dt)
             self.draw()
 
