@@ -14,7 +14,6 @@ from typing import Tuple
 
 import pygame
 from settings import Settings
-from timing import Timer
 from background import Background
 from message import Message
 from bubble import Bubble
@@ -27,16 +26,21 @@ TITLE = "Bubbles"
 
 class Game:
     do_start: bool
-    restarting: bool
+    terminated: bool
     bubble_speed: int
-    timer_bubble: Timer
-    timer_bubble_speed: Timer
     bubbles: pygame.sprite.Group[Bubble]
 
     FPS = 60
     POP_SOUND_FILE = "sounds/pop.mp3"
     BURST_SOUND_FILE = "sounds/burst.mp3"
     CLASH_SOUND_FILE = "sounds/clash.wav"
+
+    SPAWN_BUBBLE_EVENT = pygame.event.custom_type()
+    SPAWN_DELTA_TIME = 500
+    SPEED_UP_EVENT = pygame.event.custom_type()
+    SPEED_UP_DELTA_TIME = 10 * 1000
+    BUBBLE_SPEED_RANGE = (10, 100)
+    BUBBLE_SPEED_DELTA = 5
 
     @classmethod
     def load_resources(cls):
@@ -51,7 +55,7 @@ class Game:
         self.background = Background(WIN_RECT)
         self.message = pygame.sprite.GroupSingle()
         self.bubbles = pygame.sprite.Group[Bubble]()
-        self.pausing = False
+        self.paused = False
         self.m_pause = Message("pause.png")
         self.m_restart = Message("restart.png")
         self.score = Score()
@@ -69,16 +73,27 @@ class Game:
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_p:
                     self.set_pause()
-                elif event.key == pygame.K_j:
-                    self.do_start = True
-                elif event.key == pygame.K_n:
-                    return False
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 3:
                     self.set_pause()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:  # left
-                    self.sting(pygame.mouse.get_pos())
+
+            if self.terminated:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_j:
+                        self.do_start = True
+                    elif event.key == pygame.K_n:
+                        return False
+
+            if not self.paused and not self.terminated:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        self.sting(pygame.mouse.get_pos())
+                elif event.type == Game.SPAWN_BUBBLE_EVENT:
+                    self.spawn_bubble()
+                elif event.type == Game.SPEED_UP_EVENT:
+                    if self.bubble_speed < Game.BUBBLE_SPEED_RANGE[1]:
+                        self.bubble_speed += Game.BUBBLE_SPEED_DELTA
+
         return True
 
     def draw(self) -> None:
@@ -91,54 +106,54 @@ class Game:
     def update(self, dt) -> None:
         if self.do_start:
             self.reset()
-        if not self.pausing:
+        if not self.paused:
             self.score.update(None)
             if self.check_collision():
-                if not self.restarting:
+                if not self.terminated:
                     Game.clash_sound.play()
                     self.message.add(self.m_restart)
-                    self.restarting = True
+                    self.terminated = True
             else:
                 self.bubbles.update(dt)
-                self.spawn_bubble()
             self.set_cursor()
 
     def reset(self):
         self.score.change_score()
         self.message.empty()
         self.bubbles.empty()
-        self.bubble_speed = 10
-        self.timer_bubble = Timer(500)
-        self.timer_bubble_speed = Timer(10000)
+        self.bubble_speed = Game.BUBBLE_SPEED_RANGE[0]
         self.do_start = False
-        self.restarting = False
+        self.terminated = False
+
+        pygame.time.set_timer(Game.SPAWN_BUBBLE_EVENT, Game.SPAWN_DELTA_TIME)
+        pygame.time.set_timer(Game.SPEED_UP_EVENT, Game.SPEED_UP_DELTA_TIME)
 
     def set_pause(self):
-        """Manages the pause mode."""
-        if not self.pausing:
+        self.paused = not self.paused
+
+        if self.paused:
             self.message.add(self.m_pause)
+            pygame.time.set_timer(Game.SPEED_UP_EVENT, 0)
+            pygame.time.set_timer(Game.SPAWN_BUBBLE_EVENT, 0)
         else:
             self.m_pause.kill()
-        self.pausing = not self.pausing
+            pygame.time.set_timer(Game.SPAWN_BUBBLE_EVENT, Game.SPAWN_DELTA_TIME)
+            pygame.time.set_timer(Game.SPEED_UP_EVENT, Game.SPEED_UP_DELTA_TIME)
 
     def spawn_bubble(self) -> None:
-        if self.timer_bubble_speed.expired():
-            if self.bubble_speed < 100:
-                self.bubble_speed += 5
-        if self.timer_bubble.expired():
-            if len(self.bubbles) <= Settings.MAX_BUBBLES:
-                bubble = Bubble(self.bubble_speed)
-                for _ in range(100):
-                    bubble.randompos()
-                    bubble.radius += Settings.DISTANCE
-                    collided = pygame.sprite.spritecollide(
-                        bubble, self.bubbles, False, pygame.sprite.collide_circle
-                    )
-                    bubble.radius -= Settings.DISTANCE
-                    if not collided:
-                        self.bubbles.add(bubble)
-                        Game.pop_sound.play()
-                        break
+        if len(self.bubbles) <= Settings.MAX_BUBBLES:
+            bubble = Bubble(self.bubble_speed)
+            for _ in range(100):
+                bubble.randompos()
+                bubble.radius += Settings.DISTANCE
+                collided = pygame.sprite.spritecollide(
+                    bubble, self.bubbles, False, pygame.sprite.collide_circle
+                )
+                bubble.radius -= Settings.DISTANCE
+                if not collided:
+                    self.bubbles.add(bubble)
+                    Game.pop_sound.play()
+                    break
 
     def set_cursor(self) -> None:
         pos = pygame.mouse.get_pos()
@@ -174,7 +189,8 @@ class Game:
     def run(self) -> None:
         while self.handle_events():
             dt = self.clock.tick(Game.FPS) / 1000
-            self.update(dt)
+            if not self.paused:
+                self.update(dt)
             self.draw()
 
 
