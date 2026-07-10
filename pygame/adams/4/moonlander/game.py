@@ -25,11 +25,14 @@ class MyEvents:
 
 
 class Game:
-    sky: Sky
+    lander: Lander
 
     def __init__(self, window, screen):
         self.window = window
         self.screen = screen
+        self.question = Question()
+        self.sky = Sky()
+        self.moon = Moon()
         self.active = True
 
     def run(self) -> None:
@@ -78,25 +81,21 @@ class Game:
     def update(self) -> None:
         self.sky.update()
         self.lander.update(action="move")
-        self.ckeck_landing()
+        self.check_landing()
 
     def draw(self) -> None:
         self.sky.draw(self.screen)
-        self.moon.draw()
+        self.moon.draw(self.screen)
         self.lander.draw()
         if not self.active:
-            self.question.draw()
+            self.question.draw(self.screen)
         self.window.flip()
 
     def restart(self) -> None:
         self.active = True
-        self.sky = Sky()
-        self.moon = Moon(self.screen)
         self.lander = Lander(self.window)
-        self.question = Question(self.screen)
 
-    def ckeck_landing(self) -> None:
-        velocity = self.lander.get_velocity()
+    def check_landing(self) -> None:
         if self.lander.is_landed():
             velocity = self.lander.get_velocity()
             if velocity > cfg.SAVE_SPEED_LANDING:

@@ -10,13 +10,12 @@ import config as cfg
 
 
 class Question:
-    def __init__(self, screen: pygame.Surface) -> None:
+    def __init__(self):
         self.font = pygame.font.Font(None, 24)
-        self.screen = screen
         self.surface = self.font.render("(Q)uit or (R)estart?", True, "red")
         self.rect = self.surface.get_rect()
         self.rect.centerx = cfg.WINDOW.centerx
         self.rect.bottom = cfg.WINDOW.bottom - 10
 
-    def draw(self) -> None:
-        self.screen.blit(self.surface, self.rect.topleft)
+    def draw(self, screen) -> None:
+        screen.blit(self.surface, self.rect.topleft)

@@ -12,8 +12,7 @@ import config as cfg
 
 
 class Moon:
-    def __init__(self, screen: pygame.Surface, layer_count: int = 5, peaks: int = 35):
-        self.screen = screen
+    def __init__(self, layer_count: int = 5, peaks: int = 35):
         self.surface = pygame.Surface((cfg.WINDOW.width,
                                        cfg.HORIZONT + layer_count * 30),
                                       pygame.SRCALPHA)
@@ -56,5 +55,5 @@ class Moon:
                     poly["color"],
                     poly["points"])
 
-    def draw(self):
-        self.screen.blit(self.surface, self.rect.topleft)
+    def draw(self, screen):
+        screen.blit(self.surface, self.rect.topleft)
