@@ -15,6 +15,9 @@ from moon import Moon
 from lander import Lander
 from question import Question
 
+WIN_RECT = pygame.Rect(0, 0, 600, 800)
+TITLE = "Moon Lander"
+
 
 class MyEvents:
     LANDED = pygame.event.custom_type()
@@ -24,56 +27,53 @@ class MyEvents:
 class Game:
     sky: Sky
 
-    def __init__(self) -> None:
-        pygame.init()
-        self.window = pygame.Window(size=cfg.WINDOW.size, title="MyMoonlander", position=pygame.WINDOWPOS_CENTERED)
-        self.screen = self.window.get_surface()
-        self.clock = pygame.time.Clock()
-        self.landing = True
+    def __init__(self, window, screen):
+        self.window = window
+        self.screen = screen
+        self.active = True
 
     def run(self) -> None:
         self.restart()
+        clock = pygame.time.Clock()
         time_previous = time()
-        while self.running:
-            self.watch_for_events()
+        while self.handle_events():
             self.update()
-            if self.running:
-                self.draw()
-            self.clock.tick(cfg.FPS)
+            self.draw()
+            clock.tick(cfg.FPS)
             time_current = time()
             cfg.DELTATIME = time_current - time_previous
             time_previous = time_current
-        pygame.quit()
 
-    def watch_for_events(self) -> None:
+    def handle_events(self) -> bool:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                return False
             elif event.type == pygame.WINDOWCLOSE:
-                self.running = False
-                event.window.destroy()
+                return False
             elif event.type == MyEvents.LANDED:
-                self.landing = False
+                self.active = False
                 self.lander.update(mode="landed", velocity=event.volocity)
             elif event.type == MyEvents.CRASHED:
-                self.landing = False
+                self.active = False
                 self.lander.update(mode="crashed", velocity=event.volocity)
             elif event.type == pygame.KEYDOWN:
-                if self.landing:
+                if self.active:
                     if event.key == pygame.K_SPACE:
                         self.lander.update(action="thrust")
                     elif event.key == pygame.K_h:
                         self.lander.update(action="toggle_ai")
                 else:
                     if event.key == pygame.K_q:
-                        self.running = False
+                        return False
                     elif event.key == pygame.K_r:
                         self.restart()
                 if event.key == pygame.K_ESCAPE:
-                    self.running = False
+                    return False
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_SPACE:
                     self.lander.update(action="unthrust")
+
+        return True
 
     def update(self) -> None:
         self.sky.update()
@@ -84,17 +84,16 @@ class Game:
         self.sky.draw(self.screen)
         self.moon.draw()
         self.lander.draw()
-        if not self.landing:
+        if not self.active:
             self.question.draw()
         self.window.flip()
 
     def restart(self) -> None:
-        self.landing = True
+        self.active = True
         self.sky = Sky()
         self.moon = Moon(self.screen)
         self.lander = Lander(self.window)
         self.question = Question(self.screen)
-        self.running = True
 
     def ckeck_landing(self) -> None:
         velocity = self.lander.get_velocity()
@@ -108,9 +107,13 @@ class Game:
                 pygame.event.post(evt)
 
 
-def main():
-    Game().run()
-
-
 if __name__ == "__main__":
-    main()
+    pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_RECT.size, pygame.WINDOWPOS_CENTERED)
+    pg_screen = pg_window.get_surface()
+
+    try:
+        Game(pg_window, pg_screen).run()
+    finally:
+        pygame.quit()
+        print("Done.")
