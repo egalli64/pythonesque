@@ -51,11 +51,9 @@ class Game:
         self.window = window
         self.screen = screen
         self.background = Background(WIN_RECT)
-        self.message = pygame.sprite.GroupSingle()
+        self.message = Message()
         self.bubbles = pygame.sprite.Group[Bubble]()
         self.paused = False
-        self.m_pause = Message("pause.png")
-        self.m_restart = Message("restart.png")
         self.score = Score()
 
         self.reset()
@@ -103,7 +101,7 @@ class Game:
         self.score.update(None)
         if self.check_collision():
             Game.clash_sound.play()
-            self.message.add(self.m_restart)
+            self.message.set_status(Message.Type.RESTART)
             self.terminated = True
         else:
             self.bubbles.update(dt)
@@ -111,7 +109,7 @@ class Game:
 
     def reset(self):
         self.score.change_score()
-        self.message.empty()
+        self.message.set_status(Message.Type.NONE)
         self.bubbles.empty()
         self.bubble_speed = Game.BUBBLE_SPEED_RANGE[0]
         self.terminated = False
@@ -123,11 +121,11 @@ class Game:
         self.paused = not self.paused
 
         if self.paused:
-            self.message.add(self.m_pause)
+            self.message.set_status(Message.Type.PAUSE)
             pygame.time.set_timer(Game.SPEED_UP_EVENT, 0)
             pygame.time.set_timer(Game.SPAWN_BUBBLE_EVENT, 0)
         else:
-            self.m_pause.kill()
+            self.message.set_status(Message.Type.NONE)
             pygame.time.set_timer(Game.SPAWN_BUBBLE_EVENT, Game.SPAWN_DELTA_TIME)
             pygame.time.set_timer(Game.SPEED_UP_EVENT, Game.SPEED_UP_DELTA_TIME)
 
@@ -188,6 +186,7 @@ class Game:
 
 
 if __name__ == "__main__":
+    # noinspection DuplicatedCode
     pygame.init()
     pg_window = pygame.Window(TITLE, WIN_RECT.size)
     pg_screen = pg_window.get_surface()
@@ -196,6 +195,7 @@ if __name__ == "__main__":
     Background.load_resources()
     BubbleFactory.load_resources()
     Score.load_resources()
+    Message.load_resources()
 
     try:
         Game(pg_window, pg_screen).run()
