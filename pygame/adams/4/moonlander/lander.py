@@ -10,9 +10,10 @@ import config as cfg
 
 
 class Lander:
-    def __init__(self, window: pygame.window.Window) -> None:
+    def __init__(self, window: pygame.window.Window, horizont) -> None:
         self.screen = window.get_surface()
         self.viewport = self.screen.get_rect()
+        self.horizont = horizont
         self.surface = pygame.Surface((90, 81), pygame.SRCALPHA)
         self.surface_thrusting = pygame.Surface((90, 81), pygame.SRCALPHA)
         self.rect = self.surface.get_frect()
@@ -159,7 +160,7 @@ class Lander:
             self.status_screen.fill("black")
 
         # Text output
-        h = -1 * (self.rect.bottom - (self.viewport.bottom - cfg.HORIZONT))
+        h = -1 * (self.rect.bottom - (self.viewport.bottom - self.horizont))
         font = pygame.font.SysFont("Consolas", 14, bold=True)
         labels = "Maximal velocity (m/s):"
         labels += "\nVelocity (m/s):"
@@ -199,11 +200,11 @@ class Lander:
                 self.fuel = 0
         self.velocity += cfg.GRAVITY * dt
         self.rect.top += self.velocity * dt
-        if self.rect.bottom >= self.viewport.bottom - cfg.HORIZONT:
-            self.rect.bottom = self.viewport.bottom - cfg.HORIZONT
+        if self.rect.bottom >= self.viewport.bottom - self.horizont:
+            self.rect.bottom = self.viewport.bottom - self.horizont
 
     def get_velocity(self) -> float:
         return self.velocity
 
     def is_landed(self) -> bool:
-        return self.rect.bottom >= self.viewport.bottom - cfg.HORIZONT
+        return self.rect.bottom >= self.viewport.bottom - self.horizont

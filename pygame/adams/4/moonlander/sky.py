@@ -8,18 +8,16 @@ Moon Lander
 from random import randint
 
 import pygame
-import config as cfg
 
 
 class Sky:
     N_STAR = 20
 
-    def __init__(self, viewport) -> None:
-        self.rect = pygame.Rect(0, 0, viewport.width, viewport.height - cfg.HORIZONT)
+    def __init__(self, rect) -> None:
+        self.rect = rect
         self.stars = []
         for _ in range(Sky.N_STAR):
-            self.stars.append({"pos": (randint(2, self.rect.right - 1),
-                                       randint(2, self.rect.right - 1)),
+            self.stars.append({"pos": (randint(2, rect.right - 1), randint(2, rect.right - 1)),
                                "size": randint(1, 3),
                                "duration": randint(400, 800),
                                "counter": 0,

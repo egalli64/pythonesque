@@ -5,7 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Moon Lander
 """
-HORIZONT = 50
 # Physical constants (Moon conditions)
 MOON_GRAVITY = 1.62  # m/s²
 EARTH_GRAVITY = 9.81  # m/s²

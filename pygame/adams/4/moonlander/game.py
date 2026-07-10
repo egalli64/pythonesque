@@ -25,14 +25,15 @@ class MyEvents:
 class Game:
     lander: Lander
 
+    HORIZONT = 50
     FPS = 60
 
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
         self.question = Question(WIN_RECT)
-        self.sky = Sky(WIN_RECT)
-        self.moon = Moon(WIN_RECT)
+        self.sky = Sky(pygame.Rect(0, 0, WIN_RECT.width, WIN_RECT.height - Game.HORIZONT))
+        self.moon = Moon(WIN_RECT, Game.HORIZONT)
         self.active = True
 
     def run(self) -> None:
@@ -89,7 +90,7 @@ class Game:
 
     def restart(self) -> None:
         self.active = True
-        self.lander = Lander(self.window)
+        self.lander = Lander(self.window, Game.HORIZONT)
 
     def check_landing(self) -> None:
         if self.lander.is_landed():
