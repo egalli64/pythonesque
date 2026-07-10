@@ -12,19 +12,19 @@ import config as cfg
 
 
 class Moon:
-    def __init__(self, layer_count: int = 5, peaks: int = 35):
-        self.surface = pygame.Surface((cfg.WINDOW.width,
-                                       cfg.HORIZONT + layer_count * 30),
-                                      pygame.SRCALPHA)
+    LAYER_COUNT = 5
+    PEAK_COUNT = 35
+
+    def __init__(self, viewport):
+        self.surface = pygame.Surface((viewport.width, cfg.HORIZONT + Moon.LAYER_COUNT * 30), pygame.SRCALPHA)
         self.rect = self.surface.get_rect()
-        self.rect.left = cfg.WINDOW.left
-        self.rect.bottom = cfg.WINDOW.bottom
-        landingarea = pygame.Rect(0, self.rect.height - cfg.HORIZONT,
-                                  cfg.WINDOW.width, cfg.HORIZONT)
+        self.rect.left = viewport.left
+        self.rect.bottom = viewport.bottom
+        landingarea = pygame.Rect(0, self.rect.height - cfg.HORIZONT, viewport.width, cfg.HORIZONT)
 
         layers = []
-        for layer_index in range(layer_count):
-            mypeaks = randint(peaks // 2, peaks)
+        for layer_index in range(Moon.LAYER_COUNT):
+            mypeaks = randint(Moon.PEAK_COUNT // 2, Moon.PEAK_COUNT)
             dist = landingarea.width // mypeaks
             mycolor = 180 - layer_index * 20
             y = landingarea.top - 10 - randint(5, 10) * layer_index
@@ -50,10 +50,7 @@ class Moon:
         pygame.draw.rect(self.surface, (230, 230, 230), landingarea)
         for layer in reversed(layers):
             for poly in layer:
-                pygame.draw.polygon(
-                    self.surface,
-                    poly["color"],
-                    poly["points"])
+                pygame.draw.polygon(self.surface, poly["color"], poly["points"])
 
     def draw(self, screen):
         screen.blit(self.surface, self.rect.topleft)

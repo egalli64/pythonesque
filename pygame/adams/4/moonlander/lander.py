@@ -12,10 +12,11 @@ import config as cfg
 class Lander:
     def __init__(self, window: pygame.window.Window) -> None:
         self.screen = window.get_surface()
+        self.viewport = self.screen.get_rect()
         self.surface = pygame.Surface((90, 81), pygame.SRCALPHA)
         self.surface_thrusting = pygame.Surface((90, 81), pygame.SRCALPHA)
         self.rect = self.surface.get_frect()
-        self.rect.centerx = cfg.WINDOW.centerx
+        self.rect.centerx = self.viewport.centerx
         self.rect.top = self.rect.height
         self.create_lander()
         self.create_lander_thrusting()
@@ -103,7 +104,7 @@ class Lander:
         self.status_window = pygame.Window(size=(300, 140), title="Status")
         self.status_screen = self.status_window.get_surface()
         top = window.position[1]
-        left = window.position[0] + cfg.WINDOW.width + 10
+        left = window.position[0] + self.viewport.width + 10
         self.status_window.position = (left, top)
 
     def update(self, *args, **kwargs) -> None:
@@ -138,7 +139,7 @@ class Lander:
             return
 
         brake_distance = self.velocity ** 2 / (2 * acc)
-        ground_distance = (cfg.WINDOW.height - 50) - self.rect.bottom
+        ground_distance = (self.viewport.height - 50) - self.rect.bottom
         self.thrust(ground_distance <= brake_distance)
 
     def thrust(self, thrusting: bool) -> None:
@@ -158,7 +159,7 @@ class Lander:
             self.status_screen.fill("black")
 
         # Text output
-        h = -1 * (self.rect.bottom - (cfg.WINDOW.bottom - cfg.HORIZONT))
+        h = -1 * (self.rect.bottom - (self.viewport.bottom - cfg.HORIZONT))
         font = pygame.font.SysFont("Consolas", 14, bold=True)
         labels = "Maximal velocity (m/s):"
         labels += "\nVelocity (m/s):"
@@ -189,19 +190,20 @@ class Lander:
         self.status_window.flip()
 
     def move(self) -> None:
+        dt = 1 / 60  # TODO: use actual dt instead
         if self.thrusting and self.fuel > 0:
-            self.velocity += cfg.THRUST * cfg.DELTATIME
-            self.fuel -= self.fuel_consumption * cfg.DELTATIME
+            self.velocity += cfg.THRUST * dt
+            self.fuel -= self.fuel_consumption * dt
             if self.fuel < 0:
                 self.thrusting = False
                 self.fuel = 0
-        self.velocity += cfg.GRAVITY * cfg.DELTATIME
-        self.rect.top += self.velocity * cfg.DELTATIME
-        if self.rect.bottom >= cfg.WINDOW.bottom - cfg.HORIZONT:
-            self.rect.bottom = cfg.WINDOW.bottom - cfg.HORIZONT
+        self.velocity += cfg.GRAVITY * dt
+        self.rect.top += self.velocity * dt
+        if self.rect.bottom >= self.viewport.bottom - cfg.HORIZONT:
+            self.rect.bottom = self.viewport.bottom - cfg.HORIZONT
 
     def get_velocity(self) -> float:
         return self.velocity
 
     def is_landed(self) -> bool:
-        return self.rect.bottom >= cfg.WINDOW.bottom - cfg.HORIZONT
+        return self.rect.bottom >= self.viewport.bottom - cfg.HORIZONT

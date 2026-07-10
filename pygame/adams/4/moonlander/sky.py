@@ -14,12 +14,8 @@ import config as cfg
 class Sky:
     N_STAR = 20
 
-    def __init__(self):
-        top = 0
-        left = 0
-        width = cfg.WINDOW.width
-        height = cfg.WINDOW.height - cfg.HORIZONT
-        self.rect = pygame.Rect(top, left, width, height)
+    def __init__(self, viewport) -> None:
+        self.rect = pygame.Rect(0, 0, viewport.width, viewport.height - cfg.HORIZONT)
         self.stars = []
         for _ in range(Sky.N_STAR):
             self.stars.append({"pos": (randint(2, self.rect.right - 1),

@@ -5,11 +5,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Moon Lander
 """
-from time import time
-
-import config as cfg
 import pygame
 
+import config as cfg
 from sky import Sky
 from moon import Moon
 from lander import Lander
@@ -27,25 +25,23 @@ class MyEvents:
 class Game:
     lander: Lander
 
-    def __init__(self, window, screen):
+    FPS = 60
+
+    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
-        self.question = Question()
-        self.sky = Sky()
-        self.moon = Moon()
+        self.question = Question(WIN_RECT)
+        self.sky = Sky(WIN_RECT)
+        self.moon = Moon(WIN_RECT)
         self.active = True
 
     def run(self) -> None:
         self.restart()
         clock = pygame.time.Clock()
-        time_previous = time()
         while self.handle_events():
             self.update()
             self.draw()
-            clock.tick(cfg.FPS)
-            time_current = time()
-            cfg.DELTATIME = time_current - time_previous
-            time_previous = time_current
+            clock.tick(Game.FPS)
 
     def handle_events(self) -> bool:
         for event in pygame.event.get():

@@ -5,11 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Moon Lander
 """
-import pygame
-
-WINDOW = pygame.Rect(0, 0, 600, 800)
-FPS = 60
-DELTATIME = 1.0 / FPS
 HORIZONT = 50
 # Physical constants (Moon conditions)
 MOON_GRAVITY = 1.62  # m/s²
