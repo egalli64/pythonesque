@@ -85,3 +85,4 @@
 # Chapter 4 - Examples
 - 1: [Pong](4/pong/game.py)
 - 2: [Bubbles](4/bubbles/game.py)
+- 3: [Moon Lander](4/moonlander/game.py)
