@@ -46,10 +46,6 @@ class Game:
                 return False
             elif event.type == Lander.EVENT_LANDED:
                 self.active = False
-                self.lander.update(mode="landed", velocity=event.velocity)
-            elif event.type == Lander.EVENT_CRASHED:
-                self.active = False
-                self.lander.update(mode="crashed", velocity=event.velocity)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return False

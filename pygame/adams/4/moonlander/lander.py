@@ -18,7 +18,6 @@ LEVEL = {"easy": 5000, "fair": 500, "hard": 450, "ai": 380}
 
 class Lander:
     EVENT_LANDED = pygame.event.custom_type()
-    EVENT_CRASHED = pygame.event.custom_type()
 
     def __init__(self, window: pygame.window.Window, horizon) -> None:
         self.screen = window.get_surface()
@@ -125,10 +124,6 @@ class Lander:
                     if self.auto > 0:
                         self.controller()
                     self.move()
-        if "mode" in kwargs.keys():
-            self.mode = kwargs["mode"]
-            if self.mode in ("landed", "crashed"):
-                self.thrust(False)
 
     def toggle_auto(self):
         self.auto = not self.auto
@@ -141,14 +136,13 @@ class Lander:
             return
 
         acc = -1 * (THRUST + GRAVITY)
-        v_save = SAFE_SPEED_LANDING * 0.5  # 50% buffer
-        if self.velocity <= v_save:
+        v_safe = SAFE_SPEED_LANDING * 0.5  # 50% buffer
+        if self.velocity <= v_safe:
             self.thrust(False)
-            return
-
-        brake_distance = self.velocity ** 2 / (2 * acc)
-        ground_distance = (self.viewport.height - 50) - self.rect.bottom
-        self.thrust(ground_distance <= brake_distance)
+        else:
+            brake_distance = self.velocity ** 2 / (2 * acc)
+            ground_distance = (self.viewport.height - 50) - self.rect.bottom
+            self.thrust(ground_distance <= brake_distance)
 
     def thrust(self, thrusting: bool) -> None:
         self.thrusting = thrusting and self.fuel > 0
@@ -211,9 +205,6 @@ class Lander:
             self.rect.bottom = self.viewport.bottom - self.horizon
 
         if self.rect.bottom >= self.viewport.bottom - self.horizon:
-            if self.velocity > SAFE_SPEED_LANDING:
-                evt = pygame.event.Event(Lander.EVENT_CRASHED, velocity=self.velocity)
-                pygame.event.post(evt)
-            else:
-                evt = pygame.event.Event(Lander.EVENT_LANDED, velocity=self.velocity)
-                pygame.event.post(evt)
+            self.thrust(False)
+            self.mode = "crashed" if self.velocity > SAFE_SPEED_LANDING else "landed"
+            pygame.event.post(pygame.event.Event(Lander.EVENT_LANDED))
