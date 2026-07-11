@@ -30,7 +30,7 @@ class Lander:
         self.rect.top = self.rect.height
         self.create_lander()
         self.create_lander_thrusting()
-        self.mode = "landing"
+        self.mode = "active"
         self.thrusting = False
         self.velocity = 0
         self.fuel_initial = LEVEL["fair"]
@@ -118,8 +118,8 @@ class Lander:
         self.status_window.position = (left, top)
 
     def update(self, dt: float) -> None:
-        if self.mode == "landing":
-            if self.auto > 0:
+        if self.mode == "active":
+            if self.auto:
                 self.controller()
             self.move(dt)
 
@@ -129,7 +129,7 @@ class Lander:
             self.thrust(False)
 
     def controller(self):
-        if self.mode in ("landed", "crashed"):
+        if self.mode != "active":
             self.thrust(False)
             return
 
