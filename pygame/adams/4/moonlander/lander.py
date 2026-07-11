@@ -120,11 +120,7 @@ class Lander:
 
     def update(self, *args, **kwargs) -> None:
         if "action" in kwargs.keys():
-            if kwargs["action"] == "thrust":
-                self.thrust(True)
-            elif kwargs["action"] == "unthrust":
-                self.thrust(False)
-            elif kwargs["action"] == "toggle_ai":
+            if kwargs["action"] == "toggle_ai":
                 self.ai = not self.ai
                 if not self.ai:
                     self.thrust(False)
@@ -215,8 +211,8 @@ class Lander:
 
         if self.rect.bottom >= self.viewport.bottom - self.horizon:
             if self.velocity > SAFE_SPEED_LANDING:
-                evt = pygame.event.Event(Lander.EVENT_CRASHED, volocity=self.velocity)
+                evt = pygame.event.Event(Lander.EVENT_CRASHED, velocity=self.velocity)
                 pygame.event.post(evt)
             else:
-                evt = pygame.event.Event(Lander.EVENT_LANDED, volocity=self.velocity)
+                evt = pygame.event.Event(Lander.EVENT_LANDED, velocity=self.velocity)
                 pygame.event.post(evt)

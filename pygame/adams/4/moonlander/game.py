@@ -46,15 +46,13 @@ class Game:
                 return False
             elif event.type == Lander.EVENT_LANDED:
                 self.active = False
-                self.lander.update(mode="landed", velocity=event.volocity)
+                self.lander.update(mode="landed", velocity=event.velocity)
             elif event.type == Lander.EVENT_CRASHED:
                 self.active = False
-                self.lander.update(mode="crashed", velocity=event.volocity)
+                self.lander.update(mode="crashed", velocity=event.velocity)
             elif event.type == pygame.KEYDOWN:
                 if self.active:
-                    if event.key == pygame.K_SPACE:
-                        self.lander.update(action="thrust")
-                    elif event.key == pygame.K_h:
+                    if event.key == pygame.K_h:
                         self.lander.update(action="toggle_ai")
                 else:
                     if event.key == pygame.K_q:
@@ -63,9 +61,10 @@ class Game:
                         self.restart()
                 if event.key == pygame.K_ESCAPE:
                     return False
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_SPACE:
-                    self.lander.update(action="unthrust")
+
+        if self.active:
+            keys = pygame.key.get_pressed()
+            self.lander.thrust(keys[pygame.K_SPACE])
 
         return True
 
