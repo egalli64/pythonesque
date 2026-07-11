@@ -7,7 +7,6 @@ Moon Lander
 """
 import pygame
 
-import config as cfg
 from sky import Sky
 from moon import Moon
 from lander import Lander
@@ -17,23 +16,18 @@ WIN_RECT = pygame.Rect(0, 0, 600, 800)
 TITLE = "Moon Lander"
 
 
-class MyEvents:
-    LANDED = pygame.event.custom_type()
-    CRASHED = pygame.event.custom_type()
-
-
 class Game:
     lander: Lander
 
-    HORIZONT = 50
+    HORIZON_Y = 50
     FPS = 60
 
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
         self.question = Question(WIN_RECT)
-        self.sky = Sky(pygame.Rect(0, 0, WIN_RECT.width, WIN_RECT.height - Game.HORIZONT))
-        self.moon = Moon(WIN_RECT, Game.HORIZONT)
+        self.sky = Sky(pygame.Rect(0, 0, WIN_RECT.width, WIN_RECT.height - Game.HORIZON_Y))
+        self.moon = Moon(WIN_RECT, Game.HORIZON_Y)
         self.active = True
 
     def run(self) -> None:
@@ -50,10 +44,10 @@ class Game:
                 return False
             elif event.type == pygame.WINDOWCLOSE:
                 return False
-            elif event.type == MyEvents.LANDED:
+            elif event.type == Lander.EVENT_LANDED:
                 self.active = False
                 self.lander.update(mode="landed", velocity=event.volocity)
-            elif event.type == MyEvents.CRASHED:
+            elif event.type == Lander.EVENT_CRASHED:
                 self.active = False
                 self.lander.update(mode="crashed", velocity=event.volocity)
             elif event.type == pygame.KEYDOWN:
@@ -78,7 +72,6 @@ class Game:
     def update(self) -> None:
         self.sky.update()
         self.lander.update(action="move")
-        self.check_landing()
 
     def draw(self) -> None:
         self.sky.draw(self.screen)
@@ -90,17 +83,7 @@ class Game:
 
     def restart(self) -> None:
         self.active = True
-        self.lander = Lander(self.window, Game.HORIZONT)
-
-    def check_landing(self) -> None:
-        if self.lander.is_landed():
-            velocity = self.lander.get_velocity()
-            if velocity > cfg.SAVE_SPEED_LANDING:
-                evt = pygame.event.Event(MyEvents.CRASHED, volocity=velocity)
-                pygame.event.post(evt)
-            else:
-                evt = pygame.event.Event(MyEvents.LANDED, volocity=velocity)
-                pygame.event.post(evt)
+        self.lander = Lander(self.window, Game.HORIZON_Y)
 
 
 if __name__ == "__main__":

@@ -6,7 +6,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Moon Lander
 """
 import pygame
-import config as cfg
 
 
 class Question:

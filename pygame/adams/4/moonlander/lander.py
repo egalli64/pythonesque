@@ -6,14 +6,24 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Moon Lander
 """
 import pygame
-import config as cfg
+
+MOON_GRAVITY = 1.62  # m/s²
+EARTH_GRAVITY = 9.81  # m/s²
+PIXELS_PER_METER = 10  # Scaling 1m = 10px
+GRAVITY = MOON_GRAVITY * PIXELS_PER_METER  # = 16.2 px/s²
+THRUST = -2.1 * PIXELS_PER_METER  # = 21.0 px/s²
+SAFE_SPEED_LANDING = 2.5 * PIXELS_PER_METER  # Safe landing velocity in px/s
+LEVEL = {"easy": 5000, "fair": 500, "hard": 450, "ai": 380}
 
 
 class Lander:
-    def __init__(self, window: pygame.window.Window, horizont) -> None:
+    EVENT_LANDED = pygame.event.custom_type()
+    EVENT_CRASHED = pygame.event.custom_type()
+
+    def __init__(self, window: pygame.window.Window, horizon) -> None:
         self.screen = window.get_surface()
         self.viewport = self.screen.get_rect()
-        self.horizont = horizont
+        self.horizon = horizon
         self.surface = pygame.Surface((90, 81), pygame.SRCALPHA)
         self.surface_thrusting = pygame.Surface((90, 81), pygame.SRCALPHA)
         self.rect = self.surface.get_frect()
@@ -24,7 +34,7 @@ class Lander:
         self.mode = "landing"
         self.thrusting = False
         self.velocity = 0
-        self.fuel_initial = cfg.LEVEL["fair"]
+        self.fuel_initial = LEVEL["fair"]
         self.fuel = self.fuel_initial
         self.fuel_consumption = 20
         self.ai = False  # AI flag
@@ -133,8 +143,8 @@ class Lander:
             self.thrust(False)
             return
 
-        acc = -1 * (cfg.THRUST + cfg.GRAVITY)
-        v_save = cfg.SAVE_SPEED_LANDING * 0.5  # 50% buffer
+        acc = -1 * (THRUST + GRAVITY)
+        v_save = SAFE_SPEED_LANDING * 0.5  # 50% buffer
         if self.velocity <= v_save:
             self.thrust(False)
             return
@@ -160,14 +170,14 @@ class Lander:
             self.status_screen.fill("black")
 
         # Text output
-        h = -1 * (self.rect.bottom - (self.viewport.bottom - self.horizont))
+        h = -1 * (self.rect.bottom - (self.viewport.bottom - self.horizon))
         font = pygame.font.SysFont("Consolas", 14, bold=True)
         labels = "Maximal velocity (m/s):"
         labels += "\nVelocity (m/s):"
         labels += "\nHeight (m):"
-        values = f"{cfg.SAVE_SPEED_LANDING / cfg.PIXELS_PER_METER:>7.2f}"
-        values += f"\n{self.velocity / cfg.PIXELS_PER_METER:>7.2f}"
-        values += f"\n{h / cfg.PIXELS_PER_METER:>7.2f}"
+        values = f"{SAFE_SPEED_LANDING / PIXELS_PER_METER:>7.2f}"
+        values += f"\n{self.velocity / PIXELS_PER_METER:>7.2f}"
+        values += f"\n{h / PIXELS_PER_METER:>7.2f}"
         text_labels = font.render(labels, True, "white")
         text_values = font.render(values, True, "white")
         if self.mode == "landed":
@@ -193,18 +203,20 @@ class Lander:
     def move(self) -> None:
         dt = 1 / 60  # TODO: use actual dt instead
         if self.thrusting and self.fuel > 0:
-            self.velocity += cfg.THRUST * dt
+            self.velocity += THRUST * dt
             self.fuel -= self.fuel_consumption * dt
             if self.fuel < 0:
                 self.thrusting = False
                 self.fuel = 0
-        self.velocity += cfg.GRAVITY * dt
+        self.velocity += GRAVITY * dt
         self.rect.top += self.velocity * dt
-        if self.rect.bottom >= self.viewport.bottom - self.horizont:
-            self.rect.bottom = self.viewport.bottom - self.horizont
+        if self.rect.bottom >= self.viewport.bottom - self.horizon:
+            self.rect.bottom = self.viewport.bottom - self.horizon
 
-    def get_velocity(self) -> float:
-        return self.velocity
-
-    def is_landed(self) -> bool:
-        return self.rect.bottom >= self.viewport.bottom - self.horizont
+        if self.rect.bottom >= self.viewport.bottom - self.horizon:
+            if self.velocity > SAFE_SPEED_LANDING:
+                evt = pygame.event.Event(Lander.EVENT_CRASHED, volocity=self.velocity)
+                pygame.event.post(evt)
+            else:
+                evt = pygame.event.Event(Lander.EVENT_LANDED, volocity=self.velocity)
+                pygame.event.post(evt)
