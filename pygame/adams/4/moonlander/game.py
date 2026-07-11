@@ -67,7 +67,7 @@ class Game:
 
     def update(self, dt) -> None:
         self.sky.update()
-        self.lander.update(action="move")
+        self.lander.update(dt)
 
     def draw(self) -> None:
         self.sky.draw(self.screen)

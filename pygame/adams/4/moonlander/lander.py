@@ -117,13 +117,11 @@ class Lander:
         left = window.position[0] + self.viewport.width + 10
         self.status_window.position = (left, top)
 
-    def update(self, *args, **kwargs) -> None:
-        if "action" in kwargs.keys():
-            if kwargs["action"] == "move":
-                if self.mode == "landing":
-                    if self.auto > 0:
-                        self.controller()
-                    self.move()
+    def update(self, dt: float) -> None:
+        if self.mode == "landing":
+            if self.auto > 0:
+                self.controller()
+            self.move(dt)
 
     def toggle_auto(self):
         self.auto = not self.auto
@@ -191,8 +189,7 @@ class Lander:
         pygame.draw.rect(self.status_screen, "green", (5, 65, ratio, 20))
         self.status_window.flip()
 
-    def move(self) -> None:
-        dt = 1 / 60  # TODO: use actual dt instead
+    def move(self, dt) -> None:
         if self.thrusting and self.fuel > 0:
             self.velocity += THRUST * dt
             self.fuel -= self.fuel_consumption * dt
