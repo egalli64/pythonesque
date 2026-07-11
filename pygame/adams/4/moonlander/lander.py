@@ -37,7 +37,7 @@ class Lander:
         self.fuel_initial = LEVEL["fair"]
         self.fuel = self.fuel_initial
         self.fuel_consumption = 20
-        self.ai = False  # AI flag
+        self.auto = False
         self.create_status_window(window)
 
     def create_lander(self) -> None:
@@ -120,19 +120,20 @@ class Lander:
 
     def update(self, *args, **kwargs) -> None:
         if "action" in kwargs.keys():
-            if kwargs["action"] == "toggle_ai":
-                self.ai = not self.ai
-                if not self.ai:
-                    self.thrust(False)
-            elif kwargs["action"] == "move":
+            if kwargs["action"] == "move":
                 if self.mode == "landing":
-                    if self.ai > 0:
+                    if self.auto > 0:
                         self.controller()
                     self.move()
         if "mode" in kwargs.keys():
             self.mode = kwargs["mode"]
             if self.mode in ("landed", "crashed"):
                 self.thrust(False)
+
+    def toggle_auto(self):
+        self.auto = not self.auto
+        if not self.auto:
+            self.thrust(False)
 
     def controller(self):
         if self.mode in ("landed", "crashed"):
@@ -160,7 +161,7 @@ class Lander:
         self.draw_status()
 
     def draw_status(self) -> None:
-        if self.ai:
+        if self.auto:
             self.status_screen.fill("darkgrey")
         else:
             self.status_screen.fill("black")

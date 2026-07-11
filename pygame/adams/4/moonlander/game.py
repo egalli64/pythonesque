@@ -34,9 +34,9 @@ class Game:
         self.restart()
         clock = pygame.time.Clock()
         while self.handle_events():
-            self.update()
+            dt = clock.tick(Game.FPS) / 1000
+            self.update(dt)
             self.draw()
-            clock.tick(Game.FPS)
 
     def handle_events(self) -> bool:
         for event in pygame.event.get():
@@ -51,16 +51,17 @@ class Game:
                 self.active = False
                 self.lander.update(mode="crashed", velocity=event.velocity)
             elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return False
+
                 if self.active:
                     if event.key == pygame.K_h:
-                        self.lander.update(action="toggle_ai")
+                        self.lander.toggle_auto()
                 else:
                     if event.key == pygame.K_q:
                         return False
                     elif event.key == pygame.K_r:
                         self.restart()
-                if event.key == pygame.K_ESCAPE:
-                    return False
 
         if self.active:
             keys = pygame.key.get_pressed()
@@ -68,7 +69,7 @@ class Game:
 
         return True
 
-    def update(self) -> None:
+    def update(self, dt) -> None:
         self.sky.update()
         self.lander.update(action="move")
 
