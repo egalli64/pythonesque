@@ -6,7 +6,8 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Particle swarm /3
 """
 
-from random import randint
+from random import randint, uniform
+from typing import ClassVar
 
 import pygame
 
@@ -17,43 +18,56 @@ WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
 
-class Circle:
-    GRAVITY = 0.3
-    RADIUS = 2
+def random_spread() -> tuple[int, int]:
+    return randint(-2, 2), randint(-2, 2)
+
+
+def random_color() -> tuple[int, int, int]:
+    return randint(0, 255), randint(0, 255), 0
+
+
+class Particle:
+    GRAVITY: ClassVar[float] = 0.3
+    RADIUS: ClassVar[int] = 2
 
     def __init__(self, pos) -> None:
-        self.pos = pygame.Vector2(pos[0] + randint(-2, 2), pos[1] + randint(-2, 2))
-        self.color = (randint(100, 255), randint(50, 255), 0)
-        self.speed_y = randint(-100, 0) / 10.01
+        self.pos = pygame.Vector2(pos)
+        self.pos += random_spread()
+        self.color = random_color()
+        self.speed_y = uniform(-10.0, 0.0)
 
     def update(self) -> None:
-        self.speed_y += Circle.GRAVITY
+        self.speed_y += Particle.GRAVITY
         self.pos.y += self.speed_y
 
-    def draw(self, screen: pygame.Surface) -> None:
-        pygame.draw.circle(screen, self.color, self.pos, Circle.RADIUS)
+    def draw(self, surface: pygame.Surface) -> None:
+        pygame.draw.circle(surface, self.color, self.pos, Particle.RADIUS)
 
 
-def main():
+# noinspection DuplicatedCode
+def main() -> None:
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
-    circles = []
+    particles = []
 
-    while handle_events():
+    running = True
+    while running:
         clock.tick(FPS)
+        running = handle_events()
 
         if pygame.mouse.get_pressed()[0]:
-            circles.append(Circle(pygame.mouse.get_pos()))
-        for circle in circles:
-            circle.update()
+            particles.append(Particle(pygame.mouse.get_pos()))
+        for particle in particles:
+            particle.update()
 
         screen.fill(BACKGROUND_COLOR)
-        for circle in circles:
-            circle.draw(screen)
+        for particle in particles:
+            particle.draw(screen)
         window.flip()
 
 
+# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
