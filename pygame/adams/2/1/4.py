@@ -26,7 +26,7 @@ def main():
         """Run the event loops, return False in case of termination request"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print("Closing last window:", event)
+                print(f"Closing last window, (QUIT has no payload {vars(event)})")
                 return False
             elif event.type == pygame.WINDOWCLOSE:
                 print("Close request from window", event.window.id)
@@ -37,9 +37,11 @@ def main():
     clock = pygame.time.Clock()
     background_colors = {w.id: c for w, c in zip(windows, BACKGROUND_COLORS)}
 
-    while handle_events():
+    running = True
+    while running:
         clock.tick(FPS)
 
+        running = handle_events()
         for window in windows:
             screen = window.get_surface()
             screen.fill(background_colors[window.id])
