@@ -26,3 +26,5 @@
 
 ## [Clear Code - Master Python by making 5 games](clear-code/README.md)
 - https://www.youtube.com/watch?v=8OMghdHP-zs
+
+## [My exercises](my/README.md)
