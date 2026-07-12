@@ -10,7 +10,7 @@ import pygame
 import pygame.gfxdraw
 
 FPS = 30
-TITLE = "Grafic Primitives"
+TITLE = "Graphic Primitives"
 WIN_SIZE = (530, 530)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = pygame.Color(200, 200, 200)
@@ -21,8 +21,10 @@ def main():
     screen = window.get_surface()
     clock = pygame.time.Clock()
 
-    while handle_events():
+    running = True
+    while running:
         clock.tick(FPS)
+        running = handle_events()
 
         screen.fill(BACKGROUND_COLOR)
 
@@ -55,7 +57,7 @@ def draw_filled_rectangle(screen: pygame.Surface):
 
 def draw_rectangle(screen: pygame.Surface):
     """Draw just the rectangle border, as specified"""
-    rect = pygame.Rect(60, 10, 20, 30)
+    rect = pygame.Rect((60, 10), (20, 30))  # explicit left/top, width/height tuples
     pygame.draw.rect(screen, "red", rect, width=3, border_radius=5)
 
 
@@ -75,7 +77,7 @@ def draw_pixel_classic(screen: pygame.Surface):
     """OK for few pixels"""
     for i in range(255):
         for j in range(255):
-            # setting the pixel in the passed position to the given color
+            # setting the pixel in the given position to the given color
             screen.set_at((265 + i, 10 + j), (255, i, j))
 
 
@@ -95,6 +97,7 @@ def draw_pixel_modern(screen: pygame.Surface):
             pygame.gfxdraw.pixel(screen, 265 + i, 265 + j, (i, 255, j))
 
 
+# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
