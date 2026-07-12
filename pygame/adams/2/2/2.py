@@ -20,7 +20,7 @@ BACKGROUND_COLOR = "darkgray"
 
 @dataclass(frozen=True)
 class Circle:
-    DEFAULT_COLOR = "blue"
+    DEFAULT_COLOR: ClassVar[str] = "blue"
     DEFAULT_RADIUS: ClassVar[int] = 20
 
     pos: tuple[int, int]
