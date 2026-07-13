@@ -17,43 +17,37 @@ HORIZON = 250  # y-level between sky and meadow
 
 
 class Meadow:
-    """Helper class for the stage lower side"""
-
     COLOR = (50, 180, 50)
     POS = (0, HORIZON)
     SIZE = (WIN_SIZE[0], WIN_SIZE[1] - HORIZON)
 
     def __init__(self) -> None:
         """!!! Not caching is probably cheaper !!!"""
-        self.surface = pygame.Surface(Meadow.SIZE).convert()
-        self.surface.fill(Meadow.COLOR)
+        self.image = pygame.Surface(Meadow.SIZE).convert()
+        self.image.fill(Meadow.COLOR)
 
-    def draw(self, screen) -> None:
-        screen.blit(self.surface, Meadow.POS)
+    def draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self.image, Meadow.POS)
 
 
 class Sky:
-    """Helper class for the stage upper side - with dynamic color"""
-
-    COLOR = (100, 150, 255)
+    INITIAL_COLOR = (100, 150, 255)
     POS = (0, 0)
     SIZE = (WIN_SIZE[0], HORIZON)
 
     def __init__(self) -> None:
         """!!! Drawing the rectangle instead is probably cheaper !!!"""
-        self.surface = pygame.Surface(Sky.SIZE).convert()
+        self.image = pygame.Surface(Sky.SIZE).convert()
 
     def update(self, brightness: float) -> None:
-        color = Sky.COLOR[0], int(80 + brightness * 120), Sky.COLOR[2]
-        self.surface.fill(color)
+        color = Sky.INITIAL_COLOR[0], int(80 + brightness * 120), Sky.INITIAL_COLOR[2]
+        self.image.fill(color)
 
-    def draw(self, screen) -> None:
-        screen.blit(self.surface, Sky.POS)
+    def draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self.image, Sky.POS)
 
 
 class Tree:
-    """Helper class for a fixed element"""
-
     POS = (65, HORIZON - 100)
     SIZE = (90, 120)
     TRUNK_RECT = (35, 60, 20, 60)
@@ -64,19 +58,16 @@ class Tree:
 
     def __init__(self) -> None:
         """!!! Not caching is probably cheaper !!!"""
-        self.surface = pygame.Surface(Tree.SIZE, pygame.SRCALPHA).convert_alpha()
-        pygame.draw.rect(self.surface, Tree.TRUNK_COLOR, Tree.TRUNK_RECT)
-        pygame.draw.circle(
-            self.surface, Tree.CROWN_COLOR, Tree.CROWN_CENTER, Tree.CROWN_RADIUS
-        )
+        self.image = pygame.Surface(Tree.SIZE, pygame.SRCALPHA).convert_alpha()
+        pygame.draw.rect(self.image, Tree.TRUNK_COLOR, Tree.TRUNK_RECT)
+        pygame.draw.circle(self.image, Tree.CROWN_COLOR, Tree.CROWN_CENTER, Tree.CROWN_RADIUS)
 
-    def draw(self, screen) -> None:
-        screen.blit(self.surface, Tree.POS)
+    def draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self.image, Tree.POS)
 
 
 class House:
-    """Helper class for another fixed element"""
-
+    """Grouping for the house components"""
     POS = (200, HORIZON - 120)
     SIZE = (150, 160)
     BULK_COLOR = (200, 100, 100)
@@ -88,18 +79,16 @@ class House:
 
     def __init__(self) -> None:
         """!!! Not caching is probably cheaper !!!"""
-        self.surface = pygame.Surface(House.SIZE, pygame.SRCALPHA).convert_alpha()
-        pygame.draw.rect(self.surface, House.BULK_COLOR, House.BULK_RECT)
-        pygame.draw.polygon(self.surface, House.ROOF_COLOR, House.ROOF_POINTS)
-        pygame.draw.rect(self.surface, House.DOOR_COLOR, self.DOOR_RECT)
+        self.image = pygame.Surface(House.SIZE, pygame.SRCALPHA).convert_alpha()
+        pygame.draw.rect(self.image, House.BULK_COLOR, House.BULK_RECT)
+        pygame.draw.polygon(self.image, House.ROOF_COLOR, House.ROOF_POINTS)
+        pygame.draw.rect(self.image, House.DOOR_COLOR, House.DOOR_RECT)
 
-    def draw(self, screen) -> None:
-        screen.blit(self.surface, House.POS)
+    def draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self.image, House.POS)
 
 
 class Sun:
-    """Helper class for the dynamic element"""
-
     SPEED = 1
     RADIUS = 40
     CENTER = (RADIUS, RADIUS)
@@ -109,44 +98,42 @@ class Sun:
     def __init__(self) -> None:
         """!!! Not caching is probably cheaper !!!"""
         self.pos = pygame.Vector2(0, 0)
-        self.surface = pygame.Surface(Sun.SIZE, pygame.SRCALPHA).convert_alpha()
-        pygame.draw.circle(self.surface, Sun.COLOR, Sun.CENTER, Sun.RADIUS)
+        self.brightness = 0.0
+        self.image = pygame.Surface(Sun.SIZE, pygame.SRCALPHA).convert_alpha()
+        pygame.draw.circle(self.image, Sun.COLOR, Sun.CENTER, Sun.RADIUS)
 
-    def update(self) -> float:
-        """
-        Adjust the Sun position in the sky.
-
-        Return sine-adjusted y position variation in [0, 1].
-        """
+    def update(self) -> None:
         if 0 <= self.pos.x < WIN_SIZE[0]:
             self.pos[0] += Sun.SPEED
-            delta = math.sin((self.pos[0] / WIN_SIZE[0]) * math.pi)
-            self.pos.y = round(HORIZON * (1 - delta))
-            return delta
+            self.brightness = math.sin((self.pos.x / WIN_SIZE[0]) * math.pi)
+            self.pos.y = round(HORIZON * (1 - self.brightness))
         else:
-            return 0
+            self.brightness = 0.0
 
-    def draw(self, screen) -> None:
+    def draw(self, surface: pygame.Surface) -> None:
         if 0 < self.pos.x < WIN_SIZE[0]:
-            screen.blit(self.surface, (self.pos[0], self.pos[1]))
+            surface.blit(self.image, (self.pos[0], self.pos[1]))
 
 
 def main():
     window = pygame.Window(TITLE, WIN_SIZE)
     screen = window.get_surface()
     clock = pygame.time.Clock()
+
     meadow = Meadow()
     sky = Sky()
     tree = Tree()
     house = House()
     sun = Sun()
 
-    while handle_events():
+    running = True
+    while running:
         clock.tick(FPS)
+        running = handle_events()
 
         # Updates
-        delta = sun.update()
-        sky.update(delta)
+        sun.update()
+        sky.update(sun.brightness)
 
         # Draw
         sky.draw(screen)
@@ -157,6 +144,7 @@ def main():
         window.flip()
 
 
+# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
