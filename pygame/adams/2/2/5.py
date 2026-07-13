@@ -6,54 +6,69 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Particle swarm /4
 """
 
-from random import randint
+from random import randint, uniform
+from typing import ClassVar
+
 import pygame
 
 FPS = 30
 TITLE = "Particle swarm /4"
+# noinspection DuplicatedCode
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
 
-class Circle:
-    GRAVITY = 0.3
-    RADIUS = 2
+def random_spread() -> tuple[int, int]:
+    return randint(-2, 2), randint(-2, 2)
 
-    def __init__(self, pos) -> None:
-        self.pos = pygame.Vector2(pos[0] + randint(-2, 2), pos[1] + randint(-2, 2))
-        self.color = [randint(100, 255), randint(50, 255), 0]
-        self.speed = pygame.Vector2(randint(-10, 10) / 10, randint(-100, 0) / 10)
+
+def random_particle_color() -> tuple[int, int, int]:
+    return randint(0, 255), randint(0, 255), 0
+
+
+class Particle:
+    GRAVITY: ClassVar[float] = 0.3
+    RADIUS: ClassVar[int] = 2
+
+    def __init__(self, pos: tuple[int, int]) -> None:
+        self.pos = pygame.Vector2(pos) + random_spread()
+        self.color = random_particle_color()
+        self.speed = pygame.Vector2(uniform(-1.0, 1.0), uniform(-10.0, 0.0))
 
     def update(self) -> None:
-        self.speed.y += Circle.GRAVITY
+        self.speed.y += Particle.GRAVITY
         self.pos += self.speed
 
-    def draw(self, screen: pygame.Surface) -> None:
-        pygame.draw.circle(screen, self.color, self.pos, Circle.RADIUS)
+    def draw(self, surface: pygame.Surface) -> None:
+        pygame.draw.circle(surface, self.color, self.pos, Particle.RADIUS)
 
 
-def main():
+# noinspection DuplicatedCode
+def main() -> None:
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
-    circles = []
+    particles: list[Particle] = []
 
-    while handle_events():
+    running = True
+    while running:
         clock.tick(FPS)
+        running = handle_events()
 
+        # noinspection DuplicatedCode
         if pygame.mouse.get_pressed()[0]:
-            circles.append(Circle(pygame.mouse.get_pos()))
-
-        for circle in circles:
-            circle.update()
+            particles.append(Particle(pygame.mouse.get_pos()))
+        for particle in particles:
+            particle.update()
 
         screen.fill(BACKGROUND_COLOR)
-        for circle in circles:
-            circle.draw(screen)
+        for particle in particles:
+            particle.draw(screen)
         window.flip()
 
 
+# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

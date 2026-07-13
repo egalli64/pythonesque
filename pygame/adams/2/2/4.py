@@ -13,6 +13,7 @@ import pygame
 
 FPS = 30
 TITLE = "Particle swarm /3"
+# noinspection DuplicatedCode
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
@@ -22,7 +23,7 @@ def random_spread() -> tuple[int, int]:
     return randint(-2, 2), randint(-2, 2)
 
 
-def random_color() -> tuple[int, int, int]:
+def random_particle_color() -> tuple[int, int, int]:
     return randint(0, 255), randint(0, 255), 0
 
 
@@ -30,10 +31,9 @@ class Particle:
     GRAVITY: ClassVar[float] = 0.3
     RADIUS: ClassVar[int] = 2
 
-    def __init__(self, pos) -> None:
-        self.pos = pygame.Vector2(pos)
-        self.pos += random_spread()
-        self.color = random_color()
+    def __init__(self, pos: tuple[int, int]) -> None:
+        self.pos = pygame.Vector2(pos) + random_spread()
+        self.color = random_particle_color()
         self.speed_y = uniform(-10.0, 0.0)
 
     def update(self) -> None:
@@ -49,7 +49,7 @@ def main() -> None:
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
-    particles = []
+    particles: list[Particle] = []
 
     running = True
     while running:
