@@ -50,7 +50,7 @@ def main():
 
         # Update
         defender_rect.top += direction * defender_speed
-        if defender_rect.bottom >= screen_rect.bottom or defender_rect.top <= 0:
+        if defender_rect.bottom >= screen_rect.bottom or defender_rect.top <= screen_rect.top:
             defender_rect.clamp_ip(screen_rect)
             direction *= -1
 
@@ -60,6 +60,7 @@ def main():
         window.flip()
 
     print(f"Defender top after {RUNTIME_MS / 1000:.2f} secs is {defender_rect.top}")
+
 
 # noinspection DuplicatedCode
 def handle_events() -> bool:

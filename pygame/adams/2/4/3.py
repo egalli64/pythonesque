@@ -8,66 +8,69 @@ Time between frames, aka delta time, comes from clock.tick() - consider it "good
 Using FRect to let pygame to take care of position rounding issues
 """
 
-from time import time
 import pygame
 
 FPS = 30  # different FPS should give close enough results
 
 TITLE = "Defender Movement"
-WIN_RECT = pygame.Rect(0, 0, 120, 650)
+WIN_SIZE = (120, 650)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
 DEFENDER_IMAGE = "../images/defender.png"
 DEFENDER_SIZE = (30, 30)
-DEFENDER_DEFAULT_SPEED = 200  # pixel/second
-DIRECTION_DOWN = 1
-DIRECTION_UP = -1
+DEFENDER_SPEED = 200  # pixel/second
 
 LINE_COLOR = "red"
-LINE_START = (0, WIN_RECT.centery)
-LINE_END = (WIN_RECT.width, WIN_RECT.centery)
+LINE_START = (0, WIN_SIZE[1] // 2)
+LINE_END = (WIN_SIZE[0], WIN_SIZE[1] // 2)
 LINE_WIDTH = 2
 
-LIMIT = 1500  # ms
+RUNTIME_MS = 1500  # ms
 
 
+# noinspection DuplicatedCode
 def main():
-    window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
+    window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
+    screen_rect = screen.get_rect()
     clock = pygame.time.Clock()
 
     defender_image = pygame.image.load(DEFENDER_IMAGE).convert_alpha()
     defender_image = pygame.transform.scale(defender_image, DEFENDER_SIZE)
-    defender_rect = pygame.FRect(defender_image.get_rect())
-    defender_rect.centerx = WIN_RECT.centerx
-    defender_rect.bottom = WIN_RECT.bottom - 5
-    defender_speed = DEFENDER_DEFAULT_SPEED
-    defender_y_direction = DIRECTION_UP
+    defender_rect = pygame.FRect(defender_image.get_rect())  # FRect keeps sub-pixel precision
+    defender_rect.midbottom = screen_rect.centerx, screen_rect.bottom - 5
+    defender_speed = DEFENDER_SPEED
+    direction = -1  # moving up
 
-    start_time = pygame.time.get_ticks()
-    while handle_events():
-        dt = clock.tick(FPS) / 1000  # delta time, ms since the previous call
+    elapsed = 0
+    running = True
+    while running:
+        dt = clock.tick(FPS) / 1000  # delta time in seconds
+        running = handle_events()
 
-        if pygame.time.get_ticks() > start_time + LIMIT:
+        elapsed += dt
+        if elapsed >= RUNTIME_MS / 1000:
             defender_speed = 0
 
         # Update
-        defender_rect.top += defender_y_direction * defender_speed * dt
-        if defender_rect.bottom >= WIN_RECT.bottom:
-            defender_y_direction = DIRECTION_UP
-        elif defender_rect.top <= 0:
-            defender_y_direction = DIRECTION_DOWN
+        defender_rect.top += direction * defender_speed * dt
+        if defender_rect.bottom >= screen_rect.bottom or defender_rect.top <= screen_rect.top:
+            defender_rect.clamp_ip(screen_rect)
+            direction *= -1
 
         # Draw
         screen.fill(BACKGROUND_COLOR)
         pygame.draw.line(screen, LINE_COLOR, LINE_START, LINE_END, LINE_WIDTH)
 
+        # blit handles the FRect to Rect conversion
         screen.blit(defender_image, defender_rect)
         window.flip()
-    print(f"center y={defender_rect.centery}")
+
+    print(f"Defender center y after {RUNTIME_MS / 1000:.2f} secs is {defender_rect.centery}")
 
 
+# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
