@@ -6,7 +6,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Particle swarm /6
 """
 
-from random import randint
+from random import randint, uniform
+from typing import ClassVar
+
 import pygame
 
 FPS = 30
@@ -16,67 +18,68 @@ WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
 
-class Circle:
-    GRAVITY = 0.3
-    RADIUS_DELTA = -0.1
+def random_spread() -> tuple[int, int]:
+    return randint(-4, 4), randint(-4, 4)
 
-    def __init__(self, pos) -> None:
-        self.pos = pygame.Vector2(pos[0] + randint(-4, 4), pos[1] + randint(-4, 4))
+
+def random_particle_color() -> tuple[int, int, int]:
+    return randint(0, 255), randint(0, 255), 0
+
+
+class Particle:
+    GRAVITY: ClassVar[float] = 0.3
+    INITIAL_RADIUS: ClassVar[float] = 7.0
+    RADIUS_DELTA: ClassVar[float] = 1 / 15
+
+    def __init__(self, pos: tuple[int, int]) -> None:
+        self.pos = pygame.Vector2(pos) + random_spread()
         self.color = [randint(100, 255), randint(50, 255), 0]
-        self.speed = pygame.Vector2(randint(-15, 15) / 10.01, randint(-100, 0) / 10.01)
-        self.radius = 8.0
-
-    def __repr__(self):
-        return f"Circle(pos={self.pos}, color={self.color}, speed={self.speed}, radius={self.radius})"
+        self.speed = pygame.Vector2(uniform(-1.5, 1.5), uniform(-10.0, 0.0))
+        self.radius = Particle.INITIAL_RADIUS
 
     def update(self) -> None:
-        """Change the circle vertical speed, position, and radius"""
-        self.speed.y += Circle.GRAVITY
+        """Change the particle vertical speed, position, and radius"""
+        self.speed.y += Particle.GRAVITY
         self.pos += self.speed
-        self.radius += self.RADIUS_DELTA
+        self.radius -= Particle.RADIUS_DELTA
 
     def is_lost(self) -> bool:
         """
-        Check if the current circle is escaped from the window (left, right, or down),
-        or it is too small to be seen
+        Check if the current particle is escaped from the window (left, right, or down), or it is too small to be seen
         """
-        if self.pos.x + self.radius < 0:
-            return True
-        elif self.pos.x - self.radius > WIN_SIZE[0]:
-            return True
-        elif self.pos.y - self.radius > WIN_SIZE[1]:
-            return True
-        elif self.radius < 1:
-            return True
-        return False
+        return (self.pos.x + self.radius < 0 or self.pos.x - self.radius > WIN_SIZE[0]
+                or self.pos.y - self.radius > WIN_SIZE[1] or self.radius < 1)
 
-    def draw(self, screen: pygame.Surface) -> None:
-        pygame.draw.circle(screen, self.color, self.pos, self.radius)
+    def draw(self, surface: pygame.Surface) -> None:
+        pygame.draw.circle(surface, self.color, self.pos, self.radius)
 
 
-def main():
+def main() -> None:
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
-    circles = []
+    particles: list[Particle] = []
 
-    while handle_events():
+    running = True
+    while running:
         clock.tick(FPS)
+        running = handle_events()
 
         if pygame.mouse.get_pressed()[0]:
             for _ in range(5):
-                circles.append(Circle(pygame.mouse.get_pos()))
+                particles.append(Particle(pygame.mouse.get_pos()))
 
-        for circle in circles:
-            circle.update()
-        circles = [circle for circle in circles if not circle.is_lost()]
+        for particle in particles:
+            particle.update()
+        particles = [particle for particle in particles if not particle.is_lost()]
 
         screen.fill(BACKGROUND_COLOR)
-        for circle in circles:
-            circle.draw(screen)
+        for particle in particles:
+            particle.draw(screen)
         window.flip()
 
 
+# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
