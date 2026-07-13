@@ -23,8 +23,11 @@ def main():
     screen = window.get_surface()
     clock = pygame.time.Clock()
 
-    while handle_events():
+    running = True
+    while running:
         clock.tick(FPS)
+        running = handle_events()
+
         screen.fill(BACKGROUND_COLOR)
         window.flip()
 
@@ -39,9 +42,9 @@ def handle_events() -> bool:
             elif event.key == pygame.K_1:
                 pygame.display.message_box("Information", MB_INFO)
             elif event.key == pygame.K_2:
-                btns = ["Yes", "No"]
-                x = pygame.display.message_box("Warning", MB_WARN, "warn", buttons=btns)
-                print("User selected:", x)
+                buttons = ["Yes", "No"]
+                x = pygame.display.message_box("Warning", MB_WARN, "warn", buttons=buttons)
+                print("User selection:", x)
             elif event.key == pygame.K_3:
                 pygame.display.message_box("Error", MB_ERR, "error")
     return True
