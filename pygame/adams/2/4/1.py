@@ -22,6 +22,7 @@ Y_GAP = 5
 DEFENDER_SPEED = 2
 
 
+# noinspection DuplicatedCode
 def main():
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
