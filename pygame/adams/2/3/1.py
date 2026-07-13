@@ -45,8 +45,10 @@ def main():
     alien_image.set_colorkey(ALIEN_TRANSPARENT_COLOR)
     alien_image = pygame.transform.scale(alien_image, ALIEN_SIZE)
 
-    while handle_events():
+    running = True
+    while running:
         clock.tick(FPS)
+        running = handle_events()
 
         screen.fill(BACKGROUND_COLOR)
         for i in range(ALIEN_COUNT):
@@ -56,6 +58,7 @@ def main():
         window.flip()
 
 
+# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
