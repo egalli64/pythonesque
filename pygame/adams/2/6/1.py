@@ -9,7 +9,7 @@ from enum import Enum
 from typing import override
 import pygame
 
-TITLE = "Keyboard for moving"
+TITLE = "Detecting key down and up"
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
 
@@ -103,6 +103,7 @@ class Game:
         self.window.flip()
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
     pg_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
