@@ -56,13 +56,13 @@ class Border(pygame.sprite.Sprite):
     FILENAME = "../images/brick.png"
     SIZE = (35, WIN_SIZE[1])
 
+    image: pygame.Surface
+    rect: pygame.Rect
+
     @classmethod
     def load_resources(cls):
         image = pygame.image.load(cls.FILENAME).convert_alpha()
         cls._image = pygame.transform.scale(image, cls.SIZE)
-
-    rect: pygame.Rect
-    image: pygame.Surface
 
     def __init__(self, viewport: pygame.Rect, right: bool = False) -> None:
         super().__init__()
@@ -105,7 +105,6 @@ def main(window: pygame.Window, screen: pygame.Surface) -> None:
         defender.draw(screen)
         border_left.draw(screen)
         border_right.draw(screen)
-
         window.flip()
 
 

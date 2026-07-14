@@ -5,89 +5,103 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Sprite Group
 """
-
-from enum import Enum, auto
 import pygame
 
 FPS = 30
-TITLE = "Sprite"
-WIN_RECT = pygame.Rect(0, 0, 600, 100)
+
+TITLE = "Sprite Group"
+WIN_SIZE = (600, 100)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
 
 class Defender(pygame.sprite.Sprite):
-    IMAGE = "../images/defender.png"
+    FILENAME = "../images/defender.png"
     SIZE = (30, 30)
-    DEFAULT_SPEED = 150  # pixel/second
+    X_SPEED = 150  # pixel/second
     BOTTOM_GAP = 5
 
-    rect: pygame.FRect
     image: pygame.Surface
+    rect: pygame.FRect
 
-    def __init__(self) -> None:
+    @classmethod
+    def load_resources(cls):
+        image = pygame.image.load(cls.FILENAME).convert_alpha()
+        cls._image = pygame.transform.scale(image, cls.SIZE)
+
+    def __init__(self, viewport: pygame.Rect) -> None:
         super().__init__()
-        self.image = pygame.image.load(Defender.IMAGE).convert_alpha()
-        self.image = pygame.transform.scale(self.image, Defender.SIZE)  # type: ignore
-        self.rect = pygame.FRect(self.image.get_rect())  # type: ignore
-        self.rect.centerx = WIN_RECT.centerx
-        self.rect.bottom = WIN_RECT.bottom - Defender.BOTTOM_GAP
-        self.speed = Defender.DEFAULT_SPEED
 
-    def update(self, dt) -> None:
-        self.rect.move_ip(self.speed * dt, 0)
+        self.image = Defender._image
+        self.rect = pygame.FRect(self.image.get_rect())
+        self.rect.midbottom = viewport.centerx, viewport.bottom - Defender.BOTTOM_GAP
+        self.x_velocity = Defender.X_SPEED
 
-    def change_direction(self) -> None:
-        self.speed *= -1
+    def update(self, dt: float) -> None:
+        self.rect.move_ip(self.x_velocity * dt, 0)
+
+    def bounce(self, border: Border) -> None:
+        if border.right:
+            self.rect.right = border.rect.left
+            self.x_velocity = -Defender.X_SPEED
+        else:
+            self.rect.left = border.rect.right
+            self.x_velocity = Defender.X_SPEED
 
 
 class Border(pygame.sprite.Sprite):
-    class Position(Enum):
-        LEFT = auto()
-        RIGHT = auto()
+    FILENAME = "../images/brick.png"
+    SIZE = (35, WIN_SIZE[1])
 
-    IMAGE = "../images/brick.png"
-    SIZE = (35, WIN_RECT.height)
-
-    rect: pygame.Rect
     image: pygame.Surface
+    rect: pygame.Rect
 
-    def __init__(self, position: Position) -> None:
+    @classmethod
+    def load_resources(cls):
+        image = pygame.image.load(cls.FILENAME).convert_alpha()
+        cls._image = pygame.transform.scale(image, cls.SIZE)
+
+    def __init__(self, viewport: pygame.Rect, right: bool = False) -> None:
         super().__init__()
-        self.image = pygame.image.load(Border.IMAGE).convert_alpha()
-        self.image = pygame.transform.scale(self.image, Border.SIZE)  # type: ignore
-        self.rect = self.image.get_rect()  # type: ignore
-        if position == Border.Position.RIGHT:
-            self.rect.right = WIN_RECT.right
+
+        self.image = Border._image
+        self.rect = self.image.get_rect()
+        self.right = right
+
+        if right:
+            self.rect.right = viewport.right
+        else:
+            self.rect.left = viewport.left
 
 
-def main():
-    window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
-    screen = window.get_surface()
+def main(window: pygame.Window, screen: pygame.Surface) -> None:
     clock = pygame.time.Clock()
+    viewport = screen.get_rect()
 
-    defender = Defender()
-    defender_group = pygame.sprite.GroupSingle(defender)
-    borders = pygame.sprite.Group()
-    borders.add(Border(Border.Position.LEFT))
-    borders.add(Border(Border.Position.RIGHT))
+    defender = Defender(viewport)
+    all_sprites = pygame.sprite.Group(defender)
+    borders: pygame.sprite.Group[Border] = pygame.sprite.Group(Border(viewport), Border(viewport, right=True))
+    all_sprites.add(borders)
 
-    while handle_events():
+    running = True
+    while running:
         dt = clock.tick(FPS) / 1000
 
+        running = handle_events()
+
         # Update
-        if pygame.sprite.spritecollide(defender_group.sprite, borders, False):  # type: ignore
-            defender.change_direction()
         defender.update(dt)
+        # here no more than one collision is expected
+        if collisions := pygame.sprite.spritecollide(defender, borders, False):
+            defender.bounce(collisions[0])
 
         # Draw
         screen.fill(BACKGROUND_COLOR)
-        defender_group.draw(screen)  # the group knows how to draw its sprites
-        borders.draw(screen)
-
+        all_sprites.draw(screen)  # the group knows how to draw its sprites
         window.flip()
 
 
+# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -97,9 +111,14 @@ def handle_events() -> bool:
 
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
+    pg_screen = pg_window.get_surface()
+
+    Defender.load_resources()
+    Border.load_resources()
 
     try:
-        main()
+        main(pg_window, pg_screen)
     finally:
         pygame.quit()
         print("Done.")
