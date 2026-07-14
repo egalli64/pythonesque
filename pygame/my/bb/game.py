@@ -16,10 +16,10 @@ class Game:
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
+        self.viewport = screen.get_rect()
         self.running = True
 
-        rect = screen.get_rect()
-        self.ball = Ball(rect.center)
+        self.ball = Ball(self.viewport.center)
 
     def run(self) -> None:
         clock = pygame.time.Clock()
@@ -40,7 +40,7 @@ class Game:
                     self.running = False
 
     def update(self, dt: float) -> None:
-        self.ball.update(dt)
+        self.ball.update(dt, self.viewport)
 
     def draw(self):
         self.screen.fill(BACKGROUND_COLOR)
