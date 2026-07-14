@@ -13,11 +13,12 @@ import pygame
 
 FPS = 30
 TITLE = "Particle swarm /4"
-# noinspection DuplicatedCode
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
-
+X_VELOCITY_RANGE = (-1, 1)
+# noinspection DuplicatedCode
+Y_VELOCITY_RANGE = (-10, 0)
 
 def random_spread() -> tuple[int, int]:
     return randint(-2, 2), randint(-2, 2)
@@ -34,11 +35,11 @@ class Particle:
     def __init__(self, pos: tuple[int, int]) -> None:
         self.pos = pygame.Vector2(pos) + random_spread()
         self.color = random_particle_color()
-        self.speed = pygame.Vector2(uniform(-1.0, 1.0), uniform(-10.0, 0.0))
+        self.velocity = pygame.Vector2(uniform(*X_VELOCITY_RANGE), uniform(*Y_VELOCITY_RANGE))
 
     def update(self) -> None:
-        self.speed.y += Particle.GRAVITY
-        self.pos += self.speed
+        self.velocity.y += Particle.GRAVITY
+        self.pos += self.velocity
 
     def draw(self, surface: pygame.Surface) -> None:
         pygame.draw.circle(surface, self.color, self.pos, Particle.RADIUS)

@@ -9,8 +9,8 @@ Defender as a Sprite
 import pygame
 
 FPS = 30
-TITLE = "Sprite"
-WIN_RECT = pygame.Rect(0, 0, 600, 100)
+TITLE = "Defender as Sprite"
+WIN_SIZE = (600, 100)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
@@ -18,46 +18,45 @@ BACKGROUND_COLOR = "white"
 class Defender(pygame.sprite.Sprite):
     IMAGE = "../images/defender.png"
     SIZE = (30, 30)
-    DEFAULT_SPEED = 150  # pixel/second
+    X_VELOCITY = 150  # pixel/second
     BOTTOM_GAP = 5
 
-    rect: pygame.FRect
     image: pygame.Surface
+    rect: pygame.FRect
 
-    def __init__(self) -> None:
+    @classmethod
+    def load_resources(cls):
+        image = pygame.image.load(cls.IMAGE).convert_alpha()
+        cls._image = pygame.transform.scale(image, cls.SIZE)
+
+    def __init__(self, viewport: pygame.Rect) -> None:
         super().__init__()
-        self.image = pygame.image.load(Defender.IMAGE).convert_alpha()
-        self.image = pygame.transform.scale(self.image, Defender.SIZE)  # type: ignore
+
+        self.image = Defender._image
         self.rect = pygame.FRect(self.image.get_rect())
-        self.rect.centerx = WIN_RECT.centerx
-        self.rect.bottom = WIN_RECT.bottom - Defender.BOTTOM_GAP
-        self.speed = Defender.DEFAULT_SPEED
+        self.rect.midbottom = viewport.centerx, viewport.bottom - Defender.BOTTOM_GAP
 
-    def update(self, dt) -> None:
-        new_rect: pygame.FRect = self.rect.move(self.speed * dt, 0)
-        if new_rect.right >= WIN_RECT.right:
-            self.change_direction()
-            new_rect.right = WIN_RECT.right
-        elif new_rect.left <= WIN_RECT.left:
-            self.change_direction()
-            new_rect.left = WIN_RECT.left
-        self.rect = new_rect  # type: ignore - PyLance gets confused
+        self.viewport = viewport
+        self.x_velocity = Defender.X_VELOCITY
 
-    def draw(self, screen: pygame.Surface) -> None:
-        screen.blit(self.image, self.rect)
+    def update(self, dt: float) -> None:
+        self.rect.x += self.x_velocity * dt
+        if self.rect.right >= self.viewport.right or self.rect.left <= self.viewport.left:
+            self.rect.clamp_ip(self.viewport)
+            self.x_velocity *= -1
 
-    def change_direction(self) -> None:
-        self.speed *= -1
+    def draw(self, surface: pygame.Surface) -> None:
+        surface.blit(self.image, self.rect)
 
 
-def main():
-    window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
-    screen = window.get_surface()
+def main(window: pygame.Window, screen: pygame.Surface) -> None:
     clock = pygame.time.Clock()
-    defender = Defender()
+    defender = Defender(screen.get_rect())
 
-    while handle_events():
+    running = True
+    while running:
         dt = clock.tick(FPS) / 1000
+        running = handle_events()
 
         # Update
         defender.update(dt)
@@ -68,6 +67,7 @@ def main():
         window.flip()
 
 
+# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -77,9 +77,13 @@ def handle_events() -> bool:
 
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
+    pg_screen = pg_window.get_surface()
+
+    Defender.load_resources()
 
     try:
-        main()
+        main(pg_window, pg_screen)
     finally:
         pygame.quit()
         print("Done.")

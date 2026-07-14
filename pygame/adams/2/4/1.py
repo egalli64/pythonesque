@@ -19,7 +19,7 @@ DEFENDER_IMAGE = "../images/defender.png"
 DEFENDER_SIZE = (30, 30)
 Y_GAP = 5
 
-DEFENDER_SPEED = 2
+DEFENDER_X_VELOCITY = 2
 
 
 # noinspection DuplicatedCode
@@ -43,7 +43,7 @@ def main():
         # Update
         # instead of checking the newly generated x value before changing the defender position
         # working on a new Rect shifted by an x, y offset is usually handier
-        candidate = defender_rect.move(direction * DEFENDER_SPEED, 0)
+        candidate = defender_rect.move(direction * DEFENDER_X_VELOCITY, 0)
         if candidate.right >= screen_rect.right:  # clamp right
             direction *= -1
             candidate.right = screen_rect.right

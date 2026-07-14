@@ -17,6 +17,7 @@ TITLE = "Particle swarm /3"
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
+Y_VELOCITY_RANGE = (-10, 0)
 
 
 def random_spread() -> tuple[int, int]:
@@ -34,11 +35,11 @@ class Particle:
     def __init__(self, pos: tuple[int, int]) -> None:
         self.pos = pygame.Vector2(pos) + random_spread()
         self.color = random_particle_color()
-        self.speed_y = uniform(-10.0, 0.0)
+        self.velocity_y = uniform(*Y_VELOCITY_RANGE)
 
     def update(self) -> None:
-        self.speed_y += Particle.GRAVITY
-        self.pos.y += self.speed_y
+        self.velocity_y += Particle.GRAVITY
+        self.pos.y += self.velocity_y
 
     def draw(self, surface: pygame.Surface) -> None:
         pygame.draw.circle(surface, self.color, self.pos, Particle.RADIUS)

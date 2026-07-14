@@ -16,6 +16,8 @@ TITLE = "Particle swarm /6"
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
+X_VELOCITY_RANGE = (-1.5, 1.5)
+Y_VELOCITY_RANGE = (-10, 0)
 
 
 def random_spread() -> tuple[int, int]:
@@ -34,13 +36,13 @@ class Particle:
     def __init__(self, pos: tuple[int, int]) -> None:
         self.pos = pygame.Vector2(pos) + random_spread()
         self.color = [randint(100, 255), randint(50, 255), 0]
-        self.speed = pygame.Vector2(uniform(-1.5, 1.5), uniform(-10.0, 0.0))
+        self.velocity = pygame.Vector2(uniform(*X_VELOCITY_RANGE), uniform(*Y_VELOCITY_RANGE))
         self.radius = Particle.INITIAL_RADIUS
 
     def update(self) -> None:
         """Change the particle vertical speed, position, and radius"""
-        self.speed.y += Particle.GRAVITY
-        self.pos += self.speed
+        self.velocity.y += Particle.GRAVITY
+        self.pos += self.velocity
         self.radius -= Particle.RADIUS_DELTA
 
     def is_lost(self) -> bool:
