@@ -79,9 +79,8 @@ def main(window: pygame.Window, screen: pygame.Surface) -> None:
     viewport = screen.get_rect()
 
     defender = Defender(viewport)
-    all_sprites = pygame.sprite.Group(defender)
-    borders: pygame.sprite.Group[Border] = pygame.sprite.Group(Border(viewport), Border(viewport, right=True))
-    all_sprites.add(borders)
+    borders = pygame.sprite.Group[Border](Border(viewport), Border(viewport, right=True))
+    all_sprites = pygame.sprite.Group(defender, borders)
 
     running = True
     while running:

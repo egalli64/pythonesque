@@ -3,94 +3,112 @@ Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_bo
 
 My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
-Better encapsulation with a Game class
+Better encapsulation by class Game
 """
-
-from enum import Enum, auto
 from typing import override
 import pygame
 
-WIN_RECT = pygame.Rect(0, 0, 600, 100)
+TITLE = "The game orchestrator"
+WIN_SIZE = (600, 100)
+WIN_POS = (10, 50)
 
 
 class Defender(pygame.sprite.Sprite):
-    IMAGE = "../images/defender.png"
+    FILENAME = "../images/defender.png"
     SIZE = (30, 30)
-    DEFAULT_SPEED = 150  # pixel/second
+    X_SPEED = 150  # pixel/second
     BOTTOM_GAP = 5
 
-    def __init__(self) -> None:
+    image: pygame.Surface
+    rect: pygame.FRect
+
+    @classmethod
+    def load_resources(cls):
+        image = pygame.image.load(cls.FILENAME).convert_alpha()
+        cls._image = pygame.transform.scale(image, cls.SIZE)
+
+    def __init__(self, viewport: pygame.Rect) -> None:
         super().__init__()
 
-        self.image = pygame.image.load(Defender.IMAGE).convert_alpha()
-        self.image = pygame.transform.scale(self.image, Defender.SIZE)
+        self.image = Defender._image
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
-        self.rect.centerx = WIN_RECT.centerx
-        self.rect.bottom = WIN_RECT.bottom - Defender.BOTTOM_GAP
-        self.speed = Defender.DEFAULT_SPEED
+        self.rect.midbottom = viewport.centerx, viewport.bottom - Defender.BOTTOM_GAP
+        self.x_velocity = Defender.X_SPEED
 
-    def reverse_direction(self) -> None:
-        self.speed *= -1
+    def bounce(self, border: Border) -> None:
+        if border.right:
+            self.rect.right = border.rect.left
+            self.x_velocity = -Defender.X_SPEED
+        else:
+            self.rect.left = border.rect.right
+            self.x_velocity = Defender.X_SPEED
 
     @override
     def update(self, dt) -> None:
-        self.rect.move_ip(self.speed * dt, 0)
+        self.rect.move_ip(self.x_velocity * dt, 0)
 
 
+# noinspection DuplicatedCode
 class Border(pygame.sprite.Sprite):
-    class Position(Enum):
-        LEFT = auto()
-        RIGHT = auto()
+    FILENAME = "../images/brick.png"
+    SIZE = (35, WIN_SIZE[1])
 
-    IMAGE = "../images/brick.png"
-    SIZE = (35, WIN_RECT.height)
+    image: pygame.Surface
+    rect: pygame.Rect
 
-    def __init__(self, position: Position) -> None:
+    @classmethod
+    def load_resources(cls):
+        image = pygame.image.load(cls.FILENAME).convert_alpha()
+        cls._image = pygame.transform.scale(image, cls.SIZE)
+
+    def __init__(self, viewport: pygame.Rect, right: bool = False) -> None:
         super().__init__()
 
-        self.image = pygame.image.load(Border.IMAGE).convert_alpha()
-        self.image = pygame.transform.scale(self.image, Border.SIZE)
+        self.image = Border._image
         self.rect = self.image.get_rect()
-        if position == Border.Position.RIGHT:
-            self.rect.right = WIN_RECT.right
+        self.right = right
+
+        if right:
+            self.rect.right = viewport.right
+        else:
+            self.rect.left = viewport.left
 
 
 class Game:
     FPS = 30
-
-    TITLE = "Sprite"
-    WIN_POS = (10, 50)
     BACKGROUND_COLOR = "white"
 
-    def __init__(self) -> None:
-        self.window = pygame.Window(Game.TITLE, WIN_RECT.size, Game.WIN_POS)
-        self.screen = self.window.get_surface()
-        self.clock = pygame.time.Clock()
+    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+        self.window = window
+        self.screen = screen
+        self.viewport = screen.get_rect()
+        self.running = True
 
-        self.defender = Defender()
-        self.borders = pygame.sprite.Group()
-        self.borders.add(Border(Border.Position.LEFT))
-        self.borders.add(Border(Border.Position.RIGHT))
+        self.defender = Defender(self.viewport)
+        self.borders = pygame.sprite.Group[Border](Border(self.viewport), Border(self.viewport, right=True))
         self.all_sprites = pygame.sprite.Group(self.defender, self.borders)
 
     def run(self) -> None:
         """Run the main game loop"""
-        while self.handle_events():
-            dt = self.clock.tick(Game.FPS) / 1000
+        clock = pygame.time.Clock()
+
+        while self.running:
+            dt = clock.tick(Game.FPS) / 1000
+
+            self.handle_events()
             self.update(dt)
             self.draw()
 
-    def handle_events(self) -> bool:
-        """Run the event loops, return False in case of termination request"""
+    def handle_events(self) -> None:
+        """Run the event loops, running is False in case of termination request"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
-        return True
+                self.running = False
 
     def update(self, dt) -> None:
-        if pygame.sprite.spritecollide(self.defender, self.borders, False):
-            self.defender.reverse_direction()
         self.defender.update(dt)
+        if collisions := pygame.sprite.spritecollide(self.defender, self.borders, False):
+            self.defender.bounce(collisions[0])
 
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
@@ -100,9 +118,14 @@ class Game:
 
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
+    pg_screen = pg_window.get_surface()
+
+    Defender.load_resources()
+    Border.load_resources()
 
     try:
-        Game().run()
+        Game(pg_window, pg_screen).run()
     finally:
         pygame.quit()
         print("Done.")
