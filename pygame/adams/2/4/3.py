@@ -17,7 +17,7 @@ WIN_SIZE = (120, 650)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
-DEFENDER_IMAGE = "../images/defender.png"
+DEFENDER_FILENAME = "../images/defender.png"
 DEFENDER_SIZE = (30, 30)
 DEFENDER_SPEED = 200  # pixel/second
 
@@ -36,7 +36,7 @@ def main():
     screen_rect = screen.get_rect()
     clock = pygame.time.Clock()
 
-    defender_image = pygame.image.load(DEFENDER_IMAGE).convert_alpha()
+    defender_image = pygame.image.load(DEFENDER_FILENAME).convert_alpha()
     defender_image = pygame.transform.scale(defender_image, DEFENDER_SIZE)
     defender_rect = pygame.FRect(defender_image.get_rect())  # FRect keeps sub-pixel precision
     defender_rect.midbottom = screen_rect.centerx, screen_rect.bottom - 5

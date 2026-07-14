@@ -16,7 +16,7 @@ BACKGROUND_COLOR = "white"
 
 
 class Defender(pygame.sprite.Sprite):
-    IMAGE = "../images/defender.png"
+    FILENAME = "../images/defender.png"
     SIZE = (30, 30)
     X_VELOCITY = 150  # pixel/second
     BOTTOM_GAP = 5
@@ -26,7 +26,7 @@ class Defender(pygame.sprite.Sprite):
 
     @classmethod
     def load_resources(cls):
-        image = pygame.image.load(cls.IMAGE).convert_alpha()
+        image = pygame.image.load(cls.FILENAME).convert_alpha()
         cls._image = pygame.transform.scale(image, cls.SIZE)
 
     def __init__(self, viewport: pygame.Rect) -> None:

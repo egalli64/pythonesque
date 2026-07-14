@@ -16,7 +16,7 @@ WIN_SIZE = (120, 650)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
-DEFENDER_IMAGE = "../images/defender.png"
+DEFENDER_FILENAME = "../images/defender.png"
 DEFENDER_SIZE = (30, 30)
 DEFENDER_SPEED = 2
 INITIAL_Y_GAP = 5
@@ -31,7 +31,7 @@ def main():
     screen_rect = screen.get_rect()
     clock = pygame.time.Clock()
 
-    defender_image = pygame.image.load(DEFENDER_IMAGE).convert_alpha()
+    defender_image = pygame.image.load(DEFENDER_FILENAME).convert_alpha()
     defender_image = pygame.transform.scale(defender_image, DEFENDER_SIZE)
     defender_rect = defender_image.get_rect()
     defender_rect.midbottom = screen_rect.centerx, screen_rect.bottom - INITIAL_Y_GAP
