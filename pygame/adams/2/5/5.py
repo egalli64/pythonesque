@@ -3,82 +3,88 @@ Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_bo
 
 My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
-Self add a Sprite to a Group + remove it from any group
+Self add a Sprite to a Group + remove a sprite from any group having it
 """
 
 from random import randint
 from typing import override
 import pygame
 
-WIN_RECT = pygame.Rect(0, 0, 300, 600)
+TITLE = "Sprite group add and remove"
+WIN_SIZE = (300, 600)
 
 
 class Ship(pygame.sprite.Sprite):
-    IMAGE = "../images/defender.png"
+    FILENAME = "../images/defender.png"
     SIZE = (30, 30)
-    DEFAULT_SPEED = -300  # pixel/second
+    Y_SPEED = 300  # pixel/second
 
-    def __init__(self, pos: tuple[int, int], group: pygame.sprite.Group) -> None:
+    image: pygame.Surface
+    rect: pygame.FRect
+
+    @classmethod
+    def load_resources(cls):
+        image = pygame.image.load(cls.FILENAME).convert_alpha()
+        cls._image = pygame.transform.scale(image, cls.SIZE)
+
+    def __init__(self, pos: tuple[int, int], viewport: pygame.Rect, group: pygame.sprite.Group) -> None:
         super().__init__(group)
-        self.image = pygame.image.load(Ship.IMAGE).convert_alpha()
-        self.image = pygame.transform.scale(self.image, Ship.SIZE)
-        self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
-        self.rect.left = pos[0]
-        self.rect.bottom = pos[1]
-        self.speed = Ship.DEFAULT_SPEED
+
+        self.image = Ship._image
+        self.rect = pygame.FRect(self.image.get_rect())
+        self.rect.bottomleft = pos
+
+        self.viewport = viewport
+        self.y_velocity = -Ship.Y_SPEED
 
     @override
-    def update(self, dt) -> None:
-        self.rect.move_ip(0, self.speed * dt)
-
-        # if you want to keep the ship in win
-        # self.rect.clamp_ip(WIN_RECT)
-
-        # if you want to remove the ship for any group (in the window center y)
-        if self.rect.bottom < WIN_RECT.centery:
+    def update(self, dt: float) -> None:
+        self.rect.move_ip(0, self.y_velocity * dt)
+        if self.rect.bottom < self.viewport.centery:
+            # misnomer: it just removes this sprite for any groups that owns it
             self.kill()
 
 
 class Game:
     FPS = 30
-
-    TITLE = "Sprite Group"
-    SHIP_MAX_LEFT = WIN_RECT.right - Ship.SIZE[0]
-
-    # see time.set_timer() + user event for a more elegant approach
-    SPAWN_DELAY = 2 / 3  # in seconds
     BACKGROUND_COLOR = "white"
 
-    def __init__(self) -> None:
-        self.window = pygame.Window(Game.TITLE, WIN_RECT.size)
+    SHIP_MAX_LEFT = WIN_SIZE[0] - Ship.SIZE[0]
 
-        self.screen = self.window.get_surface()
-        self.clock = pygame.time.Clock()
+    # as alternative see also time.set_timer() + user event
+    SPAWN_DELAY = 2 / 3  # in seconds
+
+    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+        self.window = window
+        self.screen = screen
+        self.rect = screen.get_rect()
+
         self.ships = pygame.sprite.Group()
         self.running = True
-        # see time.set_timer() + user event for a more elegant approach
         self.spawn_timer = 0
 
     def run(self) -> None:
-        """Run the main game loop"""
-        while self.handle_events():
-            dt = self.clock.tick(Game.FPS) / 1000
+        clock = pygame.time.Clock()
+
+        while self.running:
+            dt = clock.tick(Game.FPS) / 1000
+
+            self.handle_events()
             self.update(dt)
             self.draw()
 
-    def handle_events(self) -> bool:
-        """Run the event loops, return False in case of termination request"""
+    def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
-        return True
+                self.running = False
 
-    def update(self, dt) -> None:
+    def update(self, dt: float) -> None:
         self.spawn_timer += dt
         if self.spawn_timer >= Game.SPAWN_DELAY:
-            self.spawn_timer = 0
-            left_bottom = (randint(0, Game.SHIP_MAX_LEFT), WIN_RECT.bottom)
-            Ship(left_bottom, self.ships)
+            self.spawn_timer -= Game.SPAWN_DELAY
+            spawn_pos = (randint(0, Game.SHIP_MAX_LEFT), WIN_SIZE[1])
+            Ship(spawn_pos, self.rect, self.ships)
+
         self.ships.update(dt)
 
     def draw(self) -> None:
@@ -89,9 +95,13 @@ class Game:
 
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_SIZE)
+    pg_screen = pg_window.get_surface()
+
+    Ship.load_resources()
 
     try:
-        Game().run()
+        Game(pg_window, pg_screen).run()
     finally:
         pygame.quit()
         print("Done.")
