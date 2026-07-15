@@ -5,35 +5,32 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Simple text rendering
 """
-
 import pygame
 
 FPS = 30
-
-WIN_RECT = pygame.Rect(0, 0, 700, 100)
+WIN_SIZE = (700, 100)
 TITLE = "Text"
 BACKGROUND_COLOR = "white"
 TEXT_COLOR = "black"
 
 
-def main():
-    window = pygame.Window(TITLE, WIN_RECT.size)
-    screen = window.get_surface()
-    clock = pygame.time.Clock()
+def main(window: pygame.Window, screen: pygame.Surface) -> None:
+    viewport = screen.get_rect()
 
-    font = pygame.font.SysFont(None, 24)
+    font = pygame.font.Font(None, 32)
     text = "Hello, gamer!"
+    text_surface = font.render(text, True, TEXT_COLOR)  # antialiasing is usually preferred
+    text_rect = text_surface.get_rect(center=viewport.center)
 
-    while handle_events():
+    clock = pygame.time.Clock()
+    running = True
+    while running:
         clock.tick(FPS)
 
-        # update
-        screen.fill(BACKGROUND_COLOR)
-        surface = font.render(text, True, TEXT_COLOR)
-        rect = surface.get_rect(center=(WIN_RECT.width / 2, WIN_RECT.height / 2))
+        running = handle_events()
 
-        # draw
-        screen.blit(surface, rect)
+        screen.fill(BACKGROUND_COLOR)
+        screen.blit(text_surface, text_rect)
         window.flip()
 
 
@@ -48,9 +45,11 @@ def handle_events() -> bool:
 
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_SIZE)
+    pg_screen = pg_window.get_surface()
 
     try:
-        main()
+        main(pg_window, pg_screen)
     finally:
         pygame.quit()
         print("Done.")
