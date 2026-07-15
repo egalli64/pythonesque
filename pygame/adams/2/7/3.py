@@ -5,10 +5,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 List of installed fonts (to be reviewed for better understanding)
 """
-
 import pygame
 
-WIN_RECT = pygame.Rect(0, 0, 900, 800)
+WIN_SIZE = (900, 800)
 WIN_POS = (10, 50)
 TITLE = "List of installed fonts"
 FPS = 15
@@ -17,7 +16,10 @@ FPS = 15
 class TextSprite(pygame.sprite.Sprite):
     DEFAULT_COLOR = (0, 0, 0)
     DEFAULT_SIZE = 18
-    DEFAULT_TEXT = "abcdefghijklmnopqrstxyzßöäü0123456789"
+    DEFAULT_TEXT = "abcdefghijklmnopqrstxyz+-*/0123456789"
+
+    image: pygame.Surface
+    rect: pygame.Rect
 
     def __init__(self, fontname: str) -> None:
         super().__init__()
@@ -32,22 +34,18 @@ class TextSprite(pygame.sprite.Sprite):
         self.image: pygame.Surface = self.font.render(self.text, True, self.color)
         self.rect: pygame.Rect = self.image.get_rect()
 
-    def change_size(self, step: int = 1) -> None:
-        self.size += step
-        self.font = pygame.font.Font(pygame.font.match_font(self.fontname), self.size)
-
-    def change_color(self, delta: list[int]) -> None:
-        for i in range(3):
-            self.color[i] = (self.color[i] + delta[i]) % 256
-
     def update(self) -> None:
         self.render()
 
 
 class BigImage(pygame.sprite.Sprite):
-    def __init__(self, width: int, height: int):
+    image: pygame.Surface
+    rect: pygame.Rect
+
+    def __init__(self, width: int, height: int, viewport: pygame.Rect):
         super().__init__()
-        self.offset = WIN_RECT.copy()
+
+        self.offset = viewport.copy()
         self.image_total = pygame.Surface((width, height))
         self.image_total.fill("white")
         self.update(0)
@@ -66,35 +64,34 @@ class BigImage(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
-def main():
-    window = pygame.Window(TITLE, WIN_RECT.size, WIN_POS)
-    screen = window.get_surface()
-    clock = pygame.time.Clock()
-
+def main(window: pygame.Window, screen: pygame.Surface):
+    viewport = screen.get_rect()
     fonts = pygame.font.get_fonts()
-    print(fonts)
+    print(f"There are {len(fonts)} available fonts")
 
-    list_of_fontsprites = pygame.sprite.Group()
+    texts = pygame.sprite.Group()
     height = 0
     width = 0
     for name in sorted(fonts):
         try:
-            t = TextSprite(name)
-            t.rect.top = height
-            height += t.rect.height
-            width = t.rect.width if t.rect.width > width else width
-            list_of_fontsprites.add(t)
+            text = TextSprite(name)
+            text.rect.top = height
+            height += text.rect.height
+            width = text.rect.width if text.rect.width > width else width
+            texts.add(text)
         except OSError as err:
             print(f"OS error {err}")
         except pygame.error as perr:
             print(f"Pygame error: {perr} with font {name}")
 
-    big_image = BigImage(width, height)
-    bigimage_group = pygame.sprite.GroupSingle(big_image)
-    list_of_fontsprites.draw(big_image.image_total)
+    big_image = BigImage(width, height, viewport)
+    bi_group = pygame.sprite.GroupSingle(big_image)
+    texts.draw(big_image.image_total)
 
+    clock = pygame.time.Clock()
     running = True
     while running:
+        clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -102,20 +99,21 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     running = False
                 if event.key == pygame.K_UP:
-                    bigimage_group.update(-WIN_RECT.height // 2)
+                    bi_group.update(-WIN_SIZE[1] // 2)
                 if event.key == pygame.K_DOWN:
-                    bigimage_group.update(WIN_RECT.height // 2)
+                    bi_group.update(WIN_SIZE[1] // 2)
 
-        bigimage_group.draw(screen)
+        bi_group.draw(screen)
         window.flip()
-        clock.tick(FPS)
 
 
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_SIZE)
+    pg_screen = pg_window.get_surface()
 
     try:
-        main()
+        main(pg_window, pg_screen)
     finally:
         pygame.quit()
         print("Done.")
