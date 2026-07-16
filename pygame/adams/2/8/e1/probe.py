@@ -10,6 +10,7 @@ from typing import override
 
 import pygame
 
+INITIAL_CENTER = (10, 10)
 
 class Direction(Enum):
     STOP = pygame.Vector2(0, 0)
@@ -22,26 +23,25 @@ class Direction(Enum):
 class Probe(pygame.sprite.Sprite):
     FILENAME = "../images/shoot.png"
 
-    START_POSITION = (10, 10)
     SPEED = 100
 
     image: pygame.Surface
-    rect: pygame.Rect
+    rect: pygame.FRect
 
     @classmethod
     def load_resources(cls):
         cls._image = pygame.image.load(cls.FILENAME).convert_alpha()
 
-    def __init__(self, viewport: pygame.Rect) -> None:
+    def __init__(self, viewport: pygame.Rect, center:tuple[int, int] = INITIAL_CENTER) -> None:
         super().__init__()
 
         self.image = Probe._image
-        self.rect = self.image.get_rect()
-
+        self.rect = pygame.FRect(self.image.get_rect())
         self.viewport = viewport
-        self.radius = self.rect.centery
-        self.mask = pygame.mask.from_surface(self.image)
-        self.rect.center = Probe.START_POSITION
+
+        self.radius = min(self.rect.width, self.rect.height) // 2  # see pygame.sprite.collide_circle()
+        self.mask = pygame.mask.from_surface(self.image)  # see pygame.sprite.collide_mask()
+        self.rect.center = center
         self.direction = Direction.STOP
 
     @override
