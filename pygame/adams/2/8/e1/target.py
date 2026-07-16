@@ -6,25 +6,22 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Sprite collisions
 """
 from enum import Enum, auto
-from typing import override
 
 import pygame
 
 
-class Kind(Enum):
-    BRICK = auto()
-    SHIP = auto()
-    ALIEN = auto()
-
-
-FILENAMES = {
-    Kind.BRICK: ("../images/brick_1.png", "../images/brick_2.png"),
-    Kind.SHIP: ("../images/ship_1.png", "../images/ship_2.png"),
-    Kind.ALIEN: ("../images/alien_big_1.png", "../images/alien_big_2.png"),
-}
-
-
 class Target(pygame.sprite.Sprite):
+    class Kind(Enum):
+        BRICK = auto()
+        SHIP = auto()
+        ALIEN = auto()
+
+    FILENAMES = {
+        Kind.BRICK: ("../../images/brick_1.png", "../../images/brick_2.png"),
+        Kind.SHIP: ("../../images/ship_1.png", "../../images/ship_2.png"),
+        Kind.ALIEN: ("../../images/alien_big_1.png", "../../images/alien_big_2.png"),
+    }
+
     image: pygame.Surface
     rect: pygame.Rect
 
@@ -32,10 +29,10 @@ class Target(pygame.sprite.Sprite):
     def load_resources(cls):
         cls._images = {}
 
-        for kind in Kind:
+        for kind, (normal, highlight) in cls.FILENAMES.items():
             cls._images[kind] = (
-                pygame.image.load(FILENAMES[kind][0]).convert_alpha(),
-                pygame.image.load(FILENAMES[kind][1]).convert_alpha()
+                pygame.image.load(normal).convert_alpha(),
+                pygame.image.load(highlight).convert_alpha(),
             )
 
     def __init__(self, y_pos: int, kind: Kind) -> None:
@@ -43,11 +40,12 @@ class Target(pygame.sprite.Sprite):
 
         self.image = Target._images[kind][0]
         self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-        self.radius = self.rect.centerx
         self.rect.centery = y_pos
+
+        self.radius = min(self.rect.size) // 2  # see pygame.sprite.collide_circle()
+        self.mask = pygame.mask.from_surface(self.image)  # see pygame.sprite.collide_mask()
+
         self.kind = kind
 
-    @override
-    def update(self, hit: bool) -> None:
-        self.image = Target._images[self.kind][hit]
+    def highlight(self, active: bool) -> None:
+        self.image = Target._images[self.kind][active]

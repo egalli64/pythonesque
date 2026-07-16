@@ -12,6 +12,7 @@ import pygame
 
 INITIAL_CENTER = (10, 10)
 
+
 class Direction(Enum):
     STOP = pygame.Vector2(0, 0)
     RIGHT = pygame.Vector2(1, 0)
@@ -21,7 +22,7 @@ class Direction(Enum):
 
 
 class Probe(pygame.sprite.Sprite):
-    FILENAME = "../images/shoot.png"
+    FILENAME = "../../images/shoot.png"
 
     SPEED = 100
 
@@ -32,16 +33,17 @@ class Probe(pygame.sprite.Sprite):
     def load_resources(cls):
         cls._image = pygame.image.load(cls.FILENAME).convert_alpha()
 
-    def __init__(self, viewport: pygame.Rect, center:tuple[int, int] = INITIAL_CENTER) -> None:
+    def __init__(self, viewport: pygame.Rect, center: tuple[int, int] = INITIAL_CENTER) -> None:
         super().__init__()
 
         self.image = Probe._image
         self.rect = pygame.FRect(self.image.get_rect())
-        self.viewport = viewport
-
-        self.radius = min(self.rect.width, self.rect.height) // 2  # see pygame.sprite.collide_circle()
-        self.mask = pygame.mask.from_surface(self.image)  # see pygame.sprite.collide_mask()
         self.rect.center = center
+
+        self.radius = min(self.rect.size) // 2  # see pygame.sprite.collide_circle()
+        self.mask = pygame.mask.from_surface(self.image)  # see pygame.sprite.collide_mask()
+
+        self.viewport = viewport
         self.direction = Direction.STOP
 
     @override

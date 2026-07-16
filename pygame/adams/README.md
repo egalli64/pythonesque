@@ -50,8 +50,8 @@
 - 4: [Using locally installed fonts](2/7/4.py)
 
 ## Section 8 Collision Detection
-- 1: [Types of collision](2/8/1.py)
-- 2: [Collision with a group](2/8/1.py)
+- 1: [Types of collision](2/8/e1/main.py)
+- 2: [Collision with a group](2/8/e1/main.py)
 
 ## Section 9 Time-based Actions
 - 1: [The need of having a break](2/9/1.py)

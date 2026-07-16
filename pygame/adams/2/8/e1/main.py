@@ -6,9 +6,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Sprite collisions
 """
 import pygame
-from e1.probe import Probe
-from e1.target import Target
-from e1.game import Game
+from probe import Probe
+from target import Target
+from game import Game
 
 TITLE = "Sprite Collisions"
 WIN_SIZE = (700, 200)

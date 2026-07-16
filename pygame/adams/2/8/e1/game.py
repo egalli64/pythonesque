@@ -6,11 +6,10 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Sprite collisions
 """
 from enum import Enum
-
 import pygame
 
-from e1.target import Target, Kind as TargetKind
-from e1.probe import Probe, Direction as ProbeDirection
+from target import Target
+from probe import Probe, Direction
 
 FPS = 30
 BACKGROUND_COLOR = "white"
@@ -25,24 +24,20 @@ class Mode(Enum):
     MASK = pygame.K_m
 
 
-key_to_mode = {
-    pygame.K_r: Mode.RECT,
-    pygame.K_c: Mode.CIRCLE,
-    pygame.K_m: Mode.MASK,
-}
+Mode.reverse_map = {member.value: member for member in Mode}
 
 
-def as_probe_direction(keys: pygame.key.ScancodeWrapper) -> ProbeDirection:
+def as_direction(keys: pygame.key.ScancodeWrapper) -> Direction:
     if keys[pygame.K_LEFT]:
-        return ProbeDirection.LEFT
+        return Direction.LEFT
     elif keys[pygame.K_RIGHT]:
-        return ProbeDirection.RIGHT
+        return Direction.RIGHT
     elif keys[pygame.K_UP]:
-        return ProbeDirection.UP
+        return Direction.UP
     elif keys[pygame.K_DOWN]:
-        return ProbeDirection.DOWN
+        return Direction.DOWN
     else:
-        return ProbeDirection.STOP
+        return Direction.STOP
 
 
 class Game:
@@ -51,7 +46,7 @@ class Game:
     mode_rect: pygame.Rect
 
     @classmethod
-    def load_resources(cls):
+    def load_resources(cls) -> None:
         cls._font = pygame.font.Font(None, FONT_SIZE)
 
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
@@ -63,13 +58,12 @@ class Game:
         self.probe_group = pygame.sprite.GroupSingle(self.probe)
 
         self.targets = pygame.sprite.Group[Target](
-            Target(self.viewport.centery, TargetKind.BRICK),
-            Target(self.viewport.centery, TargetKind.SHIP),
-            Target(self.viewport.centery, TargetKind.ALIEN))
+            Target(self.viewport.centery, Target.Kind.BRICK),
+            Target(self.viewport.centery, Target.Kind.SHIP),
+            Target(self.viewport.centery, Target.Kind.ALIEN))
 
         self.place_targets()
         self.set_mode(Mode.RECT)
-
         self.running = True
 
     def place_targets(self) -> None:
@@ -103,40 +97,40 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
-                elif event.key in (pygame.K_r, pygame.K_c, pygame.K_m):
-                    self.set_mode(key_to_mode[event.key])
+                elif mode := Mode.reverse_map.get(event.key):
+                    self.set_mode(mode)
 
         keys = pygame.key.get_pressed()
-        self.probe.set_direction(as_probe_direction(keys))
+        self.probe.set_direction(as_direction(keys))
 
     def collide(self):
         for target in self.targets:
             match self.mode:
                 case Mode.CIRCLE:
-                    hit = pygame.sprite.collide_circle(self.probe, target)
+                    colliding = pygame.sprite.collide_circle(self.probe, target)
                 case Mode.MASK:
-                    hit = bool(pygame.sprite.collide_mask(self.probe, target))
+                    colliding = bool(pygame.sprite.collide_mask(self.probe, target))
                 case _:
-                    hit = pygame.sprite.collide_rect(self.probe, target)
+                    colliding = pygame.sprite.collide_rect(self.probe, target)
 
-            target.update(hit)
+            target.highlight(colliding)
 
     def alt_collide(self) -> None:
+        """Using spritecollide() is not worthy here, better using directly the required collide function"""
         match self.mode:
             case Mode.CIRCLE:
                 func = pygame.sprite.collide_circle
             case Mode.MASK:
-                func = pygame.sprite.collide_mask
+                func = lambda s1, s2: bool(pygame.sprite.collide_mask(s1, s2))
             case _:
                 func = pygame.sprite.collide_rect
 
-        hits = pygame.sprite.spritecollide(self.probe, self.targets, False, func)  # type: ignore
+        sprites = pygame.sprite.spritecollide(self.probe, self.targets, False, func)
         for target in self.targets:
-            target.update(target in hits)
+            target.highlight(target in sprites)
 
     def update(self, dt: float) -> None:
         self.probe.update(dt)
-
         self.collide()
         # self.alt_collide()
 
