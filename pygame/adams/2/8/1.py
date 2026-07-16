@@ -18,6 +18,7 @@ if __name__ == "__main__":
     pg_window = pygame.Window(TITLE, WIN_SIZE)
     pg_screen = pg_window.get_surface()
 
+    Game.load_resources()
     Probe.load_resources()
     Target.load_resources()
 

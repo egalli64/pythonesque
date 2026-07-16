@@ -5,10 +5,33 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Sprite collisions
 """
+from enum import Enum
+
 import pygame
 
 from e1.target import Target, Kind as TargetKind
 from e1.probe import Probe, Direction as ProbeDirection
+
+FPS = 30
+BACKGROUND_COLOR = "white"
+DEFAULT_MODE = "rect"
+FONT_SIZE = 24
+INFO_COLOR = "blue"
+INFO_POS = (10, 170)
+
+
+class Mode(Enum):
+    RECT = pygame.K_r
+    CIRCLE = pygame.K_c
+    MAP = pygame.K_m
+
+
+key_to_mode = {
+    pygame.K_r: Mode.RECT,
+    pygame.K_c: Mode.CIRCLE,
+    pygame.K_m: Mode.MAP,
+}
+
 
 def as_direction(keys: pygame.key.ScancodeWrapper) -> ProbeDirection:
     if keys[pygame.K_LEFT]:
@@ -24,18 +47,17 @@ def as_direction(keys: pygame.key.ScancodeWrapper) -> ProbeDirection:
 
 
 class Game:
-    FPS = 30
-    BACKGROUND_COLOR = "white"
-    DEFAULT_MODE = "rect"
+    info: pygame.Surface
 
-    INFO_POS = (10, 170)
+    @classmethod
+    def load_resources(cls):
+        cls._font = pygame.font.Font(None, FONT_SIZE)
 
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
         self.viewport = screen.get_rect()
 
-        self.font = pygame.font.Font(None, 24)
         self.probe = Probe(self.viewport)
         self.probe_group = pygame.sprite.GroupSingle(self.probe)
 
@@ -44,9 +66,13 @@ class Game:
             Target(self.viewport.centery, TargetKind.SHIP),
             Target(self.viewport.centery, TargetKind.ALIEN))
 
-        self.mode = Game.DEFAULT_MODE
+        self.place_targets()
+        self.set_info(Mode.RECT)
+
+        self.mode = DEFAULT_MODE
         self.running = True
 
+    def place_targets(self) -> None:
         targets_width = sum(s.rect.width for s in self.targets)
         padding = (self.viewport.width - targets_width) // (len(self.targets) + 1)
 
@@ -55,11 +81,15 @@ class Game:
             target.rect.left = x
             x = target.rect.right + padding
 
+    def set_info(self, mode: Mode) -> None:
+        self.mode = mode
+        self.info = Game._font.render(f"Mode: {self.mode.name}", True, INFO_COLOR)
+
     def run(self) -> None:
         clock = pygame.time.Clock()
 
         while self.running:
-            dt = clock.tick(Game.FPS) / 1000
+            dt = clock.tick(FPS) / 1000
 
             self.handle_events()
             self.update(dt)
@@ -72,12 +102,8 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
-                elif event.key == pygame.K_r:
-                    self.mode = "rect"
-                elif event.key == pygame.K_c:
-                    self.mode = "circle"
-                elif event.key == pygame.K_m:
-                    self.mode = "mask"
+                elif event.key in (pygame.K_r, pygame.K_c, pygame.K_m):
+                    self.set_info(key_to_mode[event.key])
 
         keys = pygame.key.get_pressed()
         self.probe.set_direction(as_direction(keys))
@@ -114,11 +140,9 @@ class Game:
         # self.alt_collide()
 
     def draw(self) -> None:
-        self.screen.fill(Game.BACKGROUND_COLOR)
+        self.screen.fill(BACKGROUND_COLOR)
         self.targets.draw(self.screen)
         self.probe_group.draw(self.screen)
 
-        text_info = self.font.render(f"Mode: {self.mode}", True, "blue")
-        self.screen.blit(text_info, Game.INFO_POS)
-
+        self.screen.blit(self.info, INFO_POS)
         self.window.flip()
