@@ -5,33 +5,23 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Types of collision
 """
-
 from enum import Enum
 from typing import override
 import pygame
+from e1.target import Target, Kind as TargetKind
 
-WIN_RECT = pygame.Rect(0, 0, 700, 200)
-
-
-class Target(pygame.sprite.Sprite):
-    def __init__(self, filename: str, filename_hit: str) -> None:
-        super().__init__()
-        self.image_normal = pygame.image.load(filename).convert_alpha()
-        self.image_hit = pygame.image.load(filename_hit).convert_alpha()
-        self.image = self.image_normal
-        self.rect: pygame.Rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-        self.radius = self.rect.centerx
-        self.rect.centery = WIN_RECT.centery
-
-    @override
-    def update(self, hit: bool) -> None:
-        self.image = self.image_hit if hit else self.image_normal
+TITLE = "Collision Types"
+WIN_SIZE = (700, 200)
 
 
 class Probe(pygame.sprite.Sprite):
+    FILENAME = "../images/shoot.png"
+
     START_POSITION = (10, 10)
     SPEED = 100
+
+    image: pygame.Surface
+    rect: pygame.Rect
 
     class Direction(Enum):
         STOP = pygame.Vector2(0, 0)
@@ -40,98 +30,116 @@ class Probe(pygame.sprite.Sprite):
         UP = pygame.Vector2(0, -1)
         DOWN = pygame.Vector2(0, 1)
 
-    def __init__(self, filename: str) -> None:
+    @classmethod
+    def load_resources(cls):
+        cls._image = pygame.image.load(cls.FILENAME).convert_alpha()
+
+    def __init__(self, viewport: pygame.Rect) -> None:
         super().__init__()
-        self.image = pygame.image.load(filename).convert_alpha()
-        self.rect: pygame.Rect = self.image.get_rect()
+
+        self.image = Probe._image
+        self.rect = self.image.get_rect()
+
+        self.viewport = viewport
         self.radius = self.rect.centery
         self.mask = pygame.mask.from_surface(self.image)
         self.rect.center = Probe.START_POSITION
-        self.direction = Probe.Direction.STOP.value
+        self.direction = Probe.Direction.STOP
 
     @override
-    def update(self, dt) -> None:
-        self.rect.move_ip(Probe.SPEED * self.direction * dt)
-        self.rect.clamp_ip(WIN_RECT)
+    def update(self, dt: float) -> None:
+        self.rect.move_ip(Probe.SPEED * self.direction.value * dt)
+        self.rect.clamp_ip(self.viewport)
 
     def set_direction(self, direction: Direction) -> None:
-        self.direction = direction.value
+        self.direction = direction
 
 
-class Game(object):
+def as_direction(keys: pygame.key.ScancodeWrapper) -> Probe.Direction:
+    if keys[pygame.K_LEFT]:
+        return Probe.Direction.LEFT
+    elif keys[pygame.K_RIGHT]:
+        return Probe.Direction.RIGHT
+    elif keys[pygame.K_UP]:
+        return Probe.Direction.UP
+    elif keys[pygame.K_DOWN]:
+        return Probe.Direction.DOWN
+    else:
+        return Probe.Direction.STOP
+
+
+class Game:
     FPS = 30
-    TITLE = "Collision Types"
     BACKGROUND_COLOR = "white"
-
-    PROBE = "../images/shoot.png"
-    BRICK = ("../images/brick_1.png", "../images/brick_2.png")
-    SHIP = ("../images/ship_1.png", "../images/ship_2.png")
-    ALIEN = ("../images/alien_big_1.png", "../images/alien_big_2.png")
     DEFAULT_MODE = "rect"
 
-    INFO_POS = (10, WIN_RECT.bottom - 30)
+    INFO_POS = (10, WIN_SIZE[1] - 30)
 
-    def __init__(self) -> None:
-        self.window = pygame.Window(Game.TITLE, WIN_RECT.size)
-        self.screen = self.window.get_surface()
-        self.clock = pygame.time.Clock()
+    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+        self.window = window
+        self.screen = screen
+        self.viewport = screen.get_rect()
 
         self.font = pygame.font.Font(None, 24)
-        self.probe = Probe(Game.PROBE)
+        self.probe = Probe(self.viewport)
         self.probe_group = pygame.sprite.GroupSingle(self.probe)
 
-        self.target_setup()
+        self.targets = pygame.sprite.Group[Target](
+            Target(self.viewport.centery, TargetKind.BRICK),
+            Target(self.viewport.centery, TargetKind.SHIP),
+            Target(self.viewport.centery, TargetKind.ALIEN))
 
         self.mode = Game.DEFAULT_MODE
+        self.running = True
 
-    def target_setup(self) -> None:
-        self.all_targets = pygame.sprite.Group()
-        self.all_targets.add(Target(*Game.BRICK))
-        self.all_targets.add(Target(*Game.SHIP))
-        self.all_targets.add(Target(*Game.ALIEN))
-
-        targets_width = sum(s.rect.width for s in self.all_targets)
-        padding = (WIN_RECT.width - targets_width) // (len(self.all_targets) + 1)
+        targets_width = sum(s.rect.width for s in self.targets)
+        padding = (self.viewport.width - targets_width) // (len(self.targets) + 1)
 
         x = padding
-        for target in self.all_targets:
+        for target in self.targets:
             target.rect.left = x
             x = target.rect.right + padding
 
     def run(self) -> None:
-        while self.handle_events():
-            dt = self.clock.tick(Game.FPS) / 1000
+        clock = pygame.time.Clock()
 
+        while self.running:
+            dt = clock.tick(Game.FPS) / 1000
+
+            self.handle_events()
             self.update(dt)
             self.draw()
 
-    def handle_events(self) -> bool:
-        """Run the event loops, return False in case of termination request"""
+    def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                self.running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return False
+                    self.running = False
                 elif event.key == pygame.K_r:
                     self.mode = "rect"
                 elif event.key == pygame.K_c:
                     self.mode = "circle"
                 elif event.key == pygame.K_m:
                     self.mode = "mask"
-        return True
 
-    def collide(self, target: Target):
-        match self.mode:
-            case "circle":
-                return pygame.sprite.collide_circle(self.probe, target)
-            case "mask":
-                return pygame.sprite.collide_mask(self.probe, target)
-            case _:
-                return pygame.sprite.collide_rect(self.probe, target)
+        keys = pygame.key.get_pressed()
+        self.probe.set_direction(as_direction(keys))
+
+    def collide(self):
+        for target in self.targets:
+            match self.mode:
+                case "circle":
+                    hit = pygame.sprite.collide_circle(self.probe, target)
+                case "mask":
+                    hit = bool(pygame.sprite.collide_mask(self.probe, target))
+                case _:
+                    hit = pygame.sprite.collide_rect(self.probe, target)
+
+            target.update(hit)
 
     def alt_collide(self) -> None:
-        """Here is probably not the most natural approach"""
         match self.mode:
             case "circle":
                 func = pygame.sprite.collide_circle
@@ -140,22 +148,19 @@ class Game(object):
             case _:
                 func = pygame.sprite.collide_rect
 
-        hits = pygame.sprite.spritecollide(self.probe, self.all_targets, False, func)  # type: ignore
-        for target in self.all_targets:
+        hits = pygame.sprite.spritecollide(self.probe, self.targets, False, func)  # type: ignore
+        for target in self.targets:
             target.update(target in hits)
 
-    def update(self, dt) -> None:
-        keys = pygame.key.get_pressed()
-        self.probe.set_direction(self.get_direction(keys))
+    def update(self, dt: float) -> None:
         self.probe.update(dt)
 
-        for target in self.all_targets:
-            target.update(self.collide(target))
-        # self.alt_collide() # probably not worthy here
+        self.collide()
+        # self.alt_collide()
 
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
-        self.all_targets.draw(self.screen)
+        self.targets.draw(self.screen)
         self.probe_group.draw(self.screen)
 
         text_info = self.font.render(f"Mode: {self.mode}", True, "blue")
@@ -163,24 +168,17 @@ class Game(object):
 
         self.window.flip()
 
-    def get_direction(self, keys: pygame.key.ScancodeWrapper) -> Probe.Direction:
-        if keys[pygame.K_LEFT]:
-            return Probe.Direction.LEFT
-        elif keys[pygame.K_RIGHT]:
-            return Probe.Direction.RIGHT
-        elif keys[pygame.K_UP]:
-            return Probe.Direction.UP
-        elif keys[pygame.K_DOWN]:
-            return Probe.Direction.DOWN
-        else:
-            return Probe.Direction.STOP
-
 
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_SIZE)
+    pg_screen = pg_window.get_surface()
+
+    Probe.load_resources()
+    Target.load_resources()
 
     try:
-        Game().run()
+        Game(pg_window, pg_screen).run()
     finally:
         pygame.quit()
         print("Done.")
