@@ -14,26 +14,25 @@ from e1.probe import Probe, Direction as ProbeDirection
 
 FPS = 30
 BACKGROUND_COLOR = "white"
-DEFAULT_MODE = "rect"
 FONT_SIZE = 24
-INFO_COLOR = "blue"
-INFO_POS = (10, 170)
+MODE_INFO_COLOR = "blue"
+MODE_INFO_SHIFT = (-10, -10)
 
 
 class Mode(Enum):
     RECT = pygame.K_r
     CIRCLE = pygame.K_c
-    MAP = pygame.K_m
+    MASK = pygame.K_m
 
 
 key_to_mode = {
     pygame.K_r: Mode.RECT,
     pygame.K_c: Mode.CIRCLE,
-    pygame.K_m: Mode.MAP,
+    pygame.K_m: Mode.MASK,
 }
 
 
-def as_direction(keys: pygame.key.ScancodeWrapper) -> ProbeDirection:
+def as_probe_direction(keys: pygame.key.ScancodeWrapper) -> ProbeDirection:
     if keys[pygame.K_LEFT]:
         return ProbeDirection.LEFT
     elif keys[pygame.K_RIGHT]:
@@ -47,7 +46,9 @@ def as_direction(keys: pygame.key.ScancodeWrapper) -> ProbeDirection:
 
 
 class Game:
-    info: pygame.Surface
+    mode: Mode
+    mode_surf: pygame.Surface
+    mode_rect: pygame.Rect
 
     @classmethod
     def load_resources(cls):
@@ -67,9 +68,8 @@ class Game:
             Target(self.viewport.centery, TargetKind.ALIEN))
 
         self.place_targets()
-        self.set_info(Mode.RECT)
+        self.set_mode(Mode.RECT)
 
-        self.mode = DEFAULT_MODE
         self.running = True
 
     def place_targets(self) -> None:
@@ -81,9 +81,10 @@ class Game:
             target.rect.left = x
             x = target.rect.right + padding
 
-    def set_info(self, mode: Mode) -> None:
+    def set_mode(self, mode: Mode) -> None:
         self.mode = mode
-        self.info = Game._font.render(f"Mode: {self.mode.name}", True, INFO_COLOR)
+        self.mode_surf = Game._font.render(f"Mode: {self.mode.name}", True, MODE_INFO_COLOR)
+        self.mode_rect = self.mode_surf.get_rect(bottomright=self.viewport.bottomright).move(MODE_INFO_SHIFT)
 
     def run(self) -> None:
         clock = pygame.time.Clock()
@@ -103,17 +104,17 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
                 elif event.key in (pygame.K_r, pygame.K_c, pygame.K_m):
-                    self.set_info(key_to_mode[event.key])
+                    self.set_mode(key_to_mode[event.key])
 
         keys = pygame.key.get_pressed()
-        self.probe.set_direction(as_direction(keys))
+        self.probe.set_direction(as_probe_direction(keys))
 
     def collide(self):
         for target in self.targets:
             match self.mode:
-                case "circle":
+                case Mode.CIRCLE:
                     hit = pygame.sprite.collide_circle(self.probe, target)
-                case "mask":
+                case Mode.MASK:
                     hit = bool(pygame.sprite.collide_mask(self.probe, target))
                 case _:
                     hit = pygame.sprite.collide_rect(self.probe, target)
@@ -122,9 +123,9 @@ class Game:
 
     def alt_collide(self) -> None:
         match self.mode:
-            case "circle":
+            case Mode.CIRCLE:
                 func = pygame.sprite.collide_circle
-            case "mask":
+            case Mode.MASK:
                 func = pygame.sprite.collide_mask
             case _:
                 func = pygame.sprite.collide_rect
@@ -144,5 +145,5 @@ class Game:
         self.targets.draw(self.screen)
         self.probe_group.draw(self.screen)
 
-        self.screen.blit(self.info, INFO_POS)
+        self.screen.blit(self.mode_surf, self.mode_rect)
         self.window.flip()
