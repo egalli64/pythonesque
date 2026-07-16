@@ -1,0 +1,53 @@
+"""
+Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_book/
+
+My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
+
+Sprite collisions
+"""
+from enum import Enum
+from typing import override
+
+import pygame
+
+
+class Direction(Enum):
+    STOP = pygame.Vector2(0, 0)
+    RIGHT = pygame.Vector2(1, 0)
+    LEFT = pygame.Vector2(-1, 0)
+    UP = pygame.Vector2(0, -1)
+    DOWN = pygame.Vector2(0, 1)
+
+
+class Probe(pygame.sprite.Sprite):
+    FILENAME = "../images/shoot.png"
+
+    START_POSITION = (10, 10)
+    SPEED = 100
+
+    image: pygame.Surface
+    rect: pygame.Rect
+
+    @classmethod
+    def load_resources(cls):
+        cls._image = pygame.image.load(cls.FILENAME).convert_alpha()
+
+    def __init__(self, viewport: pygame.Rect) -> None:
+        super().__init__()
+
+        self.image = Probe._image
+        self.rect = self.image.get_rect()
+
+        self.viewport = viewport
+        self.radius = self.rect.centery
+        self.mask = pygame.mask.from_surface(self.image)
+        self.rect.center = Probe.START_POSITION
+        self.direction = Direction.STOP
+
+    @override
+    def update(self, dt: float) -> None:
+        self.rect.move_ip(Probe.SPEED * self.direction.value * dt)
+        self.rect.clamp_ip(self.viewport)
+
+    def set_direction(self, direction: Direction) -> None:
+        self.direction = direction
