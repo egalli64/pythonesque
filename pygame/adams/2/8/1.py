@@ -10,7 +10,7 @@ from e1.probe import Probe
 from e1.target import Target
 from e1.game import Game
 
-TITLE = "Collision Types"
+TITLE = "Sprite Collisions"
 WIN_SIZE = (700, 200)
 
 if __name__ == "__main__":
