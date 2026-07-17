@@ -10,17 +10,11 @@ from typing import override
 import pygame
 from bullet import Bullet
 
-WIN_RECT = pygame.Rect(0, 0, 700, 200)
-FPS = 30
-TITLE = "Bugged continuous fire"
-
 
 class Enemy(pygame.sprite.Sprite):
     FILENAME = "../../images/alien_big_1.png"
 
-    MIN_X = 10
-    MAX_X = WIN_RECT.right - 10
-    START_POS = (MIN_X, 10)
+    MARGIN = 10
     SPEED = pygame.Vector2(150, 0)
 
     image: pygame.Surface = None
@@ -35,7 +29,7 @@ class Enemy(pygame.sprite.Sprite):
 
         self.image = Enemy._image
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
-        self.rect.topleft = Enemy.START_POS
+        self.rect.topleft = (viewport.left + Enemy.MARGIN, viewport.top + Enemy.MARGIN)
         self.viewport = viewport
         self.direction = 1  # right
 
@@ -44,9 +38,9 @@ class Enemy(pygame.sprite.Sprite):
         return Bullet(pos, self.viewport.height)
 
     @override
-    def update(self, dt) -> None:
+    def update(self, dt: float) -> None:
         candidate = self.rect.move(Enemy.SPEED * dt * self.direction)
-        if candidate.left < self.MIN_X or candidate.right > self.MAX_X:
+        if candidate.left < self.viewport.left + Enemy.MARGIN or candidate.right > self.viewport.right - Enemy.MARGIN:
             self.direction *= -1
         else:
             self.rect = candidate

@@ -10,7 +10,7 @@ from enemy import Enemy
 from bullet import Bullet
 
 WIN_SIZE = (700, 200)
-FPS = 30
+FPS = 30  # increase it to make the bug even more noticeable!
 TITLE = "Bugged continuous fire"
 
 
@@ -44,8 +44,8 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
 
-    def update(self, dt) -> None:
-        bullet = self.enemy.fire()
+    def update(self, dt: float) -> None:
+        bullet = self.enemy.fire()  # !!! BUG: enemy fires once for frame !!!
         self.all_sprites.add(bullet)
 
         self.all_sprites.update(dt)

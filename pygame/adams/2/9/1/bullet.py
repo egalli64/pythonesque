@@ -11,6 +11,7 @@ import pygame
 
 class Bullet(pygame.sprite.Sprite):
     FILENAME = "../../images/shoot.png"
+    SPEED = 100
     Y_GAP = 30
 
     image: pygame.Surface
@@ -26,12 +27,10 @@ class Bullet(pygame.sprite.Sprite):
         self.image = Bullet._image
         self.rect = pygame.FRect(self.image.get_rect())
         self.rect.center = pos
-        self.direction = 1
-        self.speed = pygame.math.Vector2(0, 100)
         self.viewport_height = viewport_height
 
     @override
-    def update(self, dt) -> None:
-        self.rect.move_ip(self.speed * dt * self.direction)
+    def update(self, dt: float) -> None:
+        self.rect.y += Bullet.SPEED * dt
         if self.rect.top > self.viewport_height - Bullet.Y_GAP:
             self.kill()
