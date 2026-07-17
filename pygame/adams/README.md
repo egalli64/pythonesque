@@ -51,7 +51,7 @@
 
 ## Section 8 Collision Detection
 - 1: [Types of collision](2/8/1/main.py)
-- 2: [Collision with a group](2/8/2.py)
+- 2: [Collision with a group](2/8/2/game.py)
 
 ## Section 9 Time-based Actions
 - 1: [The need of having a break](2/9/1.py)
