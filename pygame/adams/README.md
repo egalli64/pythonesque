@@ -58,7 +58,7 @@
 - 2: [Timed continuous fire](2/9/2.py) Using time.get_ticks
 
 ## Section 10 Mouse
-- 1: [Mouse actions](2/a/1.py)
+- 1: [Mouse actions](2/a/1/game.py)
 - 2: [Simple double click](2/a/2.py)
 - 3: [Custom double click](2/a/3.py)
 
