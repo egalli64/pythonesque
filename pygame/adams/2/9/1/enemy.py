@@ -5,7 +5,8 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 The need of having a break
 """
-from typing import Tuple, override
+from typing import override
+
 import pygame
 
 WIN_RECT = pygame.Rect(0, 0, 700, 200)
@@ -14,21 +15,32 @@ TITLE = "Bugged continuous fire"
 
 
 class Enemy(pygame.sprite.Sprite):
+    FILENAME = "../../images/alien_big_1.png"
+
     MIN_X = 10
     MAX_X = WIN_RECT.right - 10
     START_POS = (MIN_X, 10)
     SPEED = pygame.Vector2(150, 0)
 
-    def __init__(self, filename: str) -> None:
+    image: pygame.Surface = None
+    rect: pygame.FRect = None
+
+    @classmethod
+    def load_resources(cls):
+        cls._image = pygame.image.load(cls.FILENAME).convert_alpha()
+
+    def __init__(self) -> None:
         super().__init__()
-        self.image = pygame.image.load(filename).convert_alpha()
+
+        self.image = Enemy._image
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
         self.rect.topleft = Enemy.START_POS
         self.direction = 1  # right
 
+    @override
     def update(self, dt) -> None:
-        newpos = self.rect.move(Enemy.SPEED * dt * self.direction)
-        if newpos.left < self.MIN_X or newpos.right > self.MAX_X:
+        candidate = self.rect.move(Enemy.SPEED * dt * self.direction)
+        if candidate.left < self.MIN_X or candidate.right > self.MAX_X:
             self.direction *= -1
         else:
-            self.rect = newpos
+            self.rect = candidate

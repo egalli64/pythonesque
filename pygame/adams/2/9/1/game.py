@@ -15,8 +15,6 @@ TITLE = "Bugged continuous fire"
 
 
 class Game:
-    ENEMY = "../../images/alien_big_1.png"
-    BULLET = "../../images/shoot.png"
     BACKGROUND_COLOR = (200, 200, 200)
 
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
@@ -25,7 +23,7 @@ class Game:
         self.viewport = screen.get_rect()
         self.running = True
 
-        self.enemy = Enemy(Game.ENEMY)
+        self.enemy = Enemy()
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.enemy)
 
@@ -49,7 +47,7 @@ class Game:
 
     def update(self, dt) -> None:
         pos = self.enemy.rect.move(0, 20).center
-        bullet = Bullet(Game.BULLET, pos, self.viewport.height)
+        bullet = Bullet(pos, self.viewport.height)
         self.all_sprites.add(bullet)
 
         self.all_sprites.update(dt)
@@ -64,6 +62,9 @@ if __name__ == "__main__":
     pygame.init()
     pg_window = pygame.Window(TITLE, WIN_SIZE)
     pg_screen = pg_window.get_surface()
+
+    Enemy.load_resources()
+    Bullet.load_resources()
 
     try:
         Game(pg_window, pg_screen).run()
