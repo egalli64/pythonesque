@@ -9,7 +9,7 @@ import pygame
 from enemy import Enemy
 from bullet import Bullet
 
-WIN_RECT = pygame.Rect(0, 0, 700, 200)
+WIN_SIZE = (700, 200)
 FPS = 30
 TITLE = "Bugged continuous fire"
 
@@ -19,32 +19,33 @@ class Game:
     BULLET = "../../images/shoot.png"
     BACKGROUND_COLOR = (200, 200, 200)
 
-    def __init__(self) -> None:
-        self.window = pygame.Window(TITLE, WIN_RECT.size)
-        self.screen = self.window.get_surface()
-        self.viewport = self.screen.get_rect()
-        self.clock = pygame.time.Clock()
+    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+        self.window = window
+        self.screen = screen
+        self.viewport = screen.get_rect()
+        self.running = True
 
         self.enemy = Enemy(Game.ENEMY)
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.enemy)
 
     def run(self) -> None:
-        while self.handle_events():
-            dt = self.clock.tick(FPS) / 1000
+        clock = pygame.time.Clock()
 
+        while self.running:
+            dt = clock.tick(FPS) / 1000
+
+            self.handle_events()
             self.update(dt)
-
             self.draw()
 
-    def handle_events(self) -> bool:
+    def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                self.running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return False
-        return True
+                    self.running = False
 
     def update(self, dt) -> None:
         pos = self.enemy.rect.move(0, 20).center
@@ -61,9 +62,11 @@ class Game:
 
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_SIZE)
+    pg_screen = pg_window.get_surface()
 
     try:
-        Game().run()
+        Game(pg_window, pg_screen).run()
     finally:
         pygame.quit()
         print("Done.")
