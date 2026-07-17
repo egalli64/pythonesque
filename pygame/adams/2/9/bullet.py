@@ -10,7 +10,7 @@ import pygame
 
 
 class Bullet(pygame.sprite.Sprite):
-    FILENAME = "../../images/shoot.png"
+    FILENAME = "../images/shoot.png"
     SPEED = 100
     Y_GAP = 30
 

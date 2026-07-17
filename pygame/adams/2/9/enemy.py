@@ -12,7 +12,7 @@ from bullet import Bullet
 
 
 class Enemy(pygame.sprite.Sprite):
-    FILENAME = "../../images/alien_big_1.png"
+    FILENAME = "../images/alien_big_1.png"
 
     MARGIN = 10
     SPEED = pygame.Vector2(150, 0)

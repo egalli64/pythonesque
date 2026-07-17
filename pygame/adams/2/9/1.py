@@ -56,6 +56,7 @@ class Game:
         self.window.flip()
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
     pg_window = pygame.Window(TITLE, WIN_SIZE)

@@ -54,7 +54,7 @@
 - 2: [Collision with a group](2/8/2/game.py)
 
 ## Section 9 Time-based Actions
-- 1: [The need of having a break](2/9/1/game.py)
+- 1: [The need of having a break](2/9/1.py)
 - 2: [Timed continuous fire](2/9/2.py) Using time.get_ticks
 
 ## Section 10 Mouse
