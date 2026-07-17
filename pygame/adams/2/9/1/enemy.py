@@ -8,6 +8,7 @@ The need of having a break
 from typing import override
 
 import pygame
+from bullet import Bullet
 
 WIN_RECT = pygame.Rect(0, 0, 700, 200)
 FPS = 30
@@ -29,13 +30,18 @@ class Enemy(pygame.sprite.Sprite):
     def load_resources(cls):
         cls._image = pygame.image.load(cls.FILENAME).convert_alpha()
 
-    def __init__(self) -> None:
+    def __init__(self, viewport: pygame.Rect) -> None:
         super().__init__()
 
         self.image = Enemy._image
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
         self.rect.topleft = Enemy.START_POS
+        self.viewport = viewport
         self.direction = 1  # right
+
+    def fire(self) -> Bullet:
+        pos = self.rect.move(0, 20).center
+        return Bullet(pos, self.viewport.height)
 
     @override
     def update(self, dt) -> None:

@@ -23,9 +23,8 @@ class Game:
         self.viewport = screen.get_rect()
         self.running = True
 
-        self.enemy = Enemy()
-        self.all_sprites = pygame.sprite.Group()
-        self.all_sprites.add(self.enemy)
+        self.enemy = Enemy(self.viewport)
+        self.all_sprites = pygame.sprite.Group(self.enemy)
 
     def run(self) -> None:
         clock = pygame.time.Clock()
@@ -46,8 +45,7 @@ class Game:
                     self.running = False
 
     def update(self, dt) -> None:
-        pos = self.enemy.rect.move(0, 20).center
-        bullet = Bullet(pos, self.viewport.height)
+        bullet = self.enemy.fire()
         self.all_sprites.add(bullet)
 
         self.all_sprites.update(dt)
