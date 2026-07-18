@@ -12,48 +12,45 @@ import pygame
 class Ball(pygame.sprite.Sprite):
     FILENAME = "../../images/blue_ball.png"
     MIN_SIZE = 10
-    INITIAL_SIZE = 50
-    MAX_SIZE = 400
+    INITIAL_SIZE_RATIO = 5
 
-    dirty: bool
     image: pygame.Surface
     rect: pygame.FRect
+    dirty: bool
 
-    def __init__(self, viewport) -> None:
+    @classmethod
+    def load_resources(cls) -> None:
+        cls._image = pygame.image.load(cls.FILENAME).convert_alpha()
+
+    def __init__(self, viewport: pygame.Rect) -> None:
+        assert viewport.width == viewport.height, "Squared viewport expected"
         super().__init__()
 
-        self.image_base = pygame.image.load(Ball.FILENAME).convert_alpha()
-        self.size = Ball.INITIAL_SIZE
-        self.image = self.scale()
-        self.rect = pygame.FRect(self.image.get_rect())
+        self.size = viewport.width / Ball.INITIAL_SIZE_RATIO
         self.viewport = viewport
+        self.reset()
+        self.rect.center = viewport.center
 
-    def scale(self):
+    def reset(self) -> None:
+        self.image = pygame.transform.scale(Ball._image, (self.size, self.size))
+        self.rect = pygame.FRect(self.image.get_rect())
         self.dirty = False
-        return pygame.transform.scale(self.image_base, (self.size, self.size))
 
     @override
-    def update(self, pos) -> None:
-        self.set_center(pos)
-        self.rect.clamp_ip(self.viewport)
+    def update(self, pos: tuple[int, int]) -> None:
         if self.dirty:
-            center = self.rect.center
-            self.image = self.scale()
-            self.rect = pygame.FRect(self.image.get_rect())
-            self.rect.center = center
+            self.reset()
+        if self.rect.center != pos:
+            self.rect.center = pos
+            self.rect.clamp_ip(self.viewport)
 
-    def draw(self, screen: pygame.Surface) -> None:
-        screen.blit(self.image, self.rect)
-
-    def rotate(self, ccw: bool) -> None:
+    def rotate(self, counterclockwise: bool) -> None:
         self.dirty = True
-        angle = 90 * (1 if ccw else -1)
-        self.image_base = pygame.transform.rotate(self.image_base, angle)
+        angle = 90 * (1 if counterclockwise else -1)
+        Ball._image = pygame.transform.rotate(Ball._image, angle)
 
     def resize(self, delta: int) -> None:
-        if Ball.MIN_SIZE <= self.size + delta <= Ball.MAX_SIZE:
-            self.size += delta
+        candidate = self.size + delta
+        if Ball.MIN_SIZE <= candidate <= self.viewport.width:
+            self.size = candidate
             self.dirty = True
-
-    def set_center(self, center: tuple[int, int]) -> None:
-        self.rect.center = center
