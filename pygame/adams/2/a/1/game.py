@@ -13,7 +13,7 @@ WIN_SIZE = (600, 600)
 
 class Game:
     TITLE = "Dealing with mouse events"
-    INNER_RECT = pygame.Rect(100, 100, 400, 400)
+    PLAY_AREA = pygame.Rect(100, 100, 400, 400)
     BACKGROUND_COLOR = "white"
     INNER_BORDER_COLOR = "red"
     FPS = 30
@@ -23,7 +23,7 @@ class Game:
         self.screen = screen
         self.running = True
 
-        self.ball = Ball(Game.INNER_RECT)
+        self.ball = Ball(Game.PLAY_AREA)
         self.group = pygame.sprite.GroupSingle(self.ball)
 
     def run(self) -> None:
@@ -55,15 +55,15 @@ class Game:
 
     def update(self) -> None:
         pos = pygame.mouse.get_pos()
-        if Game.INNER_RECT.collidepoint(pos):
+        if Game.PLAY_AREA.collidepoint(pos):
             pygame.mouse.set_visible(False)
-            self.ball.update(pos)
+            self.ball.move(pos)
         else:
             pygame.mouse.set_visible(True)
 
     def draw(self) -> None:
         self.screen.fill(self.BACKGROUND_COLOR)
-        pygame.draw.rect(self.screen, Game.INNER_BORDER_COLOR, Game.INNER_RECT, 1)
+        pygame.draw.rect(self.screen, Game.INNER_BORDER_COLOR, Game.PLAY_AREA, 1)
         self.group.draw(self.screen)
         self.window.flip()
 
