@@ -5,6 +5,8 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Mouse actions
 """
+from typing import override
+
 import pygame
 
 
@@ -32,6 +34,7 @@ class Ball(pygame.sprite.Sprite):
 
         self.rebuild()
         self.rect.center = viewport.center
+        pygame.mouse.set_pos(viewport.center)
 
     def rebuild(self):
         self.update_scaled_image()
@@ -39,13 +42,17 @@ class Ball(pygame.sprite.Sprite):
 
     def update_scaled_image(self) -> None:
         self.scaled_image = pygame.transform.scale(Ball._image, (self.size, self.size))
+
+        center = self.rect.center if self.rect else self.viewport.center
         self.rect = pygame.FRect(self.scaled_image.get_rect())
+        self.rect.center = center
         self.rect.clamp_ip(self.viewport)
 
     def update_image(self) -> None:
         self.image = pygame.transform.rotate(self.scaled_image, self.angle)
 
-    def move(self, pos: tuple[int, int]) -> None:
+    @override
+    def update(self, pos: tuple[int, int]) -> None:
         if self.rect.center != pos:
             self.rect.center = pos
             self.rect.clamp_ip(self.viewport)

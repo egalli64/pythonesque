@@ -25,6 +25,8 @@ class Game:
 
         self.ball = Ball(Game.PLAY_AREA)
         self.group = pygame.sprite.GroupSingle(self.ball)
+        # inside the play are the mouse is invisible
+        pygame.mouse.set_visible(False)
 
     def run(self) -> None:
         clock = pygame.time.Clock()
@@ -56,9 +58,10 @@ class Game:
     def update(self) -> None:
         pos = pygame.mouse.get_pos()
         if Game.PLAY_AREA.collidepoint(pos):
-            pygame.mouse.set_visible(False)
-            self.ball.move(pos)
-        else:
+            if pygame.mouse.get_visible():
+                pygame.mouse.set_visible(False)
+            self.group.update(pos)
+        elif not pygame.mouse.get_visible():
             pygame.mouse.set_visible(True)
 
     def draw(self) -> None:
