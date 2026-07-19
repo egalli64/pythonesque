@@ -10,6 +10,12 @@ import pygame
 FPS = 30
 WIN_SIZE = (400, 200)
 TITLE = "Sound Background Music"
+VOLUME_STEP = 0.05
+
+
+def change_music_volume(delta: int) -> None:
+    volume = pygame.mixer.music.get_volume() + delta * VOLUME_STEP
+    pygame.mixer.music.set_volume(volume)  # clamped to [0, 1] by pygame
 
 
 class Game:
@@ -18,7 +24,6 @@ class Game:
     TEXT_COLOR = "red"
     MUSIC_FILE = "sounds/lucifer.mid"
     VOLUME_DEFAULT = 0.05
-    VOLUME_STEP = 0.05
     VOLUME_FADEOUT = 5000  # ms
 
     @classmethod
@@ -60,7 +65,7 @@ class Game:
                         case pygame.K_p:
                             self.toggle_pause()
                 case pygame.MOUSEWHEEL:
-                    self.change_volume(event.y)
+                    change_music_volume(event.y)
 
     def toggle_pause(self) -> None:
         if self.paused:
@@ -69,10 +74,6 @@ class Game:
             pygame.mixer.music.pause()
         self.paused = not self.paused
         print("Pause is now", "on" if self.paused else "off")
-
-    def change_volume(self, delta: int) -> None:
-        volume = pygame.mixer.music.get_volume() + delta * Game.VOLUME_STEP
-        pygame.mixer.music.set_volume(volume)  # clamped to [0, 1] by pygame
 
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
