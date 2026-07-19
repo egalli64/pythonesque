@@ -5,81 +5,94 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Sound effects
 """
+from enum import Enum
 
 import pygame
 
+FPS = 30
+WIN_SIZE = (400, 200)
+TITLE = "Sound effects"
+
+
+class Sound(Enum):
+    BUBBLE = "sounds/plop.mp3"
+    CLASH = "sounds/glass.wav"
+
 
 class Game:
-    FPS = 30
-    WIN_RECT: pygame.Rect = pygame.Rect(0, 0, 400, 200)
     BACKGROUND_COLOR = "black"
-    TITLE = "Sound effects"
     FONT_SIZE = 40
     TEXT_COLOR = "red"
-    EFFECT_BUBBLE = "sounds/plop.mp3"
-    EFFECT_CLASH = "sounds/glass.wav"
-
     VOLUME_STEP = 0.05
 
-    def __init__(self) -> None:
-        self.window = pygame.Window(Game.TITLE, Game.WIN_RECT.size)
-        self.screen = self.window.get_surface()
-        self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(None, Game.FONT_SIZE)
+    @classmethod
+    def load_resources(cls) -> None:
+        cls._font = pygame.font.Font(None, cls.FONT_SIZE)
+        cls._sounds = {sound: pygame.mixer.Sound(sound.value) for sound in Sound}
 
-        self.bubble = pygame.mixer.Sound(Game.EFFECT_BUBBLE)
-        self.clash = pygame.mixer.Sound(Game.EFFECT_CLASH)
+    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+        self.window = window
+        self.screen = screen
+        viewport = self.screen.get_rect()
+        self.running = True
 
-        self.info = self.font.render("Volume: _.__", True, Game.TEXT_COLOR)
-        self.info_rect = self.info.get_rect()
-        self.info_rect.center = Game.WIN_RECT.center
-        self.cur_volume = -1  # invalid volume
+        self.displayed_volume = Game._sounds[Sound.BUBBLE].get_volume()
+        text = f"Volume: {self.displayed_volume:.2f}"
+        self.info = self._font.render(text, True, Game.TEXT_COLOR)
+        self.info_rect = self.info.get_rect(center=viewport.center)
 
-    def handle_events(self) -> bool:
+    def handle_events(self) -> None:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    return False
-            elif event.type == pygame.MOUSEBUTTONUP:
-                if event.button == 1:  # left
-                    self.bubble.play()
-                elif event.button == 3:  # right
-                    self.clash.play()
-            elif event.type == pygame.MOUSEWHEEL:
-                self.change_volume(event.y)
+            match event.type:
+                case pygame.QUIT:
+                    self.running = False
+                case pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.running = False
+                case pygame.MOUSEBUTTONDOWN:
+                    if event.button == pygame.BUTTON_LEFT:
+                        Game._sounds[Sound.BUBBLE].play()
+                    elif event.button == pygame.BUTTON_RIGHT:
+                        Game._sounds[Sound.CLASH].play()
+                case pygame.MOUSEWHEEL:
+                    self.change_volume(event.y)
 
-        return True
-
-    def change_volume(self, delta):
-        volume = self.bubble.get_volume() + delta * Game.VOLUME_STEP
-        self.bubble.set_volume(volume)
-        self.clash.set_volume(volume)
+    def change_volume(self, delta: int) -> None:
+        volume = pygame.mixer.Sound.get_volume(Game._sounds[Sound.BUBBLE]) + delta * Game.VOLUME_STEP
+        volume = max(0.0, min(1.0, volume))
+        for sound in Game._sounds.values():
+            sound.set_volume(volume)
 
     def draw(self) -> None:
         self.screen.fill(self.BACKGROUND_COLOR)
-        volume = self.bubble.get_volume()
-        if volume != self.cur_volume:
+        volume = Game._sounds[Sound.BUBBLE].get_volume()
+        if volume != self.displayed_volume:
             text = f"Volume: {volume:.2f}"
-            self.info = self.font.render(text, True, Game.TEXT_COLOR)
-            self.cur_volume = volume
+            self.info = self._font.render(text, True, Game.TEXT_COLOR)
+            self.displayed_volume = volume
 
         self.screen.blit(self.info, self.info_rect)
         self.window.flip()
 
-    def run(self):
-        self.running = True
-        while self.handle_events():
-            self.clock.tick(Game.FPS)
+    def run(self) -> None:
+        clock = pygame.time.Clock()
+
+        while self.running:
+            clock.tick(FPS)
+            self.handle_events()
             self.draw()
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_SIZE)
+    pg_screen = pg_window.get_surface()
+
+    Game.load_resources()
 
     try:
-        Game().run()
+        Game(pg_window, pg_screen).run()
     finally:
         pygame.quit()
         print("Done.")
