@@ -46,13 +46,14 @@ class Game:
                 self.running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 match event.button:
-                    case 1:  # LEFT
+                    case pygame.BUTTON_LEFT:
                         self.ball.rotate(counterclockwise=True)
-                    case 2:  # MIDDLE
+                    case pygame.BUTTON_MIDDLE:
                         self.running = False
-                    case 3:  # RIGHT
+                    case pygame.BUTTON_RIGHT:
                         self.ball.rotate(counterclockwise=False)
-            elif event.type == pygame.MOUSEWHEEL:  # previously known as button 4 and 5
+            # previously known as pygame.BUTTON_WHEELUP (4) and BUTTON_WHEELDOWN (5)
+            elif event.type == pygame.MOUSEWHEEL:
                 self.ball.resize(event.y)
 
     def update(self) -> None:
