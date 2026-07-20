@@ -14,10 +14,7 @@ class Direction(Enum):
     LEFT = (-1, 0)
     RIGHT = (1, 0)
 
+    @property
     def opposite(self):
-        return {
-            Direction.UP: Direction.DOWN,
-            Direction.DOWN: Direction.UP,
-            Direction.LEFT: Direction.RIGHT,
-            Direction.RIGHT: Direction.LEFT,
-        }[self]
+        dx, dy = self.value
+        return Direction(-dx, -dy)

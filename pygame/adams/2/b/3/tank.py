@@ -49,10 +49,10 @@ class Tank(pygame.sprite.Sprite):
     def update(self, dt: float) -> None:
         self.image = self.images[self.direction]
         movement = pygame.Vector2(self.direction.value) * Tank.SPEED * dt
-        self.rect.move_ip(*movement)
+        self.rect.move_ip(movement)
 
         if not self.viewport.contains(self.rect):
-            self.direction = self.direction.opposite()
+            self.direction = self.direction.opposite
 
         self.stereo()
 
