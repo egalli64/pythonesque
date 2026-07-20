@@ -65,7 +65,7 @@
 ## Section 11 Sound
 - 1: [Background music](2/b/1.py)
 - 2: [Effects](2/b/2.py)
-- 3: [Stereo sound](2/b/3.py)
+- 3: [Stereo sound](2/b/3/game.py)
 
 ## Section 12 Events
 - 1: [Printing events](2/c/1.py)

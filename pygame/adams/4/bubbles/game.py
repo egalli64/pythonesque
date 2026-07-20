@@ -68,7 +68,7 @@ class Game:
                 elif event.key == pygame.K_p and not self.terminated:
                     self.set_pause()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 3 and not self.terminated:
+                if event.button == pygame.BUTTON_RIGHT and not self.terminated:
                     self.set_pause()
 
             if self.terminated:
@@ -80,7 +80,7 @@ class Game:
 
             if not self.paused and not self.terminated:
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
+                    if event.button == pygame.BUTTON_LEFT:
                         self.sting(pygame.mouse.get_pos())
                 elif event.type == Game.SPAWN_BUBBLE_EVENT:
                     self.spawn_bubble()
