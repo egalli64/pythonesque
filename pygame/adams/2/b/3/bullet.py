@@ -25,11 +25,11 @@ class Bullet(pygame.sprite.Sprite):
 
     @classmethod
     def load_resources(cls) -> None:
-        cls._sound = pygame.mixer.Sound(Bullet.SOUND_FILE)
-        cls._images = {x: pygame.image.load(Bullet.IMAGE_FILES[x]).convert() for x in [Direction.LEFT, Direction.RIGHT]}
+        cls._sound = pygame.mixer.Sound(cls.SOUND_FILE)
+        cls._images = {x: pygame.image.load(cls.IMAGE_FILES[x]).convert() for x in [Direction.LEFT, Direction.RIGHT]}
 
         for image in cls._images.values():
-            image.set_colorkey(Bullet.TRANSPARENT_COLOR)
+            image.set_colorkey(cls.TRANSPARENT_COLOR)
 
     def __init__(self, tank: Tank, viewport: pygame.Rect) -> None:
         assert tank.direction != Direction.UP, "Firing up is disabled"

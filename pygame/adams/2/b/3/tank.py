@@ -10,56 +10,62 @@ import pygame
 from direction import Direction
 
 TILE_SIZE = 32  # square tile, in bit
-TRANSPARENT_COLOR = "black"
+
 
 class Tank(pygame.sprite.Sprite):
-    IMAGE = "../images/tank.png"
-    SOUND = "../sounds/drive.wav"
+    IMAGE_FILE = "../images/tank.png"
+    TRANSPARENT_COLOR = "black"
+    SOUND_FILE = "../sounds/drive.wav"
     SPEED = 50
 
     image: pygame.Surface
     rect: pygame.FRect
 
+    @classmethod
+    def load_resources(cls) -> None:
+        cls._sound = pygame.mixer.Sound(cls.SOUND_FILE)
+
+        image = pygame.image.load(cls.IMAGE_FILE).convert()
+        image.set_colorkey(cls.TRANSPARENT_COLOR)
+        cls._images = {
+            Direction.UP: image,
+            Direction.LEFT: pygame.transform.rotate(image, 90),
+            Direction.RIGHT: pygame.transform.rotate(image, -90),
+            Direction.DOWN: pygame.transform.rotate(image, 180)
+        }
+
     def __init__(self, viewport: pygame.Rect) -> None:
         super().__init__()
+
         self.viewport = viewport
-        self.images = {}
-
-        picture = pygame.image.load(Tank.IMAGE).convert()
-        picture.set_colorkey(TRANSPARENT_COLOR)
-        self.images[Direction.UP] = picture
-        self.images[Direction.LEFT] = pygame.transform.rotate(picture, 90)
-        self.images[Direction.RIGHT] = pygame.transform.rotate(picture, -90)
-        self.images[Direction.DOWN] = pygame.transform.rotate(picture, 180)
-
         self.direction = Direction.RIGHT
-        self.image = self.images[self.direction]
+        self.image = self._images[self.direction]
         self.rect = pygame.FRect(self.image.get_rect())
-        assert self.rect.width == self.rect.height == TILE_SIZE, "Bad tile size"
 
+        assert self.rect.width == self.rect.height == TILE_SIZE, "Bad tile size"
         self.rect.left, self.rect.top = 3 * TILE_SIZE, 2 * TILE_SIZE  # initial position
         self.channel = pygame.mixer.find_channel()
         if self.channel:
-            sound = pygame.mixer.Sound(Tank.SOUND)
             self.stereo()
-            self.channel.play(sound, -1)
-        self.speed = None
+            self.channel.play(Tank._sound, -1)
 
     @override
     def update(self, dt: float) -> None:
-        self.image = self.images[self.direction]
         movement = pygame.Vector2(self.direction.value) * Tank.SPEED * dt
         self.rect.move_ip(movement)
 
         if not self.viewport.contains(self.rect):
             self.direction = self.direction.opposite
+            self.image = self._images[self.direction]
 
         self.stereo()
 
     def stereo(self) -> None:
-        right = self.rect.centerx / self.viewport.width
-        self.channel.set_volume(1 - right, right)
+        if self.direction in (Direction.LEFT, Direction.RIGHT):
+            right = self.rect.centerx / self.viewport.width
+            self.channel.set_volume(1 - right, right)
 
     def turn(self, direction: Direction) -> None:
-        self.direction = direction
-
+        if direction != self.direction:
+            self.direction = direction
+            self.image = self._images[self.direction]
