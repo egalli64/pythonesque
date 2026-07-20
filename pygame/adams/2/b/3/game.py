@@ -71,10 +71,13 @@ class Game:
             self.window.flip()
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
     pg_window = pygame.Window(TITLE, WIN_SIZE)
     pg_screen = pg_window.get_surface()
+
+    Bullet.load_resources()
 
     try:
         Game(pg_window, pg_screen).run()

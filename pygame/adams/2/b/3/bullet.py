@@ -10,8 +10,6 @@ import pygame
 from tank import Tank
 from direction import Direction
 
-TRANSPARENT_COLOR = "black"
-
 
 class Bullet(pygame.sprite.Sprite):
     SOUND_FILE = "../sounds/fire.wav"
@@ -19,39 +17,39 @@ class Bullet(pygame.sprite.Sprite):
         Direction.LEFT: "../images/bullet_left.png",
         Direction.RIGHT: "../images/bullet_right.png",
     }
+    TRANSPARENT_COLOR = "black"
     SPEED = 300
 
     image: pygame.Surface
-    rect: pygame.Rect
+    rect: pygame.FRect
+
+    @classmethod
+    def load_resources(cls) -> None:
+        cls._sound = pygame.mixer.Sound(Bullet.SOUND_FILE)
+        cls._images = {x: pygame.image.load(Bullet.IMAGE_FILES[x]).convert() for x in [Direction.LEFT, Direction.RIGHT]}
+
+        for image in cls._images.values():
+            image.set_colorkey(Bullet.TRANSPARENT_COLOR)
 
     def __init__(self, tank: Tank, viewport: pygame.Rect) -> None:
         assert tank.direction != Direction.UP, "Firing up is disabled"
         assert tank.direction != Direction.DOWN, "Firing down is disabled"
         super().__init__()
 
-        self.image = pygame.image.load(Bullet.IMAGE_FILES[tank.direction]).convert()
-        self.image.set_colorkey(TRANSPARENT_COLOR)
-        self.rect = self.image.get_rect()
+        self.image = Bullet._images[tank.direction]
+        self.rect = pygame.FRect(self.image.get_rect())
         self.direction = tank.direction
         self.rect.center = tank.rect.center
         self.viewport = viewport
 
-        self.channel = pygame.mixer.find_channel()
-        if self.channel:
-            sound = pygame.mixer.Sound(Bullet.SOUND_FILE)
-            self.stereo()
-            self.channel.play(sound)
-
-    def stereo(self) -> None:
-        right = self.rect.centerx / self.viewport.width
-        self.channel.set_volume(1 - right, right)
+        if channel := pygame.mixer.find_channel():
+            right = self.rect.centerx / self.viewport.width
+            channel.set_volume(1 - right, right)
+            channel.play(Bullet._sound)
 
     @override
     def update(self, dt) -> None:
         movement = pygame.Vector2(self.direction.value) * Bullet.SPEED * dt
-        self.rect.move_ip(*movement)
-
+        self.rect.move_ip(movement)
         if not self.viewport.contains(self.rect):
             self.kill()
-        else:
-            self.stereo()
