@@ -7,7 +7,6 @@ Stereo sound
 """
 from typing import override
 import pygame
-from tank import Tank
 from direction import Direction
 
 
@@ -22,6 +21,7 @@ class Bullet(pygame.sprite.Sprite):
 
     image: pygame.Surface
     rect: pygame.FRect
+    direction: Direction
 
     @classmethod
     def load_resources(cls) -> None:
@@ -31,15 +31,14 @@ class Bullet(pygame.sprite.Sprite):
         for image in cls._images.values():
             image.set_colorkey(cls.TRANSPARENT_COLOR)
 
-    def __init__(self, tank: Tank, viewport: pygame.Rect) -> None:
-        assert tank.direction != Direction.UP, "Firing up is disabled"
-        assert tank.direction != Direction.DOWN, "Firing down is disabled"
+    def __init__(self, viewport: pygame.Rect, origin: tuple[float, float], direction: Direction) -> None:
+        assert direction != Direction.UP, "Firing up is disabled"
+        assert direction != Direction.DOWN, "Firing down is disabled"
         super().__init__()
 
-        self.image = Bullet._images[tank.direction]
-        self.rect = pygame.FRect(self.image.get_rect())
-        self.direction = tank.direction
-        self.rect.center = tank.rect.center
+        self.image = Bullet._images[direction]
+        self.rect = pygame.FRect(self.image.get_rect(center=origin))
+        self.direction = direction
         self.viewport = viewport
 
         if channel := pygame.mixer.find_channel():

@@ -7,9 +7,9 @@ Stereo sound
 """
 from typing import override
 import pygame
+from ground import Ground
+from bullet import Bullet
 from direction import Direction
-
-TILE_SIZE = 32  # square tile, in bit
 
 
 class Tank(pygame.sprite.Sprite):
@@ -40,10 +40,9 @@ class Tank(pygame.sprite.Sprite):
         self.viewport = viewport
         self.direction = Direction.RIGHT
         self.image = self._images[self.direction]
-        self.rect = pygame.FRect(self.image.get_rect())
+        top_left = 3 * Ground.TILE_SIZE[0], 2 * Ground.TILE_SIZE[1]
+        self.rect = pygame.FRect(self.image.get_rect(topleft=top_left))
 
-        assert self.rect.width == self.rect.height == TILE_SIZE, "Bad tile size"
-        self.rect.left, self.rect.top = 3 * TILE_SIZE, 2 * TILE_SIZE  # initial position
         self.channel = pygame.mixer.find_channel()
         if self.channel:
             self.stereo()
@@ -69,3 +68,10 @@ class Tank(pygame.sprite.Sprite):
         if direction != self.direction:
             self.direction = direction
             self.image = self._images[self.direction]
+
+    def fire(self, burst_size: int) -> Bullet | None:
+        if burst_size > 4 or self.direction in [Direction.UP, Direction.DOWN]:
+            print("Fire disabled!")
+            return None
+        else:
+            return Bullet(self.viewport, self.rect.center, self.direction)

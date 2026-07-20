@@ -13,9 +13,7 @@ from direction import Direction
 
 FPS = 30
 TITLE = "Stereo panning sound"
-TILE_SIZE = 32  # square tile, in bit
-MAP_SIZE = (25, 7)  # tiles, width, height
-WIN_SIZE = (TILE_SIZE * MAP_SIZE[0], TILE_SIZE * MAP_SIZE[1])
+WIN_SIZE = (800, 224)
 
 
 class Game:
@@ -47,13 +45,8 @@ class Game:
                     case pygame.K_RIGHT:
                         self.tank.turn(Direction.RIGHT)
                     case pygame.K_SPACE:
-                        self.fire()
-
-    def fire(self) -> None:
-        if self.tank.direction in [Direction.UP, Direction.DOWN]:
-            print("North/South fire disabled!")
-        elif len(self.all_bullets) < 5:
-            self.all_bullets.add(Bullet(self.tank, self.viewport))
+                        if bullet := self.tank.fire(len(self.all_bullets)):
+                            self.all_bullets.add(bullet)
 
     def run(self) -> None:
         clock = pygame.time.Clock()
