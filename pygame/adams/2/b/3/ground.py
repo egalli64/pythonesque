@@ -8,9 +8,6 @@ Stereo sound
 import pygame
 
 TILE_SIZE = 32  # square tile, in bit
-MAP_SIZE = (25, 7)  # tiles, width, height
-WIN_SIZE = (TILE_SIZE * MAP_SIZE[0], TILE_SIZE * MAP_SIZE[1])
-TRANSPARENT_COLOR = "black"
 
 
 class Ground:

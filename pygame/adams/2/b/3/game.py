@@ -9,6 +9,7 @@ import pygame
 from tank import Tank
 from ground import Ground
 from bullet import Bullet
+from direction import Direction
 
 FPS = 30
 TITLE = "Stereo panning sound"
@@ -38,18 +39,18 @@ class Game:
                     case pygame.K_ESCAPE:
                         self.running = False
                     case pygame.K_UP:
-                        self.tank.turn(Tank.Direction.UP)
+                        self.tank.turn(Direction.UP)
                     case pygame.K_DOWN:
-                        self.tank.turn(Tank.Direction.DOWN)
+                        self.tank.turn(Direction.DOWN)
                     case pygame.K_LEFT:
-                        self.tank.turn(Tank.Direction.LEFT)
+                        self.tank.turn(Direction.LEFT)
                     case pygame.K_RIGHT:
-                        self.tank.turn(Tank.Direction.RIGHT)
+                        self.tank.turn(Direction.RIGHT)
                     case pygame.K_SPACE:
                         self.fire()
 
     def fire(self) -> None:
-        if self.tank.direction in [Tank.Direction.UP, Tank.Direction.DOWN]:
+        if self.tank.direction in [Direction.UP, Direction.DOWN]:
             print("North/South fire disabled!")
         elif len(self.all_bullets) < 5:
             self.all_bullets.add(Bullet(self.tank, self.viewport))

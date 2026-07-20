@@ -5,9 +5,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Stereo sound
 """
-from enum import Enum
 from typing import override
 import pygame
+from direction import Direction
 
 TILE_SIZE = 32  # square tile, in bit
 TRANSPARENT_COLOR = "black"
@@ -20,20 +20,6 @@ class Tank(pygame.sprite.Sprite):
     image: pygame.Surface
     rect: pygame.FRect
 
-    class Direction(Enum):
-        UP = (0, -1)
-        DOWN = (0, 1)
-        LEFT = (-1, 0)
-        RIGHT = (1, 0)
-
-        def opposite(self):
-            return {
-                Tank.Direction.UP: Tank.Direction.DOWN,
-                Tank.Direction.DOWN: Tank.Direction.UP,
-                Tank.Direction.LEFT: Tank.Direction.RIGHT,
-                Tank.Direction.RIGHT: Tank.Direction.LEFT,
-            }[self]
-
     def __init__(self, viewport: pygame.Rect) -> None:
         super().__init__()
         self.viewport = viewport
@@ -41,12 +27,12 @@ class Tank(pygame.sprite.Sprite):
 
         picture = pygame.image.load(Tank.IMAGE).convert()
         picture.set_colorkey(TRANSPARENT_COLOR)
-        self.images[Tank.Direction.UP] = picture
-        self.images[Tank.Direction.LEFT] = pygame.transform.rotate(picture, 90)
-        self.images[Tank.Direction.RIGHT] = pygame.transform.rotate(picture, -90)
-        self.images[Tank.Direction.DOWN] = pygame.transform.rotate(picture, 180)
+        self.images[Direction.UP] = picture
+        self.images[Direction.LEFT] = pygame.transform.rotate(picture, 90)
+        self.images[Direction.RIGHT] = pygame.transform.rotate(picture, -90)
+        self.images[Direction.DOWN] = pygame.transform.rotate(picture, 180)
 
-        self.direction: Tank.Direction = Tank.Direction.RIGHT
+        self.direction = Direction.RIGHT
         self.image = self.images[self.direction]
         self.rect = pygame.FRect(self.image.get_rect())
         assert self.rect.width == self.rect.height == TILE_SIZE, "Bad tile size"

@@ -8,20 +8,16 @@ Stereo sound
 from typing import override
 import pygame
 from tank import Tank
+from direction import Direction
 
-FPS = 30
-TITLE = "Stereo panning sound"
-TILE_SIZE = 32  # square tile, in bit
-MAP_SIZE = (25, 7)  # tiles, width, height
-WIN_SIZE = (TILE_SIZE * MAP_SIZE[0], TILE_SIZE * MAP_SIZE[1])
 TRANSPARENT_COLOR = "black"
 
 
 class Bullet(pygame.sprite.Sprite):
-    SOUND = "sounds/fire.wav"
-    IMAGES = {
-        Tank.Direction.LEFT: "images/bullet_left.png",
-        Tank.Direction.RIGHT: "images/bullet_right.png",
+    SOUND_FILE = "../sounds/fire.wav"
+    IMAGE_FILES = {
+        Direction.LEFT: "../images/bullet_left.png",
+        Direction.RIGHT: "../images/bullet_right.png",
     }
     SPEED = 300
 
@@ -29,11 +25,11 @@ class Bullet(pygame.sprite.Sprite):
     rect: pygame.Rect
 
     def __init__(self, tank: Tank, viewport: pygame.Rect) -> None:
-        assert tank.direction != Tank.Direction.UP, "Firing up is disabled"
-        assert tank.direction != Tank.Direction.DOWN, "Firing down is disabled"
+        assert tank.direction != Direction.UP, "Firing up is disabled"
+        assert tank.direction != Direction.DOWN, "Firing down is disabled"
         super().__init__()
 
-        self.image = pygame.image.load(Bullet.IMAGES[tank.direction]).convert()
+        self.image = pygame.image.load(Bullet.IMAGE_FILES[tank.direction]).convert()
         self.image.set_colorkey(TRANSPARENT_COLOR)
         self.rect = self.image.get_rect()
         self.direction = tank.direction
@@ -42,7 +38,7 @@ class Bullet(pygame.sprite.Sprite):
 
         self.channel = pygame.mixer.find_channel()
         if self.channel:
-            sound = pygame.mixer.Sound(Bullet.SOUND)
+            sound = pygame.mixer.Sound(Bullet.SOUND_FILE)
             self.stereo()
             self.channel.play(sound)
 
