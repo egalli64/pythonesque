@@ -7,21 +7,24 @@ Stereo sound
 """
 import pygame
 
-TILE_SIZE = 32  # square tile, in bit
-
 
 class Ground:
-    IMAGE = "../images/background.png"
+    FILENAME = "../images/background.png"
+    TILE_SIZE = (32, 32)  # square tile, in bit
+
+    @classmethod
+    def load_resources(cls) -> None:
+        cls._tile = pygame.image.load(Ground.FILENAME).convert()
+        if cls._tile.get_size() != Ground.TILE_SIZE:
+            print("Warning: unexpected tile size!")
+            cls._tile = pygame.transform.scale(cls._tile, Ground.TILE_SIZE)
 
     def __init__(self, viewport: pygame.Rect) -> None:
-        tile = pygame.image.load(Ground.IMAGE).convert()
-        assert tile.get_width() == tile.get_height() == TILE_SIZE, "Bad tile size"
-
         self.background = pygame.Surface(viewport.size)
 
-        for x in range(0, viewport.width, tile.get_width()):
-            for y in range(0, viewport.height, tile.get_height()):
-                self.background.blit(tile, (x, y))
+        for x in range(0, viewport.width, Ground._tile.get_width()):
+            for y in range(0, viewport.height, Ground._tile.get_height()):
+                self.background.blit(Ground._tile, (x, y))
 
     def draw(self, screen):
         screen.blit(self.background, (0, 0))

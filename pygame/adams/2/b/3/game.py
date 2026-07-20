@@ -77,6 +77,7 @@ if __name__ == "__main__":
     pg_window = pygame.Window(TITLE, WIN_SIZE)
     pg_screen = pg_window.get_surface()
 
+    Ground.load_resources()
     Bullet.load_resources()
     Tank.load_resources()
 
