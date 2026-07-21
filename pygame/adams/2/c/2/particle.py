@@ -9,23 +9,25 @@ import pygame
 from random import choice, randint
 from typing import override
 
+SPEED_INTERVAL = (50, 100)
+SIZE_INTERVAL = (3, 6)
+GREEN_INTERVAL = (100, 255)
+
 
 class Particle(pygame.sprite.Sprite):
-    SPEED_RANGE = (50, 100)
-
     image: pygame.Surface
     rect: pygame.Rect
 
     def __init__(self, viewport: pygame.Rect, group) -> None:
         super().__init__(group)
 
-        self.image = pygame.Surface((randint(3, 6), randint(3, 6)))
-        self.image.fill((0, randint(100, 255), 0))
+        self.image = pygame.Surface((randint(*SIZE_INTERVAL), randint(*SIZE_INTERVAL)))
+        self.image.fill((0, randint(*GREEN_INTERVAL), 0))
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
         self.rect.topleft = (randint(30, viewport.right - 30), randint(30, viewport.bottom - 30))
 
         self.viewport = viewport
-        self.speed = randint(*Particle.SPEED_RANGE)
+        self.speed = randint(*SPEED_INTERVAL)
         self.direction = pygame.Vector2(choice((-1, 1)), choice((-1, 1)))
         self.frozen = True
 
