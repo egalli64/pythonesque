@@ -22,10 +22,11 @@ class Box(pygame.sprite.Sprite):
 
     @classmethod
     def load_resources(cls) -> None:
-        cls._font = pygame.font.SysFont(None, cls.FONT_SIZE)
+        cls._font = pygame.font.Font(None, cls.FONT_SIZE)
 
     def __init__(self, index: int, viewport: pygame.Rect) -> None:
         super().__init__()
+
         self.image = pygame.Surface(Box.IMAGE_SIZE)
         pos = (viewport.right - 50 - index * 100, viewport.centery)
         self.rect = self.image.get_rect(center=pos)

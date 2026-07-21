@@ -9,18 +9,17 @@ import pygame
 from typing import List
 from box import Box, EVENT_OVERFLOW
 from particle import Particle
-from button import StartButton
+from button import StartButton, EVENT_BUTTON_PRESSED
 
 WIN_SIZE = (600, 150)
-EVENT_BUTTON_PRESSED = pygame.event.custom_type()
+FPS = 30
+TITLE = "User defined events"
+BACKGROUND_COLOR = "white"
+PARTICLE_COUNT = 100
+BOX_COUNT = 3
 
 
 class Game:
-    FPS = 30
-    TITLE = "User defined events"
-    BACKGROUND_COLOR = "white"
-    PARTICLE_COUNT = 100
-    BOX_COUNT = 3
 
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
@@ -29,27 +28,27 @@ class Game:
         self.clock = pygame.time.Clock()
         self.all_sprites = pygame.sprite.Group()
         self.all_particles: pygame.sprite.Group[Particle] = pygame.sprite.Group()
-        for _ in range(Game.PARTICLE_COUNT):
+        for _ in range(PARTICLE_COUNT):
             self.all_particles.add(Particle(self.viewport, self.all_sprites))
 
         self.button = StartButton((30, self.viewport.bottom - 30), self.all_sprites)
         self.all_boxes = pygame.sprite.Group()
         self.boxes: List[Box] = []
-        for i in range(Game.BOX_COUNT):
+        for i in range(BOX_COUNT):
             self.boxes.append(cur := Box(i, self.viewport))
             self.all_boxes.add(cur)
         self.all_sprites.add(self.all_boxes)
 
     def run(self) -> None:
         while self.handle_events():
-            td = self.clock.tick(Game.FPS) / 1000
+            td = self.clock.tick(FPS) / 1000
 
             self.button.update()
             self.all_particles.update(td)
             self.check_collisions()
             self.all_boxes.update()
 
-            self.screen.fill(Game.BACKGROUND_COLOR)
+            self.screen.fill(BACKGROUND_COLOR)
             self.all_sprites.draw(self.screen)
             self.window.flip()
 
@@ -64,6 +63,8 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return False
+                if event.key == pygame.K_SPACE:
+                    self.button.toggle_running()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == pygame.BUTTON_LEFT:
                     self.button.on_click(event.pos)
@@ -71,7 +72,7 @@ class Game:
                 for particle in self.all_particles:
                     particle.set_frozen(event.running)
             elif event.type == EVENT_OVERFLOW:
-                if 0 <= event.next < Game.BOX_COUNT:
+                if 0 <= event.next < BOX_COUNT:
                     self.boxes[event.next].increase(event.delta)
         return True
 
@@ -79,10 +80,11 @@ class Game:
 # noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(Game.TITLE, WIN_SIZE)
+    pg_window = pygame.Window(TITLE, WIN_SIZE)
     pg_screen = pg_window.get_surface()
 
     Box.load_resources()
+    StartButton.load_resources()
 
     try:
         Game(pg_window, pg_screen).run()
