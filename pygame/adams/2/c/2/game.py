@@ -7,13 +7,12 @@ User defined events
 """
 import pygame
 from typing import List
-from box import Box
+from box import Box, EVENT_OVERFLOW
 from particle import Particle
 from button import StartButton
 
 WIN_SIZE = (600, 150)
 EVENT_BUTTON_PRESSED = pygame.event.custom_type()
-EVENT_OVERFLOW = pygame.event.custom_type()
 
 
 class Game:
@@ -77,10 +76,13 @@ class Game:
         return True
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
     pg_window = pygame.Window(Game.TITLE, WIN_SIZE)
     pg_screen = pg_window.get_surface()
+
+    Box.load_resources()
 
     try:
         Game(pg_window, pg_screen).run()
