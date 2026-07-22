@@ -7,7 +7,7 @@ Exploding rocks
 """
 import random
 import pygame
-from animation import Animation
+from explosion import Explosion
 from timer import Timer
 
 
@@ -15,15 +15,23 @@ class Rock(pygame.sprite.Sprite):
     FILENAME = "../../images/rock.png"
     EXPLOSION_TEMPLATE = "../../images/explosion-{:d}.png"
 
+    @classmethod
+    def load_resources(cls) -> None:
+        cls._image = pygame.image.load(Rock.FILENAME).convert_alpha()
+
+    image: pygame.Surface
+    rect: pygame.Rect
+
     def __init__(self, viewport: pygame.Rect):
         super().__init__()
-        self.image = pygame.image.load(Rock.FILENAME).convert_alpha()
-        self.rect: pygame.Rect = self.image.get_rect()
-        max_pos = (viewport.width - self.rect.width, viewport.height - self.rect.height)
-        self.rect.centerx = random.randint(self.rect.width, max_pos[0])
-        self.rect.centery = random.randint(self.rect.height, max_pos[1])
+
+        self.image = Rock._image
+        width, height = self.image.get_size()
+        bottom_right = (random.randint(width, viewport.width), random.randint(height, viewport.height))
+        self.rect = self.image.get_rect(bottomright=bottom_right)
+
         explosions = [Rock.EXPLOSION_TEMPLATE.format(i) for i in range(1, 5)]
-        self.animation = Animation(explosions, 100)
+        self.animation = Explosion(explosions, 100)
         self.timer = Timer(random.randint(100, 2000))
         self.explosion = False
 

@@ -55,6 +55,8 @@ if __name__ == "__main__":
     pg_window = pygame.Window(TITLE, WIN_SIZE)
     pg_screen = pg_window.get_surface()
 
+    Rock.load_resources()
+
     try:
         Game(pg_window, pg_screen).run()
     finally:

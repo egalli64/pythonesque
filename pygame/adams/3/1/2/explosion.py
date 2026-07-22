@@ -9,7 +9,7 @@ import pygame
 from timer import Timer
 
 
-class Animation:
+class Explosion:
     def __init__(self, namelist: list[str], delta: int) -> None:
         self.images: list[pygame.Surface] = []
         self.timer = Timer(delta)
