@@ -6,8 +6,10 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Exploding rocks
 """
 import pygame
+
 from timer import Timer
 from rock import Rock
+from explosion import Explosion
 
 WIN_SIZE = (300, 200)
 FPS = 30
@@ -56,6 +58,7 @@ if __name__ == "__main__":
     pg_screen = pg_window.get_surface()
 
     Rock.load_resources()
+    Explosion.load_resources()
 
     try:
         Game(pg_window, pg_screen).run()

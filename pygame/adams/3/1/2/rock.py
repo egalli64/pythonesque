@@ -13,7 +13,7 @@ from timer import Timer
 
 class Rock(pygame.sprite.Sprite):
     FILENAME = "../../images/rock.png"
-    EXPLOSION_TEMPLATE = "../../images/explosion-{:d}.png"
+    LIFE_SPAN_INTERVAL = (100, 2000)
 
     @classmethod
     def load_resources(cls) -> None:
@@ -30,9 +30,8 @@ class Rock(pygame.sprite.Sprite):
         bottom_right = (random.randint(width, viewport.width), random.randint(height, viewport.height))
         self.rect = self.image.get_rect(bottomright=bottom_right)
 
-        explosions = [Rock.EXPLOSION_TEMPLATE.format(i) for i in range(1, 5)]
-        self.animation = Explosion(explosions, 100)
-        self.timer = Timer(random.randint(100, 2000))
+        self.animation = Explosion()
+        self.timer = Timer(random.randint(*Rock.LIFE_SPAN_INTERVAL))
         self.explosion = False
 
     def update(self) -> None:
