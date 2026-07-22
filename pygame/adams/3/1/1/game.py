@@ -51,17 +51,20 @@ class Game:
     def draw(self) -> None:
         self.screen.fill(Game.BACKGROUND_COLOR)
         self.cat_group.draw(self.screen)
-        text = f"animation time: {self.cat.animation.timer.duration}"
+        text = f"animation time: {self.cat.timer.duration}"
         caption = self.font.render(text, True, Game.TEXT_COLOR)
         text_rect = caption.get_rect(midbottom=(self.viewport.centerx, self.viewport.bottom - 50))
         self.screen.blit(caption, text_rect)
         self.window.flip()
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
     pg_window = pygame.Window(Game.TITLE, WIN_SIZE)
     pg_screen = pg_window.get_surface()
+
+    Cat.load_resources()
 
     try:
         Game(pg_window, pg_screen).run()
