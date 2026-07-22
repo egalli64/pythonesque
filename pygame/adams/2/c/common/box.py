@@ -7,8 +7,7 @@ User defined events
 """
 import pygame
 from typing import override
-
-EVENT_OVERFLOW = pygame.event.custom_type()
+from common.custom_event import CustomEvent
 
 
 class Box(pygame.sprite.Sprite):
@@ -46,6 +45,6 @@ class Box(pygame.sprite.Sprite):
         current = self.value + delta
         self.value = current % 10
         if x := current // 10:
-            event = pygame.event.Event(EVENT_OVERFLOW, next=self.index + 1, delta=x)
+            event = pygame.event.Event(CustomEvent.OVERFLOW, next=self.index + 1, delta=x)
             pygame.event.post(event)
         self.dirty = True

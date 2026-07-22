@@ -7,9 +7,10 @@ User defined events
 """
 import pygame
 from typing import List
-from box import Box, EVENT_OVERFLOW
-from particle import Particle
-from button import StartButton, EVENT_BUTTON_PRESSED
+from common.box import Box
+from common.particle import Particle
+from common.button import StartButton
+from common.custom_event import CustomEvent
 
 WIN_SIZE = (600, 150)
 FPS = 30
@@ -42,6 +43,7 @@ class Game:
         self.all_sprites.add(self.all_boxes)
         self.running = True
 
+    # noinspection DuplicatedCode
     def run(self) -> None:
         clock = pygame.time.Clock()
 
@@ -65,23 +67,24 @@ class Game:
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+            match event.type:
+                case pygame.QUIT:
                     self.running = False
-                if event.key == pygame.K_SPACE:
-                    self.button.toggle_running()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == pygame.BUTTON_LEFT:
-                    self.button.on_click(event.pos)
-            elif event.type == EVENT_BUTTON_PRESSED:
-                for particle in self.all_particles:
-                    particle.set_frozen(event.running)
-            elif event.type == EVENT_OVERFLOW:
-                i: int = event.next
-                if 0 <= i < BOX_COUNT:
-                    self.boxes[i].increase(event.delta)
+                case pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.running = False
+                    if event.key == pygame.K_SPACE:
+                        self.button.toggle_running()
+                case pygame.MOUSEBUTTONDOWN:
+                    if event.button == pygame.BUTTON_LEFT:
+                        self.button.on_click(event.pos)
+                case CustomEvent.BUTTON_PRESSED:
+                    for particle in self.all_particles:
+                        particle.set_frozen(event.running)
+                case CustomEvent.OVERFLOW:
+                    i: int = event.next
+                    if 0 <= i < BOX_COUNT:
+                        self.boxes[i].increase(event.delta)
 
 
 # noinspection DuplicatedCode

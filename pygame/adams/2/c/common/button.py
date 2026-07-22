@@ -5,10 +5,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 User defined events
 """
-import pygame
 from typing import override
-
-EVENT_BUTTON_PRESSED = pygame.event.custom_type()
+import pygame
+from common.custom_event import CustomEvent
 
 
 class StartButton(pygame.sprite.Sprite):
@@ -45,7 +44,7 @@ class StartButton(pygame.sprite.Sprite):
             self.toggle_running()
 
     def toggle_running(self) -> None:
-        event_out = pygame.event.Event(EVENT_BUTTON_PRESSED, running=self.running)
+        event_out = pygame.event.Event(CustomEvent.BUTTON_PRESSED, running=self.running)
         pygame.event.post(event_out)
 
         self.running = not self.running

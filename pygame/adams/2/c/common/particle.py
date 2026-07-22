@@ -18,7 +18,7 @@ class Particle(pygame.sprite.Sprite):
     image: pygame.Surface
     rect: pygame.Rect
 
-    def __init__(self, viewport: pygame.Rect, group) -> None:
+    def __init__(self, viewport: pygame.Rect, group, frozen=True) -> None:
         super().__init__(group)
 
         self.image = pygame.Surface((randint(*SIZE_INTERVAL), randint(*SIZE_INTERVAL)))
@@ -29,7 +29,7 @@ class Particle(pygame.sprite.Sprite):
         self.viewport = viewport
         self.speed = randint(*SPEED_INTERVAL)
         self.direction = pygame.Vector2(choice((-1, 1)), choice((-1, 1)))
-        self.frozen = True
+        self.frozen = frozen
 
     @override
     def update(self, td) -> None:
