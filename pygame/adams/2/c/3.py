@@ -81,7 +81,7 @@ class Game:
                 case CustomEvent.BUTTON_PRESSED:
                     for particle in self.all_particles:
                         particle.set_frozen(event.running)
-                    pygame.time.set_timer(CustomEvent.NEW_PARTICLE, 0 if self.running else 1000)
+                    pygame.time.set_timer(CustomEvent.NEW_PARTICLE, 0 if event.running else 1000)
                 case CustomEvent.OVERFLOW:
                     i: int = event.next
                     if 0 <= i < BOX_COUNT:
