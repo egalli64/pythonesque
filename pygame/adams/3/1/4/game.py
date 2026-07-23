@@ -48,15 +48,15 @@ class Game:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
                 elif event.key == pygame.K_PLUS:
-                    self.cat.animation.change_duration(False)
+                    self.cat.change_duration(False)
                 elif event.key == pygame.K_MINUS:
-                    self.cat.animation.change_duration(True)
+                    self.cat.change_duration(True)
 
     def draw(self) -> None:
         self.screen.fill(BACKGROUND_COLOR)
         self.cat_group.draw(self.screen)
 
-        text = f"animation time: {self.cat.animation.duration:.2f}"
+        text = f"animation time: {self.cat.duration:.2f}"
         caption = Game._font.render(text, True, TEXT_COLOR)
         center = (self.viewport.centerx, self.viewport.centery - 50)
         text_rect = caption.get_rect(center=center)
@@ -71,6 +71,7 @@ if __name__ == "__main__":
     pg_screen = pg_window.get_surface()
 
     Game.load_resources()
+    Cat.load_resources()
 
     try:
         Game(pg_window, pg_screen).run()
