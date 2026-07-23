@@ -13,56 +13,67 @@ TITLE = "Cat animation"
 FPS = 30
 BACKGROUND_COLOR = "gray"
 TEXT_COLOR = "white"
+FONT_SIZE = 14
 
 
 class Game:
-    def __init__(self) -> None:
-        self.window = pygame.Window(TITLE, WIN_RECT.size)
-        self.screen = self.window.get_surface()
-        viewport = self.screen.get_rect()
-        self.clock = pygame.time.Clock()
+    @classmethod
+    def load_resources(cls) -> None:
+        cls._font = pygame.font.Font(None, FONT_SIZE)
 
-        self.font = pygame.font.Font(None, 12)
-        self.cat = Cat(viewport)
+    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+        self.window = window
+        self.screen = screen
+        self.viewport = self.screen.get_rect()
+
+        self.cat = Cat(self.viewport)
         self.cat_group = pygame.sprite.GroupSingle(self.cat)
+        self.running = True
 
     def run(self) -> None:
-        while self.handle_events():
-            dt = self.clock.tick(FPS) / 1000
+        clock = pygame.time.Clock()
 
+        while self.running:
+            dt = clock.tick(FPS) / 1000
+
+            self.handle_events()
             self.cat.update(dt)
             self.draw()
 
-    def handle_events(self) -> bool:
+    def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                self.running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return False
+                    self.running = False
                 elif event.key == pygame.K_PLUS:
                     self.cat.animation.change_duration(False)
                 elif event.key == pygame.K_MINUS:
                     self.cat.animation.change_duration(True)
-        return True
 
     def draw(self) -> None:
         self.screen.fill(BACKGROUND_COLOR)
         self.cat_group.draw(self.screen)
+
         text = f"animation time: {self.cat.animation.duration:.2f}"
-        caption = self.font.render(text, True, TEXT_COLOR)
-        text_rect = caption.get_rect()
-        text_rect.centerx = WIN_RECT.centerx
-        text_rect.bottom = WIN_RECT.bottom - 50
+        caption = Game._font.render(text, True, TEXT_COLOR)
+        center = (self.viewport.centerx, self.viewport.centery - 50)
+        text_rect = caption.get_rect(center=center)
         self.screen.blit(caption, text_rect)
         self.window.flip()
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(TITLE, WIN_RECT.size)
+    pg_screen = pg_window.get_surface()
+
+    Game.load_resources()
 
     try:
-        Game().run()
+        Game(pg_window, pg_screen).run()
     finally:
         pygame.quit()
         print("Done.")
