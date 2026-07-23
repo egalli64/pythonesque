@@ -39,8 +39,6 @@ class Rock(pygame.sprite.Sprite):
             self.explosion = True
         if self.explosion:
             self.image = self.animation.current()
-            center = self.rect.center
-            self.rect = self.image.get_rect()
-            self.rect.center = center
+            self.rect = self.image.get_rect(center=self.rect.center)
         if self.animation.done():
             self.kill()
