@@ -5,7 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 A running cat - dt from main loop
 """
-
 from typing import override
 import pygame
 
@@ -45,7 +44,7 @@ class Animation:
 
 
 class Cat(pygame.sprite.Sprite):
-    FILE_TEMPLATE = "../images/cat-{:d}.bmp"
+    FILE_TEMPLATE = "../../images/cat-{:d}.bmp"
     TRANSPARENT_COLOR = "black"
 
     def __init__(self) -> None:

@@ -77,7 +77,7 @@
 - 1: [A running cat](3/1/1/game.py) - by time.get_ticks()
 - 2: [Exploding rocks](3/1/2/game.py)
 - 3: [Colliding rocks](3/1/3/game.py)
-- 1: [A running cat](3/1/4.py) - by dt from main loop
+- 1: [A running cat](3/1/4/game.py) - by dt from main loop
 
 ## Section 2 - Tileset
 - 1 [Extract a tile from a tileset](3/2/1.py)
