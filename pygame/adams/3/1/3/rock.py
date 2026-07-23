@@ -7,12 +7,11 @@ Colliding rocks
 """
 import random
 import pygame
-from animation import Animation
+from explosion import Explosion
 
 
 class Rock(pygame.sprite.Sprite):
-    FILENAME = "../images/rock.png"
-    EXPLOSION_TEMPLATE = "../images/explosion-{:d}.png"
+    FILENAME = "../../images/rock.png"
 
     def __init__(self, viewport: pygame.Rect):
         super().__init__()
@@ -28,8 +27,7 @@ class Rock(pygame.sprite.Sprite):
         speed_y = random.randint(-100, 100)
         self.speed = pygame.math.Vector2(speed_x, speed_y)
 
-        explosions = [Rock.EXPLOSION_TEMPLATE.format(i) for i in range(1, 5)]
-        self.animation = Animation(explosions, 100)
+        self.animation = Explosion()
         self.explosion = False
 
     def update(self, dt) -> None:

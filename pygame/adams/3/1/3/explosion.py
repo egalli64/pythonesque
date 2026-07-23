@@ -9,23 +9,31 @@ import pygame
 from timer import Timer
 
 
-class Animation:
-    def __init__(self, namelist: list[str], delta: int) -> None:
-        self.images: list[pygame.Surface] = []
-        self.timer = Timer(delta)
-        for filename in namelist:
+class Explosion:
+    EXPLOSION_TEMPLATE = "../../images/explosion-{:d}.png"
+    DELTA_TIME = 100
+
+    @classmethod
+    def load_resources(cls) -> None:
+        cls._images: list[pygame.Surface] = []
+
+        filenames = [cls.EXPLOSION_TEMPLATE.format(i) for i in range(1, 5)]
+        for filename in filenames:
             bitmap = pygame.image.load(filename).convert_alpha()
-            self.images.append(bitmap)
+            cls._images.append(bitmap)
+
+    def __init__(self) -> None:
+        self.timer = Timer(Explosion.DELTA_TIME)
         self.index = 0
         self.running = True
 
     def current(self) -> pygame.Surface:
         if self.timer.tick():
-            if self.index < len(self.images) - 1:
+            if self.index < len(Explosion._images) - 1:
                 self.index += 1
             else:
                 self.running = False
-        return self.images[self.index]
+        return Explosion._images[self.index]
 
     def done(self) -> bool:
         return not self.running

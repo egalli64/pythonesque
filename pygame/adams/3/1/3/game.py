@@ -6,8 +6,10 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Colliding rocks
 """
 import pygame
+
 from timer import Timer
 from rock import Rock
+from explosion import Explosion
 
 WIN_SIZE = (300, 200)
 
@@ -17,9 +19,9 @@ class Game:
     TITLE = "Colliding rocks"
     BACKGROUND_COLOR = "black"
 
-    def __init__(self) -> None:
-        self.window = pygame.Window(Game.TITLE, WIN_SIZE)
-        self.screen = self.window.get_surface()
+    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+        self.window = window
+        self.screen = screen
         self.viewport = self.screen.get_rect()
         self.clock = pygame.time.Clock()
 
@@ -58,11 +60,16 @@ class Game:
                     rocks[j].explode()
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
+    pg_window = pygame.Window(Game.TITLE, WIN_SIZE)
+    pg_screen = pg_window.get_surface()
+
+    Explosion.load_resources()
 
     try:
-        Game().run()
+        Game(pg_window, pg_screen).run()
     finally:
         pygame.quit()
         print("Done.")
