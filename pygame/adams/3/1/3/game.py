@@ -5,11 +5,10 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Colliding rocks
 """
-
 import random
 import pygame
 
-WIN_RECT = pygame.Rect(0, 0, 300, 200)
+WIN_SIZE = (300, 200)
 
 
 class Timer:
@@ -50,12 +49,13 @@ class Rock(pygame.sprite.Sprite):
     FILENAME = "../images/rock.png"
     EXPLOSION_TEMPLATE = "../images/explosion-{:d}.png"
 
-    def __init__(self):
+    def __init__(self, viewport: pygame.Rect):
         super().__init__()
         self.image: pygame.Surface = pygame.image.load(Rock.FILENAME).convert_alpha()
         self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
+        self.viewport = viewport
 
-        max_pos = (self.rect.width * 2, WIN_RECT.height - self.rect.height)
+        max_pos = (self.rect.width * 2, viewport.height - self.rect.height)
         self.rect.centerx = random.randint(int(self.rect.width), int(max_pos[0]))
         self.rect.centery = random.randint(int(self.rect.height), int(max_pos[1]))
 
@@ -75,9 +75,9 @@ class Rock(pygame.sprite.Sprite):
             self.rect.center = center
         else:
             self.rect.move_ip(self.speed * dt)
-            if self.rect.top <= 0 or self.rect.bottom >= WIN_RECT.height:
+            if self.rect.top <= 0 or self.rect.bottom >= self.viewport.height:
                 self.speed.y *= -1
-            if self.rect.left <= 0 or self.rect.right >= WIN_RECT.width:
+            if self.rect.left <= 0 or self.rect.right >= self.viewport.width:
                 self.speed.x *= -1
         if self.animation.done():
             self.kill()
@@ -92,11 +92,12 @@ class Game:
     BACKGROUND_COLOR = "black"
 
     def __init__(self) -> None:
-        self.window = pygame.Window(Game.TITLE, WIN_RECT.size)
+        self.window = pygame.Window(Game.TITLE, WIN_SIZE)
         self.screen = self.window.get_surface()
+        self.viewport = self.screen.get_rect()
         self.clock = pygame.time.Clock()
 
-        self.all_rocks: pygame.sprite.Group[Rock] = pygame.sprite.Group()
+        self.all_rocks: pygame.sprite.Group[Rock] = pygame.sprite.Group[Rock]()
         self.timer = Timer(500)
 
     def run(self) -> None:
@@ -120,7 +121,7 @@ class Game:
 
     def update(self, dt) -> None:
         if self.timer.tick():
-            self.all_rocks.add(Rock())
+            self.all_rocks.add(Rock(self.viewport))
         self.all_rocks.update(dt)
 
         rocks = self.all_rocks.sprites()
