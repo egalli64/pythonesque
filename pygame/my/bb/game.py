@@ -3,8 +3,6 @@ A few simple PyGame apps: https://github.com/egalli64/pythonesque/ pygame/my fol
 
 Bouncing Ball
 """
-from unittest import case
-
 import pygame
 from ball import Ball
 
@@ -48,6 +46,8 @@ class Game:
                             self.ball.increase_speed()
                         case pygame.K_DOWN:
                             self.ball.decrease_speed()
+                        case pygame.K_r:
+                            self.ball.reset(self.viewport.center)
 
     def update(self, dt: float) -> None:
         self.ball.update(dt, self.viewport)

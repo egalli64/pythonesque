@@ -15,12 +15,11 @@ DELTA_SPEED = 0.1
 
 
 class Ball:
-    def __init__(self, center: tuple[int, int], radius: int = DEFAULT_RADIUS, color: str = DEFAULT_COLOR,
-                 velocity: tuple[int, int] = DEFAULT_VELOCITY) -> None:
+    def __init__(self, center: tuple[int, int]) -> None:
         self.center = pygame.Vector2(center)
-        self.radius = radius
-        self.color = color
-        self.velocity = pygame.Vector2(velocity)
+        self.radius = DEFAULT_RADIUS
+        self.color = DEFAULT_COLOR
+        self.velocity = pygame.Vector2(DEFAULT_VELOCITY)
 
     def bounce_in(self, viewport: pygame.Rect) -> None:
         if self.center.x >= viewport.right - self.radius:
@@ -52,3 +51,8 @@ class Ball:
 
     def decrease_speed(self, delta: float = DELTA_SPEED) -> None:
         self.velocity *= 1 - delta
+
+    def reset(self, center: tuple[int, int]) -> None:
+        self.color = DEFAULT_COLOR
+        self.velocity.update(DEFAULT_VELOCITY)
+        self.center = pygame.Vector2(center)
