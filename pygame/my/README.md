@@ -9,3 +9,4 @@
   - It is expected to keep its speed, inverting its direction
 - Controls
   - Space: change the ball color randomly
+  - Up/Down Arrow: change the speed by 10% (faster/slower)

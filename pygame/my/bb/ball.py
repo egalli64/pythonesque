@@ -11,6 +11,7 @@ DEFAULT_RADIUS = 20
 DEFAULT_COLOR = "red"
 COLOR_INTERVAL = (64, 255)
 DEFAULT_VELOCITY = (200, -100)
+DELTA_SPEED = 0.1
 
 
 class Ball:
@@ -45,3 +46,9 @@ class Ball:
 
     def change_color(self) -> None:
         self.color = tuple(random.randint(*COLOR_INTERVAL) for _ in range(3))
+
+    def increase_speed(self, delta: float = DELTA_SPEED) -> None:
+        self.velocity *= 1 + delta
+
+    def decrease_speed(self, delta: float = DELTA_SPEED) -> None:
+        self.velocity *= 1 - delta
