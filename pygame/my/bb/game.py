@@ -33,11 +33,15 @@ class Game:
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+            match event.type:
+                case pygame.QUIT:
                     self.running = False
+                case pygame.KEYDOWN:
+                    match event.key:
+                        case pygame.K_ESCAPE:
+                            self.running = False
+                        case pygame.K_SPACE:
+                            self.ball.change_color()
 
     def update(self, dt: float) -> None:
         self.ball.update(dt, self.viewport)

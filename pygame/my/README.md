@@ -7,4 +7,5 @@
   - moving with initial velocity (200, -100)
 - The ball should never leave the window
   - It is expected to keep its speed, inverting its direction
-
+- Controls
+  - Space: change the ball color randomly

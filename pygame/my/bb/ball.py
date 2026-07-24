@@ -3,10 +3,13 @@ A few simple PyGame apps: https://github.com/egalli64/pythonesque/ pygame/my fol
 
 Bouncing Ball
 """
+import random
+
 import pygame
 
 DEFAULT_RADIUS = 20
 DEFAULT_COLOR = "red"
+COLOR_INTERVAL = (64, 255)
 DEFAULT_VELOCITY = (200, -100)
 
 
@@ -39,3 +42,6 @@ class Ball:
 
     def draw(self, surface: pygame.Surface) -> None:
         pygame.draw.circle(surface, self.color, self.center, self.radius)
+
+    def change_color(self) -> None:
+        self.color = tuple(random.randint(*COLOR_INTERVAL) for _ in range(3))
