@@ -6,10 +6,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Bubble game - refactor to original BubbleContainer to BubbleFactory
 
 Credits:
- * Fishtank image: https://www.pngwing.com/en/free-png-vadpk
+ * Fish tank image: https://www.pngwing.com/en/free-png-vadpk
  * Sound: https://www.fesliyanstudios.com/royalty-free-sound-effects-download
 """
-
 import pygame
 
 

@@ -6,10 +6,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Bubble game
 
 Credits:
- * Fishtank image: https://www.pngwing.com/en/free-png-vadpk
+ * Fish tank image: https://www.pngwing.com/en/free-png-vadpk
  * Sound: https://www.fesliyanstudios.com/royalty-free-sound-effects-download
 """
-
 import os
 from typing import Dict
 
@@ -17,8 +16,7 @@ import pygame
 
 
 class Settings:
-    PATH: Dict[str, str] = {}
-    PATH["file"] = os.path.dirname(os.path.abspath(__file__))
+    PATH: Dict[str, str] = {"file": os.path.dirname(os.path.abspath(__file__))}
     PATH["image"] = os.path.join(PATH["file"], "images")
     PATH["sound"] = os.path.join(PATH["file"], "sounds")
     DISTANCE = 50

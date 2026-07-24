@@ -6,13 +6,12 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Bubble game
 
 Credits:
- * Fishtank image: https://www.pngwing.com/en/free-png-vadpk
+ * Fish tank image: https://www.pngwing.com/en/free-png-vadpk
  * Sound: https://www.fesliyanstudios.com/royalty-free-sound-effects-download
 """
 from enum import Enum
 
 import pygame
-from settings import Settings
 
 
 class Message:

@@ -6,12 +6,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Bubble game
 
 Credits:
- * Fishtank image: https://www.pngwing.com/en/free-png-vadpk
+ * Fish tank image: https://www.pngwing.com/en/free-png-vadpk
  * Sound: https://www.fesliyanstudios.com/royalty-free-sound-effects-download
 """
-
-from typing import Tuple
-
 import pygame
 from settings import Settings
 from background import Background
@@ -20,7 +17,7 @@ from bubble import Bubble
 from score import Score
 from bubble_factory import BubbleFactory
 
-WIN_RECT = pygame.Rect(0, 0, 1220, 1002)
+WIN_SIZE = (1220, 1002)
 TITLE = "Bubbles"
 
 
@@ -47,24 +44,26 @@ class Game:
         cls.burst_sound = pygame.mixer.Sound(Game.BURST_SOUND_FILE)
         cls.clash_sound = pygame.mixer.Sound(Game.CLASH_SOUND_FILE)
 
-    def __init__(self, window, screen) -> None:
+    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
-        self.background = Background(WIN_RECT)
+        viewport = screen.get_rect()
+        self.background = Background(viewport)
         self.message = Message()
         self.bubbles = pygame.sprite.Group[Bubble]()
         self.paused = False
         self.score = Score()
 
         self.reset()
+        self.running = True
 
-    def handle_events(self) -> bool:
+    def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                self.running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return False
+                    self.running = False
                 elif event.key == pygame.K_p and not self.terminated:
                     self.set_pause()
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -76,7 +75,7 @@ class Game:
                     if event.key == pygame.K_j:
                         self.reset()
                     elif event.key == pygame.K_n:
-                        return False
+                        self.running = False
 
             if not self.paused and not self.terminated:
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -87,8 +86,6 @@ class Game:
                 elif event.type == Game.SPEED_UP_EVENT:
                     if self.bubble_speed < Game.BUBBLE_SPEED_RANGE[1]:
                         self.bubble_speed += Game.BUBBLE_SPEED_DELTA
-
-        return True
 
     def draw(self) -> None:
         self.background.draw(self.screen)
@@ -133,7 +130,7 @@ class Game:
         if len(self.bubbles) <= Settings.MAX_BUBBLES:
             bubble = Bubble(self.bubble_speed)
             for _ in range(100):
-                bubble.randompos()
+                bubble.random_pos()
                 bubble.radius += Settings.DISTANCE
                 collided = pygame.sprite.spritecollide(
                     bubble, self.bubbles, False, pygame.sprite.collide_circle
@@ -153,7 +150,7 @@ class Game:
         else:
             pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_CROSSHAIR)
 
-    def sting(self, pos: Tuple[int, int]) -> None:
+    def sting(self, pos: tuple[int, int]) -> None:
         for bubble in self.bubbles:
             if bubble.contains(pos):
                 Game.burst_sound.play()
@@ -178,17 +175,18 @@ class Game:
     def run(self) -> None:
         clock = pygame.time.Clock()
 
-        while self.handle_events():
+        while self.running:
             dt = clock.tick(Game.FPS) / 1000
+
+            self.handle_events()
             if not self.paused and not self.terminated:
                 self.update(dt)
             self.draw()
 
 
 if __name__ == "__main__":
-    # noinspection DuplicatedCode
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_RECT.size)
+    pg_window = pygame.Window(TITLE, WIN_SIZE)
     pg_screen = pg_window.get_surface()
 
     Game.load_resources()
