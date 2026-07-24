@@ -5,6 +5,7 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Pong score
 """
+from typing import override
 
 import pygame
 
@@ -15,6 +16,9 @@ class Score(pygame.sprite.Sprite):
     TEXT = "{} : {}"
     COLOR = "white"
 
+    image: pygame.Surface
+    rect: pygame.Rect
+
     def __init__(self, *groups):
         super().__init__(*groups)
         self.font = pygame.font.SysFont(None, 36)
@@ -23,6 +27,7 @@ class Score(pygame.sprite.Sprite):
     def point_for(self, player):
         self.score[player] += 1
 
+    @override
     def update(self, *args, **kwargs):
         text = Score.TEXT.format(self.score[1], self.score[2])
         self.image = self.font.render(text, True, Score.COLOR)

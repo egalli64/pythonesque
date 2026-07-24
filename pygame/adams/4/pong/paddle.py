@@ -5,17 +5,19 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Pong paddle
 """
-
 import pygame
 
 
 class Paddle(pygame.sprite.Sprite):
-    BORDERDISTANCE = {"horizontal": 50, "vertical": 10}
+    BORDER_DISTANCE = {"horizontal": 50, "vertical": 10}
     DIRECTION = {"up": -1, "down": 1, "halt": 0}
     SPEED = 300
     RECT = ((0, 0), (15, 60))
     USER_COLOR = "yellow"
     AUTO_COLOR = "deepskyblue2"
+
+    rect: pygame.FRect
+    image: pygame.Surface
 
     @classmethod
     def load_resources(cls):
@@ -33,9 +35,9 @@ class Paddle(pygame.sprite.Sprite):
         self.rect.centery = viewport.centery
         self.player = player
         if self.player == "left":
-            self.rect.left = Paddle.BORDERDISTANCE["horizontal"]
+            self.rect.left = Paddle.BORDER_DISTANCE["horizontal"]
         else:
-            self.rect.right = viewport.right - Paddle.BORDERDISTANCE["horizontal"]
+            self.rect.right = viewport.right - Paddle.BORDER_DISTANCE["horizontal"]
         self.direction = Paddle.DIRECTION["halt"]
         self.select_image()
 
@@ -59,11 +61,11 @@ class Paddle(pygame.sprite.Sprite):
         if self.direction != Paddle.DIRECTION["halt"]:
             self.rect.move_ip(0, Paddle.SPEED * self.direction * dt)
             if self.direction == Paddle.DIRECTION["up"]:
-                self.rect.top = max(self.rect.top, Paddle.BORDERDISTANCE["vertical"])
+                self.rect.top = max(self.rect.top, Paddle.BORDER_DISTANCE["vertical"])
             elif self.direction == Paddle.DIRECTION["down"]:
                 self.rect.bottom = min(
                     self.rect.bottom,
-                    self.viewport.height - Paddle.BORDERDISTANCE["vertical"],
+                    self.viewport.height - Paddle.BORDER_DISTANCE["vertical"],
                 )
 
     def select_image(self):
@@ -74,8 +76,8 @@ class Paddle(pygame.sprite.Sprite):
             if self.rect.centery > y_target and self.rect.top > 10:
                 self.update(action="up")
             elif (
-                self.rect.centery < y_target
-                and self.rect.bottom < self.viewport.bottom - 10
+                    self.rect.centery < y_target
+                    and self.rect.bottom < self.viewport.bottom - 10
             ):
                 self.update(action="down")
             else:

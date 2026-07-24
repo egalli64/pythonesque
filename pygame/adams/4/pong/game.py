@@ -5,7 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Pong game
 """
-
 import pygame
 from background import Background
 from pause import Pause
@@ -15,34 +14,35 @@ from ball import Ball
 from score import Score
 from events import Events
 
-WIN_RECT = pygame.Rect(0, 0, 1000, 600)
+WIN_SIZE = (1000, 600)
 TITLE = "Pong"
+FPS = 60
 
 
 class Game:
-    FPS = 60
-
-    def __init__(self, window, screen):
+    def __init__(self, window: pygame.Window, screen: pygame.Surface):
         self.window = window
         self.screen = screen
-        self.clock = pygame.time.Clock()
 
-        self.background = Background(WIN_RECT)
+        viewport = screen.get_rect()
+        self.background = Background(viewport)
         self.all_sprites = pygame.sprite.Group()
 
-        self.paddles = (Paddle("left", WIN_RECT), Paddle("right", WIN_RECT))
+        self.paddles = (Paddle("left", viewport), Paddle("right", viewport))
         self.all_sprites.add(self.paddles)
-        self.ball = Ball(WIN_RECT, self.all_sprites)
+        self.ball = Ball(viewport, self.all_sprites)
         self.score = Score(self.all_sprites)
         self.running = True
         self.pausing = False
         self.helping = False
-        self.pause = Pause(WIN_RECT)
-        self.help = Help(WIN_RECT)
+        self.pause = Pause(viewport)
+        self.help = Help(viewport)
 
     def run(self):
+        clock = pygame.time.Clock()
+
         while self.handle_events():
-            dt = self.clock.tick(Game.FPS) / 1000
+            dt = clock.tick(FPS) / 1000
             self.update(dt)
             self.draw()
 
@@ -99,16 +99,17 @@ class Game:
             self.ball.rect.right = self.paddles[1].rect.left - 1
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    window = pygame.Window(TITLE, WIN_RECT.size)
-    screen = window.get_surface()
+    pg_window = pygame.Window(TITLE, WIN_SIZE)
+    pg_screen = pg_window.get_surface()
 
     Ball.load_resources()
     Paddle.load_resources()
 
     try:
-        Game(window, screen).run()
+        Game(pg_window, pg_screen).run()
     finally:
         pygame.quit()
         print("Done.")

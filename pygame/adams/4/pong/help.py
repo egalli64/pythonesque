@@ -5,7 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Pong help
 """
-
 import pygame
 
 TEXT_L = """h

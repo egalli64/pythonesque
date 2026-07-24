@@ -17,6 +17,9 @@ class Ball(pygame.sprite.Sprite):
     BOUNCE = "sounds/bounce.mp3"
     SPEED = 333
 
+    rect: pygame.FRect
+    image: pygame.Surface
+
     @classmethod
     def load_resources(cls):
         cls.left_sound = pygame.mixer.Sound(Ball.PLAYER_LEFT)
@@ -30,7 +33,7 @@ class Ball(pygame.sprite.Sprite):
         self.channel = pygame.mixer.find_channel()
         self.sound_effect = True
 
-        self.rect: pygame.FRect = pygame.FRect(0, 0, 20, 20)
+        self.rect = pygame.FRect(0, 0, 20, 20)
         self.image = pygame.Surface(self.rect.size).convert()
         self.image.set_colorkey("black")
         pygame.draw.circle(self.image, "green", self.rect.center, self.rect.width // 2)
@@ -49,12 +52,12 @@ class Ball(pygame.sprite.Sprite):
             self.vertical_flip()
             self.rect.bottom = self.viewport.bottom
         elif self.rect.right < 0:
-            Events.MYEVENT.player = 2
-            pygame.event.post(Events.MYEVENT)
+            Events.MY_EVENT.player = 2
+            pygame.event.post(Events.MY_EVENT)
             self.service()
         elif self.rect.left > self.viewport.right:
-            Events.MYEVENT.player = 1
-            pygame.event.post(Events.MYEVENT)
+            Events.MY_EVENT.player = 1
+            pygame.event.post(Events.MY_EVENT)
             self.service()
 
     def service(self) -> None:
