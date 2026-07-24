@@ -18,9 +18,7 @@ class Ball:
         self.color = color
         self.velocity = pygame.Vector2(velocity)
 
-    def update(self, dt: float, viewport: pygame.Rect) -> None:
-        self.center += self.velocity * dt
-
+    def bounce_in(self, viewport: pygame.Rect) -> None:
         if self.center.x >= viewport.right - self.radius:
             self.center.x = viewport.right - self.radius
             self.velocity.x *= -1
@@ -34,6 +32,10 @@ class Ball:
         elif self.center.y >= viewport.bottom - self.radius:
             self.center.y = viewport.bottom - self.radius
             self.velocity.y *= -1
+
+    def update(self, dt: float, viewport: pygame.Rect) -> None:
+        self.center += self.velocity * dt
+        self.bounce_in(viewport)
 
     def draw(self, surface: pygame.Surface) -> None:
         pygame.draw.circle(surface, self.color, self.center, self.radius)
