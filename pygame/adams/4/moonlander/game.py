@@ -12,7 +12,7 @@ from moon import Moon
 from lander import Lander
 from question import Question
 
-WIN_RECT = pygame.Rect(0, 0, 600, 800)
+WIN_SIZE = (600, 800)
 TITLE = "Moon Lander"
 
 
@@ -25,45 +25,48 @@ class Game:
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
-        self.question = Question(WIN_RECT)
-        self.sky = Sky(pygame.Rect(0, 0, WIN_RECT.width, WIN_RECT.height - Game.HORIZON_Y))
-        self.moon = Moon(WIN_RECT, Game.HORIZON_Y)
+        viewport = screen.get_rect()
+        self.question = Question(viewport)
+        self.sky = Sky(pygame.Rect(0, 0, viewport.width, viewport.height - Game.HORIZON_Y))
+        self.moon = Moon(viewport, Game.HORIZON_Y)
         self.active = True
+        self.running = True
 
     def run(self) -> None:
         self.restart()
         clock = pygame.time.Clock()
-        while self.handle_events():
+
+        while self.running:
             dt = clock.tick(Game.FPS) / 1000
+
+            self.handle_events()
             self.update(dt)
             self.draw()
 
-    def handle_events(self) -> bool:
+    def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                self.running = False
             elif event.type == pygame.WINDOWCLOSE:
-                return False
+                self.running = False
             elif event.type == Lander.EVENT_LANDED:
                 self.active = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return False
+                    self.running = False
 
                 if self.active:
                     if event.key == pygame.K_h:
                         self.lander.toggle_auto()
                 else:
                     if event.key == pygame.K_q:
-                        return False
+                        self.running = False
                     elif event.key == pygame.K_r:
                         self.restart()
 
         if self.active:
             keys = pygame.key.get_pressed()
             self.lander.thrust(keys[pygame.K_SPACE])
-
-        return True
 
     def update(self, dt) -> None:
         self.sky.update()
@@ -84,7 +87,7 @@ class Game:
 
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_RECT.size, pygame.WINDOWPOS_CENTERED)
+    pg_window = pygame.Window(TITLE, WIN_SIZE, pygame.WINDOWPOS_CENTERED)
     pg_screen = pg_window.get_surface()
 
     try:
