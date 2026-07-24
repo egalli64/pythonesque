@@ -11,3 +11,5 @@
   - Space: change the ball color randomly
   - Up/Down Arrow: change the speed by 10% (faster/slower)
   - R: reset to the original state
+- Display
+  - Render the ball speed in a window corner
