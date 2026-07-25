@@ -17,6 +17,7 @@ Exercises from MOOC:
 Exercises from books:
    * [Dive Into Python 3](https://github.com/egalli64/pythonesque/tree/master/dive/)
    * [Python Crash Course](https://github.com/egalli64/pythonesque/tree/master/pcc3/) Third Edition
+   * [Fluent Python](fluent) Second Edition
 
 Exercises from Kaggle:
    * [Learn Python Challenge](https://github.com/egalli64/pythonesque/tree/master/kaggle/LearnPythonChallenge/)
