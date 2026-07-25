@@ -12,6 +12,8 @@ DEFAULT_COLOR = "red"
 COLOR_INTERVAL = (64, 255)
 DEFAULT_VELOCITY = (200, -100)
 DELTA_SPEED = 0.1
+MIN_SPEED = 70
+MAX_SPEED = 1000
 FONT_SIZE = 32
 TEXT_COLOR = "white"
 
@@ -63,10 +65,14 @@ class Ball:
 
     def increase_speed(self, delta: float = DELTA_SPEED) -> None:
         self.velocity *= 1 + delta
+        if self.velocity.length() > MAX_SPEED:
+            self.velocity.scale_to_length(MAX_SPEED)
         self.update_speed_info()
 
     def decrease_speed(self, delta: float = DELTA_SPEED) -> None:
         self.velocity *= 1 - delta
+        if self.velocity.length() < MIN_SPEED:
+            self.velocity.scale_to_length(MIN_SPEED)
         self.update_speed_info()
 
     def reset(self, center: tuple[int, int]) -> None:
