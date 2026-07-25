@@ -13,11 +13,14 @@ FPS = 60
 
 
 class Game:
+    window: pygame.Window
+
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
         self.viewport = screen.get_rect()
         self.running = True
+        self.paused = False
 
         self.ball = Ball(self.viewport.center)
 
@@ -28,7 +31,8 @@ class Game:
             dt = clock.tick(FPS) / 1000
 
             self.handle_events()
-            self.update(dt)
+            if not self.paused:
+                self.update(dt)
             self.draw()
 
     def handle_events(self) -> None:
@@ -46,6 +50,11 @@ class Game:
                             self.ball.increase_speed()
                         case pygame.K_DOWN:
                             self.ball.decrease_speed()
+                        case pygame.K_p:
+                            self.paused = not self.paused
+                            self.window.title = TITLE
+                            if self.paused:
+                                self.window.title += " - PAUSED"
                         case pygame.K_r:
                             self.ball.reset(self.viewport.center)
 
