@@ -13,5 +13,6 @@
     - But it should not get too fast/slow
   - R: reset to the original state
   - P: pause/unpause the game
+  - Left click: move the ball to the cursor
 - Display
   - Render the ball speed in a window corner

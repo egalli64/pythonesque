@@ -57,6 +57,9 @@ class Game:
                                 self.window.title += " - PAUSED"
                         case pygame.K_r:
                             self.ball.reset(self.viewport.center)
+                case pygame.MOUSEBUTTONDOWN:
+                    if pygame.BUTTON_LEFT:
+                        self.ball.aim_at(event.pos)
 
     def update(self, dt: float) -> None:
         self.ball.update(dt, self.viewport)

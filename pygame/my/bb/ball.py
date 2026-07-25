@@ -79,3 +79,8 @@ class Ball:
         self.color = DEFAULT_COLOR
         self.velocity.update(DEFAULT_VELOCITY)
         self.center = pygame.Vector2(center)
+
+    def aim_at(self, target: tuple[int, int]) -> None:
+        direction = (pygame.Vector2(target) - self.center).normalize()
+        if direction.length() > 0:
+            self.velocity = direction * self.velocity.length()
