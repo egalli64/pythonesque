@@ -24,9 +24,9 @@ class Game:
     all_particles: pygame.sprite.Group[Particle]
     boxes: List[Box]
 
-    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+    def __init__(self, window: pygame.Window) -> None:
         self.window = window
-        self.screen = screen
+        self.screen = window.get_surface()
         self.viewport = self.screen.get_rect()
 
         self.all_sprites = pygame.sprite.Group()
@@ -91,13 +91,11 @@ class Game:
 if __name__ == "__main__":
     pygame.init()
     pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
 
     Box.load_resources()
     StartButton.load_resources()
 
     try:
-        Game(pg_window, pg_screen).run()
+        Game(pg_window).run()
     finally:
         pygame.quit()
-        print("Done.")
