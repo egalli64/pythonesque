@@ -5,7 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Message Boxes
 """
-
 import pygame
 
 FPS = 30
@@ -34,19 +33,22 @@ def main():
 
 def handle_events() -> bool:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            return False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
+        match event.type:
+            case pygame.QUIT:
                 return False
-            elif event.key == pygame.K_1:
-                pygame.display.message_box("Information", MB_INFO)
-            elif event.key == pygame.K_2:
-                buttons = ["Yes", "No"]
-                x = pygame.display.message_box("Warning", MB_WARN, "warn", buttons=buttons)
-                print("User selection:", x)
-            elif event.key == pygame.K_3:
-                pygame.display.message_box("Error", MB_ERR, "error")
+            case pygame.KEYDOWN:
+                match event.key:
+                    case pygame.K_ESCAPE:
+                        return False
+                    case pygame.K_1:
+                        pygame.display.message_box("Information", MB_INFO)
+                    case pygame.K_2:
+                        buttons = ("Yes", "No")
+                        x = pygame.display.message_box("Warning", MB_WARN, "warn", buttons=buttons)
+                        print("User selection:", x)
+                    case pygame.K_3:
+                        pygame.display.message_box("Error", MB_ERR, "error")
+
     return True
 
 
@@ -57,4 +59,3 @@ if __name__ == "__main__":
         main()
     finally:
         pygame.quit()
-        print("Done.")

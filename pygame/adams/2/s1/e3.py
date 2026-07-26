@@ -8,7 +8,6 @@ Using clock, control frame rate and avoid CPU hogging
 import pygame
 
 FPS = 30
-
 WIN_SIZE = (400, 100)
 WIN_POS = (10, 50)
 TITLE = "Hello, pygame-ce!"

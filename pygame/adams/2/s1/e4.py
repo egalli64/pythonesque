@@ -8,7 +8,6 @@ Multiple windows
 import pygame
 
 FPS = 30
-
 WIN_SIZE = (300, 100)
 WIN_POSS = ((500, 50), (820, 50))
 TITLES = ("Main Window", "Side Window")

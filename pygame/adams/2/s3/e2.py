@@ -5,14 +5,11 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Blitting Part of a Bitmap
 """
-
 import pygame
 
 FPS = 30
-
 TITLE = "Draw a Part of a Bitmap"
 WIN_SIZE = (512, 512)
-
 TILE_SIZE = (32, 32)
 TILE_COLOR = "red"
 TILE_SELECTED_WIDTH = 2
@@ -32,6 +29,8 @@ def main():
 
     running = True
     while running:
+        clock.tick(FPS)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -56,7 +55,6 @@ def main():
         screen.blit(image, LAST_TILE_POS, (pos, TILE_SIZE))
 
         window.flip()
-        clock.tick(FPS)
 
 
 if __name__ == "__main__":
