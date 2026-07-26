@@ -5,7 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Another minimal pygame app - modern way, explicit Window
 """
-
 import pygame
 
 WIN_SIZE = (400, 100)
@@ -35,4 +34,3 @@ if __name__ == "__main__":
         main()
     finally:
         pygame.quit()
-        print("Done.")

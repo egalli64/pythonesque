@@ -5,7 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Minimal pygame app - in the classic way
 """
-
 import pygame
 
 SCREEN_SIZE = (400, 100)
@@ -39,4 +38,3 @@ if __name__ == "__main__":
         main()
     finally:
         pygame.quit()
-        print("Done.")

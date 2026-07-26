@@ -5,7 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Using clock, control frame rate and avoid CPU hogging
 """
-
 import pygame
 
 FPS = 30
@@ -40,4 +39,3 @@ if __name__ == "__main__":
         main()
     finally:
         pygame.quit()
-        print("Done.")
