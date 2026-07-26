@@ -5,28 +5,21 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Particle swarm /4
 """
-from random import randint, uniform
+from random import uniform
 from typing import ClassVar
 
 import pygame
 from e1 import handle_events
+from e4 import random_spread, random_particle_color
 
 FPS = 30
 TITLE = "Particle swarm /4"
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
+DELTA_SPREAD = 2
 X_VELOCITY_RANGE = (-1, 1)
-# noinspection DuplicatedCode
 Y_VELOCITY_RANGE = (-10, 0)
-
-
-def random_spread() -> tuple[int, int]:
-    return randint(-2, 2), randint(-2, 2)
-
-
-def random_particle_color() -> tuple[int, int, int]:
-    return randint(0, 255), randint(0, 255), 0
 
 
 class Particle:
@@ -34,7 +27,7 @@ class Particle:
     RADIUS: ClassVar[int] = 2
 
     def __init__(self, pos: tuple[int, int]) -> None:
-        self.pos = pygame.Vector2(pos) + random_spread()
+        self.pos = pygame.Vector2(pos) + random_spread(DELTA_SPREAD)
         self.color = random_particle_color()
         self.velocity = pygame.Vector2(uniform(*X_VELOCITY_RANGE), uniform(*Y_VELOCITY_RANGE))
 
@@ -58,7 +51,6 @@ def main() -> None:
         clock.tick(FPS)
         running = handle_events()
 
-        # noinspection DuplicatedCode
         if pygame.mouse.get_pressed()[0]:
             particles.append(Particle(pygame.mouse.get_pos()))
         for particle in particles:

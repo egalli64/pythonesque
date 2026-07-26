@@ -11,8 +11,7 @@ from typing import ClassVar
 import pygame
 from e1 import handle_events
 
-FPS = 60
-
+FPS = 30
 TITLE = "Particle swarm /1"
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)

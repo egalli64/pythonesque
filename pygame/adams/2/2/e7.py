@@ -10,7 +10,6 @@ import pygame
 from e1 import handle_events
 
 FPS = 30
-
 TITLE = "A Peaceful Day"
 WIN_SIZE = (600, 400)
 HORIZON = 250  # y-level between sky and meadow

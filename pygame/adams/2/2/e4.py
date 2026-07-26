@@ -16,12 +16,12 @@ TITLE = "Particle swarm /3"
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
-# noinspection DuplicatedCode
-Y_VELOCITY_RANGE = (-10, 0)
+DELTA_SPREAD = 2
+INITIAL_SPEED_RANGE = (0, 10)
 
 
-def random_spread() -> tuple[int, int]:
-    return randint(-2, 2), randint(-2, 2)
+def random_spread(delta: int) -> tuple[int, int]:
+    return randint(-delta, delta), randint(-delta, delta)
 
 
 def random_particle_color() -> tuple[int, int, int]:
@@ -33,9 +33,9 @@ class Particle:
     RADIUS: ClassVar[int] = 2
 
     def __init__(self, pos: tuple[int, int]) -> None:
-        self.pos = pygame.Vector2(pos) + random_spread()
+        self.pos = pygame.Vector2(pos) + random_spread(DELTA_SPREAD)
         self.color = random_particle_color()
-        self.velocity_y = uniform(*Y_VELOCITY_RANGE)
+        self.velocity_y = -uniform(*INITIAL_SPEED_RANGE)
 
     def update(self) -> None:
         self.velocity_y += Particle.GRAVITY

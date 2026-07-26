@@ -10,22 +10,16 @@ from typing import ClassVar
 
 import pygame
 from e1 import handle_events
+from e4 import random_spread
 
 FPS = 30
 TITLE = "Particle swarm /6"
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
+DELTA_SPREAD = 4
 X_VELOCITY_RANGE = (-1.5, 1.5)
 Y_VELOCITY_RANGE = (-10, 0)
-
-
-def random_spread() -> tuple[int, int]:
-    return randint(-4, 4), randint(-4, 4)
-
-
-def random_particle_color() -> tuple[int, int, int]:
-    return randint(0, 255), randint(0, 255), 0
 
 
 class Particle:
@@ -34,7 +28,7 @@ class Particle:
     RADIUS_DELTA: ClassVar[float] = 1 / 15
 
     def __init__(self, pos: tuple[int, int]) -> None:
-        self.pos = pygame.Vector2(pos) + random_spread()
+        self.pos = pygame.Vector2(pos) + random_spread(DELTA_SPREAD)
         self.color = [randint(100, 255), randint(50, 255), 0]
         self.velocity = pygame.Vector2(uniform(*X_VELOCITY_RANGE), uniform(*Y_VELOCITY_RANGE))
         self.radius = Particle.INITIAL_RADIUS
