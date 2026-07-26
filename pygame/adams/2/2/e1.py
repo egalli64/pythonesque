@@ -5,7 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Introduction to graphic primitives
 """
-
 import pygame
 import pygame.gfxdraw
 
@@ -97,7 +96,6 @@ def draw_pixel_modern(screen: pygame.Surface):
             pygame.gfxdraw.pixel(screen, 265 + i, 265 + j, (i, 255, j))
 
 
-# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -112,4 +110,3 @@ if __name__ == "__main__":
         main()
     finally:
         pygame.quit()
-        print("Done.")

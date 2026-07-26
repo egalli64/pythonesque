@@ -5,12 +5,12 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Particle swarm /2 - generate static particles, with some ramdomness
 """
-
 from dataclasses import dataclass, field
 from random import randint
 from typing import ClassVar
 
 import pygame
+from e1 import handle_events
 
 FPS = 30
 TITLE = "Particle swarm /2"
@@ -61,14 +61,6 @@ def main():
         window.flip()
 
 
-# noinspection DuplicatedCode
-def handle_events() -> bool:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            return False
-    return True
-
-
 if __name__ == "__main__":
     pygame.init()
 
@@ -76,4 +68,3 @@ if __name__ == "__main__":
         main()
     finally:
         pygame.quit()
-        print("Done.")

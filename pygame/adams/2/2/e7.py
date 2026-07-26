@@ -5,9 +5,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Landscape example
 """
-
 import math
 import pygame
+from e1 import handle_events
 
 FPS = 30
 
@@ -111,14 +111,6 @@ def main() -> None:
         window.flip()
 
 
-# noinspection DuplicatedCode
-def handle_events() -> bool:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            return False
-    return True
-
-
 if __name__ == "__main__":
     pygame.init()
 
@@ -126,4 +118,3 @@ if __name__ == "__main__":
         main()
     finally:
         pygame.quit()
-        print("Done.")

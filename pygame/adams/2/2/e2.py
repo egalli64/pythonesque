@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from typing import ClassVar
 
 import pygame
+from e1 import handle_events
 
 FPS = 60
 
@@ -53,14 +54,6 @@ def main():
         window.flip()
 
 
-# noinspection DuplicatedCode
-def handle_events() -> bool:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            return False
-    return True
-
-
 if __name__ == "__main__":
     pygame.init()
 
@@ -68,4 +61,3 @@ if __name__ == "__main__":
         main()
     finally:
         pygame.quit()
-        print("Done.")
