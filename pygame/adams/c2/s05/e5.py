@@ -5,13 +5,14 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Self add a Sprite to a Group + remove a sprite from any group having it
 """
-
 from random import randint
 from typing import override
 import pygame
 
+FPS = 30
 TITLE = "Sprite group add and remove"
 WIN_SIZE = (300, 600)
+BACKGROUND_COLOR = "white"
 
 
 class Ship(pygame.sprite.Sprite):
@@ -46,13 +47,9 @@ class Ship(pygame.sprite.Sprite):
 
 
 class Game:
-    FPS = 30
-    BACKGROUND_COLOR = "white"
-
-    SHIP_MAX_LEFT = WIN_SIZE[0] - Ship.SIZE[0]
-
     # as alternative see also time.set_timer() + user event
     SPAWN_DELAY = 2 / 3  # in seconds
+    SHIP_MAX_LEFT = WIN_SIZE[0] - Ship.SIZE[0]
 
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
@@ -67,7 +64,7 @@ class Game:
         clock = pygame.time.Clock()
 
         while self.running:
-            dt = clock.tick(Game.FPS) / 1000
+            dt = clock.tick(FPS) / 1000
 
             self.handle_events()
             self.update(dt)
@@ -75,8 +72,12 @@ class Game:
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
+            match event.type:
+                case pygame.QUIT:
+                    self.running = False
+                case pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.running = False
 
     def update(self, dt: float) -> None:
         self.spawn_timer += dt
@@ -88,20 +89,19 @@ class Game:
         self.ships.update(dt)
 
     def draw(self) -> None:
-        self.screen.fill(Game.BACKGROUND_COLOR)
+        self.screen.fill(BACKGROUND_COLOR)
         self.ships.draw(self.screen)
         self.window.flip()
 
 
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
-
-    Ship.load_resources()
-
     try:
-        Game(pg_window, pg_screen).run()
+        main_window = pygame.Window(TITLE, WIN_SIZE)
+        main_surface = main_window.get_surface()
+
+        Ship.load_resources()
+
+        Game(main_window, main_surface).run()
     finally:
         pygame.quit()
-        print("Done.")

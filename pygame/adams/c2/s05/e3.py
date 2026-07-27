@@ -3,14 +3,16 @@ Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_bo
 
 My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
-Better encapsulation by class Game
+Sprite Group
 """
-from typing import override
 import pygame
+from e1 import handle_events
 
-TITLE = "The game orchestrator"
+FPS = 30
+TITLE = "Sprite Group"
 WIN_SIZE = (600, 100)
 WIN_POS = (10, 50)
+BACKGROUND_COLOR = "white"
 
 
 class Defender(pygame.sprite.Sprite):
@@ -31,9 +33,12 @@ class Defender(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = Defender._image
-        self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
+        self.rect = pygame.FRect(self.image.get_rect())
         self.rect.midbottom = viewport.centerx, viewport.bottom - Defender.BOTTOM_GAP
         self.x_velocity = Defender.X_SPEED
+
+    def update(self, dt: float) -> None:
+        self.rect.move_ip(self.x_velocity * dt, 0)
 
     def bounce(self, border: Border) -> None:
         if border.right:
@@ -42,10 +47,6 @@ class Defender(pygame.sprite.Sprite):
         else:
             self.rect.left = border.rect.right
             self.x_velocity = Defender.X_SPEED
-
-    @override
-    def update(self, dt) -> None:
-        self.rect.move_ip(self.x_velocity * dt, 0)
 
 
 # noinspection DuplicatedCode
@@ -74,58 +75,43 @@ class Border(pygame.sprite.Sprite):
             self.rect.left = viewport.left
 
 
-class Game:
-    FPS = 30
-    BACKGROUND_COLOR = "white"
+def main(window: pygame.Window, screen: pygame.Surface) -> None:
+    clock = pygame.time.Clock()
+    viewport = screen.get_rect()
 
-    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
-        self.window = window
-        self.screen = screen
-        self.viewport = screen.get_rect()
-        self.running = True
+    defender = Defender(viewport)
+    borders = pygame.sprite.Group[Border](Border(viewport), Border(viewport, right=True))
+    all_sprites = pygame.sprite.Group(defender, borders)
 
-        self.defender = Defender(self.viewport)
-        self.borders = pygame.sprite.Group[Border](Border(self.viewport), Border(self.viewport, right=True))
-        self.all_sprites = pygame.sprite.Group(self.defender, self.borders)
+    running = True
+    while running:
+        dt = clock.tick(FPS) / 1000
 
-    def run(self) -> None:
-        """Run the main game loop"""
-        clock = pygame.time.Clock()
+        running = handle_events()
 
-        while self.running:
-            dt = clock.tick(Game.FPS) / 1000
+        # Update
+        defender.update(dt)
+        # here no more than one collision is expected
+        if collisions := pygame.sprite.spritecollide(defender, borders, False):
+            defender.bounce(collisions[0])
 
-            self.handle_events()
-            self.update(dt)
-            self.draw()
-
-    def handle_events(self) -> None:
-        """Run the event loops, running is False in case of termination request"""
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-
-    def update(self, dt) -> None:
-        self.defender.update(dt)
-        if collisions := pygame.sprite.spritecollide(self.defender, self.borders, False):
-            self.defender.bounce(collisions[0])
-
-    def draw(self) -> None:
-        self.screen.fill(Game.BACKGROUND_COLOR)
-        self.all_sprites.draw(self.screen)
-        self.window.flip()
+        # Draw
+        screen.fill(BACKGROUND_COLOR)
+        all_sprites.draw(screen)  # the group knows how to draw its sprites
+        window.flip()
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
-    pg_screen = pg_window.get_surface()
-
-    Defender.load_resources()
-    Border.load_resources()
 
     try:
-        Game(pg_window, pg_screen).run()
+        main_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
+        main_surface = main_window.get_surface()
+
+        Defender.load_resources()
+        Border.load_resources()
+
+        main(main_window, main_surface)
     finally:
         pygame.quit()
-        print("Done.")

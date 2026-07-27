@@ -58,6 +58,7 @@ def main():
         window.flip()
 
 
+# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -75,4 +76,3 @@ if __name__ == "__main__":
         main()
     finally:
         pygame.quit()
-        print("Done.")

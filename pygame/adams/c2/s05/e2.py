@@ -6,9 +6,9 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Sprite collision
 """
 import pygame
+from e1 import handle_events
 
 FPS = 30
-
 TITLE = "Sprite collision"
 WIN_SIZE = (600, 100)
 WIN_POS = (10, 50)
@@ -33,8 +33,8 @@ class Defender(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = Defender._image
-        self.rect = pygame.FRect(self.image.get_rect())
-        self.rect.midbottom = viewport.centerx, viewport.bottom - Defender.BOTTOM_GAP
+        mid_bottom = viewport.centerx, viewport.bottom - Defender.BOTTOM_GAP
+        self.rect = pygame.FRect(self.image.get_rect(midbottom=mid_bottom))
         self.x_velocity = Defender.X_SPEED
 
     def update(self, dt: float) -> None:
@@ -109,23 +109,16 @@ def main(window: pygame.Window, screen: pygame.Surface) -> None:
 
 
 # noinspection DuplicatedCode
-def handle_events() -> bool:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            return False
-    return True
-
-
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
-    pg_screen = pg_window.get_surface()
-
-    Defender.load_resources()
-    Border.load_resources()
 
     try:
-        main(pg_window, pg_screen)
+        main_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
+        main_surface = main_window.get_surface()
+
+        Defender.load_resources()
+        Border.load_resources()
+
+        main(main_window, main_surface)
     finally:
         pygame.quit()
-        print("Done.")

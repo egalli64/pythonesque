@@ -6,37 +6,37 @@
 
 # Chapter 2 - Basics
 ## Section 1 - Kind of Hello World!
-- 1: [Hello pygame](c2/s1/e1.py) - init and quit
-- 2: [Hello again, pygame](c2/s1/e2.py) - Window
-- 3: [It's me again, pygame](c2/s1/e3.py) - Clock
-- 4: [Multiple windows](c2/s1/e4.py) - WINDOWCLOSE event
+- 1: [Hello pygame](c2/s01/e1.py) - init and quit
+- 2: [Hello again, pygame](c2/s01/e2.py) - Window
+- 3: [It's me again, pygame](c2/s01/e3.py) - Clock
+- 4: [Multiple windows](c2/s01/e4.py) - WINDOWCLOSE event
 
 ## Section 2 - Graphic primitives
-- 1: [Introduction](c2/s2/e1.py) - functions in module draw 
-- 2: [Particle swarm /1](c2/s2/e2.py) - draw.circle, pygame mouse support
-- 3: [Particle swarm /2](c2/s2/e3.py) - some randomness
-- 4: [Particle swarm /3](c2/s2/e4.py) - mutable particles, fountain effect
-- 5: [Particle swarm /4](c2/s2/e5.py) - add x-scattering
-- 6: [Particle swarm /6](c2/s2/e6.py) - more features added
-- 7: [Landscape example](c2/s2/e7.py)
+- 1: [Introduction](c2/s02/e1.py) - functions in module draw 
+- 2: [Particle swarm /1](c2/s02/e2.py) - draw.circle, pygame mouse support
+- 3: [Particle swarm /2](c2/s02/e3.py) - some randomness
+- 4: [Particle swarm /3](c2/s02/e4.py) - mutable particles, fountain effect
+- 5: [Particle swarm /4](c2/s02/e5.py) - add x-scattering
+- 6: [Particle swarm /6](c2/s02/e6.py) - more features added
+- 7: [Landscape example](c2/s02/e7.py)
 
 ## Section 3 - Load and blit bitmaps
-- 1: [Load and blit](c2/s3/e1.py)
-- 2: [Partial blitting](c2/s3/e2.py)
-- 3: [Message boxes](c2/s3/e3.py)
-- 4: [Landscape blit](c2/s3/e4.py) - !!! Caching surfaces is not useful in such simple cases !!!
+- 1: [Load and blit](c2/s03/e1.py)
+- 2: [Partial blitting](c2/s03/e2.py)
+- 3: [Message boxes](c2/s03/e3.py)
+- 4: [Landscape blit](c2/s03/e4.py) - !!! Caching surfaces is not useful in such simple cases !!!
 
 ## Section 4 - Moving bitmaps
-- 1: [Using Rect and its attributes](c2/s4/e1.py)
-- 2: [Speed in pixel for frame](c2/s4/e2.py) - simple but unreliable
-- 3: [Normalizing speed](c2/s4/e3.py) - pixel for second, based on delta time, using FRect
+- 1: [Using Rect and its attributes](c2/s04/e1.py)
+- 2: [Speed in pixel for frame](c2/s04/e2.py) - simple but unreliable
+- 3: [Normalizing speed](c2/s04/e3.py) - pixel for second, based on delta time, using FRect
 
 ## Section 5 - Class Sprite
-- 1: [Defender as a Sprite](c2/5/1.py)
-- 2: [Sprite collision](c2/5/2.py)
-- 3: [Sprite Group](c2/5/3.py)
-- 4: [A Game class](c2/5/4.py) - encapsulating the game framework in a class
-- 5: [Add/remove sprite to group](c2/5/5.py)
+- 1: [Defender as a Sprite](c2/s05/e1.py)
+- 2: [Sprite collision](c2/s05/e2.py)
+- 3: [Sprite Group](c2/s05/e3.py)
+- 4: [A Game class](c2/s05/e4.py) - encapsulating the game framework in a class
+- 5: [Add/remove sprite to group](c2/s05/e5.py)
 
 ## Section 6 Handling keyboard input
 - 1: [Control direction by keys](c2/6/1.py)

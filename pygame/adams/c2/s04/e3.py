@@ -37,8 +37,8 @@ def main():
 
     defender_image = pygame.image.load(DEFENDER_FILENAME).convert_alpha()
     defender_image = pygame.transform.scale(defender_image, DEFENDER_SIZE)
-    defender_rect = pygame.FRect(defender_image.get_rect())  # FRect keeps sub-pixel precision
-    defender_rect.midbottom = screen_rect.centerx, screen_rect.bottom - 5
+    mid_bottom = screen_rect.centerx, screen_rect.bottom - 5
+    defender_rect = pygame.FRect(defender_image.get_rect(midbottom=mid_bottom))
     defender_speed = DEFENDER_SPEED
     direction = -1  # moving up
 
@@ -76,4 +76,3 @@ if __name__ == "__main__":
         main()
     finally:
         pygame.quit()
-        print("Done.")
