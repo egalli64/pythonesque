@@ -3,25 +3,21 @@ Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_bo
 
 My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
-Normalizing speed - pixel for second vs pixel for frame
-Measuring the speed in pixel for frame makes the game speed machine dependent.
+Using Rect and its attributes
 """
-
 import pygame
 
-FPS = 30  # change FPS to get different results
-
+FPS = 30
 TITLE = "Defender Movement"
-WIN_SIZE = (120, 650)
+WIN_SIZE = (400, 100)
 WIN_POS = (10, 50)
 BACKGROUND_COLOR = "white"
 
 DEFENDER_FILENAME = "../images/defender.png"
 DEFENDER_SIZE = (30, 30)
-DEFENDER_SPEED = 2
-INITIAL_Y_GAP = 5
+Y_GAP = 5
 
-RUNTIME_MS = 5000
+DEFENDER_X_VELOCITY = 2
 
 
 # noinspection DuplicatedCode
@@ -33,40 +29,42 @@ def main():
 
     defender_image = pygame.image.load(DEFENDER_FILENAME).convert_alpha()
     defender_image = pygame.transform.scale(defender_image, DEFENDER_SIZE)
-    defender_rect = defender_image.get_rect()
-    defender_rect.midbottom = screen_rect.centerx, screen_rect.bottom - INITIAL_Y_GAP
-    defender_speed = DEFENDER_SPEED
-    direction = -1  # moving up
+    mid_bottom = screen_rect.centerx, screen_rect.height - Y_GAP
+    defender_rect = defender_image.get_rect(midbottom=mid_bottom)
+    direction = 1  # moving right
 
-    start_time = pygame.time.get_ticks()
     running = True
     while running:
         clock.tick(FPS)
         running = handle_events()
 
-        elapsed = pygame.time.get_ticks() - start_time
-        if elapsed >= RUNTIME_MS:
-            defender_speed = 0
-
         # Update
-        defender_rect.top += direction * defender_speed
-        if defender_rect.bottom >= screen_rect.bottom or defender_rect.top <= screen_rect.top:
-            defender_rect.clamp_ip(screen_rect)
+        # instead of checking the newly generated x value before changing the defender position
+        # working on a new Rect shifted by an x, y offset is usually handier
+        candidate = defender_rect.move(direction * DEFENDER_X_VELOCITY, 0)
+        if candidate.right >= screen_rect.right:  # clamp right
             direction *= -1
+            candidate.right = screen_rect.right
+        elif candidate.left <= screen_rect.left:  # clamp left
+            direction *= -1
+            candidate.left = screen_rect.left
+        defender_rect = candidate
 
         # Draw
         screen.fill(BACKGROUND_COLOR)
         screen.blit(defender_image, defender_rect)
         window.flip()
 
-    print(f"Defender top after {RUNTIME_MS / 1000:.2f} secs is {defender_rect.top}")
 
-
-# noinspection DuplicatedCode
 def handle_events() -> bool:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            return False
+        match event.type:
+            case pygame.QUIT:
+                return False
+            case pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return False
+
     return True
 
 
