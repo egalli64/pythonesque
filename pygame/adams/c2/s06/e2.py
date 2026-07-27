@@ -12,6 +12,8 @@ import pygame
 TITLE = "Keyboard with shift"
 WIN_SIZE = (300, 600)
 WIN_POS = (10, 50)
+FPS = 30
+BACKGROUND_COLOR = "white"
 
 
 class Defender(pygame.sprite.Sprite):
@@ -61,17 +63,15 @@ class Defender(pygame.sprite.Sprite):
         self.rect.clamp_ip(self.viewport)
 
 
+KEY_TO_DIRECTION = {
+    pygame.K_LEFT: Defender.Direction.LEFT,
+    pygame.K_RIGHT: Defender.Direction.RIGHT,
+    pygame.K_UP: Defender.Direction.UP,
+    pygame.K_DOWN: Defender.Direction.DOWN,
+}
+
+
 class Game:
-    FPS = 30
-    BACKGROUND_COLOR = "white"
-
-    KEY_TO_DIRECTION = {
-        pygame.K_LEFT: Defender.Direction.LEFT,
-        pygame.K_RIGHT: Defender.Direction.RIGHT,
-        pygame.K_UP: Defender.Direction.UP,
-        pygame.K_DOWN: Defender.Direction.DOWN,
-    }
-
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
@@ -84,7 +84,7 @@ class Game:
         clock = pygame.time.Clock()
 
         while self.running:
-            dt = clock.tick(Game.FPS) / 1000
+            dt = clock.tick(FPS) / 1000
 
             self.handle_events()
             self.defender_group.update(dt)
@@ -92,30 +92,31 @@ class Game:
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-            elif event.type == pygame.KEYDOWN:
-                # check the modifiers bit mask
-                if event.mod & pygame.KMOD_LSHIFT:
-                    self.defender.set_speed(Defender.Speed.FAST)
-                elif event.mod & pygame.KMOD_RSHIFT:
-                    self.defender.set_speed(Defender.Speed.SLOW)
-                else:
-                    self.defender.set_speed(Defender.Speed.NORMAL)
-
-                if event.key == pygame.K_ESCAPE:
+            match event.type:
+                case pygame.QUIT:
                     self.running = False
-                elif event.key in Game.KEY_TO_DIRECTION:
-                    self.defender.set_direction(Game.KEY_TO_DIRECTION[event.key])
-            elif event.type == pygame.KEYUP:
-                # see key.get_pressed() for a more robust approach
-                if event.key in (pygame.K_LSHIFT, pygame.K_RSHIFT):
-                    self.defender.set_speed(Defender.Speed.NORMAL)
-                elif event.key in Game.KEY_TO_DIRECTION:
-                    self.defender.set_direction(Defender.Direction.STOP)
+                case pygame.KEYDOWN:
+                    # check the modifiers bit mask
+                    if event.mod & pygame.KMOD_LSHIFT:
+                        self.defender.set_speed(Defender.Speed.FAST)
+                    elif event.mod & pygame.KMOD_RSHIFT:
+                        self.defender.set_speed(Defender.Speed.SLOW)
+                    else:
+                        self.defender.set_speed(Defender.Speed.NORMAL)
+
+                    if event.key == pygame.K_ESCAPE:
+                        self.running = False
+                    elif event.key in KEY_TO_DIRECTION:
+                        self.defender.set_direction(KEY_TO_DIRECTION[event.key])
+                case pygame.KEYUP:
+                    # see key.get_pressed() for a more robust approach
+                    if event.key in (pygame.K_LSHIFT, pygame.K_RSHIFT):
+                        self.defender.set_speed(Defender.Speed.NORMAL)
+                    elif event.key in KEY_TO_DIRECTION:
+                        self.defender.set_direction(Defender.Direction.STOP)
 
     def draw(self) -> None:
-        self.screen.fill(Game.BACKGROUND_COLOR)
+        self.screen.fill(BACKGROUND_COLOR)
         self.defender_group.draw(self.screen)
         self.window.flip()
 
@@ -123,13 +124,12 @@ class Game:
 # noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
-    pg_screen = pg_window.get_surface()
-
-    Defender.load_resources()
-
     try:
-        Game(pg_window, pg_screen).run()
+        main_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
+        main_surface = main_window.get_surface()
+
+        Defender.load_resources()
+
+        Game(main_window, main_surface).run()
     finally:
         pygame.quit()
-        print("Done.")

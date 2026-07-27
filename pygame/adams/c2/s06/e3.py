@@ -3,28 +3,34 @@ Introduction to Pygame-ce by Ralf Adams - https://github.com/adamsralf/pygame_bo
 
 My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
-Control direction by keys
+Polling key status - key.get_pressed()
 """
 from enum import Enum
 from typing import override
 import pygame
 
-TITLE = "Detecting key down and up"
-WIN_SIZE = (300, 600)
-WIN_POS = (10, 50)
+TITLE = "Keyboard to move"
+WIN_SIZE = (300, 500)
+WIN_POS = (50, 50)
+FPS = 30
+BACKGROUND_COLOR = "white"
 
 
 class Defender(pygame.sprite.Sprite):
     class Direction(Enum):
-        STOP = pygame.Vector2(0, 0)
         RIGHT = pygame.Vector2(1, 0)
         LEFT = pygame.Vector2(-1, 0)
         UP = pygame.Vector2(0, -1)
         DOWN = pygame.Vector2(0, 1)
+        STOP = pygame.Vector2(0, 0)
+
+    class Speed(Enum):  # pixel/second
+        SLOW = 10
+        NORMAL = 100
+        FAST = 300
 
     FILENAME = "../images/defender.png"
     SIZE = (30, 30)
-    SPEED = 100  # pixel/second
 
     image: pygame.Surface
     rect: pygame.FRect
@@ -42,27 +48,49 @@ class Defender(pygame.sprite.Sprite):
         self.rect.center = viewport.center
 
         self.viewport = viewport
+        self.speed = Defender.Speed.NORMAL
         self.direction = Defender.Direction.STOP
 
     def set_direction(self, direction: Direction) -> None:
         self.direction = direction
 
+    def set_speed(self, speed: Speed) -> None:
+        self.speed = speed
+
     @override
     def update(self, dt: float) -> None:
-        self.rect.move_ip(self.direction.value * Defender.SPEED * dt)
+        self.rect.move_ip(self.direction.value * self.speed.value * dt)
         self.rect.clamp_ip(self.viewport)
 
 
-class Game:
-    FPS = 30
-    BACKGROUND_COLOR = "white"
+def direction_from_keys(keys: pygame.key.ScancodeWrapper) -> Defender.Direction:
+    if keys[pygame.K_LEFT]:
+        return Defender.Direction.LEFT
+    elif keys[pygame.K_RIGHT]:
+        return Defender.Direction.RIGHT
+    elif keys[pygame.K_UP]:
+        return Defender.Direction.UP
+    elif keys[pygame.K_DOWN]:
+        return Defender.Direction.DOWN
+    else:
+        return Defender.Direction.STOP
 
+
+def speed_from_keys(keys: pygame.key.ScancodeWrapper) -> Defender.Speed:
+    if keys[pygame.K_LSHIFT]:
+        return Defender.Speed.FAST
+    elif keys[pygame.K_RSHIFT]:
+        return Defender.Speed.SLOW
+    else:
+        return Defender.Speed.NORMAL
+
+
+class Game:
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
 
-        rect = self.screen.get_rect()
-        self.defender = Defender(rect)
+        self.defender = Defender(screen.get_rect())
         self.defender_group = pygame.sprite.GroupSingle(self.defender)
         self.running = True
 
@@ -70,7 +98,7 @@ class Game:
         clock = pygame.time.Clock()
 
         while self.running:
-            dt = clock.tick(Game.FPS) / 1000
+            dt = clock.tick(FPS) / 1000
 
             self.handle_events()
             self.defender_group.update(dt)
@@ -80,25 +108,16 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == pygame.KEYDOWN:
-                # see key.get_pressed() for a more robust approach
-                if event.key == pygame.K_ESCAPE:
-                    self.running = False
-                elif event.key == pygame.K_RIGHT:
-                    self.defender.set_direction(Defender.Direction.RIGHT)
-                elif event.key == pygame.K_LEFT:
-                    self.defender.set_direction(Defender.Direction.LEFT)
-                elif event.key == pygame.K_UP:
-                    self.defender.set_direction(Defender.Direction.UP)
-                elif event.key == pygame.K_DOWN:
-                    self.defender.set_direction(Defender.Direction.DOWN)
-            elif event.type == pygame.KEYUP:
-                # see key.get_pressed() for a more robust approach
-                if event.key in (pygame.K_RIGHT, pygame.K_LEFT, pygame.K_UP, pygame.K_DOWN):
-                    self.defender.set_direction(Defender.Direction.STOP)
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                self.running = False
+
+        # continuous events - poll the current keyboard state once per frame
+        keys = pygame.key.get_pressed()
+        self.defender.set_direction(direction_from_keys(keys))
+        self.defender.set_speed(speed_from_keys(keys))
 
     def draw(self) -> None:
-        self.screen.fill(Game.BACKGROUND_COLOR)
+        self.screen.fill(BACKGROUND_COLOR)
         self.defender_group.draw(self.screen)
         self.window.flip()
 
@@ -106,13 +125,12 @@ class Game:
 # noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
-    pg_screen = pg_window.get_surface()
-
-    Defender.load_resources()
-
     try:
-        Game(pg_window, pg_screen).run()
+        main_window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
+        main_surface = main_window.get_surface()
+
+        Defender.load_resources()
+
+        Game(main_window, main_surface).run()
     finally:
         pygame.quit()
-        print("Done.")

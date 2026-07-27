@@ -39,9 +39,9 @@
 - 5: [Add/remove sprite to group](c2/s05/e5.py)
 
 ## Section 6 Handling keyboard input
-- 1: [Control direction by keys](c2/6/1.py)
-- 2: [Modifier keys - shift](c2/6/2.py)
-- 3: [Polling key status](c2/6/3.py) - key.get_pressed()
+- 1: [Control direction by keys](c2/s06/e1.py)
+- 2: [Modifier keys - shift](c2/s06/e2.py)
+- 3: [Polling key status](c2/s06/e3.py) - key.get_pressed()
 
 ## Section 7 Text output using fonts
 - 1: [Simple text rendering](c2/7/1.py)
