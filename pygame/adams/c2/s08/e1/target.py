@@ -39,8 +39,7 @@ class Target(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = Target._images[kind][0]
-        self.rect = self.image.get_rect()
-        self.rect.centery = y_pos
+        self.rect = self.image.get_rect(centery=y_pos)
 
         self.radius = min(self.rect.size) // 2  # see pygame.sprite.collide_circle()
         self.mask = pygame.mask.from_surface(self.image)  # see pygame.sprite.collide_mask()
