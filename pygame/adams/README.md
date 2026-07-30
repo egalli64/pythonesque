@@ -44,10 +44,10 @@
 - 3: [Polling key status](c2/s06/e3.py) - key.get_pressed()
 
 ## Section 7 Text output using fonts
-- 1: [Simple text rendering](c2/7/1.py)
-- 2: [Text as a Sprite](c2/7/2.py)
-- 3: [List of installed fonts](c2/7/3.py)
-- 4: [Using locally installed fonts](c2/7/4.py)
+- 1: [Simple text rendering](c2/s07/e1.py)
+- 2: [Text as a Sprite](c2/s07/e2.py)
+- 3: [List of installed fonts](c2/s07/e3.py)
+- 4: [Using locally installed fonts](c2/s07/e4.py)
 
 ## Section 8 Collision Detection
 - 1: [Types of collision](c2/8/1/main.py)

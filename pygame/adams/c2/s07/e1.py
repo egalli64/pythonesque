@@ -12,12 +12,13 @@ WIN_SIZE = (700, 100)
 TITLE = "Text"
 BACKGROUND_COLOR = "white"
 TEXT_COLOR = "black"
+FONT_SIZE = 32
 
 
 def main(window: pygame.Window, screen: pygame.Surface) -> None:
     viewport = screen.get_rect()
 
-    font = pygame.font.Font(None, 32)
+    font = pygame.font.Font(None, FONT_SIZE)
     text = "Hello, gamer!"
     text_surface = font.render(text, True, TEXT_COLOR)  # antialiasing is usually preferred
     text_rect = text_surface.get_rect(center=viewport.center)
@@ -45,11 +46,10 @@ def handle_events() -> bool:
 
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
+    main_window = pygame.Window(TITLE, WIN_SIZE)
+    main_screen = main_window.get_surface()
 
     try:
-        main(pg_window, pg_screen)
+        main(main_window, main_screen)
     finally:
         pygame.quit()
-        print("Done.")

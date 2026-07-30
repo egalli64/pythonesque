@@ -109,11 +109,10 @@ def main(window: pygame.Window, screen: pygame.Surface):
 
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
+    main_window = pygame.Window(TITLE, WIN_SIZE)
+    main_screen = main_window.get_surface()
 
     try:
-        main(pg_window, pg_screen)
+        main(main_window, main_screen)
     finally:
         pygame.quit()
-        print("Done.")
