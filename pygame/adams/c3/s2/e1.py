@@ -57,13 +57,13 @@ class Game:
 
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen: pygame.Surface = pg_window.get_surface()
-
-    Meadow.load_resources()
 
     try:
-        Game(pg_window, pg_screen).run()
+        main_window = pygame.Window(TITLE, WIN_SIZE)
+        main_surface: pygame.Surface = main_window.get_surface()
+
+        Meadow.load_resources()
+
+        Game(main_window, main_surface).run()
     finally:
         pygame.quit()
-        print("Done.")

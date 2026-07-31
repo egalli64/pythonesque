@@ -54,14 +54,14 @@ class Game(object):
 # noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
-
-    Rock.load_resources()
-    Explosion.load_resources()
 
     try:
-        Game(pg_window, pg_screen).run()
+        main_window = pygame.Window(TITLE, WIN_SIZE)
+        main_surface = main_window.get_surface()
+
+        Rock.load_resources()
+        Explosion.load_resources()
+
+        Game(main_window, main_surface).run()
     finally:
         pygame.quit()
-        print("Done.")
