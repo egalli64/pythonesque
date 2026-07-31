@@ -9,14 +9,14 @@ import pygame
 from ball import Ball
 
 WIN_SIZE = (600, 600)
+TITLE = "Dealing with mouse events"
+FPS = 30
 
 
 class Game:
-    TITLE = "Dealing with mouse events"
     PLAY_AREA = pygame.Rect(100, 100, 400, 400)
     BACKGROUND_COLOR = "white"
     INNER_BORDER_COLOR = "red"
-    FPS = 30
 
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
@@ -32,7 +32,7 @@ class Game:
         clock = pygame.time.Clock()
 
         while self.running:
-            clock.tick(Game.FPS)
+            clock.tick(FPS)
 
             self.handle_events()
             self.update()
@@ -72,15 +72,15 @@ class Game:
         self.window.flip()
 
 
+# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(Game.TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
-
-    Ball.load_resources()
-
     try:
-        Game(pg_window, pg_screen).run()
+        main_window = pygame.Window(TITLE, WIN_SIZE)
+        main_surface = main_window.get_surface()
+
+        Ball.load_resources()
+
+        Game(main_window, main_surface).run()
     finally:
         pygame.quit()
-        print("Done.")

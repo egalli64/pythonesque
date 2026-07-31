@@ -58,9 +58,9 @@
 - 2: [Timed continuous fire](c2/s09/e2.py) Using time.get_ticks
 
 ## Section 10 Mouse
-- 1: [Mouse actions](c2/a/1/game.py)
-- 2: [Simple double click](c2/a/2.py)
-- 3: [Custom double click](c2/a/3.py)
+- 1: [Mouse actions](c2/s10/e1/game.py)
+- 2: [Simple double click](c2/s10/e2.py)
+- 3: [Custom double click](c2/s10/e3.py)
 
 ## Section 11 Sound
 - 1: [Background music](c2/b/1.py)

@@ -57,11 +57,11 @@ def main(window: pygame.Window, screen: pygame.Surface) -> None:
 
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
 
     try:
-        main(pg_window, pg_screen)
+        main_window = pygame.Window(TITLE, WIN_SIZE)
+        main_surface = main_window.get_surface()
+
+        main(main_window, main_surface)
     finally:
         pygame.quit()
-        print("Done.")
