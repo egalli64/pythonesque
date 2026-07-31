@@ -68,9 +68,9 @@
 - 3: [Stereo sound](c2/s11/e3/game.py)
 
 ## Section 12 Events
-- 1: [Printing events](c2/c/1.py)
-- 2: [User defined events](c2/c/2.py)
-- 3: [Periodic events](c2/c/3.py)
+- 1: [Printing events](c2/s12/1.py)
+- 2: [User defined events](c2/s12/2.py)
+- 3: [Periodic events](c2/s12/3.py)
 
 # Chapter 3 - Techniques
 ## Section 1 - Animation

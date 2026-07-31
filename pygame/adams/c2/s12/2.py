@@ -90,12 +90,12 @@ class Game:
 # noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-
-    Box.load_resources()
-    StartButton.load_resources()
 
     try:
-        Game(pg_window).run()
+        Box.load_resources()
+        StartButton.load_resources()
+
+        main_window = pygame.Window(TITLE, WIN_SIZE)
+        Game(main_window).run()
     finally:
         pygame.quit()

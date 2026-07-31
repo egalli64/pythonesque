@@ -5,7 +5,6 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 
 Periodic events
 """
-
 import pygame
 from typing import List
 from common.box import Box
@@ -25,9 +24,9 @@ class Game:
     all_particles: pygame.sprite.Group[Particle]
     boxes: List[Box]
 
-    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+    def __init__(self, window: pygame.Window) -> None:
         self.window = window
-        self.screen = screen
+        self.screen = window.get_surface()
         self.viewport = self.screen.get_rect()
 
         self.all_sprites = pygame.sprite.Group()
@@ -44,6 +43,7 @@ class Game:
         self.all_sprites.add(self.all_boxes)
         self.running = True
 
+    # noinspection DuplicatedCode
     def run(self) -> None:
         clock = pygame.time.Clock()
 
@@ -93,14 +93,13 @@ class Game:
 # noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
-
-    Box.load_resources()
-    StartButton.load_resources()
 
     try:
-        Game(pg_window, pg_screen).run()
+        Box.load_resources()
+        StartButton.load_resources()
+
+        main_window = pygame.Window(TITLE, WIN_SIZE)
+
+        Game(main_window).run()
     finally:
         pygame.quit()
-        print("Done.")

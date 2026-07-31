@@ -14,9 +14,9 @@ FPS = 30
 
 
 class Game:
-    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+    def __init__(self, window: pygame.Window) -> None:
         self.window = window
-        self.screen = screen
+        self.screen = window.get_surface()
         self.clock = pygame.time.Clock()
         self.running = True
 
@@ -41,11 +41,9 @@ class Game:
 
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
 
     try:
-        Game(pg_window, pg_screen).run()
+        main_window = pygame.Window(TITLE, WIN_SIZE)
+        Game(main_window).run()
     finally:
         pygame.quit()
-        print("Done.")

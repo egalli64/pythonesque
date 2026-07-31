@@ -23,8 +23,8 @@ class Particle(pygame.sprite.Sprite):
 
         self.image = pygame.Surface((randint(*SIZE_INTERVAL), randint(*SIZE_INTERVAL)))
         self.image.fill((0, randint(*GREEN_INTERVAL), 0))
-        self.rect: pygame.FRect = pygame.FRect(self.image.get_rect())
-        self.rect.topleft = (randint(30, viewport.right - 30), randint(30, viewport.bottom - 30))
+        top_left = (randint(30, viewport.right - 30), randint(30, viewport.bottom - 30))
+        self.rect: pygame.FRect = pygame.FRect(self.image.get_rect(topleft=top_left))
 
         self.viewport = viewport
         self.speed = randint(*SPEED_INTERVAL)
