@@ -63,9 +63,9 @@
 - 3: [Custom double click](c2/s10/e3.py)
 
 ## Section 11 Sound
-- 1: [Background music](c2/b/1.py)
-- 2: [Effects](c2/b/2.py)
-- 3: [Stereo sound](c2/b/3/game.py)
+- 1: [Background music](c2/s11/e1.py)
+- 2: [Effects](c2/s11/e2.py)
+- 3: [Stereo sound](c2/s11/e3/game.py)
 
 ## Section 12 Events
 - 1: [Printing events](c2/c/1.py)

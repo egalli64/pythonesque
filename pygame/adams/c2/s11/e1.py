@@ -11,6 +11,7 @@ FPS = 30
 WIN_SIZE = (400, 200)
 TITLE = "Sound Background Music"
 VOLUME_STEP = 0.05
+BACKGROUND_COLOR = "white"
 
 
 def change_music_volume(delta: int) -> None:
@@ -19,7 +20,6 @@ def change_music_volume(delta: int) -> None:
 
 
 class Game:
-    BACKGROUND_COLOR = "white"
     FONT_SIZE = 40
     TEXT_COLOR = "red"
     MUSIC_FILE = "sounds/lucifer.mid"
@@ -76,7 +76,7 @@ class Game:
         print("Pause is now", "on" if self.paused else "off")
 
     def draw(self) -> None:
-        self.screen.fill(Game.BACKGROUND_COLOR)
+        self.screen.fill(BACKGROUND_COLOR)
         volume = pygame.mixer.music.get_volume()
         if volume != self.cur_volume:
             text = f"Volume: {volume:.2f}"
@@ -99,13 +99,13 @@ class Game:
 # noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
-
-    Game.load_resources()
 
     try:
-        Game(pg_window, pg_screen).run()
+        main_window = pygame.Window(TITLE, WIN_SIZE)
+        main_surface = main_window.get_surface()
+
+        Game.load_resources()
+
+        Game(main_window, main_surface).run()
     finally:
         pygame.quit()
-        print("Done.")
