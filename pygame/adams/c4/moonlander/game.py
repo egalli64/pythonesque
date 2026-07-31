@@ -22,10 +22,11 @@ class Game:
     HORIZON_Y = 50
     FPS = 60
 
-    def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
+    def __init__(self, window: pygame.Window) -> None:
         self.window = window
-        self.screen = screen
-        viewport = screen.get_rect()
+        self.screen = window.get_surface()
+        viewport = self.screen.get_rect()
+
         self.question = Question(viewport)
         self.sky = Sky(pygame.Rect(0, 0, viewport.width, viewport.height - Game.HORIZON_Y))
         self.moon = Moon(viewport, Game.HORIZON_Y)
@@ -87,11 +88,9 @@ class Game:
 
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE, pygame.WINDOWPOS_CENTERED)
-    pg_screen = pg_window.get_surface()
 
     try:
-        Game(pg_window, pg_screen).run()
+        main_window = pygame.Window(TITLE, WIN_SIZE, pygame.WINDOWPOS_CENTERED)
+        Game(main_window).run()
     finally:
         pygame.quit()
-        print("Done.")
