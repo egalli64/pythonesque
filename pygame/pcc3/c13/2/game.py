@@ -5,16 +5,14 @@ My notes: https://github.com/egalli64/pythonesque/ pygame/pcc3 folder
 Chapter 13 - Aliens!
 Making the Fleet Move
 """
-
 import pygame
 
 from ship import Ship
 from bullet import Bullet, BULLETS_ALLOWED
 from alien import Alien
 
-FPS = 30
-
 GAME_NAME = "Alien Invasion"
+FPS = 30
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -25,18 +23,21 @@ BACKGROUND_COLOR = (230, 230, 230)  # light gray
 class Game:
     """Overall class to manage game assets and behavior."""
 
+    bullets: pygame.sprite.Group[Bullet]
+    aliens: pygame.sprite.Group[Alien]
+
     def __init__(self):
         """Initialize the game, and create game resources."""
-        pygame.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption(GAME_NAME)
 
         self.ship = Ship(self.screen)
-        self.bullets = pygame.sprite.Group()
-        self.aliens = pygame.sprite.Group()
+        self.bullets = pygame.sprite.Group[Bullet]()
+        self.aliens = pygame.sprite.Group[Alien]()
 
         self._create_fleet()
+        self.running = True
 
     def _create_alien(self, x, y):
         """Create an alien and place it in the row."""
@@ -86,47 +87,33 @@ class Game:
             bullet = Bullet(self.screen, self.ship.rect)
             self.bullets.add(bullet)
 
-    def _check_keydown_events(self, event):
-        """
-        Respond to keydown events
-
-        return False on terminating events
-        """
+    def _check_keydown_events(self, event) -> None:
+        """Respond to keydown events"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
-            return False
+            self.running = False
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
 
-        return True
-
-    def _check_keyup_events(self, event):
-        """
-        Respond to keyup events - a keyup is never terminating
-        """
+    def _check_keyup_events(self, event) -> None:
+        """Respond to keyup events"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
-    def _check_events(self):
-        """
-        Watch for keyboard and mouse events
-
-        return False on terminating events
-        """
+    def _check_events(self) -> None:
+        """Watch for keyboard and mouse events"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                self.running = False
             elif event.type == pygame.KEYDOWN:
-                return self._check_keydown_events(event)
+                self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
-
-        return True
 
     def _update_aliens(self):
         """Check if the fleet is at an edge, then update positions."""
@@ -155,18 +142,23 @@ class Game:
 
     def run(self):
         """The game main loop"""
-        while self._check_events():
+        while self.running:
+            self.clock.tick(FPS)
+
+            self._check_events()
+
             self.ship.update()
             self._update_aliens()
             self._update_bullets()
 
             self._update_screen()
-            self.clock.tick(FPS)
 
 
 if __name__ == "__main__":
-    # Make a game instance, and run the game.
-    game = Game()
-    game.run()
+    pygame.init()
 
-    print("Done.")
+    try:
+        # Make a game instance, and run the game.
+        Game().run()
+    finally:
+        pygame.quit()
