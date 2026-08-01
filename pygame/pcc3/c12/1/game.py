@@ -5,15 +5,12 @@ My notes: https://github.com/egalli64/pythonesque/ pygame/pcc3 folder
 Chapter 12 - A Ship that fires bullets
 Starting the Game Project
 """
-
 import pygame
 
 from ship import Ship
 
-FPS = 30
-
 GAME_NAME = "Alien Invasion"
-
+FPS = 30
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -25,14 +22,14 @@ class Game:
 
     def __init__(self):
         """Initialize the game, and create game resources."""
-        pygame.init()
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption(GAME_NAME)
 
         self.ship = Ship(self.screen)
+        self.running = True
 
-    def check_events(self):
+    def check_events(self) -> None:
         """
         Watch for keyboard and mouse events
 
@@ -40,9 +37,7 @@ class Game:
         """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
-
-        return True
+                self.running = False
 
     def update_screen(self):
         # Redraw the screen during each pass through the loop.
@@ -54,14 +49,18 @@ class Game:
 
     def run(self):
         """The game main loop"""
-        while self.check_events():
-            self.update_screen()
+        while self.running:
             self.clock.tick(FPS)
+
+            self.check_events()
+            self.update_screen()
 
 
 if __name__ == "__main__":
-    # Make a game instance, and run it
-    game = Game()
-    game.run()
+    pygame.init()
 
-    print("Done.")
+    try:
+        # Make a game instance, and run it
+        Game().run()
+    finally:
+        pygame.quit()
