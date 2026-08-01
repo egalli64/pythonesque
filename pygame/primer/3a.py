@@ -4,7 +4,6 @@ User input - move the player
 From: A Primer on Pygame Game Programming - https://realpython.com/pygame-a-primer/
 My reviewed version: https://github.com/egalli64/pythonesque/pygame/primer
 """
-
 from typing import override
 import pygame
 
@@ -34,13 +33,14 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface(PLAYER_SIZE)  # type: ignore
+
+        self.image = pygame.Surface(PLAYER_SIZE)
         self.image.fill(PLAYER_COLOR)
-        self.rect = self.image.get_rect(center=SCREEN_CENTER)  # type: ignore
+        self.rect = self.image.get_rect(center=SCREEN_CENTER)
 
     # new method
     @override
-    def update(self, pressed_keys):
+    def update(self, keys):
         """
         Move in place the sprite based on the keys pressed
 
@@ -48,13 +48,13 @@ class Player(pygame.sprite.Sprite):
         """
         dpos = pygame.Vector2()
 
-        if pressed_keys[pygame.K_RIGHT]:
+        if keys[pygame.K_RIGHT]:
             dpos.x += PLAYER_MOVE
-        if pressed_keys[pygame.K_DOWN]:
+        if keys[pygame.K_DOWN]:
             dpos.y += PLAYER_MOVE
-        if pressed_keys[pygame.K_LEFT]:
+        if keys[pygame.K_LEFT]:
             dpos.x -= PLAYER_MOVE
-        if pressed_keys[pygame.K_UP]:
+        if keys[pygame.K_UP]:
             dpos.y -= PLAYER_MOVE
 
         self.rect.move_ip(dpos)
@@ -69,7 +69,7 @@ clock = pygame.time.Clock()  # manage the game frame rate
 
 running = True
 while running:
-    clock.tick(30)  # give a human tempo to the game
+    clock.tick(FPS)
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
@@ -88,5 +88,4 @@ while running:
     screen.blit(player.image, player.rect)
     pygame.display.flip()
 
-print("Done.")
 pygame.quit()
