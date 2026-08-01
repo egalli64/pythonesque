@@ -11,7 +11,7 @@ from block import Block
 
 FPS = 30
 TITLE = "Collision kills"
-WIN_RECT = pygame.Rect(0, 0, 640, 480)
+WIN_SIZE = (640, 480)
 BACKGROUND_COLOR = (30, 30, 30)
 TEXT_COLOR = (200, 200, 200)
 TEXT_POS = (10, 10)
@@ -76,11 +76,12 @@ class Game:
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+            match event.type:
+                case pygame.QUIT:
                     self.running = False
+                case pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.running = False
 
         keys = pygame.key.get_pressed()
         self.player.set_direction(as_direction(keys))
@@ -90,7 +91,7 @@ if __name__ == "__main__":
     pygame.init()
 
     try:
-        main_window = pygame.Window(TITLE, WIN_RECT.size)
+        main_window = pygame.Window(TITLE, WIN_SIZE)
         main_surface = main_window.get_surface()
 
         Game.load_resources()
@@ -98,4 +99,3 @@ if __name__ == "__main__":
         Game(main_window, main_surface).run()
     finally:
         pygame.quit()
-        print("Done.")
