@@ -5,7 +5,6 @@ My notes: https://github.com/egalli64/pythonesque/ pygame/pcc3 folder
 Chapter 12 - A Ship that fires bullets
 Piloting the Ship
 """
-
 import pygame
 
 DEFAULT_SHIP_SPEED = 10
@@ -15,18 +14,17 @@ SHIP_IMAGE = "../../images/ship.bmp"
 class Ship:
     """A class to manage the ship."""
 
-    def __init__(self, screen):
+    def __init__(self, screen: pygame.Surface):
         """Initialize the ship and set its starting position."""
         self.screen = screen
+        viewport = screen.get_rect()
 
         # Load the ship image and get its rect.
         self.image = pygame.image.load(SHIP_IMAGE)
-        self.rect = self.image.get_rect()
-        # sheep rightmost x position
-        self.max_x = screen.get_rect()[2] - self.rect[2]
-
         # Start each new ship at the bottom center of the screen.
-        self.rect.midbottom = screen.get_rect().midbottom
+        self.rect = self.image.get_rect(midbottom=viewport.midbottom)
+        # ship rightmost x position
+        self.max_x = screen.get_rect()[2] - self.rect[2]
 
         # Movement flags; start with a ship that's not moving.
         self.moving_right = False
