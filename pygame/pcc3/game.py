@@ -2,7 +2,6 @@
 Python Crash Course, Third Edition, Part II https://nostarch.com/python-crash-course-3rd-edition
 My version: https://github.com/egalli64/pythonesque/ pygame/pcc3 folder
 """
-
 from time import sleep
 import pygame
 
@@ -34,16 +33,18 @@ class Game:
     # How quickly the game speeds up
     SPEEDUP_SCALE = 1.3
 
+    bullet_speed: int
+    aliens: pygame.sprite.Group[Alien]
+    bullets: pygame.sprite.Group[Bullet]
+
     def __init__(self):
         """Initialize the game, and create game resources."""
-        pygame.init()
-        self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode(Game.SCREEN_SIZE)
         pygame.display.set_caption(Game.NAME)
 
         self.ship = Ship(self.screen)
-        self.bullets = pygame.sprite.Group()
-        self.aliens = pygame.sprite.Group()
+        self.bullets = pygame.sprite.Group[Bullet]()
+        self.aliens = pygame.sprite.Group[Alien]()
 
         self.active = False
         # Make the Play button.
@@ -51,6 +52,8 @@ class Game:
 
         self._create_fleet()
         self.scoreboard = Scoreboard(self.screen)
+        self.setup()
+        self.running = True
 
     def setup(self):
         """Any time a new fleet is ready to invade"""
@@ -113,27 +116,21 @@ class Game:
             bullet = Bullet(self.screen, self.ship.rect, self.bullet_speed)
             self.bullets.add(bullet)
 
-    def _check_keydown_events(self, event):
-        """
-        Respond to keydown events
-
-        return False on terminating events
-        """
+    def _check_keydown_events(self, event) -> None:
+        """Respond to keydown events"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
-            return False
+            self.running = False
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
         elif event.key in (pygame.K_RETURN, pygame.K_KP_ENTER) and not self.active:
             self._new_game()
 
-        return True
-
-    def _check_keyup_events(self, event):
-        """Respond to keyup events - a keyup is never terminating"""
+    def _check_keyup_events(self, event) -> None:
+        """Respond to keyup events"""
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = False
         elif event.key == pygame.K_LEFT:
@@ -163,24 +160,18 @@ class Game:
             pass
 
     def _check_events(self):
-        """
-        Watch for keyboard and mouse events
-
-        return False on terminating events
-        """
+        """Watch for keyboard and mouse events"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                self.running = False
             elif event.type == pygame.KEYDOWN:
-                return self._check_keydown_events(event)
+                self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 if not self.active and self.play_button.rect.collidepoint(mouse_pos):
                     self._new_game()
-
-        return True
 
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
@@ -244,19 +235,26 @@ class Game:
 
     def run(self):
         """The game main loop"""
-        while self._check_events():
+        clock = pygame.time.Clock()
+
+        while self.running:
+            clock.tick(Game.FPS)
+
+            self._check_events()
+
             if self.active:
                 self.ship.update()
                 self._update_aliens()
                 self._update_bullets()
 
             self._update_screen()
-            self.clock.tick(Game.FPS)
 
 
 if __name__ == "__main__":
-    # Make a game instance, and run the game.
-    game = Game()
-    game.run()
+    pygame.init()
 
-    print("Done.")
+    try:
+        # Make a game instance, and run the game.
+        Game().run()
+    finally:
+        pygame.quit()
