@@ -1,7 +1,7 @@
 """
-Game structure: initialize, setup the display, process events, quit
+Game structure: initialize, set up the display, process events, quit
 
-From: A Primer on Pygame Game Programming - https://realpython.com/pygame-a-primer/
+From: A Primer on pygame Game Programming - https://realpython.com/pygame-a-primer/
 My reviewed version: https://github.com/egalli64/pythonesque/pygame/primer
 """
 
@@ -10,7 +10,7 @@ import pygame
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-SCREEN_SIZE = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
 pygame.init()
 
@@ -26,6 +26,4 @@ while running:
         elif event.type == pygame.QUIT:
             running = False
 
-
-print("Done.")
 pygame.quit()
