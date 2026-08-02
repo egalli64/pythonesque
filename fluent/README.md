@@ -4,5 +4,5 @@
 
 ## Part 1 - Data Structures
 ### [Chapter 1 - The Python Data Model](01)
-  * 1: [A Pythonic Card Deck](01/1.py)
-
+  * 1: [A Pythonic Card Deck](01/e01.py)
+  * 2: [How Special Methods Are Used](01/e02.py)
