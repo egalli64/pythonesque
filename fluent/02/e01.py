@@ -35,7 +35,13 @@ else:
 
 # However, the walrus operator behave in its own peculiar way
 codes = [last := ord(c) for c in symbols]
+
 if globals().get("last"):
-    print("Last symbol is accessible outside the listcomp!")
+    print("Last symbol is accessible outside the listcomp")
 else:
     print("Unexpected!")
+
+if globals().get("c"):
+    print("Unexpected!")
+else:
+    print("The variable c is local to the listcomp")
