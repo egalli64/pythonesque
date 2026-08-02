@@ -8,4 +8,5 @@
   * 2: [How Special Methods Are Used](01/e02.py)
 
 ### [Chapter 2 - An Array of Sequences](02)
-  * 1: [List Comprehensions and Readability](02/e01.py) 
+  * 1: [List Comprehensions and Readability](02/e01.py)
+  * 2: [Listcomps Versus map and filter](02/e02.py)
