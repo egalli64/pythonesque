@@ -4,13 +4,11 @@ Custom Events
 From: A Primer on Pygame Game Programming - https://realpython.com/pygame-a-primer/
 My reviewed version: https://github.com/egalli64/pythonesque/pygame/primer
 """
-
 from typing import override
 import pygame
 import random
 
 FPS = 30
-
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_SIZE = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -40,25 +38,25 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=SCREEN_CENTER)  # type: ignore
 
     @override
-    def update(self, pressed_keys, dt):
+    def update(self, keys, delta_time):
         """
         Move in place the sprite based on the keys pressed
 
         Keep it inside the screen area
         """
-        delta_pixel = PLAYER_SPEED * dt
-        dpos = pygame.Vector2()
+        delta_pixel = PLAYER_SPEED * delta_time
+        delta_pos = pygame.Vector2()
 
-        if pressed_keys[pygame.K_RIGHT]:
-            dpos.x += delta_pixel
-        if pressed_keys[pygame.K_DOWN]:
-            dpos.y += delta_pixel
-        if pressed_keys[pygame.K_LEFT]:
-            dpos.x -= delta_pixel
-        if pressed_keys[pygame.K_UP]:
-            dpos.y -= delta_pixel
+        if keys[pygame.K_RIGHT]:
+            delta_pos.x += delta_pixel
+        if keys[pygame.K_DOWN]:
+            delta_pos.y += delta_pixel
+        if keys[pygame.K_LEFT]:
+            delta_pos.x -= delta_pixel
+        if keys[pygame.K_UP]:
+            delta_pos.y -= delta_pixel
 
-        self.rect.move_ip(dpos)
+        self.rect.move_ip(delta_pos)
         self.rect.clamp_ip(SCREEN_RECT)
 
 
@@ -78,13 +76,13 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = random.randint(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED)
 
     @override
-    def update(self, dt):
+    def update(self, delta_time):
         """
         Move the sprite based on speed
 
         Remove the sprite from each group when it passes the left edge of the screen
         """
-        dx = -self.speed * dt
+        dx = -self.speed * delta_time
         self.rect.move_ip(dx, 0)
         if self.rect.right < 0:
             self.kill()
@@ -95,8 +93,8 @@ pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
 
 # Create a custom event for adding a new enemy
-ADD_ENEMY = pygame.USEREVENT + 1
-pygame.time.set_timer(ADD_ENEMY, 250)
+ADD_ENEMY_EVENT = pygame.event.custom_type()
+pygame.time.set_timer(ADD_ENEMY_EVENT, 250)
 # end of change
 
 player = Player()
@@ -108,7 +106,7 @@ all_sprites.add(player)
 
 running = True
 while running:
-    dt = clock.tick(30) / 1000
+    dt = clock.tick(FPS) / 1000
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
@@ -116,7 +114,7 @@ while running:
         elif event.type == pygame.QUIT:
             running = False
         # consume the custom event
-        elif event.type == ADD_ENEMY:
+        elif event.type == ADD_ENEMY_EVENT:
             # Create the new enemy and add it to sprite groups
             enemy = Enemy()
             enemies.add(enemy)
@@ -128,10 +126,9 @@ while running:
 
     screen.fill(BACKGROUND_COLOR)
 
-    for entity in all_sprites:
-        screen.blit(entity.image, entity.rect)
+    for sprite in all_sprites:
+        screen.blit(sprite.image, sprite.rect)
 
     pygame.display.flip()
 
-print("Done.")
 pygame.quit()
