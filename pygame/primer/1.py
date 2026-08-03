@@ -11,7 +11,7 @@ SCREEN_SIZE = pygame.Vector2(500, 500)
 SCREEN_CENTER = SCREEN_SIZE / 2
 BACKGROUND_COLOR = (255, 255, 255)  # white
 CIRCLE_COLOR = (0, 0, 255)  # blue
-CRICLE_RADIUS = 75
+CIRCLE_RADIUS = 75
 
 pygame.init()
 
@@ -25,8 +25,7 @@ while running:
 
     screen.fill(BACKGROUND_COLOR)
 
-    pygame.draw.circle(screen, CIRCLE_COLOR, SCREEN_CENTER, CRICLE_RADIUS)
+    pygame.draw.circle(screen, CIRCLE_COLOR, SCREEN_CENTER, CIRCLE_RADIUS)
     pygame.display.flip()
 
-print("Done.")
 pygame.quit()
