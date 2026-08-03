@@ -1,14 +1,13 @@
 """
 Hello PyGame World
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
-BACKGROUND_IMG = "pygame/beginning/img/sushiplate.jpg"
-MOUSE_IMG = "pygame/beginning/img/fugu.png"
+BACKGROUND_IMG = "../img/sushiplate.jpg"
+MOUSE_IMG = "../img/fugu.png"
 SCREEN_SIZE = (640, 480)
 
 pygame.init()
@@ -19,7 +18,7 @@ pygame.display.set_caption("Hello, World!")
 pygame.mouse.set_visible(False)
 
 # plain image load
-image = pygame.image.load(BACKGROUND_IMG).convert()
+background_img = pygame.image.load(BACKGROUND_IMG).convert()
 # image load preserving alpha information
 mouse_img = pygame.image.load(MOUSE_IMG).convert_alpha()
 
@@ -28,18 +27,17 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        else:
-            # implicitly copy background to screen at (0, 0) position
-            screen.blit(image)
 
-            # get the mouse position, center the mouse cursor image, copy it to screen
-            x, y = pygame.mouse.get_pos()
-            x -= mouse_img.get_width() / 2
-            y -= mouse_img.get_height() / 2
-            screen.blit(mouse_img, (x, y))
+    # implicitly copy background to screen at (0, 0) position
+    screen.blit(background_img)
 
-            # full screen update
-            pygame.display.flip()
+    # get the mouse position, center the mouse cursor image, copy it to screen
+    x, y = pygame.mouse.get_pos()
+    x -= mouse_img.get_width() / 2
+    y -= mouse_img.get_height() / 2
+    screen.blit(mouse_img, (x, y))
+
+    # full screen update
+    pygame.display.flip()
 
 pygame.quit()
-print("Done!")

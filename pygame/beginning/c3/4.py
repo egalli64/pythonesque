@@ -1,15 +1,13 @@
 """
 Full screen
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
-BACKGROUND_IMG = "pygame/beginning/img/sushiplate.jpg"
+BACKGROUND_IMG = "../img/sushiplate.jpg"
 SCREEN_SIZE = (640, 480)
-
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -26,8 +24,7 @@ while running:
             flags = pygame.FULLSCREEN if fullscreen else 0
             screen = pygame.display.set_mode(SCREEN_SIZE, flags)
 
-        screen.blit(image)
-        pygame.display.flip()
+    screen.blit(image)
+    pygame.display.flip()
 
-print("Done!")
 pygame.quit()

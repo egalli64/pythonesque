@@ -1,17 +1,16 @@
 """
 Marquee - scrolling text
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
-BACKGROUND_IMG = "pygame/beginning/img/sushiplate.jpg"
+BACKGROUND_IMG = "../img/sushiplate.jpg"
 SCREEN_SIZE = (640, 480)
 FONT_NAME = "arial"
 FONT_SIZE = 80
-FONT_BLUE = (0, 0, 255)  # blue
+FONT_COLOR = (0, 0, 255)
 message = "This is a demonstration of the scrolly message script. "
 
 pygame.init()
@@ -19,7 +18,7 @@ screen = pygame.display.set_mode(SCREEN_SIZE)
 
 # generate the text as a surface w/ Arial font
 font = pygame.font.SysFont(FONT_NAME, FONT_SIZE)
-text = font.render(message, True, FONT_BLUE)
+text = font.render(message, True, FONT_COLOR)
 
 x = 0
 y = (SCREEN_SIZE[1] - text.get_height()) / 2
@@ -45,5 +44,4 @@ while running:
     screen.blit(text, (x + text.get_width(), y))
     pygame.display.flip()
 
-print("Done.")
 pygame.quit()

@@ -1,17 +1,17 @@
 """
 Resizable screen
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
-BACKGROUND_IMG = "pygame/beginning/img/sushiplate.jpg"
+INITIAL_SCREEN_SIZE = (640, 480)
+BACKGROUND_IMG = "../img/sushiplate.jpg"
 
 pygame.init()
 # here screen is resizable!
-screen_size = (640, 480)
+screen_size = INITIAL_SCREEN_SIZE
 screen = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
 pygame.display.set_caption("Resizable window")
 image = pygame.image.load(BACKGROUND_IMG).convert()
@@ -35,5 +35,4 @@ while running:
 
     pygame.display.update()
 
-print("Done!")
 pygame.quit()

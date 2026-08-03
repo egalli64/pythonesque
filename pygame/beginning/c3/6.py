@@ -1,17 +1,16 @@
 """
 Text to image
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 NAME = "Emanuele Galli"
 FILE_NAME = "name.png"
 FONT_NAME = "arial"
-BACKGROUND_COLOR = (255, 255, 255)  # white
-FONT_COLOR = (0, 0, 0)  # black
+BACKGROUND_COLOR = (255, 255, 255)
+FONT_COLOR = (0, 0, 0)
 FONT_SIZE = 64
 
 pygame.init()
@@ -27,3 +26,5 @@ surface = font.render(NAME, True, FONT_COLOR, BACKGROUND_COLOR)
 
 # save the surface in a file with the format defined by the extension
 pygame.image.save(surface, FILE_NAME)
+
+pygame.quit()

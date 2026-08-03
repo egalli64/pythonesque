@@ -1,16 +1,14 @@
 """
 Key events
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
-BACKGROUND_IMG = "pygame/beginning/img/sushiplate.jpg"
+BACKGROUND_IMG = "../img/sushiplate.jpg"
 BACKGROUND_COLOR = (0, 0, 0)
 SCREEN_SIZE = (640, 480)
-
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -42,10 +40,9 @@ while running:
             move_x = 0
             move_y = 0
 
-        screen.fill(BACKGROUND_COLOR)
-        screen.blit(image, (x, y))
+    screen.fill(BACKGROUND_COLOR)
+    screen.blit(image, (x, y))
 
-        pygame.display.flip()
+    pygame.display.flip()
 
-print("Done!")
 pygame.quit()
