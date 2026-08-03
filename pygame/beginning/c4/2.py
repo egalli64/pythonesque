@@ -1,10 +1,9 @@
 """
 Choose a color
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 SCREEN_WIDTH = 640
@@ -16,35 +15,35 @@ GREEN_SCALE_XY = (0, SCALE_HEIGHT)
 BLUE_SCALE_XY = (0, SCALE_HEIGHT * 2)
 RESULT_AREA = (0, 240, SCREEN_WIDTH, 240)
 MAX_CHANNEL_INTENSITY = 255
-CIRCLE_COLOR = (255, 255, 255)  # white
+CIRCLE_COLOR = (255, 255, 255)
 
 pygame.init()
 
 screen = pygame.display.set_mode(SCREEN_SIZE)
 
 
-def scale_color_channel(x: int):
+def scale_color_channel(value: int):
     """scaling the color in [0, 255] for the screen width"""
-    assert 0 <= x <= SCREEN_WIDTH
-    return int(x / (SCREEN_WIDTH - 1) * MAX_CHANNEL_INTENSITY)
+    assert 0 <= value <= SCREEN_WIDTH
+    return int(value / (SCREEN_WIDTH - 1) * MAX_CHANNEL_INTENSITY)
 
 
 def create_scales():
     """Create images with smooth gradients"""
-    red_scale = pygame.surface.Surface(SCALE_SIZE)
-    green_scale = pygame.surface.Surface(SCALE_SIZE)
-    blue_scale = pygame.surface.Surface(SCALE_SIZE)
+    red_image = pygame.surface.Surface(SCALE_SIZE)
+    green_image = pygame.surface.Surface(SCALE_SIZE)
+    blue_image = pygame.surface.Surface(SCALE_SIZE)
 
-    for x in range(SCREEN_WIDTH):
-        channel = scale_color_channel(x)
-        red = (channel, 0, 0)
-        green = (0, channel, 0)
-        blue = (0, 0, channel)
-        line_rect = pygame.Rect(x, 0, 1, SCALE_HEIGHT)
-        pygame.draw.rect(red_scale, red, line_rect)
-        pygame.draw.rect(green_scale, green, line_rect)
-        pygame.draw.rect(blue_scale, blue, line_rect)
-    return red_scale, green_scale, blue_scale
+    for i in range(SCREEN_WIDTH):
+        scaled_channel = scale_color_channel(i)
+        red = (scaled_channel, 0, 0)
+        green = (0, scaled_channel, 0)
+        blue = (0, 0, scaled_channel)
+        line_rect = pygame.Rect(i, 0, 1, SCALE_HEIGHT)
+        pygame.draw.rect(red_image, red, line_rect)
+        pygame.draw.rect(green_image, green, line_rect)
+        pygame.draw.rect(blue_image, blue, line_rect)
+    return red_image, green_image, blue_image
 
 
 red_scale, green_scale, blue_scale = create_scales()
@@ -80,9 +79,6 @@ while running:
                 pygame.draw.circle(screen, CIRCLE_COLOR, (x, y), SCALE_HEIGHT // 4)
 
             pygame.draw.rect(screen, color, RESULT_AREA)
-
             pygame.display.flip()
 
-
-print("Done.")
 pygame.quit()

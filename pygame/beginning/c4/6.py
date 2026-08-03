@@ -1,10 +1,9 @@
 """
 Blending colors by lerping
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 SCREEN_WIDTH = 640
@@ -57,5 +56,4 @@ while running:
 
         pygame.display.flip()
 
-print("Done")
 pygame.quit()

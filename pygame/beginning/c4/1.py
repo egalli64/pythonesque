@@ -1,10 +1,9 @@
 """
 All the RGB colors in a single image
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 SCREEN_SIZE = (640, 480)
@@ -20,7 +19,7 @@ screen = pygame.display.set_mode(SCREEN_SIZE)
 image = pygame.Surface(IMAGE_SIZE, depth=IMAGE_DEPTH)
 
 # it takes some time
-print("Looping, please wait ...")
+print("Looping, please wait ...", end="")
 for r in range(256):
     x = (r & 15) * 256
     y = (r >> 4) * 256
@@ -28,8 +27,9 @@ for r in range(256):
         for b in range(256):
             # set a single pixel (not commonly used - too slow)
             image.set_at((x + g, y + b), (r, g, b))
-print("Done")
+    if r % 8 == 0:
+        print(".", end="")
+print("\nDone")
 
 pygame.image.save(image, IMAGE_NAME)
-
 pygame.quit()

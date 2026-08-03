@@ -1,10 +1,9 @@
 """
 Saturating the channel values of a color
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 BLOCK_WIDTH = 640
@@ -48,6 +47,4 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-
-print("Done.")
 pygame.quit()

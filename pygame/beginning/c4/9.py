@@ -1,10 +1,9 @@
 """
 Rectangle
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 from random import randint, randrange
 
@@ -46,5 +45,4 @@ while running:
         random_rect(event.pos)
         pygame.display.flip()
 
-print("Done.")
 pygame.quit()

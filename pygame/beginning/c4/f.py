@@ -1,10 +1,9 @@
 """
 Lines
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 SCREEN_WIDTH = 640
@@ -26,17 +25,16 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        else:
-            if event.type == pygame.MOUSEMOTION:
-                points.append(event.pos)
-                if len(points) > MAX_LINE_POINTS:
-                    del points[0]
+        elif event.type == pygame.MOUSEMOTION:
+            points.append(event.pos)
+            if len(points) > MAX_LINE_POINTS:
+                del points[0]
 
-            screen.fill(BACKGROUND_COLOR)
+    screen.fill(BACKGROUND_COLOR)
 
-            if len(points) > 1:
-                pygame.draw.lines(screen, LINE_COLOR, False, points, LINE_WIDTH)
+    if len(points) > 1:
+        pygame.draw.lines(screen, LINE_COLOR, False, points, LINE_WIDTH)
 
-            pygame.display.flip()
+    pygame.display.flip()
 
 pygame.quit()

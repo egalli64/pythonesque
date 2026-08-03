@@ -1,18 +1,17 @@
 """
 Line
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
-BACKGROUND_COLOR = (255, 255, 255)  # white
-LINE_COLOR = (0, 0, 0)  # black
+BACKGROUND_COLOR = (255, 255, 255)
+LINE_COLOR = (0, 0, 0)
 
 pygame.init()
 screen = pygame.display.set_mode(SCREEN_SIZE)
@@ -22,20 +21,19 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        else:
-            screen.fill(BACKGROUND_COLOR)
 
-            pos = pygame.mouse.get_pos()
+        screen.fill(BACKGROUND_COLOR)
 
-            for x in range(0, SCREEN_WIDTH, 40):
-                pygame.draw.line(screen, LINE_COLOR, (x, 0), pos)
-                pygame.draw.line(screen, LINE_COLOR, (x, SCREEN_HEIGHT), pos)
+        pos = pygame.mouse.get_pos()
 
-            for y in range(0, SCREEN_HEIGHT, 40):
-                pygame.draw.line(screen, LINE_COLOR, (0, y), pos)
-                pygame.draw.line(screen, LINE_COLOR, (SCREEN_WIDTH, y), pos)
+        for x in range(0, SCREEN_WIDTH, 40):
+            pygame.draw.line(screen, LINE_COLOR, (x, 0), pos)
+            pygame.draw.line(screen, LINE_COLOR, (x, SCREEN_HEIGHT), pos)
 
-            pygame.display.flip()
+        for y in range(0, SCREEN_HEIGHT, 40):
+            pygame.draw.line(screen, LINE_COLOR, (0, y), pos)
+            pygame.draw.line(screen, LINE_COLOR, (SCREEN_WIDTH, y), pos)
 
-print("Done.")
+        pygame.display.flip()
+
 pygame.quit()

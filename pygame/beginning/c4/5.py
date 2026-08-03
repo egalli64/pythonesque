@@ -1,12 +1,12 @@
 """
 Linear interpolation
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
 
 
-def lerp(a, b, factor):
+def lerp(a: int, b: int, factor: float):
     """Linear interpolation between a and b, the factor is in [0, 1]"""
     return a + (b - a) * factor
 
