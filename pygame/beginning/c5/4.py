@@ -1,19 +1,17 @@
 """
 Simple Diagonal Movement
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
-BACKGROUND_IMG = "pygame/beginning/img/sushiplate.jpg"
-SPRITE_IMG = "pygame/beginning/img/fugu.png"
+BACKGROUND_IMG = "../img/sushiplate.jpg"
+SPRITE_IMG = "../img/fugu.png"
 
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
-
 FPS = 30
 
 pygame.init()
@@ -31,6 +29,10 @@ speed_x, speed_y = 133, 170
 
 running = True
 while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
     dt = clock.tick(FPS) / 1000
 
     # move the sprite with the current speed, or bounce
@@ -48,10 +50,4 @@ while running:
     screen.blit(sprite, (x, y))
     pygame.display.flip()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-
-print("Done.")
 pygame.quit()

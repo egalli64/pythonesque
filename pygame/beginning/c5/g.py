@@ -1,18 +1,17 @@
 """
 Using vectors for time-based movement
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
-BACKGROUND_IMG = "pygame/beginning/img/sushiplate.jpg"
-SPRITE_IMG = "pygame/beginning/img/fugu.png"
+BACKGROUND_IMG = "../img/sushiplate.jpg"
+SPRITE_IMG = "../img/fugu.png"
 
 pygame.init()
 
@@ -46,15 +45,13 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             heading = (pygame.Vector2(event.pos) - HALF_SPRITE - pos).normalize()
 
-    if running:
-        dt = clock.tick() / 1000
+    dt = clock.tick() / 1000
 
-        pos += heading * dt * SPRITE_SPEED
-        clamp(pos)
+    pos += heading * dt * SPRITE_SPEED
+    clamp(pos)
 
-        screen.blit(background)
-        screen.blit(sprite, pos)
-        pygame.display.flip()
+    screen.blit(background)
+    screen.blit(sprite, pos)
+    pygame.display.flip()
 
-print("Done.")
 pygame.quit()

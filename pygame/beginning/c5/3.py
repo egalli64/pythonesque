@@ -1,10 +1,9 @@
 """
 Frame rate and speed comparison - a slower machine would cause an unpleasent movement
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 FPS = 30  # frame rate
@@ -13,8 +12,8 @@ SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 SCREEN_SIZE = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
-BACKGROUND_IMG = "pygame/beginning/img/sushiplate.jpg"
-SPRITE_IMG = "pygame/beginning/img/fugu.png"
+BACKGROUND_IMG = "../img/sushiplate.jpg"
+SPRITE_IMG = "../img/fugu.png"
 SPRITE_1_Y = 50
 SPRITE_2_Y = 250
 
@@ -32,6 +31,10 @@ frame_count = 0
 
 running = True
 while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
     dt = clock.tick(FPS) / 1000
 
     # faster machine
@@ -49,9 +52,4 @@ while running:
     pygame.display.flip()
     frame_count += 1
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-print("Done.")
 pygame.quit()
