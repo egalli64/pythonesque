@@ -4,7 +4,6 @@ Drawing on the screen
 From: A Primer on Pygame Game Programming - https://realpython.com/pygame-a-primer/
 My reviewed version: https://github.com/egalli64/pythonesque/pygame/primer
 """
-
 import pygame
 
 SCREEN_WIDTH = 800
@@ -41,5 +40,4 @@ while running:
     pygame.display.flip()
     # end new stuff
 
-print("Done.")
 pygame.quit()
