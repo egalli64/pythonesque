@@ -1,21 +1,19 @@
 """
 Illusion of Depth
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
 My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
 """
-
-import pygame
 import random
+import pygame
 
 FPS = 60
-
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 SCREEN_SIZE = pygame.Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-STAR_COLOR = (255, 255, 255)  # white
-BACKGROUND_COLOR = (0, 0, 0)  # black
+STAR_COLOR = (255, 255, 255)
+BACKGROUND_COLOR = (0, 0, 0)
 
 
 class Star:

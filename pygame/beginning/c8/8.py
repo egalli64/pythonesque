@@ -1,21 +1,19 @@
 """
 A Simple 3D Engine
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
-import pygame
 import math
+import pygame
 
 FPS = 30
-
 SCREEN_SIZE = pygame.Vector2(640, 480)
 BACKGROUND_COLOR = (0, 0, 0)
 DIAGRAM_COLOR = (50, 255, 50)  # neon green
 TEXT_COLOR = (255, 255, 255)  # white
 CUBE_SIZE = 300
-SPRITE_IMG = "pygame/beginning/img/ball.png"
+SPRITE_IMG = "../img/ball.png"
 FONT_SIZE = 24
 
 # Field Of View (in degrees)
@@ -27,19 +25,18 @@ MAX_FOV = 120
 def calculate_viewing_distance(fov_deg):
     """
     Given the angular range of the visible scene, calculate the viewing distance
-    Both fov (field of view) and screen width are diveded by two, to operate on a rectagle triangle
+    Both fov (field of view) and screen width are divided by two, to operate on a rectangle triangle
     """
     return (SCREEN_SIZE.x / 2) / math.tan(math.radians(fov_deg / 2))
 
 
 def run():
-    pygame.init()
     screen = pygame.display.set_mode(SCREEN_SIZE)
     font = pygame.font.SysFont(None, FONT_SIZE)
     ball = pygame.image.load(SPRITE_IMG).convert_alpha()
 
-    BALL_SIZE = ball.get_size()
-    BALL_CENTER = (BALL_SIZE[0] / 2, BALL_SIZE[1] / 2)
+    ball_size = ball.get_size()
+    ball_center = (ball_size[0] / 2, ball_size[1] / 2)
 
     fov = DEFAULT_FOV
     viewing_distance = calculate_viewing_distance(fov)
@@ -110,16 +107,14 @@ def run():
                 y = -y * viewing_distance / z
                 x += SCREEN_SIZE.x / 2
                 y += SCREEN_SIZE.y / 2
-                screen.blit(ball, (x - BALL_CENTER[0], y - BALL_CENTER[1]))
+                screen.blit(ball, (x - ball_center[0], y - ball_center[1]))
 
         # Draw the field of view diagram
         diagram_width = SCREEN_SIZE.x / 4
-        diagram_points = []
-        diagram_points.append((diagram_width / 2, 100 + viewing_distance / 4))
-        diagram_points.append((0, 100))
-        diagram_points.append((diagram_width, 100))
-        diagram_points.append((diagram_width / 2, 100 + viewing_distance / 4))
-        diagram_points.append((diagram_width / 2, 100))
+        diagram_points = [(diagram_width / 2, 100 + viewing_distance / 4),
+                          (0, 100), (diagram_width, 100),
+                          (diagram_width / 2, 100 + viewing_distance / 4),
+                          (diagram_width / 2, 100)]
         pygame.draw.lines(screen, DIAGRAM_COLOR, False, diagram_points, 2)
 
         # Draw the text
@@ -134,6 +129,9 @@ def run():
 
 
 if __name__ == "__main__":
-    run()
-    print("Done.")
-    pygame.quit()
+    pygame.init()
+
+    try:
+        run()
+    finally:
+        pygame.quit()
