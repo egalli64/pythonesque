@@ -1,16 +1,15 @@
 """
 Arrow keys for movement
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 SCREEN_SIZE = pygame.Vector2(640, 480)
 
-BACKGROUND_IMG = "pygame/beginning/img/sushiplate.jpg"
-SPRITE_IMG = "pygame/beginning/img/fugu.png"
+BACKGROUND_IMG = "../img/sushiplate.jpg"
+SPRITE_IMG = "../img/fugu.png"
 
 pygame.init()
 
@@ -27,27 +26,26 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    if running:
-        dt = clock.tick(30) / 1000
 
-        keys = pygame.key.get_pressed()
-        direction = pygame.Vector2()
-        if keys[pygame.K_LEFT]:
-            direction.x -= 1
-        if keys[pygame.K_RIGHT]:
-            direction.x += 1
-        if keys[pygame.K_UP]:
-            direction.y -= 1
-        if keys[pygame.K_DOWN]:
-            direction.y += 1
+    dt = clock.tick(30) / 1000
 
-        if direction:
-            direction.normalize_ip()
-            sprite_pos += direction * SPRITE_SPEED * dt
+    keys = pygame.key.get_pressed()
+    direction = pygame.Vector2()
+    if keys[pygame.K_LEFT]:
+        direction.x -= 1
+    if keys[pygame.K_RIGHT]:
+        direction.x += 1
+    if keys[pygame.K_UP]:
+        direction.y -= 1
+    if keys[pygame.K_DOWN]:
+        direction.y += 1
 
-        screen.blit(background)
-        screen.blit(sprite, sprite_pos)
-        pygame.display.flip()
+    if direction:
+        direction.normalize_ip()
+        sprite_pos += direction * SPRITE_SPEED * dt
 
-print("Done.")
+    screen.blit(background)
+    screen.blit(sprite, sprite_pos)
+    pygame.display.flip()
+
 pygame.quit()

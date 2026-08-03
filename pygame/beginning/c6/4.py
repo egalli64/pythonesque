@@ -1,18 +1,16 @@
 """
 Rotational Mouse Movement
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
-import pygame
 import math
+import pygame
 
 FPS = 30
-
 SCREEN_SIZE = pygame.Vector2(640, 480)
-BACKGROUND_IMG = "pygame/beginning/img/sushiplate.jpg"
-SPRITE_IMG = "pygame/beginning/img/fugu.png"
+BACKGROUND_IMG = "../img/sushiplate.jpg"
+SPRITE_IMG = "../img/fugu.png"
 
 pygame.init()
 screen = pygame.display.set_mode((640, 480), 0, 32)
@@ -43,6 +41,10 @@ def clamp(pos):
 
 running = True
 while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT or event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            running = False
+
     td = clock.tick(FPS) / 1000
 
     screen.blit(background)
@@ -80,13 +82,4 @@ while running:
     screen.blit(rotated_sprite, sprite_draw_pos)
     pygame.display.flip()
 
-    for event in pygame.event.get():
-        if (
-            event.type == pygame.QUIT
-            or event.type == pygame.KEYDOWN
-            and event.key == pygame.K_ESCAPE
-        ):
-            running = False
-
-print("Done.")
 pygame.quit()

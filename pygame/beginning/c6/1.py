@@ -1,10 +1,9 @@
 """
 Testing pressed keys
 
-From: Beginnning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
-My reviewed version: https://github.com/egalli64/pythonesque/pygame/beginning
+From: Beginning Python Games Development with PyGame - https://link.springer.com/book/10.1007/978-1-4842-0970-7
+My reviewed version: https://github.com/egalli64/pythonesque folder pygame/beginning
 """
-
 import pygame
 
 SCREEN_WIDTH = 640
@@ -30,36 +29,34 @@ while running:
             key_name = pygame.key.name(event.key)
             print(key_name if len(key_name) else "Non-standard key")
 
-    if running:
-        screen.fill(BACKGROUND_COLOR)
+    screen.fill(BACKGROUND_COLOR)
 
-        # return a sequence of boolean representing the state of each key in the keyboard
-        keys = pygame.key.get_pressed()
-        y = FONT_HEIGHT
+    # return a sequence of boolean representing the state of each key in the keyboard
+    keys = pygame.key.get_pressed()
+    y = FONT_HEIGHT
 
-        # this works for "normal" keys only
-        count = 0
-        for keycode in range(len(keys)):
-            if keys[keycode]:
-                count += 1
-                key_name = pygame.key.name(keycode)
-                if not key_name:
-                    key_name = "Non-standard key"
-                text_surface = font.render(f"{key_name} pressed", True, FONT_COLOR)
-                screen.blit(text_surface, (8, y))
-                y += FONT_HEIGHT
-
-        if count:
-            text_surface = font.render(f"{count} keys pressed", True, FONT_COLOR)
+    # this works for "normal" keys only
+    count = 0
+    for keycode in range(len(keys)):
+        if keys[keycode]:
+            count += 1
+            key_name = pygame.key.name(keycode)
+            if not key_name:
+                key_name = "Non-standard key"
+            text_surface = font.render(f"{key_name} pressed", True, FONT_COLOR)
             screen.blit(text_surface, (8, y))
             y += FONT_HEIGHT
 
-        # for special keys, use this approach
-        if keys[pygame.K_LEFT and pygame.K_UP]:
-            text_surface = font.render("left and up keys pressed", True, FONT_COLOR)
-            screen.blit(text_surface, (8, y))
+    if count:
+        text_surface = font.render(f"{count} keys pressed", True, FONT_COLOR)
+        screen.blit(text_surface, (8, y))
+        y += FONT_HEIGHT
 
-        pygame.display.flip()
+    # for special keys, use this approach
+    if keys[pygame.K_LEFT and pygame.K_UP]:
+        text_surface = font.render("left and up keys pressed", True, FONT_COLOR)
+        screen.blit(text_surface, (8, y))
 
-print("Done")
+    pygame.display.flip()
+
 pygame.quit()
