@@ -11,3 +11,5 @@
   * 1: [List Comprehensions and Readability](02/e01.py)
   * 2: [Listcomps Versus map and filter](02/e02.py)
   * 3: [Cartesian Products](02/e03.py)
+  * 4: [Generator Expressions](02/e04.py)
+
