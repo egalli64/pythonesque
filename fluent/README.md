@@ -12,4 +12,5 @@
   * 2: [Listcomps Versus map and filter](02/e02.py)
   * 3: [Cartesian Products](02/e03.py)
   * 4: [Generator Expressions](02/e04.py)
+  * 5: [Tuples as Records](02/e05.py)
 
