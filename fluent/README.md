@@ -10,3 +10,4 @@
 ### [Chapter 2 - An Array of Sequences](02)
   * 1: [List Comprehensions and Readability](02/e01.py)
   * 2: [Listcomps Versus map and filter](02/e02.py)
+  * 3: [Cartesian Products](02/e03.py)
