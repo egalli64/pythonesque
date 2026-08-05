@@ -16,4 +16,5 @@
   * 6: [Tuples as Immutable Lists](02/e06.py)
   * 7: [Comparing Tuple and List Methods](02/e07.py)
   * 8: [Unpacking Sequences and Iterables](02/e08.py)
+  * 9: [Using * to Grab Excess Items](02/e09.py)
 
