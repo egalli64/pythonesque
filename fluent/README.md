@@ -20,4 +20,5 @@
   * 10: [Unpacking with *](02/e10.py)
   * 11: [Nested Unpacking](02/e11.py)
   * 12: [Pattern Matching with Sequences](02/e12.py)
+  * 13: [Destructuring nested tuples](02/e13.py)
 
