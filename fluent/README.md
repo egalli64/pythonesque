@@ -19,4 +19,5 @@
   * 9: [Using * to Grab Excess Items](02/e09.py)
   * 10: [Unpacking with *](02/e10.py)
   * 11: [Nested Unpacking](02/e11.py)
+  * 12: [Pattern Matching with Sequences](02/e12.py)
 
