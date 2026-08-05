@@ -18,4 +18,5 @@
   * 8: [Unpacking Sequences and Iterables](02/e08.py)
   * 9: [Using * to Grab Excess Items](02/e09.py)
   * 10: [Unpacking with *](02/e10.py)
+  * 11: [Nested Unpacking](02/e11.py)
 
