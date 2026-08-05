@@ -22,4 +22,5 @@
   * 12: [Pattern Matching with Sequences](02/e12.py)
   * 13: [Destructuring nested tuples](02/e13.py)
   * 14: [Why Slices and Ranges Exclude the Last Item](02/e14.py)
+  * 15: [Slice Objects](02/e15.py)
 
