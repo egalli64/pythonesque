@@ -29,3 +29,4 @@
 * 15: [Slice Objects](02/e15.py)
 * 16: [Assigning to Slices](02/e16.py)
 * 17: [Using + and * with Sequences](02/e17.py)
+* 18: [Building Lists of Lists](02/e18.py)
