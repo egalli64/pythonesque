@@ -32,3 +32,4 @@
 * 18: [Building Lists of Lists](02/e18.py)
 * 19: [Augmented Assignment with Sequences](02/e19.py)
 * 20: [Assignment Puzzler](02/e20.py)
+* 21: [list.sort Versus the sorted Built-In](02/e21.py)
