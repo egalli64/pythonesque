@@ -30,3 +30,4 @@
 * 16: [Assigning to Slices](02/e16.py)
 * 17: [Using + and * with Sequences](02/e17.py)
 * 18: [Building Lists of Lists](02/e18.py)
+* 19: [Augmented Assignment with Sequences](02/e19.py)
