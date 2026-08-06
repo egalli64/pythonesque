@@ -28,3 +28,4 @@
 * 14: [Why Slices and Ranges Exclude the Last Item](02/e14.py)
 * 15: [Slice Objects](02/e15.py)
 * 16: [Assigning to Slices](02/e16.py)
+* 17: [Using + and * with Sequences](02/e17.py)
