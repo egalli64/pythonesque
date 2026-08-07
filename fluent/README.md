@@ -58,3 +58,4 @@
 
 * 22: [Arrays](02/e22.py)
 * 23: [Memory Views](02/e23.py)
+* 24: [Memory Views - change format](02/e24.py)
