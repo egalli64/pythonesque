@@ -64,3 +64,4 @@
 #### Soapbox
 
 * 26: [Mixed bag lists](02/e26.py)
+* 27: [key Is Brilliant](02/e27.py)
