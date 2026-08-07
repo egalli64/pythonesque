@@ -60,3 +60,7 @@
 * 23: [Memory Views](02/e23.py)
 * 24: [Memory Views - change format](02/e24.py)
 * 25: [Deque](02/e25.py)
+
+#### Soapbox
+
+* 26: [Mixed bag lists](02/e26.py)
