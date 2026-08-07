@@ -57,3 +57,4 @@
 #### When a List Is Not the Answer
 
 * 22: [Arrays](02/e22.py)
+* 23: [Memory Views](02/e23.py)
