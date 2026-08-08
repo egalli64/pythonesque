@@ -72,3 +72,4 @@
 
 * 0: [Basic ways to create a dictionary](03/e00.py)
 * 1: [dict Comprehensions](03/e01.py)
+* 2: [Unpacking Mappings](03/e02.py)
