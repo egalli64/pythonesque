@@ -65,3 +65,9 @@
 
 * 26: [Mixed bag lists](02/e26.py)
 * 27: [key Is Brilliant](02/e27.py)
+
+### [Chapter 3 - Dictionaries and Sets](03)
+
+#### Modern dict Syntax
+
+* 0: [Basic ways to create a dictionary](03/e00.py)
