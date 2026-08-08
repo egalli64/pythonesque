@@ -71,3 +71,4 @@
 #### Modern dict Syntax
 
 * 0: [Basic ways to create a dictionary](03/e00.py)
+* 1: [dict Comprehensions](03/e01.py)
