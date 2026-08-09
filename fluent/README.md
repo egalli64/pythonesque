@@ -84,3 +84,7 @@
 * 5: [dict and abc hierarchy](03/e05.py)
 * 6: [What Is Hashable](03/e06.py)
 * 7: [Inserting or Updating Mutable Values](03/e07.py)
+
+#### Automatic Handling of Missing Keys
+
+* 8: [defaultdict](03/e08.py)
