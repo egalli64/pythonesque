@@ -82,3 +82,4 @@
 #### Standard API of Mapping Types
 
 * 5: [dict and abc hierarchy](03/e05.py)
+* 5: [What Is Hashable](03/e06.py)
