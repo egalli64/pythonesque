@@ -78,3 +78,7 @@
 #### Pattern Matching with Mappings
 
 * 4: [Pattern Matching](03/e04.py)
+
+#### Standard API of Mapping Types
+
+* 5: [dict and abc hierarchy](03/e05.py)
