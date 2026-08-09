@@ -88,3 +88,4 @@
 #### Automatic Handling of Missing Keys
 
 * 8: [defaultdict](03/e08.py)
+* 9: [The __missing__ Method](03/e09.py)
