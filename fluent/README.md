@@ -74,3 +74,7 @@
 * 1: [dict Comprehensions](03/e01.py)
 * 2: [Unpacking Mappings](03/e02.py)
 * 3: [Merging Mappings with |](03/e03.py)
+
+#### Pattern Matching with Mappings
+
+* 4: [Pattern Matching](03/e04.py)
