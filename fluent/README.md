@@ -93,3 +93,4 @@
 #### Variations of dict
 
 * 10: [collections.ChainMap](03/e10.py)
+* 11: [collections.Counter](03/e11.py)
