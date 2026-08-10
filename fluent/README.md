@@ -95,3 +95,5 @@
 * 10: [collections.ChainMap](03/e10.py)
 * 11: [collections.Counter](03/e11.py)
 * 12: [collections.UserDict](03/e12.py)
+
+* 13: [Immutable Mappings](03/e13.py)
