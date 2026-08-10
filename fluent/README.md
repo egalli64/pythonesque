@@ -89,3 +89,7 @@
 
 * 8: [defaultdict](03/e08.py)
 * 9: [The __missing__ Method](03/e09.py)
+
+#### Variations of dict
+
+* 10: [collections.ChainMap](03/e10.py)
