@@ -105,3 +105,7 @@
 * 16: [intersection](03/e16.py)
 * 17: [comprehension](03/e17.py)
 * 18: [Set Operations on dict Views](03/e18.py)
+
+### [Chapter 4 - Unicode Text Versus Bytes](04)
+
+* 1: [Character Issues](04/e01.py)
