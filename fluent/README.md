@@ -99,8 +99,9 @@
 * 13: [Immutable Mappings](03/e13.py)
 * 14: [Dictionary Views](03/e14.py)
 
-#### Set Theory
+#### Set
 
 * 15: [set](03/e15.py)
-* 16: [set intersection](03/e16.py)
-* 17: [set comprehension](03/e17.py)
+* 16: [intersection](03/e16.py)
+* 17: [comprehension](03/e17.py)
+* 18: [Set Operations on dict Views](03/e18.py)
