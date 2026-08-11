@@ -103,3 +103,4 @@
 
 * 15: [set](03/e15.py)
 * 16: [set intersection](03/e16.py)
+* 17: [set comprehension](03/e17.py)
