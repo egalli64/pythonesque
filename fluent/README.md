@@ -111,3 +111,4 @@
 * 1: [Character Issues](04/e01.py)
 * 2: [Byte Essentials](04/e02.py)
 * 3: [Bytes creation extra](04/e03.py)
+* 4: [Handling Text Files](04/e04.py)
