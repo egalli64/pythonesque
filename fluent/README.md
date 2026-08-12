@@ -109,3 +109,4 @@
 ### [Chapter 4 - Unicode Text Versus Bytes](04)
 
 * 1: [Character Issues](04/e01.py)
+* 2: [Byte Essentials](04/e02.py)
