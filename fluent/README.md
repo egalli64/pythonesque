@@ -112,3 +112,7 @@
 * 2: [Byte Essentials](04/e02.py)
 * 3: [Bytes creation extra](04/e03.py)
 * 4: [Handling Text Files](04/e04.py)
+
+### [Chapter 5 - Data Class Builders](05)
+
+* 1: [Basic data class](05/e01.py)
