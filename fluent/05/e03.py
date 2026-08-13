@@ -17,12 +17,12 @@ class Coordinate(NamedTuple):
     """
     lat: float
     lon: float
-    reference: str = 'WGS84'
+    reference: str = "WGS84"
 
 
 print("a NamedTuple class is a tuple:", issubclass(Coordinate, tuple))
 
 # hints: documentation that can be verified by IDEs and type checkers
-trash = Coordinate('Ni!', None)
+trash = Coordinate("Ni!", None)
 # we could have a warning from IDE/type checker, but Python does not mind about them
 print(trash)
