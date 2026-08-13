@@ -9,13 +9,15 @@ My playground: https://github.com/egalli64/pythonesque/ fluent folder
 """
 from dataclasses import dataclass, field
 
-try:
-    @dataclass
-    class ClubMemberBug:
-        name: str
-        guests: list = []  # Mutable default [] is not allowed. Use default_factory
-except ValueError as e:
-    print(f"{e!r}")
+
+def bugged_dataclass():
+    try:
+        @dataclass
+        class ClubMemberBug:
+            name: str
+            guests: list = []  # Mutable default [] is not allowed. Use default_factory
+    except ValueError as e:
+        print(f"{e!r}")
 
 
 @dataclass
@@ -24,11 +26,12 @@ class ClubMemberClassic:
     guests: list = field(default_factory=list)
 
 
-x = ClubMemberClassic("x")
-print("a dataclass object w/ default list", x)
-y = ClubMemberClassic("y")
+def classic_dataclass():
+    x = ClubMemberClassic("x")
+    print("a dataclass object w/ default list", x)
+    y = ClubMemberClassic("y")
 
-print("different guests in the two objects:", x.guests is not y.guests)
+    print("different guests in the two objects:", x.guests is not y.guests)
 
 
 @dataclass
@@ -36,3 +39,17 @@ class ClubMember:
     name: str
     # notice the Python 3.9 notation for parameterized generic type
     guests: list[str] = field(default_factory=list)
+
+
+def modern_dataclass():
+    x = ClubMember("x")
+    print("a dataclass object w/ default list", x)
+    y = ClubMember("y")
+
+    print("different guests in the two objects:", x.guests is not y.guests)
+
+
+if __name__ == "__main__":
+    bugged_dataclass()
+    classic_dataclass()
+    modern_dataclass()
