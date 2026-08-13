@@ -117,3 +117,4 @@
 
 * 1: [Basic data class](05/e01.py)
 * 2: [Classic Named Tuples](05/e02.py)
+* 3: [Typed Named Tuples](05/e03.py)
