@@ -124,4 +124,4 @@
 * 4: [The @dataclass decoration](05/e04.py)
 * 5: [Field Options](05/e05.py)
 * 6: [Post-init Processing](05/e06.py)
-
+* 7: [Initialization Variables That Are Not Fields](05/e07.py)
