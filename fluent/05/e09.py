@@ -35,9 +35,6 @@ def match_asian_cities():
     return results
 
 
-print(match_asian_cities())
-
-
 def match_asian_countries():
     results = []
     for city in cities:
@@ -49,4 +46,6 @@ def match_asian_countries():
     return results
 
 
-print(match_asian_countries())
+if __name__ == "__main__":
+    print(match_asian_cities())
+    print(match_asian_countries())
