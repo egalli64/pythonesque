@@ -129,3 +129,4 @@
 #### Pattern Matching Class Instances
 
 * 8: [Simple Class Patterns](05/e08.py)
+* 9: [Keyword Class Patterns](05/e09.py)
