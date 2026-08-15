@@ -140,3 +140,4 @@
 
 * 2: [Identity, Equality, and Aliases](06/e02.py)
 * 3: [Choosing Between == and is](06/e03.py)
+* 4: [The Relative Immutability of Tuples](06/e04.py)
