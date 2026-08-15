@@ -135,3 +135,4 @@
 ### [Chapter 6 - Object References, Mutability, and Recycling](06)
 
 * 1: [Variables Are Not Boxes](06/e01.py)
+* 2: [Identity, Equality, and Aliases](06/e02.py)
