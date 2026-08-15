@@ -131,3 +131,7 @@
 * 8: [Simple Class Patterns](05/e08.py)
 * 9: [Keyword Class Patterns](05/e09.py)
 * 10: [Positional Class Patterns](05/e10.py)
+
+### [Chapter 6 - Object References, Mutability, and Recycling](06)
+
+* 1: [Variables Are Not Boxes](06/e01.py)
