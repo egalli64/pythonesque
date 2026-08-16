@@ -148,3 +148,7 @@
 * 6: [By default, copy is shallow](06/e06.py)
 * 7: [Deep and Shallow Copies of Arbitrary Objects](06/e07.py)
 * 8: [Beware of cyclic references](06/e08.py)
+
+#### Function Parameters as References
+
+* 9: [Sharing Function Parameters](06/e09.py)
