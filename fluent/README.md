@@ -144,4 +144,5 @@
 
 #### Copies Are Shallow by Default
 
-* 4: [List copy by built-in constructor](06/e05.py)
+* 5: [List copy by built-in constructor](06/e05.py)
+* 6: [By default, copy is shallow](06/e06.py)
