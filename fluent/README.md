@@ -152,3 +152,4 @@
 #### Function Parameters as References
 
 * 9: [Sharing Function Parameters](06/e09.py)
+* 10: [Mutable Types as Parameter Defaults: Bad Idea](06/e10.py)
