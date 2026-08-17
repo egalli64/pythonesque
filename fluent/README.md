@@ -154,3 +154,7 @@
 * 9: [Sharing Function Parameters](06/e09.py)
 * 10: [Mutable Types as Parameter Defaults: Bad Idea](06/e10.py)
 * 11: [Defensive Programming with Mutable Parameters](06/e11.py)
+
+#### More stuff
+
+* 12: [del and Garbage Collection](06/e12.py)
