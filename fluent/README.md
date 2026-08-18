@@ -160,3 +160,9 @@
 * 12: [del and Garbage Collection](06/e12.py)
 * 13: [Watching the end of an object](06/e13.py)
 * 14: [Tricks Python Plays with Immutables](06/e14.py)
+
+## Part 2 - Functions as Objects
+
+### [Chapter 7 - Functions as First-Class Objects](07)
+
+* 1: [Treating a Function Like an Object](07/e01.py)
