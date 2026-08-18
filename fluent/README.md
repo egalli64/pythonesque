@@ -170,3 +170,4 @@
 #### Higher-Order Functions
 
 * 2: [The built-in sorted()](07/e02.py)
+* 3: [Modern Replacements for map, filter, and reduce](07/e03.py)
