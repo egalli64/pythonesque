@@ -166,3 +166,7 @@
 ### [Chapter 7 - Functions as First-Class Objects](07)
 
 * 1: [Treating a Function Like an Object](07/e01.py)
+
+#### Higher-Order Functions
+
+* 2: [The built-in sorted()](07/e02.py)
