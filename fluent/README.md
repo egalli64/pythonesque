@@ -159,3 +159,4 @@
 
 * 12: [del and Garbage Collection](06/e12.py)
 * 13: [Watching the end of an object](06/e13.py)
+* 14: [Tricks Python Plays with Immutables](06/e14.py)
