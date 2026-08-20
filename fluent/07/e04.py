@@ -7,6 +7,6 @@ My playground: https://github.com/egalli64/pythonesque/ fluent folder
 
 Anonymous Functions
 """
-fruits = ['strawberry', 'fig', 'apple', 'cherry', 'raspberry', 'banana']
+fruits = ["strawberry", "fig", "apple", "cherry", "raspberry", "banana"]
 print("original fruits: ", fruits)
 print("weirdly sorted fruits:", sorted(fruits, key=lambda word: word[::-1]))
