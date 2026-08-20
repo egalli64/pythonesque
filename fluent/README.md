@@ -176,3 +176,7 @@
 
 * 4: [Anonymous Functions](07/e04.py)
 * 5: [User-Defined Callable Types](07/e05.py)
+
+#### From Positional to Keyword-Only Parameters
+
+* 6: [A function with * and ** arguments](07/e06.py)
