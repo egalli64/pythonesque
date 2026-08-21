@@ -180,3 +180,4 @@
 #### From Positional to Keyword-Only Parameters
 
 * 6: [A function with * and ** arguments](07/e06.py)
+* 7: [Keyword only parameters](07/e07.py)
