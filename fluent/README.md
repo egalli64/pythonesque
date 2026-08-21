@@ -181,3 +181,4 @@
 
 * 6: [A function with * and ** arguments](07/e06.py)
 * 7: [Keyword only parameters](07/e07.py)
+* 7: [Positional-Only Parameters](07/e08.py)
