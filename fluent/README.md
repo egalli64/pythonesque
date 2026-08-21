@@ -169,7 +169,7 @@
 
 #### Higher-Order Functions
 
-* 2: [The built-in sorted()](07/e02.py)
+* 2: [The built-in sorted ()](07/e02.py)
 * 3: [Modern Replacements for map, filter, and reduce](07/e03.py)
 
 #### More stuff
@@ -181,4 +181,8 @@
 
 * 6: [A function with * and ** arguments](07/e06.py)
 * 7: [Keyword only parameters](07/e07.py)
-* 7: [Positional-Only Parameters](07/e08.py)
+* 8: [Positional-Only Parameters](07/e08.py)
+
+#### Packages for Functional Programming
+
+* 9: [functools.reduce on a lambda](07/e09.py)
