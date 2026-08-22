@@ -187,3 +187,4 @@
 
 * 9: [functools.reduce on a lambda](07/e09.py)
 * 10: [functools.reduce on operator.mul](07/e10.py)
+* 11: [operator.itemgetter](07/e11.py)
