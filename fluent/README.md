@@ -186,3 +186,4 @@
 #### Packages for Functional Programming
 
 * 9: [functools.reduce on a lambda](07/e09.py)
+* 10: [functools.reduce on operator.mul](07/e10.py)
