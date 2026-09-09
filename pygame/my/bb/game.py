@@ -13,8 +13,6 @@ FPS = 60
 
 
 class Game:
-    window: pygame.Window
-
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
@@ -22,7 +20,7 @@ class Game:
         self.running = True
         self.paused = False
 
-        self.ball = Ball(self.viewport.center)
+        self.ball = Ball(self.screen.get_rect())
 
     def run(self) -> None:
         clock = pygame.time.Clock()
@@ -62,7 +60,7 @@ class Game:
                         self.ball.aim_at(event.pos)
 
     def update(self, dt: float) -> None:
-        self.ball.update(dt, self.viewport)
+        self.ball.update(dt)
 
     def draw(self):
         self.screen.fill(BACKGROUND_COLOR)
@@ -70,16 +68,14 @@ class Game:
         self.window.flip()
 
 
-# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
-    pg_window = pygame.Window(TITLE, WIN_SIZE)
-    pg_screen = pg_window.get_surface()
+    main_window = pygame.Window(TITLE, WIN_SIZE)
+    main_surface = main_window.get_surface()
 
     Ball.load_resources()
 
     try:
-        Game(pg_window, pg_screen).run()
+        Game(main_window, main_surface).run()
     finally:
         pygame.quit()
-        print("Done.")

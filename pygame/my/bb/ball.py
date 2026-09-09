@@ -4,7 +4,6 @@ A few simple PyGame apps: https://github.com/egalli64/pythonesque/ pygame/my fol
 Bouncing Ball
 """
 import random
-
 import pygame
 
 DEFAULT_RADIUS = 20
@@ -25,8 +24,9 @@ class Ball:
     def load_resources(cls):
         cls.font = pygame.font.Font(None, FONT_SIZE)
 
-    def __init__(self, center: tuple[int, int]) -> None:
-        self.center = pygame.Vector2(center)
+    def __init__(self, viewport: pygame.Rect) -> None:
+        self.viewport = viewport
+        self.center = pygame.Vector2(viewport.center)
         self.radius = DEFAULT_RADIUS
         self.color = DEFAULT_COLOR
         self.velocity = pygame.Vector2(DEFAULT_VELOCITY)
@@ -37,24 +37,24 @@ class Ball:
         text = f"Speed: {speed:.1f} px/s"
         self.speed_info = Ball.font.render(text, True, TEXT_COLOR)
 
-    def bounce_in(self, viewport: pygame.Rect) -> None:
-        if self.center.x >= viewport.right - self.radius:
-            self.center.x = viewport.right - self.radius
+    def bounce_in(self) -> None:
+        if self.center.x >= self.viewport.right - self.radius:
+            self.center.x = self.viewport.right - self.radius
             self.velocity.x *= -1
-        elif self.center.x <= viewport.left + self.radius:
-            self.center.x = viewport.left + self.radius
+        elif self.center.x <= self.viewport.left + self.radius:
+            self.center.x = self.viewport.left + self.radius
             self.velocity.x *= -1
 
-        if self.center.y <= viewport.top + self.radius:
-            self.center.y = viewport.top + self.radius
+        if self.center.y <= self.viewport.top + self.radius:
+            self.center.y = self.viewport.top + self.radius
             self.velocity.y *= -1
-        elif self.center.y >= viewport.bottom - self.radius:
-            self.center.y = viewport.bottom - self.radius
+        elif self.center.y >= self.viewport.bottom - self.radius:
+            self.center.y = self.viewport.bottom - self.radius
             self.velocity.y *= -1
 
-    def update(self, dt: float, viewport: pygame.Rect) -> None:
+    def update(self, dt: float) -> None:
         self.center += self.velocity * dt
-        self.bounce_in(viewport)
+        self.bounce_in()
 
     def draw(self, surface: pygame.Surface) -> None:
         pygame.draw.circle(surface, self.color, self.center, self.radius)
