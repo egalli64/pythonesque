@@ -1,10 +1,10 @@
 # A few simple PyGame apps
 
-Tested on pygame-ce 2.5.7, Python 3.14
+Tested on pygame-ce 2.5.8, Python 3.14
 
 ## [Hello PyGame](hello.py)
 
-- Start and initialize PyGame in the \_\_main__ block
+- Start and initialize PyGame in the main block
   - try a call to main() and finally quit PyGame
 - In the main function:
   - Create a window with a hello title, size 300x300, in the upper left display corner, like 50x50
