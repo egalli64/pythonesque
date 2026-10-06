@@ -8,12 +8,11 @@ import pygame
 TITLE = "Hello, pygame-ce!"
 WIN_SIZE = (300, 300)
 WIN_POS = (50, 50)
-# For such a simple app, 30 frames for second is more than enough
-FPS = 30
+FPS = 30  # For such a simple app, 30 frames for second is more than enough
 BACKGROUND_COLOR = "darkgray"
 
 
-def main():
+def main() -> None:
     window = pygame.Window(TITLE, WIN_SIZE, WIN_POS)
     screen = window.get_surface()
     clock = pygame.time.Clock()
@@ -23,10 +22,12 @@ def main():
         clock.tick(FPS)
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                running = False
+            match event.type:
+                case pygame.QUIT:
+                    running = False
+                case pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
 
         screen.fill(BACKGROUND_COLOR)
         window.flip()
