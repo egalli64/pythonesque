@@ -9,8 +9,8 @@ SOLUTION = "I can do anything I put my mind to."
 
 def main():
     while True:
-        print("Please type the following affirmation:", SOLUTION)
-        affirmation = input()
+        affirmation = input(f"Please type the following affirmation: {SOLUTION}\n")
+
         if affirmation == SOLUTION:
             print("That's right! :)")
             break
