@@ -7,4 +7,5 @@ AI mock
 
 
 def call_gpt(request: str) -> str:
+    """Mock a call to ChatGPT, actually just echo the input."""
     return request
