@@ -7,8 +7,6 @@ Hello, Detective: Ask for the player's name at the start. Then use their name in
 from animal import get_random_animal
 from ai import call_gpt
 
-PROMPT = "Consider a {}. Answer yes or no to this question on it: {}"
-
 
 def main():
     user = input("What's your name? ")  # added

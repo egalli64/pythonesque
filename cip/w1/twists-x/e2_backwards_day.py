@@ -7,8 +7,6 @@ Backwards Day: Find the bug and fix it!
 from animal import get_random_animal
 from ai import call_gpt
 
-PROMPT = "Consider a {}. Answer yes or no to this question on it: {}"
-
 
 def main():
     animal = get_random_animal()
