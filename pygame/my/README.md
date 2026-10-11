@@ -2,7 +2,7 @@
 
 Tested on pygame-ce 2.5.8, Python 3.14
 
-## [Hello PyGame](hello.py)
+## [Hello PyGame](01-hello/hello.py)
 
 - Start and initialize PyGame in the main block
   - try a call to main() and finally quit PyGame
