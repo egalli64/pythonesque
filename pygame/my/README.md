@@ -24,6 +24,12 @@ Tested on pygame-ce 2.5.8, Python 3.14
 
 ## [Basic Shapes](02-shapes/shapes.py)
 
+- Draw a few basic shapes:
+    - Rectangles
+    - Polygon
+    - Circle
+    - Lines
+
 ## [Bouncing Ball](bb/game.py)
 
 - In a 800x600 window
