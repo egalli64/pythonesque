@@ -62,7 +62,7 @@ class Game:
     def update(self, dt: float) -> None:
         self.ball.update(dt)
 
-    def draw(self):
+    def draw(self) -> None:
         self.screen.fill(BACKGROUND_COLOR)
         self.ball.draw(self.screen)
         self.window.flip()

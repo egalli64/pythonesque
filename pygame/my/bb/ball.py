@@ -21,7 +21,7 @@ class Ball:
     speed_info: pygame.Surface
 
     @classmethod
-    def load_resources(cls):
+    def load_resources(cls) -> None:
         cls.font = pygame.font.Font(None, FONT_SIZE)
 
     def __init__(self, viewport: pygame.Rect) -> None:
@@ -32,7 +32,7 @@ class Ball:
         self.velocity = pygame.Vector2(DEFAULT_VELOCITY)
         self.update_speed_info()
 
-    def update_speed_info(self):
+    def update_speed_info(self) -> None:
         speed = self.velocity.length()
         text = f"Speed: {speed:.1f} px/s"
         self.speed_info = Ball.font.render(text, True, TEXT_COLOR)
