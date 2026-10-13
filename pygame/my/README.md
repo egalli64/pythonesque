@@ -4,13 +4,7 @@ Tested on pygame-ce 2.5.8, Python 3.14
 
 ## [Hello PyGame](01-hello/README.md)
 
-## [Basic Shapes](02-shapes/shapes.py)
-
-- Draw a few basic shapes:
-    - Rectangles
-    - Polygon
-    - Circle
-    - Lines
+## [Basic Shapes](02-shapes/README.md)
 
 ## [Keyboard Events](03-keyboard/README.md)
 
