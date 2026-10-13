@@ -30,6 +30,8 @@ Tested on pygame-ce 2.5.8, Python 3.14
     - Circle
     - Lines
 
+## [Keyboard Events](03-keyboard/README.md)
+
 ## [Bouncing Ball](bb/game.py)
 
 - In a 800x600 window
