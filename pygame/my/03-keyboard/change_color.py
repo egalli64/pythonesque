@@ -1,11 +1,11 @@
 """
 A few simple PyGame apps: https://github.com/egalli64/pythonesque/ pygame/my folder
 
-Keyboard event - press space to change the background color
+One-shot event - press space on keyboard to change the background color
 """
 import pygame
 
-TITLE = "One-Shot Events"
+TITLE = "One-Shot Event"
 WIN_SIZE = (300, 200)
 FPS = 30
 COLORS = ["beige", "lightblue", "peachpuff", "thistle"]
