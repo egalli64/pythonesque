@@ -1,5 +1,5 @@
 """
-A few simple PyGame apps: https://github.com/egalli64/pythonesque/ pygame/my folder
+My PyGame CE tutorial: https://github.com/egalli64/pythonesque/ pygame/my folder
 
 One-shot event - press space on keyboard to change the background color
 """

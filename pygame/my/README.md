@@ -1,6 +1,7 @@
-# My PyGame tutorial
+# My PyGame CE tutorial
 
-Tested on pygame-ce 2.5.8, Python 3.14
+- Tested on pygame-ce 2.5.8, Python 3.14
+- Official site: [pyga.me](https://pyga.me/)
 
 ## [Hello PyGame](01-hello/README.md)
 

@@ -1,4 +1,4 @@
-# Hello Pygame-CE
+# Hello PyGame
 
 ### [A minimal app](hello.py)
 

@@ -1,5 +1,5 @@
 """
-A few simple PyGame apps: https://github.com/egalli64/pythonesque/ pygame/my folder
+My PyGame CE tutorial: https://github.com/egalli64/pythonesque/ pygame/my folder
 
 Basic shapes
 """
