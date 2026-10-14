@@ -10,9 +10,9 @@ WIN_SIZE = (400, 300)
 FPS = 60
 BACKGROUND_COLOR = "whitesmoke"
 
-TARGET_INITIAL_POS = (200.0, 150.0)
-TARGET_RADIUS = 20
-TARGET_SPEED = 4  # pixel for frame
+PLAYER_INITIAL_POS = (200.0, 150.0)
+PLAYER_RADIUS = 20
+PLAYER_SPEED = 4  # pixel for frame
 
 
 class Game:
@@ -21,7 +21,7 @@ class Game:
         self.screen = screen
         self.running = True
 
-        self.pos = pygame.Vector2(TARGET_INITIAL_POS)
+        self.pos = pygame.Vector2(PLAYER_INITIAL_POS)
         self.direction = pygame.Vector2(0, 0)
 
     def run(self) -> None:
@@ -60,17 +60,17 @@ class Game:
     def update(self) -> None:
         if self.direction:
             self.direction.normalize_ip()
-            self.pos += self.direction * TARGET_SPEED
+            self.pos += self.direction * PLAYER_SPEED
 
             # clamp the target to the window
-            self.pos.x = max(TARGET_RADIUS, min(self.pos.x, self.window.size[0] - TARGET_RADIUS))
-            self.pos.y = max(TARGET_RADIUS, min(self.pos.y, self.window.size[1] - TARGET_RADIUS))
+            self.pos.x = max(PLAYER_RADIUS, min(self.pos.x, self.window.size[0] - PLAYER_RADIUS))
+            self.pos.y = max(PLAYER_RADIUS, min(self.pos.y, self.window.size[1] - PLAYER_RADIUS))
 
     def draw(self) -> None:
         self.screen.fill(BACKGROUND_COLOR)
 
-        pygame.draw.circle(self.screen, "dodgerblue", self.pos, TARGET_RADIUS)
-        pygame.draw.circle(self.screen, "darkblue", self.pos, TARGET_RADIUS, width=1)
+        pygame.draw.circle(self.screen, "dodgerblue", self.pos, PLAYER_RADIUS)
+        pygame.draw.circle(self.screen, "darkblue", self.pos, PLAYER_RADIUS, width=1)
 
         self.window.flip()
 
