@@ -13,7 +13,7 @@ TITLE = "Double click me"
 BACKGROUND_COLOR = "white"
 
 DOUBLE_CLICK_TIME = 300  # ms
-DOUBLE_CLICK_DISTANCE = 8  # pixels
+DOUBLE_CLICK_DISTANCE = 8.0  # pixels (float for distance comparison)
 
 
 def main(window: pygame.Window, screen: pygame.Surface) -> None:
