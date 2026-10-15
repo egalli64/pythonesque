@@ -12,20 +12,20 @@ WIN_SIZE = (600, 600)
 TITLE = "Dealing with mouse events"
 FPS = 30
 
+BACKGROUND_COLOR = "white"
+PLAY_AREA = pygame.Rect(100, 100, 400, 400)
+INNER_BORDER_COLOR = "red"
+
 
 class Game:
-    PLAY_AREA = pygame.Rect(100, 100, 400, 400)
-    BACKGROUND_COLOR = "white"
-    INNER_BORDER_COLOR = "red"
-
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
         self.screen = screen
         self.running = True
 
-        self.ball = Ball(Game.PLAY_AREA)
+        self.ball = Ball(PLAY_AREA)
         self.group = pygame.sprite.GroupSingle(self.ball)
-        # inside the play are the mouse is invisible
+        # inside the play the mouse is invisible
         pygame.mouse.set_visible(False)
 
     def run(self) -> None:
@@ -58,7 +58,7 @@ class Game:
 
     def update(self) -> None:
         pos = pygame.mouse.get_pos()
-        if Game.PLAY_AREA.collidepoint(pos):
+        if PLAY_AREA.collidepoint(pos):
             if pygame.mouse.get_visible():
                 pygame.mouse.set_visible(False)
             self.group.update(pos)
@@ -66,13 +66,12 @@ class Game:
             pygame.mouse.set_visible(True)
 
     def draw(self) -> None:
-        self.screen.fill(self.BACKGROUND_COLOR)
-        pygame.draw.rect(self.screen, Game.INNER_BORDER_COLOR, Game.PLAY_AREA, 1)
+        self.screen.fill(BACKGROUND_COLOR)
+        pygame.draw.rect(self.screen, INNER_BORDER_COLOR, PLAY_AREA, 1)
         self.group.draw(self.screen)
         self.window.flip()
 
 
-# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
     try:
