@@ -9,7 +9,7 @@ import pygame
 
 SCREEN_SIZE = (400, 100)
 TITLE = "Hello, pygame-ce!"
-BACKGROUND_COLOR = "white"
+BACKGROUND_COLOR = "white"  # see https://pyga.me/docs/ref/color_list.html
 
 
 def main():
