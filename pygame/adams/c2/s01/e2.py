@@ -10,7 +10,7 @@ import pygame
 WIN_SIZE = (400, 100)
 WIN_POS = (10, 50)
 TITLE = "Hello, pygame-ce!"
-BACKGROUND_COLOR = (0, 255, 0)
+BACKGROUND_COLOR = (0, 255, 0)  # RGB format, each channel in [0 ... 255]
 
 
 def main():
