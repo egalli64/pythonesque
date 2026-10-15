@@ -11,3 +11,9 @@
     - The player moves until a key is pressed
 - The player is clamped to the window
     - It can't move out of it
+
+## [Player as object](move-player)
+
+- Refactor the previous example
+    - [Game class](move-player/game.py) for the game structure
+    - [Player class](move-player/player.py) for the player behavior
