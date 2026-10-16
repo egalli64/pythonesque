@@ -1,7 +1,7 @@
 """
 My PyGame CE tutorial: https://github.com/egalli64/pythonesque/ pygame/my folder
 
-Objectified Continuous Polling
+User input: Keyboard Continuous Polling (classy)
 """
 import pygame
 from player import Player
