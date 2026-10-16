@@ -9,7 +9,7 @@
 ### [Continuous polling](move_player.py)
 
 - A circle in the window represents the player
-- When the user press the arrow keys (or a,s,d,w) the player moves
+- When the user press the arrow keys (or WASD) the player moves
     - The player moves until a key is pressed
 - The player is clamped to the window
     - It can't move out of it
@@ -19,3 +19,11 @@
 - Refactor the previous example
     - [Game class](move-player/game.py) for the game structure
     - [Player class](move-player/player.py) for the player behavior
+
+## Mouse
+
+### [Left and right click, wheel](click-player)
+
+- Modify the previous example
+    - Game handles mouse events
+    - Player reacts to mouse events
