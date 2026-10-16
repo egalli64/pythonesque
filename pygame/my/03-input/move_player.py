@@ -1,18 +1,20 @@
 """
 My PyGame CE tutorial: https://github.com/egalli64/pythonesque/ pygame/my folder
 
-Continuous Polling
+User input: Keyboard Continuous Polling
 """
 import pygame
 
-TITLE = "Continuous Polling"
-WIN_SIZE = (400, 300)
+TITLE = "Keyboard Continuous Polling"
+WIN_SIZE = (400, 200)
 FPS = 60
 BACKGROUND_COLOR = "whitesmoke"
 
 PLAYER_INITIAL_POS = (200.0, 150.0)
 PLAYER_RADIUS = 20
 PLAYER_SPEED = 4  # pixel for frame
+PLAYER_INTERNAL_COLOR = "dodgerblue"
+PLAYER_BORDER_COLOR = "darkblue"
 
 
 class Game:
@@ -69,8 +71,8 @@ class Game:
     def draw(self) -> None:
         self.screen.fill(BACKGROUND_COLOR)
 
-        pygame.draw.circle(self.screen, "dodgerblue", self.pos, PLAYER_RADIUS)
-        pygame.draw.circle(self.screen, "darkblue", self.pos, PLAYER_RADIUS, width=1)
+        pygame.draw.circle(self.screen, PLAYER_INTERNAL_COLOR, self.pos, PLAYER_RADIUS)
+        pygame.draw.circle(self.screen, PLAYER_BORDER_COLOR, self.pos, PLAYER_RADIUS, width=1)
 
         self.window.flip()
 
