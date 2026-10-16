@@ -7,7 +7,7 @@
 
 ## [Basic Shapes](02-shapes/README.md)
 
-## [Keyboard Events](03-keyboard/README.md)
+## [User Input](03-input/README.md)
 
 ## [Bouncing Ball](bb/game.py)
 
