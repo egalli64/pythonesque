@@ -1,17 +1,17 @@
 """
-Code in Place 2025 https://codeinplace.stanford.edu/cip5
-My notes: https://github.com/egalli64/pythonesque/cip
+Code in Place X 2026 https://codeinplace.stanford.edu/cipx
+My notes: https://github.com/egalli64/pythonesque cip folder
 
 Khansole Academy (step 1): Randomly generate an addition problem
 """
-import random
+from random import randint
 
 
 def main():
     print("Khansole Academy")
 
-    x = random.randint(10, 99)
-    y = random.randint(10, 99)
+    x = randint(10, 99)
+    y = randint(10, 99)
 
     print(f"What is {x} + {y}?")
 
