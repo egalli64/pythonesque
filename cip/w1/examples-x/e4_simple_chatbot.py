@@ -1,8 +1,8 @@
 """
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
-My notes: https://github.com/egalli64/pythonesque/cip
+My notes: https://github.com/egalli64/pythonesque cip folder
 
-Simple Chatbot: the user can continually ask questions to the AI model.
+While Loops - Simple Chatbot: the user can continually ask questions to the AI model.
 """
 from ai import call_gpt
 

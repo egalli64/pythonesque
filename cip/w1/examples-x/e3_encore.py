@@ -1,8 +1,8 @@
 """
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
-My notes: https://github.com/egalli64/pythonesque/cip
+My notes: https://github.com/egalli64/pythonesque cip folder
 
-Encore: Play the concert finale again for as long as the user keeps asking for an encore.
+While Loops - Encore: Play the concert finale again for as long as the user keeps asking for an encore.
 """
 
 
