@@ -1,8 +1,8 @@
 """
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
-My notes: https://github.com/egalli64/pythonesque/cip
+My notes: https://github.com/egalli64/pythonesque cip folder
 
-Greetings: Ask the user what part of the day it is for them, then greet them accordingly.
+If Statements - Greetings: Ask the user what part of the day it is for them, then greet them accordingly.
 """
 
 

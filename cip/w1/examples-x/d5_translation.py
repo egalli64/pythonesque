@@ -1,8 +1,8 @@
 """
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
-My notes: https://github.com/egalli64/pythonesque/cip
+My notes: https://github.com/egalli64/pythonesque cip folder
 
-Translation Practice
+If Statements - Translation Practice
 """
 from ai import call_gpt
 
