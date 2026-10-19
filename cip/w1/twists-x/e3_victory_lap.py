@@ -1,6 +1,6 @@
 """
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
-My notes: https://github.com/egalli64/pythonesque/cip
+My notes: https://github.com/egalli64/pythonesque cip folder
 
 Victory Lap: Ask GPT for an emoji of the animal and print it after "Correct!"
 """

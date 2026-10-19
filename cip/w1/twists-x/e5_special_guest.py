@@ -1,6 +1,6 @@
 """
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
-My notes: https://github.com/egalli64/pythonesque/cip
+My notes: https://github.com/egalli64/pythonesque cip folder
 
 Special Guest: Ask for the player's name at the start. If it's your section leader's name, roll out the red carpet!
 """

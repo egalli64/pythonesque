@@ -1,6 +1,6 @@
 """
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
-My notes: https://github.com/egalli64/pythonesque/cip
+My notes: https://github.com/egalli64/pythonesque cip folder
 
 Clue Please: After the first question, let the player type hint to get a clue about the animal.
 """
