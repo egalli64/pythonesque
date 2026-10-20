@@ -16,7 +16,7 @@
 
 ### [Player as object](move-player)
 
-- Refactor the previous example
+- Previous example refactored
     - [Game class](move-player/game.py) for the game structure
     - [Player class](move-player/player.py) for the player behavior
 
@@ -24,6 +24,6 @@
 
 ### [Left and right click, wheel](click-player)
 
-- Modify the previous example
-    - Game handles mouse events
-    - Player reacts to mouse events
+- Previous example modified to be mouse driven
+    - [Game](click-player/game.py) handles mouse events
+    - [Player](click-player/player.py) reacts to mouse events
