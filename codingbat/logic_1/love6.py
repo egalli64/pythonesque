@@ -2,7 +2,7 @@
 CodingBat Python track
 
 Source: https://codingbat.com/python
-My solutions: https://github.com/egalli64/pythonesque/codingbat
+My solutions: https://github.com/egalli64/pythonesque codingbat folder
 
 Logic 1: https://codingbat.com/python/Logic-1
 love6: https://codingbat.com/prob/p100958

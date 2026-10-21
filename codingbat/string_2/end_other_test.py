@@ -2,7 +2,7 @@
 CodingBat Python track
 
 Source: https://codingbat.com/python
-My solutions: https://github.com/egalli64/pythonesque/codingbat
+My solutions: https://github.com/egalli64/pythonesque codingbat folder
 
 String 2: https://codingbat.com/python/String-2
 end_other: https://codingbat.com/prob/p174314

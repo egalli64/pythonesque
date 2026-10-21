@@ -2,7 +2,7 @@
 CodingBat Python track
 
 Source: https://codingbat.com/python
-My solutions: https://github.com/egalli64/pythonesque/codingbat
+My solutions: https://github.com/egalli64/pythonesque codingbat folder
 
 Warmup 2 https://codingbat.com/python/Warmup-2
 last2 https://codingbat.com/prob/p145834

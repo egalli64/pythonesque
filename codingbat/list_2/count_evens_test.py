@@ -2,7 +2,7 @@
 CodingBat Python track
 
 Source: https://codingbat.com/python
-My solutions: https://github.com/egalli64/pythonesque/codingbat
+My solutions: https://github.com/egalli64/pythonesque codingbat folder
 
 List 2: https://codingbat.com/python/List-2
 count_evens: https://codingbat.com/prob/p189616

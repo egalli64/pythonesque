@@ -2,7 +2,7 @@
 CodingBat Python track
 
 Source: https://codingbat.com/python
-My solutions: https://github.com/egalli64/pythonesque/codingbat
+My solutions: https://github.com/egalli64/pythonesque codingbat folder
 
 Logic 2: https://codingbat.com/python/Logic-2
 make_bricks: https://codingbat.com/prob/p118406
