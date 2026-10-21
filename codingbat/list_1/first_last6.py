@@ -9,10 +9,10 @@ first_last6: https://codingbat.com/prob/p181624
 """
 
 
-def first_last6(nums):
+def first_last6(nums: list[int]) -> bool:
     """
     Parameters:
-        nums int list with length 1+
+        nums non-empty int list
     return True is 6 in first or last position
     """
     return nums[0] == 6 or nums[-1] == 6

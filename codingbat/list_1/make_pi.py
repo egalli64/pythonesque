@@ -9,7 +9,7 @@ make_pi: https://codingbat.com/prob/p113659
 """
 
 
-def make_pi():
+def make_pi() -> list[int]:
     """
     return a list containing 3, 1, and 4
     """

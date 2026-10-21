@@ -9,7 +9,7 @@ rotate_left3: https://codingbat.com/prob/p148661
 """
 
 
-def rotate_left3(nums):
+def rotate_left3(nums: list[int]) -> list[int]:
     """
     Parameters:
         nums int list with length 3

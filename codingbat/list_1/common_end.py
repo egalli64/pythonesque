@@ -9,11 +9,11 @@ common_end: https://codingbat.com/prob/p147755
 """
 
 
-def common_end(a, b):
+def common_end(a: list[int], b: list[int]) -> bool:
     """
     Parameters:
-        a int list with length 1+
-        b int list with length 1+
+        a non-empty int list
+        b non-empty int list
     return True if both a and b have the same first or last element
     """
     return a[0] == b[0] or a[-1] == b[-1]

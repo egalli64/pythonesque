@@ -9,7 +9,7 @@ sum2: https://codingbat.com/prob/p192589
 """
 
 
-def sum2(nums):
+def sum2(nums: list[int]) -> int:
     """
     Parameters:
         nums int list

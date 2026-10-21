@@ -9,7 +9,7 @@ has23: https://codingbat.com/prob/p177892
 """
 
 
-def has23(nums):
+def has23(nums: list[int]) -> bool:
     """
     Parameters:
         nums int list sized 2

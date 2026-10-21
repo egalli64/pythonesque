@@ -9,7 +9,7 @@ make_ends: https://codingbat.com/prob/p124806
 """
 
 
-def make_ends(nums):
+def make_ends(nums: list[int]) -> list[int]:
     """
     Parameters:
         nums int list sized 1+

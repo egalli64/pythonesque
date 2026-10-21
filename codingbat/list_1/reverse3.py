@@ -9,7 +9,7 @@ reverse3: https://codingbat.com/prob/p192962
 """
 
 
-def reverse3(nums):
+def reverse3(nums: list[int]) -> list[int]:
     """
     Parameters:
         nums int list with length 3

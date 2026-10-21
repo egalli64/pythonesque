@@ -9,7 +9,7 @@ sum3: https://codingbat.com/prob/p191645
 """
 
 
-def sum3(nums):
+def sum3(nums: list[int]) -> int:
     """
     Parameters:
         nums int list with length 3

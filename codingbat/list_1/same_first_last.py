@@ -9,10 +9,10 @@ same_first_last: https://codingbat.com/prob/p179078
 """
 
 
-def same_first_last(nums):
+def same_first_last(nums: list[int]) -> bool:
     """
     Parameters:
         nums int list
     return True if nums is non-empty and first elements equals last elements
     """
-    return bool(len(nums)) and nums[0] == nums[-1]
+    return bool(nums) and nums[0] == nums[-1]

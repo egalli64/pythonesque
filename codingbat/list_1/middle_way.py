@@ -9,7 +9,7 @@ middle_way: https://codingbat.com/prob/p171011
 """
 
 
-def middle_way(a, b):
+def middle_way(a: list[int], b: list[int]) -> list[int]:
     """
     Parameters:
         a int list sized 3

@@ -9,7 +9,7 @@ max_end3: https://codingbat.com/prob/p135290
 """
 
 
-def max_end3(nums):
+def max_end3(nums: list[int]) -> list[int]:
     """
     In-place
 
@@ -23,7 +23,7 @@ def max_end3(nums):
     return nums
 
 
-def max_end3_new(nums):
+def max_end3_new(nums: list[int]) -> list[int]:
     """
     Returning another list
 
