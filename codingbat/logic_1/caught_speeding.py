@@ -9,7 +9,7 @@ caught_speeding: https://codingbat.com/prob/p137202
 """
 
 
-def caught_speeding(speed, is_birthday):
+def caught_speeding(speed: int, is_birthday: bool) -> int:
     """
     Parameters:
         speed int

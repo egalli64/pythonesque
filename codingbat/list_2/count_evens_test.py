@@ -22,6 +22,9 @@ class TestCountEvens(unittest.TestCase):
     def test_given_3(self):
         self.assertEqual(count_evens([1, 3, 5]), 0)
 
+    def test_empty(self):
+        self.assertEqual(count_evens([]), 0)
+
 
 if __name__ == "__main__":
     unittest.main()

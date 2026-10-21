@@ -9,12 +9,12 @@ alarm_clock: https://codingbat.com/prob/p119867
 """
 
 
-def alarm_clock(day, vacation):
+def alarm_clock(day: int, vacation: bool) -> str:
     """
     Parameters:
-        day int [0=Sun .. 6=Sat]
+        day int [0=Sun ... 6=Sat]
         vacation bool
-    return on weekdays "7:00" or "10:00" if vacation;
+    return on weekdays "7:00" or "10:00" if in vacation;
         on weekend "10:00" of "off" if vacation
     """
     if 1 <= day <= 5:

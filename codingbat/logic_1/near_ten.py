@@ -9,10 +9,10 @@ near_ten: https://codingbat.com/prob/p165321
 """
 
 
-def near_ten(num):
+def near_ten(num: int) -> bool:
     """
     Parameters:
-        num number
+        num int
     return True if num is close to a multiple of 10, max distance is 2
     """
     reduced = num % 10

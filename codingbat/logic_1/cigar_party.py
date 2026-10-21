@@ -9,7 +9,7 @@ cigar_party: https://codingbat.com/prob/p195669
 """
 
 
-def cigar_party(cigars, is_weekend):
+def cigar_party(cigars: int, is_weekend: bool) -> bool:
     """
     Parameters:
         cigars int

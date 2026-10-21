@@ -9,10 +9,10 @@ in1to10: https://codingbat.com/prob/p158497
 """
 
 
-def in1to10(n, outside_mode):
+def in1to10(n: int, outside_mode: bool) -> bool:
     """
     Parameters:
-        n number
+        n int
         outside_mode bool
     return True if n in [1..10]
         or, if outside_mode, is less or equal to 1 or greater or equal to 10

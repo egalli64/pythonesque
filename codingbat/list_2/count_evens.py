@@ -9,10 +9,10 @@ count_evens: https://codingbat.com/prob/p189616
 """
 
 
-def count_evens(nums: list):
+def count_evens(nums: list[int]):
     """
     Parameters:
-        nums int list
+        nums a possibly empty int list
     return the number of even values in nums
     """
     return sum(num % 2 == 0 for num in nums)

@@ -9,7 +9,7 @@ date_fashion: https://codingbat.com/prob/p129125
 """
 
 
-def date_fashion(you, date):
+def date_fashion(you: int, date: int) -> int:
     """
     Parameters:
         you int in [0..10]

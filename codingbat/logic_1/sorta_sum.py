@@ -9,12 +9,12 @@ sorta_sum: https://codingbat.com/prob/p116620
 """
 
 
-def sorta_sum(a, b):
+def sorta_sum(a: int, b: int) -> int:
     """
     Parameters:
         a int
         b int
-    return the parameters sum, but if it is in [10..19] set it to 20
+    return the parameters sum, but if it is in [10..19] then 20
     """
-    sum = a + b
-    return 20 if 10 <= sum <= 19 else sum
+    candidate_result = a + b
+    return 20 if 10 <= candidate_result <= 19 else candidate_result

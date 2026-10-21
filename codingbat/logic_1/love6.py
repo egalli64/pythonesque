@@ -9,7 +9,7 @@ love6: https://codingbat.com/prob/p100958
 """
 
 
-def love6(a, b):
+def love6(a: int, b: int) -> bool:
     """
     Parameters:
         a int
