@@ -9,6 +9,8 @@
 
 ## [User Input](03-input/README.md)
 
+## [Text rendering](04-text/README.md)
+
 ## [Bouncing Ball](bb/game.py)
 
 - In a 800x600 window
