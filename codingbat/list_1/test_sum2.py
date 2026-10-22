@@ -7,20 +7,17 @@ My solutions: https://github.com/egalli64/pythonesque codingbat folder
 List 1: https://codingbat.com/python/List-1
 sum2: https://codingbat.com/prob/p192589
 """
-import unittest
 from sum2 import sum2
 
 
-class TestSum2(unittest.TestCase):
+class TestSum2:
+    """assuming pytest"""
+
     def test_given_1(self):
-        self.assertEqual(sum2([1, 2, 3]), 3)
+        assert sum2([1, 2, 3]) == 3
 
     def test_given_2(self):
-        self.assertEqual(sum2([1, 1]), 2)
+        assert sum2([1, 1]) == 2
 
     def test_given_3(self):
-        self.assertEqual(sum2([1, 1, 1, 1]), 2)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert sum2([1, 1, 1, 1]) == 2
