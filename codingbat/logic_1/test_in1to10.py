@@ -7,20 +7,17 @@ My solutions: https://github.com/egalli64/pythonesque codingbat folder
 Logic 1: https://codingbat.com/python/Logic-1
 in1to10: https://codingbat.com/prob/p158497
 """
-import unittest
 from in1to10 import in1to10
 
 
-class TestIn1to10(unittest.TestCase):
+class TestIn1to10:
+    """assuming pytest"""
+
     def test_given_1(self):
-        self.assertEqual(in1to10(5, False), True)
+        assert in1to10(5, False) is True
 
     def test_given_2(self):
-        self.assertEqual(in1to10(11, False), False)
+        assert in1to10(11, False) is False
 
     def test_given_3(self):
-        self.assertEqual(in1to10(11, True), True)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert in1to10(11, True) is True
