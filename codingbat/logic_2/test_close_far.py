@@ -5,21 +5,20 @@ Source: https://codingbat.com/python
 My solutions: https://github.com/egalli64/pythonesque codingbat folder
 
 Logic 2: https://codingbat.com/python/Logic-2
-make_chocolate: https://codingbat.com/prob/p190859
+close_far: https://codingbat.com/prob/p160533
 """
-import unittest
-from make_chocolate import make_chocolate
+from close_far import close_far
 
 
-class TestMakeChocolate(unittest.TestCase):
+class TestCloseFar:
     def test_given_1(self):
-        self.assertEqual(make_chocolate(4, 1, 9), 4)
+        assert close_far(1, 2, 10) is True
 
     def test_given_2(self):
-        self.assertEqual(make_chocolate(4, 1, 10), -1)
+        assert close_far(1, 2, 3) is False
 
     def test_given_3(self):
-        self.assertEqual(make_chocolate(4, 1, 7), 2)
+        assert close_far(4, 1, 3) is True
 
 
 if __name__ == "__main__":
