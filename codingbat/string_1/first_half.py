@@ -9,10 +9,10 @@ first_half: https://codingbat.com/prob/p107010
 """
 
 
-def first_half(str):
+def first_half(s: str):
     """
     Parameters:
-        str
+        s a string
     return The first half of str
     """
-    return str[: len(str) / 2]
+    return s[: len(s) // 2]
