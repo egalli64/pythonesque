@@ -7,20 +7,15 @@ My solutions: https://github.com/egalli64/pythonesque codingbat folder
 String 2: https://codingbat.com/python/String-2
 end_other: https://codingbat.com/prob/p174314
 """
-import unittest
 from end_other import end_other
 
 
-class TestEndOther(unittest.TestCase):
+class TestEndOther:
     def test_given_1(self):
-        self.assertEqual(end_other("Hiabc", "abc"), True)
+        assert end_other("Hiabc", "abc") is True
 
     def test_given_2(self):
-        self.assertEqual(end_other("AbC", "HiaBc"), True)
+        assert end_other("AbC", "HiaBc") is True
 
     def test_given_3(self):
-        self.assertEqual(end_other("abc", "abXabc"), True)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert end_other("abc", "abXabc") is True
