@@ -7,20 +7,15 @@ My solutions: https://github.com/egalli64/pythonesque codingbat folder
 String 1: https://codingbat.com/python/String-1
 first_half: https://codingbat.com/prob/p107010
 """
-import unittest
 from first_half import first_half
 
 
-class TestFirstHalf(unittest.TestCase):
+class TestFirstHalf:
     def test_given_1(self):
-        self.assertEqual(first_half("WooHoo"), "Woo")
+        assert first_half("WooHoo") == "Woo"
 
     def test_given_2(self):
-        self.assertEqual(first_half("HelloThere"), "Hello")
+        assert first_half("HelloThere") == "Hello"
 
     def test_given_3(self):
-        self.assertEqual(first_half("abcdef"), "abc")
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert first_half("abcdef") == "abc"
