@@ -7,20 +7,15 @@ My solutions: https://github.com/egalli64/pythonesque codingbat folder
 Warmup 2 https://codingbat.com/python/Warmup-2
 front_times https://codingbat.com/prob/p165097
 """
-import unittest
 from front_times import front_times
 
 
-class TestFrontTimes(unittest.TestCase):
+class TestFrontTimes:
     def test_given_1(self):
-        self.assertEqual(front_times("Chocolate", 2), "ChoCho")
+        assert front_times("Chocolate", 2) == "ChoCho"
 
     def test_given_2(self):
-        self.assertEqual(front_times("Chocolate", 3), "ChoChoCho")
+        assert front_times("Chocolate", 3) == "ChoChoCho"
 
     def test_given_3(self):
-        self.assertEqual(front_times("Abc", 3), "AbcAbcAbc")
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert front_times("Abc", 3) == "AbcAbcAbc"
