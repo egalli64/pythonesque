@@ -7,20 +7,15 @@ My solutions: https://github.com/egalli64/pythonesque codingbat folder
 Warmup 1 https://codingbat.com/python/Warmup-1
 near_hundred https://codingbat.com/prob/p124676
 """
-import unittest
 from near_hundred import near_hundred
 
 
-class TestNearHundred(unittest.TestCase):
+class TestNearHundred:
     def test_given_1(self):
-        self.assertTrue(near_hundred(93))
+        assert near_hundred(93) is True
 
     def test_given_2(self):
-        self.assertTrue(near_hundred(90))
+        assert near_hundred(90) is True
 
     def test_given_3(self):
-        self.assertFalse(near_hundred(89))
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert near_hundred(89) is False

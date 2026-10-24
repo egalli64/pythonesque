@@ -5,19 +5,15 @@ My solutions: https://github.com/egalli64/pythonesque codingbat folder
 Warmup 1 https://codingbat.com/python/Warmup-1
 sleep_in https://codingbat.com/prob/p173401
 """
-import unittest
 from sleep_in import sleep_in
 
 
-class TestSleepIn(unittest.TestCase):
+class TestSleepIn:
     def test_given_1(self):
-        self.assertTrue(sleep_in(False, False))
+        assert sleep_in(False, False) is True
 
     def test_given_2(self):
-        self.assertFalse(sleep_in(True, False))
+        assert sleep_in(True, False) is False
 
     def test_given_3(self):
-        self.assertTrue(sleep_in(False, True))
-
-if __name__ == "__main__":
-    unittest.main()
+        assert sleep_in(False, True) is True
