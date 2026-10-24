@@ -7,20 +7,15 @@ My solutions: https://github.com/egalli64/pythonesque codingbat folder
 Warmup 1 https://codingbat.com/python/Warmup-1
 monkey_trouble https://codingbat.com/prob/p120546
 """
-import unittest
 from monkey_trouble import monkey_trouble
 
 
-class TestMonkeyTrouble(unittest.TestCase):
+class TestMonkeyTrouble:
     def test_given_1(self):
-        self.assertTrue(monkey_trouble(True, True))
+        assert monkey_trouble(True, True) is True
 
     def test_given_2(self):
-        self.assertTrue(monkey_trouble(False, False))
+        assert monkey_trouble(False, False) is True
 
     def test_given_3(self):
-        self.assertFalse(monkey_trouble(True, False))
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert monkey_trouble(True, False) is False

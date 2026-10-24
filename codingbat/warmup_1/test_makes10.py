@@ -7,20 +7,15 @@ My solutions: https://github.com/egalli64/pythonesque codingbat folder
 Warmup 1 https://codingbat.com/python/Warmup-1
 makes10 https://codingbat.com/prob/p124984
 """
-import unittest
 from makes10 import makes10
 
 
-class TestMakes10(unittest.TestCase):
+class TestMakes10:
     def test_given_1(self):
-        self.assertTrue(makes10(9, 10))
+        assert makes10(9, 10) is True
 
     def test_given_2(self):
-        self.assertFalse(makes10(9, 9))
+        assert makes10(9, 9) is False
 
     def test_given_3(self):
-        self.assertTrue(makes10(1, 9))
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert makes10(1, 9) is True
