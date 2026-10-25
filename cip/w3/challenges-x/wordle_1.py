@@ -22,13 +22,13 @@ def main() -> None:
     guess = input("Enter your guess: ")
 
     # 4: G(ood) or B(ad) for each char
-    result = ""
+    result = []
     for i in range(5):
         if guess[i] == secret[i]:
-            result += "G "
+            result += "G"
         else:
-            result += "B "
-    print("Result:", result)
+            result += "B"
+    print("Result:", " ".join(result))
 
 
 if __name__ == "__main__":
