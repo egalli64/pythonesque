@@ -10,7 +10,7 @@ sum13: https://codingbat.com/prob/p167025
 from sum13 import sum13
 
 
-class TestCountEvens:
+class TestSum13:
     def test_given_1(self):
         assert sum13([1, 2, 2, 1]) == 6
 

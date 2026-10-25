@@ -10,7 +10,7 @@ sum67: https://codingbat.com/prob/p108886
 from sum67 import sum67
 
 
-class TestCountEvens:
+class TestSum67:
     def test_given_1(self):
         assert sum67([1, 2, 2]) == 5
 
