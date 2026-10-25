@@ -7,4 +7,4 @@ Mock for a Code in Place AI library used by Haiku Generator
 
 
 def call_gpt(s: str) -> str:
-    return "Blah blah blah\nBlah blah blah\nBlah blah"
+    return s + ":\nBlah blah blah\nBlah blah blah\nBlah blah"

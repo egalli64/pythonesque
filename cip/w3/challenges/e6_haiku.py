@@ -4,7 +4,6 @@ My notes: https://github.com/egalli64/pythonesque/cip
 
 Haiku Generator
 """
-
 from ai import call_gpt
 
 
