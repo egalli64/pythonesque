@@ -2,7 +2,7 @@
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
 My notes: https://github.com/egalli64/pythonesque cip folder
 
-Game Board twist: cheering on mistakes
+Game Board twist: keeping list of tentatives
 """
 from words import get_random_word
 
@@ -34,6 +34,7 @@ def main():
                 remaining_letters.remove(secret_word[i])
             else:
                 result.append("B")
+
         for i in range(5):
             if result[i] == "B":
                 if guess[i] in remaining_letters:
