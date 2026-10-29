@@ -6,13 +6,15 @@ My version: https://github.com/egalli64/pythonesque/ pygame/adams folder
 Sound effects
 """
 from enum import Enum
-
 import pygame
 
 FPS = 30
 WIN_SIZE = (400, 200)
 TITLE = "Sound effects"
 BACKGROUND_COLOR = "black"
+FONT_SIZE = 40
+TEXT_COLOR = "red"
+VOLUME_STEP = 0.05
 
 
 class Sound(Enum):
@@ -21,13 +23,9 @@ class Sound(Enum):
 
 
 class Game:
-    FONT_SIZE = 40
-    TEXT_COLOR = "red"
-    VOLUME_STEP = 0.05
-
     @classmethod
     def load_resources(cls) -> None:
-        cls._font = pygame.font.Font(None, cls.FONT_SIZE)
+        cls._font = pygame.font.Font(None, FONT_SIZE)
         cls._sounds = {sound: pygame.mixer.Sound(sound.value) for sound in Sound}
 
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
@@ -38,7 +36,7 @@ class Game:
 
         self.displayed_volume = Game._sounds[Sound.BUBBLE].get_volume()
         text = f"Volume: {self.displayed_volume:.2f}"
-        self.info = self._font.render(text, True, Game.TEXT_COLOR)
+        self.info = Game._font.render(text, True, TEXT_COLOR)
         self.info_rect = self.info.get_rect(center=viewport.center)
 
     def handle_events(self) -> None:
@@ -55,20 +53,20 @@ class Game:
                     elif event.button == pygame.BUTTON_RIGHT:
                         Game._sounds[Sound.CLASH].play()
                 case pygame.MOUSEWHEEL:
-                    self.change_volume(event.y)
+                    Game.change_volume(event.y)
 
-    def change_volume(self, delta: int) -> None:
-        volume = pygame.mixer.Sound.get_volume(Game._sounds[Sound.BUBBLE]) + delta * Game.VOLUME_STEP
-        volume = max(0.0, min(1.0, volume))
+    @staticmethod
+    def change_volume(delta: int) -> None:
+        volume = pygame.mixer.Sound.get_volume(Game._sounds[Sound.BUBBLE]) + delta * VOLUME_STEP
         for sound in Game._sounds.values():
-            sound.set_volume(volume)
+            sound.set_volume(volume)  # clamped to [0.0, 1.0] by pygame
 
     def draw(self) -> None:
         self.screen.fill(BACKGROUND_COLOR)
         volume = Game._sounds[Sound.BUBBLE].get_volume()
         if volume != self.displayed_volume:
             text = f"Volume: {volume:.2f}"
-            self.info = self._font.render(text, True, Game.TEXT_COLOR)
+            self.info = Game._font.render(text, True, TEXT_COLOR)
             self.displayed_volume = volume
 
         self.screen.blit(self.info, self.info_rect)
@@ -83,7 +81,6 @@ class Game:
             self.draw()
 
 
-# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
 
