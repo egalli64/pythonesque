@@ -15,6 +15,6 @@ class Direction(Enum):
     RIGHT = (1, 0)
 
     @property
-    def opposite(self):
+    def opposite(self) -> Direction:
         dx, dy = self.value
         return Direction(-dx, -dy)
