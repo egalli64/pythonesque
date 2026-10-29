@@ -64,7 +64,6 @@ class Game:
             self.window.flip()
 
 
-# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
 
