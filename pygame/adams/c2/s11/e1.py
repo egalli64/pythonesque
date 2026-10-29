@@ -12,6 +12,11 @@ WIN_SIZE = (400, 200)
 TITLE = "Sound Background Music"
 VOLUME_STEP = 0.05
 BACKGROUND_COLOR = "white"
+FONT_SIZE = 40
+TEXT_COLOR = "red"
+MUSIC_FILE = "sounds/lucifer.mid"
+VOLUME_DEFAULT = 0.05
+VOLUME_FADEOUT = 5000  # ms
 
 
 def change_music_volume(delta: int) -> None:
@@ -20,16 +25,10 @@ def change_music_volume(delta: int) -> None:
 
 
 class Game:
-    FONT_SIZE = 40
-    TEXT_COLOR = "red"
-    MUSIC_FILE = "sounds/lucifer.mid"
-    VOLUME_DEFAULT = 0.05
-    VOLUME_FADEOUT = 5000  # ms
-
     @classmethod
     def load_resources(cls) -> None:
-        pygame.mixer.music.load(cls.MUSIC_FILE)
-        cls._font = pygame.font.Font(None, cls.FONT_SIZE)
+        pygame.mixer.music.load(MUSIC_FILE)
+        cls._font = pygame.font.Font(None, FONT_SIZE)
 
     def __init__(self, window: pygame.Window, screen: pygame.Surface) -> None:
         self.window = window
@@ -38,12 +37,12 @@ class Game:
         self.running = True
         self.paused = False
 
-        self.cur_volume = Game.VOLUME_DEFAULT
+        self.cur_volume = VOLUME_DEFAULT
         pygame.mixer.music.set_volume(self.cur_volume)
         pygame.mixer.music.play(loops=-1)  # forever
 
         text = f"Volume: {self.cur_volume:.2f}"
-        self.info = Game._font.render(text, True, Game.TEXT_COLOR)
+        self.info = Game._font.render(text, True, TEXT_COLOR)
         self.info_rect = self.info.get_rect(center=self.viewport.center)
 
     def handle_events(self) -> None:
@@ -56,7 +55,7 @@ class Game:
                         case pygame.K_ESCAPE:
                             self.running = False
                         case pygame.K_f:
-                            pygame.mixer.music.fadeout(Game.VOLUME_FADEOUT)
+                            pygame.mixer.music.fadeout(VOLUME_FADEOUT)
                             print("Fadeout")
                         case pygame.K_j:
                             pygame.mixer.music.play(loops=-1)  # forever
@@ -80,7 +79,7 @@ class Game:
         volume = pygame.mixer.music.get_volume()
         if volume != self.cur_volume:
             text = f"Volume: {volume:.2f}"
-            self.info = Game._font.render(text, True, Game.TEXT_COLOR)
+            self.info = Game._font.render(text, True, TEXT_COLOR)
             self.cur_volume = volume
 
         self.screen.blit(self.info, self.info_rect)
@@ -96,7 +95,6 @@ class Game:
             self.draw()
 
 
-# noinspection DuplicatedCode
 if __name__ == "__main__":
     pygame.init()
 
