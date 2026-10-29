@@ -9,27 +9,30 @@ from typing import override
 import pygame
 from direction import Direction
 
+SOUND_FILE = "../sounds/fire.wav"
+IMAGE_FILES = {
+    Direction.LEFT: "../images/bullet_left.png",
+    Direction.RIGHT: "../images/bullet_right.png",
+}
+TRANSPARENT_COLOR = "black"
+SPEED = 300
+
 
 class Bullet(pygame.sprite.Sprite):
-    SOUND_FILE = "../sounds/fire.wav"
-    IMAGE_FILES = {
-        Direction.LEFT: "../images/bullet_left.png",
-        Direction.RIGHT: "../images/bullet_right.png",
-    }
-    TRANSPARENT_COLOR = "black"
-    SPEED = 300
-
     image: pygame.Surface
+    _images: dict[Direction, pygame.Surface]
     rect: pygame.FRect
     direction: Direction
 
     @classmethod
     def load_resources(cls) -> None:
-        cls._sound = pygame.mixer.Sound(cls.SOUND_FILE)
-        cls._images = {x: pygame.image.load(cls.IMAGE_FILES[x]).convert() for x in [Direction.LEFT, Direction.RIGHT]}
+        cls._sound = pygame.mixer.Sound(SOUND_FILE)
 
-        for image in cls._images.values():
-            image.set_colorkey(cls.TRANSPARENT_COLOR)
+        cls._images = {}
+        for direction, path in IMAGE_FILES.items():
+            image = pygame.image.load(path).convert()
+            image.set_colorkey(TRANSPARENT_COLOR)
+            cls._images[direction] = image
 
     def __init__(self, viewport: pygame.Rect, origin: tuple[float, float], direction: Direction) -> None:
         assert direction != Direction.UP, "Firing up is disabled"
@@ -47,8 +50,9 @@ class Bullet(pygame.sprite.Sprite):
             channel.play(Bullet._sound)
 
     @override
-    def update(self, dt) -> None:
-        movement = pygame.Vector2(self.direction.value) * Bullet.SPEED * dt
+    def update(self, dt: float) -> None:
+        movement = pygame.Vector2(self.direction.value) * SPEED * dt
         self.rect.move_ip(movement)
-        if not self.viewport.contains(self.rect):
+
+        if not self.viewport.colliderect(self.rect):
             self.kill()
