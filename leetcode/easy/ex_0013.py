@@ -4,11 +4,10 @@ My solutions: https://github.com/egalli64/pythonesque/leetcode
 
 13. Roman to Integer: https://leetcode.com/problems/roman-to-integer/description/
 """
-
 MAPPER = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
 
 
-def romanToInt(s: str) -> int:
+def roman_to_int(s: str) -> int:
     """
     Convert a Roman number to its integer representation
     """
