@@ -6,7 +6,7 @@ My solutions: https://github.com/egalli64/pythonesque/leetcode
 """
 
 
-def numWaterBottles(numBottles: int, numExchange: int) -> int:
+def num_water_bottles(numBottles: int, numExchange: int) -> int:
     """
     Given a number of water bottles full of water, and knowing that you can exchange numExchange empty water bottles
     from the market with one full water bottle, return the maximum number of water bottles you can drink.
