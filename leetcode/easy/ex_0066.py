@@ -2,18 +2,12 @@
 LeetCode Easy Problems: https://leetcode.com/problemset/?difficulty=EASY
 My solutions: https://github.com/egalli64/pythonesque/leetcode
 
-66. Plus One
-https://leetcode.com/problems/water-bottles/description/
+66. Plus One https://leetcode.com/problems/plus-one/
 """
 
-from typing import List
 
-
-def plusOne(digits: List[int]) -> List[int]:
-    """
-    The input list represents an integer.
-    Return a list representing the value increased by one
-    """
+def plus_one(digits: list[int]) -> list[int]:
+    """Given an integer represented as list of digits, increase the integer representation, and return it."""
     carry = 1
 
     for i, value in enumerate(reversed(digits)):
