@@ -4,21 +4,15 @@ My solutions: https://github.com/egalli64/pythonesque/leetcode
 
 9. Palindrome Number: https://leetcode.com/problems/palindrome-number/description/
 """
-
-import unittest
-from palindrome_number import isPalindrome
+from ex_0009 import is_palindrome
 
 
-class TestPalindromeNumber(unittest.TestCase):
+class TestIsPalindrome:
     def test_given_1(self):
-        self.assertTrue(isPalindrome(121))
+        assert is_palindrome(121) is True
 
     def test_given_2(self):
-        self.assertFalse(isPalindrome(-121))
+        assert is_palindrome(-121) is False
 
     def test_given_3(self):
-        self.assertFalse(isPalindrome(10))
-
-
-if __name__ == "__main__":
-    unittest.main()
+        assert is_palindrome(10) is False

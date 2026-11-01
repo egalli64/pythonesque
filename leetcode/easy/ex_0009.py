@@ -6,9 +6,9 @@ My solutions: https://github.com/egalli64/pythonesque/leetcode
 """
 
 
-def isPalindrome(x: int) -> bool:
+def is_palindrome(x: int) -> bool:
     """
-    Given an integer in [-2^31 .. 2^31] check if it is a palindrome
+    Given an integer in [-2^31 ... 2^31] check if it is a palindrome
     """
     if x < 0:
         return False
