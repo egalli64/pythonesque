@@ -11,19 +11,20 @@ def group_anagrams(strs: list[str]) -> list[list[str]]:
     """
     Group the anagrams together.
     """
-    result = {}
+    result: defaultdict[str, list[str]] = defaultdict(list)
 
     for s in strs:
-        key = tuple(sorted(s))
-        result.setdefault(key, []).append(s)
+        key = "".join(sorted(s))
+        result[key].append(s)
 
     return list(result.values())
 
 
 def group_anagrams_alt(strs: list[str]) -> list[list[str]]:
-    result = defaultdict(list)
+    result = {}
+
     for s in strs:
         key = tuple(sorted(s))
-        result[key].append(s)
+        result.setdefault(key, []).append(s)
 
     return list(result.values())
