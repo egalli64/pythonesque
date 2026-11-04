@@ -1,27 +1,31 @@
 # pythonesque
 
-A collection of Python3 scripts.
+A collection of Python3 scripts. I'm currently:
+- reviewing the code for version 3.15
+- refactoring the tests for pytest
+  - remember to pip install pytest in your venv
 
-Interview problems from:
+
+## Interview problems from:
    * [CodeEval](https://github.com/egalli64/pythonesque/tree/master/ce/)
    * [CodingBat](https://github.com/egalli64/pythonesque/tree/master/codingbat/)
    * [Exercism](https://github.com/egalli64/pythonesque/tree/master/exercism/)
    * [HackerRank](https://github.com/egalli64/pythonesque/tree/master/hr/)
 
-Exercises from MOOC:
+## Exercises from MOOC:
    * [Code in Place](https://github.com/egalli64/pythonesque/tree/master/cip/), plain and X edition
    * edX UCSanDiegoX [ALGS200x](https://github.com/egalli64/pythonesque/tree/master/algs200x/) Algorithmic Design and Techniques
    * edX UQx [QUERY101x](https://github.com/egalli64/pythonesque/tree/master/query101/) Question Everything: Scientific Thinking in Real Life
    * [Python Essentials 1](https://github.com/egalli64/pythonesque/tree/master/cisco/pe1/) Cisco Network Academy
 
-Exercises from books:
+## Exercises from books:
    * [Dive Into Python 3](https://github.com/egalli64/pythonesque/tree/master/dive/)
    * [Python Crash Course](https://github.com/egalli64/pythonesque/tree/master/pcc3/) Third Edition
    * [Fluent Python](fluent) Second Edition
 
-Exercises from Kaggle:
+## Exercises from Kaggle:
    * [Learn Python Challenge](https://github.com/egalli64/pythonesque/tree/master/kaggle/LearnPythonChallenge/)
 
-Code from Cisco Network Academy:
+## Code from Cisco Network Academy:
    * [Python Essentials 1](https://github.com/egalli64/pythonesque/tree/master/cisco/pe1/)
    * [Python Essentials 2](https://github.com/egalli64/pythonesque/tree/master/cisco/pe2/)
