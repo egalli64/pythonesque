@@ -6,6 +6,6 @@ Week 1 - Sum of Two Digits
 """
 
 
-def add(a: int, b: int):
+def add(a: int, b: int) -> int:
     """First example, an adder function"""
     return a + b

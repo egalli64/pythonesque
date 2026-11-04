@@ -7,7 +7,7 @@ Find the maximum product of two distinct numbers in a sequence of non-negative i
 """
 
 
-def max_pair(values: list[int]):
+def max_pair(values: list[int]) -> int:
     """
     Select the two largest numbers, save a lot of useless work.
 
