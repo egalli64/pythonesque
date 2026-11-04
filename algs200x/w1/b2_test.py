@@ -1,18 +1,23 @@
-import unittest
+"""
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+
+Week 1 - Maximum Pairwise Product
+Find the maximum product of two distinct numbers in a sequence of non-negative integers.
+"""
+import pytest
+
 from b2_max_pair_naive import max_pair
 
 
-class A2_AddTest(unittest.TestCase):
+class TestMaxPairNaive:
     def test_given_1(self):
-        self.assertEqual(max_pair([1, 2, 3]), 6)
+        assert max_pair([1, 2, 3]) == 6
 
     def test_given_2(self):
-        a = [int(x) for x in "7 5 14 2 8 8 10 1 2 3".split()]
-        self.assertEqual(max_pair(a), 140)
+        values = [int(x) for x in "7 5 14 2 8 8 10 1 2 3".split()]
+        assert max_pair(values) == 140
 
     def test_bad(self):
-        self.assertRaises(AssertionError, lambda: max_pair([1]))
-
-
-if __name__ == "__main__":
-    unittest.main()
+        with pytest.raises(AssertionError):
+            max_pair([1])
