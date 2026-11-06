@@ -10,10 +10,10 @@ def calc_fib(n: int):
     if n <= 1:
         return n
 
-    results = [1, 1]
-    for _ in range(n - 2):
-        minor = results[0]
-        results[0] = results[1]
-        results[1] = minor + results[0]
+    previous = 0
+    current = 1
 
-    return results[-1]
+    for _ in range(n - 1):
+        previous, current = current, previous + current
+
+    return current
