@@ -7,7 +7,7 @@ Naive
 """
 
 
-def gcd_naive(a: int, b: int):
+def gcd_naive(a: int, b: int) -> int:
     """
     Loop on all the integers up to the smallest parameter.
     If the current value is a divisor for both parameters, it is a good candidate.

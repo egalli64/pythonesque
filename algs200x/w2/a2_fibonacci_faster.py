@@ -6,7 +6,7 @@ Week 2 - A faster Fibonacci calculator
 """
 
 
-def calc_fib(n: int):
+def calc_fib(n: int) -> int:
     if n <= 1:
         return n
 

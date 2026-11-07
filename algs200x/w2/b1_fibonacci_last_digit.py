@@ -8,7 +8,7 @@ Here the problem is that we store unneeded huge numbers in the local cache
 """
 
 
-def get_fibonacci_last_digit_naive(n: int):
+def get_fibonacci_last_digit_naive(n: int) -> int:
     if n <= 1:
         return n
 
