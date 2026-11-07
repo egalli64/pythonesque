@@ -15,11 +15,8 @@ PRICES = {"apple": 1, "bread": 3, "milk": 2, "cheese": 5, "eggs": 4}
 def main():
     total = 0
 
-    while True:
-        item = input("Item: ").lower()
-        if not item:
-            break
-        elif item in PRICES:
+    while item := input("Item: ").lower():
+        if item in PRICES:
             print(f"{item} costs ${PRICES[item]}")
             total += PRICES[item]
         else:
