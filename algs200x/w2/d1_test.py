@@ -8,7 +8,7 @@ Naive
 from d1_lcm_naive import lcm_naive
 
 
-class TestRecursiveSolution:
+class TestSolution:
     def test_given_1(self):
         assert lcm_naive(6, 8) == 24
 
