@@ -39,14 +39,17 @@ def translate(sentence, emoji_dict):
 
 
 def food_pack():
+    """Twist"""
     return {"pizza": "🍕", "taco": "🌮", "apple": "🍎"}
 
 
 def animal_pack():
+    """Twist"""
     return {"cat": "🐱", "dog": "🐶", "fish": "🐟"}
 
 
 def main():
+    # Twist
     pack = input("Pick a pack (food or animals): ").lower()
     emojis = food_pack() if pack == "food" else animal_pack()
 
