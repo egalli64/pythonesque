@@ -1,15 +1,14 @@
 """
-Calculate Fibonacci modulo m
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/fibonacci-modulo-with-pisano-period.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-
+Week 2 - Fibonacci modulo m
 Naive solution
 """
 
 
-def solution(number, modulo):
+def solution(number: int, modulo: int) -> int:
+    """Calculate Fibonacci, then return its modulo."""
     if number < 2:
         return number
 
