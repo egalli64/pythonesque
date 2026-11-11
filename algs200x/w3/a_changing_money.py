@@ -1,12 +1,12 @@
 """
-Changing Money
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w2
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/half-dozen-of-greedy-problems.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 3 - greedy algorithms
+Week 3 - greedy algorithms: Changing Money
+Find the minimum number of coins needed to change the input value into coins with denominations 1, 5, and 10
 """
-DENOMINATIONS = [10, 5, 1]  # safe choice, keeping bigger to smaller order
+DENOMINATIONS = [10, 5, 1]
 
 
 def solution(total):
@@ -23,7 +23,3 @@ def solution(total):
             break
 
     return result
-
-
-if __name__ == '__main__':
-    print(solution(int(input())))
