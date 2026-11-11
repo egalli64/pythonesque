@@ -1,10 +1,9 @@
 """
-Last Digit of the Sum of Fibonacci Numbers
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w2
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/last-digit-of-sum-of-fibonacci-numbers.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-
+Week 2 - Last Digit of the Sum of Fibonacci Numbers
 Naive solution
 """
 
