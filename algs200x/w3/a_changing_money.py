@@ -1,7 +1,7 @@
 """
 edX UCSanDiegoX - Algorithmic Design and Techniques
 https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
-My notes: https://github.com/egalli64/pythonesque folder algs200x/w2
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w3
 
 Week 3 - greedy algorithms: Changing Money
 Find the minimum number of coins needed to change the input value into coins with denominations 1, 5, and 10
