@@ -1,28 +1,18 @@
 """
-Maximizing Revenue in Online Ad Placement
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w3
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/half-dozen-of-greedy-problems.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 3 - greedy algorithms
+Week 3 - greedy algorithms: Maximizing Revenue in Online Ad Placement
+Given two sequences, partition them into n pairs, to maximize their sum
 """
 
 
-def solution(profits, clicks):
+def solution(profits: list[int], clicks: list[int]) -> int:
     profits.sort()
     clicks.sort()
 
     result = 0
-    for p, c in zip(profits, clicks):
-        result += p * c
-
+    for profit, click in zip(profits, clicks):
+        result += profit * click
     return result
-
-
-if __name__ == '__main__':
-    input()  # header discarded
-
-    a = [int(x) for x in input().split()]
-    b = [int(x) for x in input().split()]
-
-    print(solution(a, b))
