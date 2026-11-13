@@ -1,14 +1,13 @@
 """
-Collecting Signatures
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w3
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/half-dozen-of-greedy-problems.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 3 - greedy algorithms
+Week 3 - greedy algorithms: Collecting Signatures
 """
 
 
-def solution(segments):
+def solution(segments: list[tuple[int, int]]) -> tuple[int, list[int]]:
     segments.sort(key=lambda item: item[1])
 
     results = [segments[0][1]]
