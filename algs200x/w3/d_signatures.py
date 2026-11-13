@@ -4,10 +4,11 @@ https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algo
 My notes: https://github.com/egalli64/pythonesque folder algs200x/w3
 
 Week 3 - greedy algorithms: Collecting Signatures
+Find the minimum number of points so that each passed segment has them in it.
 """
 
 
-def solution(segments: list[tuple[int, int]]) -> tuple[int, list[int]]:
+def solution(segments: list[tuple[int, int]]) -> list[int]:
     segments.sort(key=lambda item: item[1])
 
     results = [segments[0][1]]
@@ -15,15 +16,4 @@ def solution(segments: list[tuple[int, int]]) -> tuple[int, list[int]]:
         if segment[0] > results[-1]:
             results.append(segment[1])
 
-    return len(results), results
-
-
-if __name__ == '__main__':
-    n = int(input())
-
-    items = []
-    for i in range(n):
-        lhs, rhs = map(int, input().split())
-        items.append((lhs, rhs))
-
-    print(solution(items))
+    return results
