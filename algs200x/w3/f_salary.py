@@ -1,27 +1,21 @@
 """
-Maximizing Your Salary
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w3
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/half-dozen-of-greedy-problems.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 3 - greedy algorithms
+Week 3 - greedy algorithms: Maximizing Your Salary
+Given a list of strings in ['1' ... '999'] join them to a single number, as large as possible
 """
 
 
-def filler(token):
+def filled(token: str) -> str:
+    """Between 900 and 9, I should choose 9"""
     while len(token) < 3:
         token += token[-1]
     return token
 
 
 def solution(tokens):
-    tokens.sort(key=filler, reverse=True)
+    tokens.sort(key=filled, reverse=True)
 
     return ''.join(tokens)
-
-
-if __name__ == '__main__':
-    input()  # skip header
-    data = list(input().split())
-
-    print(solution(data))
