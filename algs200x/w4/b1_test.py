@@ -8,11 +8,10 @@ Naive Algorithm
 """
 from b1_majority_naive import solution
 
-TEST_DATA = list(range(4000)) + [4000] * 20001
+TEST_DATA = list(range(7000)) + [7000] * 7001
 
 
 class TestSolution:
-
     def test_given_1(self):
         assert solution([2, 3, 9, 2, 2]) is True
 
