@@ -1,33 +1,41 @@
 """
-Binary Search
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w4
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/a-few-divide-and-conquer-problems.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 4 - Divide and Conquer
+Week 4 - Divide-and-Conquer: Binary Search
+Implement the binary search algorithm.
 """
 
 
-def solution(data, targets):
-    results = []
+def solution(data: list[int], targets: list[int]) -> list[int]:
+    def binary_search(target: int) -> int:
+        """
+        Binary search
 
-    for target in targets:
+        Params:
+            data: a sorted list of integers
+            target: the searched element
+
+        Returns:
+            the target index, or -1 if missing.
+        """
         left = 0
         right = len(data) - 1
+
         while left <= right:
             middle = left + (right - left) // 2
 
             if data[middle] == target:
-                results.append(middle)
-                break
+                return middle
             elif data[middle] < target:
                 left = middle + 1
             else:
                 right = middle - 1
-        else:
-            results.append(-1)
 
-    return results
+        return -1
+
+    return [binary_search(target) for target in targets]
 
 
 if __name__ == '__main__':
