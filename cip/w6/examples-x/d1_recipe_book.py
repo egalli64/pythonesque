@@ -19,7 +19,7 @@ def main():
     }
 
     while name := input("Which recipe? ").lower():
-        if recipe := recipes.get(name, None):
+        if recipe := recipes.get(name):
             print(f"{name} takes {recipe['minutes']} minutes. You need:")
             for ingredient in recipe["ingredients"]:
                 print("-", ingredient)
