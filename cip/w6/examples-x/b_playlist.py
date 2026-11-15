@@ -2,7 +2,7 @@
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
 My notes: https://github.com/egalli64/pythonesque cip folder
 
-Playlist
+Slices: Playlist
 - Print the first and last songs in the playlist.
 - Ask how many songs the user has time for, and print a list of that many songs from the start of the playlist.
 - Remove those songs from the playlist, and print the songs that are left.

@@ -2,7 +2,7 @@
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
 My notes: https://github.com/egalli64/pythonesque cip folder
 
-Movie Night
+Lists of Dictionaries: Movie Night
 - Start with an empty list of movies.
 - Ask for movie and votes until no movie input. Store each movie as a dictionary with a title and votes.
 - Print how many movies there were and which one got the most votes.

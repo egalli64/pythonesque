@@ -2,7 +2,7 @@
 Code in Place X 2026 https://codeinplace.stanford.edu/cipx
 My notes: https://github.com/egalli64/pythonesque cip folder
 
-Bakery Orders
+Lists of Dictionaries: Bakery Orders
 - Print every order with its price.
 - Add up the prices and print the total.
 - Find the order with the highest price and print its item.
