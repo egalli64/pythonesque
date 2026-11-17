@@ -27,7 +27,7 @@ def main():
         messages.append(make_message("user", prompt))
         response = call_gpt(prompt)
         messages.append(make_message("assistant", response))
-        print(response)
+        print("Bot:", response)
 
 
 if __name__ == "__main__":

@@ -49,7 +49,7 @@ def main():
             prompt = format_messages(messages)
             response = call_gpt(prompt)
             messages.append(make_message("assistant", response))
-            print(response)
+            print("Bot:", response)
 
 
 if __name__ == "__main__":

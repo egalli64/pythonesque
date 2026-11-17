@@ -12,7 +12,7 @@ def main():
 
     while prompt := input("You: "):
         response = call_gpt(prompt)
-        print(response)
+        print("Bot:", response)
 
 
 if __name__ == "__main__":
