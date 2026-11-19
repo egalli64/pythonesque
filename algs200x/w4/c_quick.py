@@ -1,14 +1,14 @@
 """
-Improving Quick Sort
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w4
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/a-few-divide-and-conquer-problems.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 4 - Divide and Conquer
+Week 4 - Improving Quick Sort
+Let it works fast even on sequences containing many equal elements
 """
 
 
-def partition(data, left, right):
+def partition(data: list[int], left: int, right: int) -> int:
     pivot = data[left]
 
     i = left
@@ -35,7 +35,7 @@ def partition(data, left, right):
     return j
 
 
-def quick(data, left, right):
+def quick(data: list[int], left: int, right: int) -> None:
     if right <= left:
         return
 
@@ -44,11 +44,11 @@ def quick(data, left, right):
     quick(data, pivot + 1, right)
 
 
-def solution_quick(data):
+def solution_quick(data: list[int]):
     quick(data, 0, len(data) - 1)
 
 
-def quick3(data, left, right):
+def quick3(data: list[int], left: int, right: int) -> None:
     if right <= left:
         return
 
@@ -71,15 +71,5 @@ def quick3(data, left, right):
     quick3(data, p_right + 1, right)
 
 
-def solution_quick3(data):
+def solution_quick3(data: list[int]) -> None:
     quick3(data, 0, len(data) - 1)
-
-
-if __name__ == '__main__':
-    input()  # discard header
-
-    line = input().split()
-
-    items = [int(x) for x in line]
-    solution_quick(items)
-    print(' '.join(str(x) for x in items))
