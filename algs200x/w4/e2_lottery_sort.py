@@ -1,14 +1,15 @@
 """
-Organizing a Lottery
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w4
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/a-few-divide-and-conquer-problems.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 4 - Divide and Conquer
+Week 4 Divide-and-Conquer - Organizing a Lottery
+Given a list of segments and a list of points, say how many hits on the segments has each point
+Using sort as helper - the result does not guarantee the values order!
 """
 
 
-def solution_sort(segments, points):
+def solution(segments: list[tuple[int, int]], points: list[int]) -> list[int]:
     s_open = []
     s_close = []
 
@@ -37,19 +38,6 @@ def solution_sort(segments, points):
     return results
 
 
-def solution_naive(segments, points):
-    results = []
-
-    for point in points:
-        result = 0
-        for segment in segments:
-            if segment[0] <= point <= segment[1]:
-                result += 1
-        results.append(result)
-
-    return results
-
-
 if __name__ == '__main__':
     s, p = map(int, input().split())
 
@@ -60,6 +48,6 @@ if __name__ == '__main__':
 
     b = [int(x) for x in input().split()]
 
-    items = solution_sort(a, b)
+    items = solution(a, b)
     print(' '.join(str(x) for x in items))
     print(sum(items))
