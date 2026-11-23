@@ -1,14 +1,13 @@
 """
-Longest Common Subsequence of Three Sequences
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w5
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/02/longest-common-subsequence-of-three.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 5 - Dynamic Programming 1
+Week 5 - Dynamic Programming /1: Longest Common Subsequence of Three Sequences
 """
 
 
-def solution_dp(a, b, c):
+def solution(a: list[int], b: list[int], c: list[int]) -> int:
     cube = [[[0] * (len(b) + 1) for _ in range(len(a) + 1)] for _ in range(len(c) + 1)]
 
     for i in range(1, len(cube)):
@@ -20,13 +19,3 @@ def solution_dp(a, b, c):
                     cube[i][j][k] = max(cube[i - 1][j][k], cube[i][j - 1][k], cube[i][j][k - 1])
 
     return cube[-1][-1][-1]
-
-
-if __name__ == '__main__':
-    input()  # size discarded
-    v1 = [int(x) for x in input().split()]
-    input()  # size discarded
-    v2 = [int(x) for x in input().split()]
-    input()  # size discarded
-    v3 = [int(x) for x in input().split()]
-    print(solution_dp(v1, v2, v3))
