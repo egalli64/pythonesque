@@ -62,12 +62,3 @@ def solution(values: list[int]) -> bool:
                 table[i][j] = table[i][j - 1]
 
     return table[-1][-1] == 2
-
-
-if __name__ == '__main__':
-    while True:
-        input()  # discard header
-
-        items = [x for x in map(int, input().split())]
-        print(solution(items))
-        input()  # discard tail
