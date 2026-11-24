@@ -1,15 +1,15 @@
 """
-Maximizing the Value of an Arithmetic Expression
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w6
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 6 - Dynamic Programming 2
+Week 6 - Dynamic Programming /2: Maximizing the Value of an Arithmetic Expression
+Given a list of integer and a list of intermixed arithmetic operation, maximize the expression result
 """
-CALCULATOR = {'*': lambda a, b: a*b, '+': lambda a, b: a+b, '-': lambda a, b: a-b}
+CALCULATOR = {'*': lambda a, b: a * b, '+': lambda a, b: a + b, '-': lambda a, b: a - b}
 
 
-def min_max(tab_min, tab_max, operations, i, j):
+def min_max(tab_min: list, tab_max: list, operations: list, i: int, j: int) -> None:
     lowest = float('inf')
     highest = float('-inf')
     for k in range(i, j):
@@ -27,7 +27,7 @@ def min_max(tab_min, tab_max, operations, i, j):
     tab_max[i][j] = highest
 
 
-def solution(values, operations):
+def solution(values: list[int], operations: list[str]) -> int:
     n = len(values)
 
     tab_min = [[0 for _ in range(n)] for _ in range(n)]
@@ -36,15 +36,7 @@ def solution(values, operations):
         tab_max[x][x] = tab_min[x][x] = values[x]
 
     for k in range(1, n):
-        for i in range(n-k):
-            min_max(tab_min, tab_max, operations, i, i+k)
+        for i in range(n - k):
+            min_max(tab_min, tab_max, operations, i, i + k)
 
     return tab_max[0][-1]
-
-
-if __name__ == '__main__':
-    line = input()
-    lhs = [int(x) for x in line[::2]]
-    rhs = [x for x in line[1::2]]
-
-    print(solution(lhs, rhs))

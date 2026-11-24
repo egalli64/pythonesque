@@ -1,7 +1,7 @@
 """
 edX UCSanDiegoX - Algorithmic Design and Techniques
 https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
-My notes: https://github.com/egalli64/pythonesque folder algs200x/w5
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w6
 
 Week 6 - Dynamic Programming /2: Partitioning Souvenirs
 https://github.com/sraaphorst/data_structures_and_algorithms/blob/master/course_1_algorithmic_toolbox/week6_dynamic_programming2/2_partitioning_souvenirs/partition3.py

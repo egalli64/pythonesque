@@ -1,11 +1,11 @@
 """
-Partitioning Souvenirs
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w6
 
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/2018/06/partitioning-souvenirs-patched.html
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 6 - Dynamic Programming 2 - 3-Partition problem
+Week 6 - Dynamic Programming /2: Partitioning Souvenirs
 """
+
 from b2_souvenirs_seb import solution
 
 
