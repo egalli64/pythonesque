@@ -1,18 +1,17 @@
 """
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w7
+
+Week 7 - Final Exam - Greedy Algorithms
 Covering points by segments
-
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 7 - final exam - greedy algorithms
-
 You are given ten points on a line, [1, 2, 3, 5, 7, 9, 10, 11, 13, 15]
 You would like to cover them with the least number of segments of length three.
 """
 SIZE = 3
 
 
-def solution(points):
+def solution(points: list[int]) -> int:
     result = 1
     current = points[0]
 
