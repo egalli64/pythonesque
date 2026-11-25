@@ -1,18 +1,16 @@
 """
+edX UCSanDiegoX - Algorithmic Design and Techniques
+https://www.edx.org/learn/algorithms/the-university-of-california-san-diego-algorithmic-design-and-techniques
+My notes: https://github.com/egalli64/pythonesque folder algs200x/w7
+
+Week 7 - Final Exam - Greedy Algorithms
 Covering segments by points
-
-author: Manny egalli64@gmail.com
-info: http://thisthread.blogspot.com/
-      https://www.edx.org/course/algorithmic-design-techniques-uc-san-diegox-algs200x
-      week 7 - final exam - greedy algorithms
-
-You are given eleven horizontal segments.
-[(2, 18), (5, 10), (2, 6), (21, 23), (5, 7), (14, 16), (10, 14), (10, 21), (4, 11), (8, 12), (17, 20)]
+Given a list of horizontal segments.
 Get the least possible number of vertical lines so that each segment is intersected by at least one line.
 """
 
 
-def solution(segments):
+def solution(segments: list[tuple[int, int]]) -> tuple[int, list[int]]:
     segments.sort(key=lambda item: item[1])
 
     results = [segments[0][1]]
