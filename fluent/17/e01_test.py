@@ -21,3 +21,7 @@ class TestSentence:
 
         # a sentence has its own peculiar representation
         assert repr(s) == "Sentence('To be, or no... the question')"
+
+        # Sentence is iterable, but a linter could be confused about its old style approach
+        for index, word in enumerate(s):
+            assert word == s.words[index]
